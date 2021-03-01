@@ -1,38 +1,41 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using Mirror;
 
+[RequireComponent(typeof(CharacterController))]
 public class Player : NetworkBehaviour
 {
     [SerializeField]
     private float movementSpeed = 3f;
-    private Vector3 rawInputMovement;
 
-    private CharacterController characterController = null;
+
+    private Vector3 movementInput;
+
+    private CharacterController characterController;
+    private InputManager inputManager;
+
 
     void Awake()
     {
         characterController = GetComponent<CharacterController>();
     }
 
+    private void Start()
+    {
+        inputManager = InputManager.Instance;
+    }
+
     void Update()
     {
+        
         if(base.hasAuthority)
-            UpdatePlayerMovement();
+            MovePlayer();
     }
 
-    public void OnMovement(InputAction.CallbackContext value)
+    void MovePlayer()
     {
-        Vector2 inputMovement = value.ReadValue<Vector2>();
+        movementInput = new Vector3(inputManager.GetPlayerMovement().x, 0f, inputManager.GetPlayerMovement().y) * Time.deltaTime * movementSpeed;
+        movementInput += Physics.gravity * Time.deltaTime;
 
-        rawInputMovement = new Vector3(inputMovement.x * Time.deltaTime * movementSpeed, 0f, inputMovement.y * Time.deltaTime * movementSpeed);
-        rawInputMovement += Physics.gravity * Time.deltaTime;
-    }
-
-    void UpdatePlayerMovement()
-    {
-        characterController.Move(rawInputMovement);
+        characterController.Move(movementInput);
     }
 }
