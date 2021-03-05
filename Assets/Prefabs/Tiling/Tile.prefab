@@ -58,6 +58,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfb2dda1dd47bb7439a5bb1657d0ec8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeToBreak: 0.5
+  timeToRespawn: 5
   normalMaterial: {fileID: 2100000, guid: fec6f71f310647c4c8b7467ef16e9544, type: 2}
   unstableMaterial: {fileID: 2100000, guid: b56a22789220f774480e6e124aa8bd3c, type: 2}
   isClickToDigEnabled: 1

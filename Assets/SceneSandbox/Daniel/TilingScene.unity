@@ -230,22 +230,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1052910048026237714, guid: 0197978f106c13b46a029e6d6d18f70b, type: 3}
-      propertyPath: zOffset
-      value: 1.73
-      objectReference: {fileID: 0}
-    - target: {fileID: 1052910048026237714, guid: 0197978f106c13b46a029e6d6d18f70b, type: 3}
-      propertyPath: mapWidth
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 1052910048026237714, guid: 0197978f106c13b46a029e6d6d18f70b, type: 3}
-      propertyPath: mapLength
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 1052910048026237714, guid: 0197978f106c13b46a029e6d6d18f70b, type: 3}
-      propertyPath: tileDepthScale
-      value: 115
-      objectReference: {fileID: 0}
     - target: {fileID: 5748530503810269683, guid: 0197978f106c13b46a029e6d6d18f70b, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -294,7 +278,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: TileManager
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2005566141963167721, guid: 0197978f106c13b46a029e6d6d18f70b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 0197978f106c13b46a029e6d6d18f70b, type: 3}
 --- !u!1 &1387837691
 GameObject:
