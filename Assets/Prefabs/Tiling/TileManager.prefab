@@ -45,9 +45,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 5884525987830691854, guid: 623b51e3a02a55f4ebcadfaf5b7c3890, type: 3}
   tileSurfaceScale: 115
-  tileDepthScale: 200
-  mapWidth: 10
-  mapLength: 15
+  tileDepthScale: 115
+  mapWidth: 30
+  mapLength: 30
   xOffset: 2
-  zOffset: 2
+  zOffset: 1.73
   verticalOffset: 0.1
