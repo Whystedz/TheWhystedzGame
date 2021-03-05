@@ -12,9 +12,17 @@ public class LobbyPlayer : NetworkBehaviour
     NetworkMatchChecker networkMatchChecker;
     GameObject playerLobbyUI;
 
+    //[SyncVar(hook = nameof(OnNameChanged))] 
+    public string DisplayName;
+
     void Awake()
     {
         networkMatchChecker = GetComponent<NetworkMatchChecker>();
+    }
+
+    void OnNameChanged(string oldName, string newName)
+    {
+        DisplayName = newName;
     }
 
     public override void OnStartClient()
@@ -28,6 +36,12 @@ public class LobbyPlayer : NetworkBehaviour
             Debug.Log($"Spawning other player UI");
             playerLobbyUI = UILobby.instance.SpawnUIPlayerPrefab(this);
         }
+    }
+
+    [Command]
+    public void CmdSetupPlayer(string displayName)
+    {
+        DisplayName = displayName;
     }
 
     public override void OnStopClient()

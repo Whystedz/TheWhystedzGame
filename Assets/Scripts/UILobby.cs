@@ -10,6 +10,7 @@ public class UILobby : MonoBehaviour
 
     [Header("Host Join")]
     [SerializeField] TMP_InputField joinMatchInput;
+    [SerializeField] TMP_InputField nameInputField;
     [SerializeField] List<Selectable> lobbySelectables = new List<Selectable>();
     [SerializeField] Canvas lobbyCanvas;
     [SerializeField] Canvas searchCanvas;
@@ -20,6 +21,8 @@ public class UILobby : MonoBehaviour
     [SerializeField] TMP_Text matchIDText;
     [SerializeField] GameObject startGameButton;
 
+    public const string PlayerPrefsNameKey = "PlayerName";
+
     GameObject playerLobbyUI;
 
     bool searching = false;
@@ -27,12 +30,33 @@ public class UILobby : MonoBehaviour
     void Start()
     {
         instance = this;
+        joinMatchInput.onValidateInput += delegate(string input, int charIndex, char addedChar) { return char.ToUpper(addedChar); };
+        if (!PlayerPrefs.HasKey(PlayerPrefsNameKey)) { return; }
+
+        string defaultName = PlayerPrefs.GetString(PlayerPrefsNameKey);
+
+        nameInputField.text = defaultName;
+
+        SetPlayerName(defaultName);
+    }
+
+    public void SetPlayerName(string name)
+    {
+        lobbySelectables.ForEach(x => x.interactable = !string.IsNullOrEmpty(name));
+    }
+
+    public void SavePlayerName()
+    {
+        LobbyPlayer.localPlayer.DisplayName = nameInputField.text;
+
+        PlayerPrefs.SetString(PlayerPrefsNameKey, LobbyPlayer.localPlayer.DisplayName);
     }
 
     // Creates a match ID
     public void HostPrivate()
     {
         joinMatchInput.interactable = false;
+        nameInputField.interactable = false;
 
         lobbySelectables.ForEach(x => x.interactable = false);
 
@@ -42,6 +66,7 @@ public class UILobby : MonoBehaviour
     public void HostPublic()
     {
         joinMatchInput.interactable = false;
+        nameInputField.interactable = false;
 
         lobbySelectables.ForEach(x => x.interactable = false);
 
@@ -62,6 +87,7 @@ public class UILobby : MonoBehaviour
         else
         {
             joinMatchInput.interactable = true;
+            nameInputField.interactable = true;
             lobbySelectables.ForEach(x => x.interactable = true);
         }
     }
@@ -69,9 +95,10 @@ public class UILobby : MonoBehaviour
     public void Join()
     {
         joinMatchInput.interactable = false;
+        nameInputField.interactable = false;
         lobbySelectables.ForEach(x => x.interactable = false);
 
-        LobbyPlayer.localPlayer.JoinGame(joinMatchInput.text.ToUpper());
+        LobbyPlayer.localPlayer.JoinGame(joinMatchInput.text);
     }
 
     public void JoinSuccess(bool success, string matchID)
@@ -87,6 +114,7 @@ public class UILobby : MonoBehaviour
         else
         {
             joinMatchInput.interactable = true;
+            nameInputField.interactable = true;
             lobbySelectables.ForEach(x => x.interactable = true);
         }
     }
@@ -157,6 +185,8 @@ public class UILobby : MonoBehaviour
         LobbyPlayer.localPlayer.DisconnectGame();
 
         lobbyCanvas.enabled = false;
+        joinMatchInput.interactable = true;
+        nameInputField.interactable = true;
         lobbySelectables.ForEach(x => x.interactable = true);
         startGameButton.SetActive(false);
     }
