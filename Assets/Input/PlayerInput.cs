@@ -1,4 +1,4 @@
-// GENERATED AUTOMATICALLY FROM 'Assets/SceneSandbox/Wayne/Input/PlayerInput.inputactions'
+// GENERATED AUTOMATICALLY FROM 'Assets/Input/PlayerInput.inputactions'
 
 using System;
 using System.Collections;
@@ -31,6 +31,14 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""type"": ""PassThrough"",
                     ""id"": ""34899ac1-5df0-43ab-94e6-8efa3d6bd928"",
                     ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Digging"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""73d033ec-c4ac-4bc1-9170-02d6f241ea72"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
                 }
@@ -167,6 +175,17 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""action"": ""Camera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0ff0d5da-64ea-4be7-9ce8-0ca044837566"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Digging"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -177,6 +196,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         m_PlayerControls = asset.FindActionMap("PlayerControls", throwIfNotFound: true);
         m_PlayerControls_Movement = m_PlayerControls.FindAction("Movement", throwIfNotFound: true);
         m_PlayerControls_Camera = m_PlayerControls.FindAction("Camera", throwIfNotFound: true);
+        m_PlayerControls_Digging = m_PlayerControls.FindAction("Digging", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -228,12 +248,14 @@ public class @PlayerInput : IInputActionCollection, IDisposable
     private IPlayerControlsActions m_PlayerControlsActionsCallbackInterface;
     private readonly InputAction m_PlayerControls_Movement;
     private readonly InputAction m_PlayerControls_Camera;
+    private readonly InputAction m_PlayerControls_Digging;
     public struct PlayerControlsActions
     {
         private @PlayerInput m_Wrapper;
         public PlayerControlsActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_PlayerControls_Movement;
         public InputAction @Camera => m_Wrapper.m_PlayerControls_Camera;
+        public InputAction @Digging => m_Wrapper.m_PlayerControls_Digging;
         public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -249,6 +271,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @Camera.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnCamera;
                 @Camera.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnCamera;
                 @Camera.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnCamera;
+                @Digging.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDigging;
+                @Digging.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDigging;
+                @Digging.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDigging;
             }
             m_Wrapper.m_PlayerControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -259,6 +284,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @Camera.started += instance.OnCamera;
                 @Camera.performed += instance.OnCamera;
                 @Camera.canceled += instance.OnCamera;
+                @Digging.started += instance.OnDigging;
+                @Digging.performed += instance.OnDigging;
+                @Digging.canceled += instance.OnDigging;
             }
         }
     }
@@ -267,5 +295,6 @@ public class @PlayerInput : IInputActionCollection, IDisposable
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnCamera(InputAction.CallbackContext context);
+        void OnDigging(InputAction.CallbackContext context);
     }
 }

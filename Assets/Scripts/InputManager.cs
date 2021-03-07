@@ -16,37 +16,36 @@ public class InputManager : MonoBehaviour
 
     */
 
-    private static InputManager Instance;
+    private static InputManager instance;
 
-    private PlayerInput PlayerInput;
+    private PlayerInput playerInput;
 
-    public static InputManager GetInstance() => Instance;
-    public Vector2 GetInputCamera() => PlayerInput.PlayerControls.Camera.ReadValue<Vector2>();
-    public Vector2 GetInputMovement() => PlayerInput.PlayerControls.Movement.ReadValue<Vector2>();
+    public static InputManager GetInstance() => instance;
+    public Vector2 GetInputCamera() => this.playerInput.PlayerControls.Camera.ReadValue<Vector2>();
+    public Vector2 GetInputMovement() => this.playerInput.PlayerControls.Movement.ReadValue<Vector2>();
 
     private void Awake()
     {
         MaintainSingleInstance();
-
-        PlayerInput = new PlayerInput();
-
+        this.playerInput = new PlayerInput();
     }
 
     private void OnEnable()
     {
-        PlayerInput.Enable();
+        this.playerInput.Enable();
     }
 
     private void OnDisable()
     {
-        PlayerInput.Disable();
+        this.playerInput.Disable();
     }
 
     private void MaintainSingleInstance()
     {
-        if (Instance != null && Instance != this)
+        if (instance != null && instance != this)
             Destroy(this);
         else
-            Instance = this;
+            instance = this;
     }
+
 }

@@ -1,72 +1,84 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private CharacterController CharacterController;
-    private InputManager InputManager;
+    private CharacterController characterController;
+    private InputManager inputManager;
 
-    [SerializeField] [Range(1,2)]
-    private int MovementState = 1;
     [SerializeField]
-    private float MovementSpeed = 3f;
-    private Vector3 Direction;
+    private MovementState movementState;
+    [SerializeField]
+    private float movementSpeed = 3f;
+    private Vector3 direction;
 
     // Camera vars
-    private Transform MainCamera;
-    private Vector3 CameraForward;
-    private Vector3 CameraRight;
+    private Transform mainCamera;
+    private Vector3 cameraForward;
+    private Vector3 cameraRight;
+
+    public enum MovementState : int
+    {
+        CharacterAndCameraIndependent = 1,
+        CharacterDependentOnCamera = 2
+    }
 
     void Awake()
     {
-        CharacterController = GetComponent<CharacterController>();
+        this.characterController = GetComponent<CharacterController>();
     }
 
     private void Start()
     {
-        InputManager = InputManager.Instance;
-        MainCamera = Camera.main.transform;
+        this.inputManager = InputManager.GetInstance();
+        this.mainCamera = Camera.main.transform;
+    }
+
+    private int ReturnZero()
+    {
+        return 0;
     }
 
     void Update()
     {
-        switch (MovementState)
+        switch ((int)this.movementState)
         {
             case 1:
-                MovePlayer1();
+                MovePlayerCharacterAndCameraIndependent();
                 break;
             case 2:
-                MovePlayer2();
+                MovePlayerCharacterDependentOnCamera();
                 break;
             default:
-                Debug.LogError("Invalide Movement State.");
+                Debug.LogError("Invalid Movement State.");
                 break;
         }
     }
 
-    void MovePlayer1()
+    void MovePlayerCharacterAndCameraIndependent()
     {
-        Direction = new Vector3(InputManager.GetInputMovement().x, 0f, InputManager.GetInputMovement().y);
-        CharacterController.Move(Direction * Time.deltaTime * MovementSpeed);
+        this.direction = new Vector3(this.inputManager.GetInputMovement().x, 0f, this.inputManager.GetInputMovement().y);
+        this.characterController.Move(this.direction * Time.deltaTime * this.movementSpeed);
 
-        if (Direction != Vector3.zero)
-            transform.forward = Direction;
+        if (this.direction != Vector3.zero)
+            transform.forward = this.direction;
 
     }
 
-    void MovePlayer2()
+    void MovePlayerCharacterDependentOnCamera()
     {
-        CameraForward = MainCamera.forward;
-        CameraRight = MainCamera.right;
-        CameraRight.y = CameraForward.y = 0f;
+        this.cameraForward = this.mainCamera.forward;
+        this.cameraRight = this.mainCamera.right;
+        this.cameraRight.y = this.cameraForward.y = 0f;
 
-        Direction = CameraForward.normalized * InputManager.GetInputMovement().y + CameraRight.normalized * InputManager.GetInputMovement().x;
+        this.direction = this.cameraForward.normalized * this.inputManager.GetInputMovement().y + this.cameraRight.normalized * this.inputManager.GetInputMovement().x;
 
-        CharacterController.Move(Direction * Time.deltaTime * MovementSpeed);
+        this.characterController.Move(this.direction * Time.deltaTime * this.movementSpeed);
 
-        if (Direction != Vector3.zero)
-            transform.forward = Direction;
+        if (this.direction != Vector3.zero)
+            transform.forward = this.direction;
     }
 
 }
