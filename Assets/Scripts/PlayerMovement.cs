@@ -16,29 +16,41 @@ public class PlayerMovement : MonoBehaviour
 
     // Camera vars
     private Transform mainCamera;
+    private GameObject freeLookCamera;
+    private GameObject virtualCamera;
     private Vector3 cameraForward;
     private Vector3 cameraRight;
 
     public enum MovementState : int
     {
         CharacterAndCameraIndependent = 1,
-        CharacterDependentOnCamera = 2
+        CharacterDependentOnCamera = 2,
+        CameraFollowIndependent = 3
     }
 
     void Awake()
     {
         this.characterController = GetComponent<CharacterController>();
+        this.freeLookCamera = FindObjectOfType<CinemachineFreeLook>().gameObject;
+        this.virtualCamera = FindObjectOfType<CinemachineVirtualCamera>().gameObject;
+
+        if((int)this.movementState == 1 || (int)this.movementState == 2)
+        {
+            this.freeLookCamera.SetActive(true);
+            this.virtualCamera.SetActive(false);
+        }
+        else
+        {
+            this.freeLookCamera.SetActive(false);
+            this.virtualCamera.SetActive(true);
+        }
+
     }
 
     private void Start()
     {
         this.inputManager = InputManager.GetInstance();
         this.mainCamera = Camera.main.transform;
-    }
-
-    private int ReturnZero()
-    {
-        return 0;
     }
 
     void Update()
@@ -50,6 +62,9 @@ public class PlayerMovement : MonoBehaviour
                 break;
             case 2:
                 MovePlayerCharacterDependentOnCamera();
+                break;
+            case 3:
+                MovePlayerCharacterAndCameraIndependent();
                 break;
             default:
                 Debug.LogError("Invalid Movement State.");
