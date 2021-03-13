@@ -20,6 +20,11 @@ public class PlayerMovement : MonoBehaviour
     private GameObject virtualCamera;
     private Vector3 cameraForward;
     private Vector3 cameraRight;
+    private Vector3 initialPosition;
+    private int layerMask;
+    // Falling vars
+    [SerializeField] private float fallingVelocity = 10f;
+    private bool isFalling;
 
     public enum MovementState : int
     {
@@ -30,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Awake()
     {
+        layerMask = LayerMask.GetMask("TileMovementCollider");
         this.characterController = GetComponent<CharacterController>();
         this.freeLookCamera = FindObjectOfType<CinemachineFreeLook>().gameObject;
         this.virtualCamera = FindObjectOfType<CinemachineVirtualCamera>().gameObject;
@@ -51,10 +57,21 @@ public class PlayerMovement : MonoBehaviour
     {
         this.inputManager = InputManager.GetInstance();
         this.mainCamera = Camera.main.transform;
+        this.initialPosition = transform.position;
     }
 
     void Update()
     {
+        if (HasFallenInHole())
+            FallingMovementUpdate();
+        else
+            RegularMovement();
+    
+    }
+
+    private void RegularMovement()
+    {
+        this.isFalling = false;
         switch ((int)this.movementState)
         {
             case 1:
@@ -71,7 +88,6 @@ public class PlayerMovement : MonoBehaviour
                 break;
         }
     }
-
     void MovePlayerCharacterAndCameraIndependent()
     {
         this.direction = new Vector3(this.inputManager.GetInputMovement().x, 0f, this.inputManager.GetInputMovement().y);
@@ -96,4 +112,61 @@ public class PlayerMovement : MonoBehaviour
             transform.forward = this.direction;
     }
 
+    private void FallingMovementUpdate()
+    {
+        this.isFalling = true;
+        this.characterController.Move(Vector3.down * Time.deltaTime * this.fallingVelocity);
+
+        if (transform.position.y <= -10f)
+            Respawn();
+    }
+
+    private void Respawn()
+    {
+        transform.position = this.initialPosition;
+    }
+
+    private bool HasFallenInHole()
+    {
+        var hitColliders = Physics.OverlapSphere(transform.position, 0.01f, layerMask);
+        Collider closestCollider = null;
+
+        if (hitColliders.Length == 0)
+        {
+            //No tile found! If we're still in testing mode, the hole falls down, so we return true here
+            return true;
+        }
+        else if (hitColliders.Length == 1)
+        {
+            closestCollider = hitColliders[0];
+        }
+        else if (hitColliders.Length > 1)
+        {
+            closestCollider = GetClosestCollider(hitColliders);
+        }
+
+        var tile = closestCollider.transform.parent.gameObject.GetComponent<Tile>();
+
+        return tile.tileState == TileState.Respawning;
+    }
+
+    private Collider GetClosestCollider(Collider[] hitColliders)
+    {
+        var minimumDistance = Mathf.Infinity;
+        Collider closestCollider = null;
+
+        foreach (var collider in hitColliders)
+        {
+            var distance = Vector3.Distance(transform.position, collider.transform.position);
+            if (distance < minimumDistance)
+            {
+                closestCollider = collider;
+                minimumDistance = distance;
+            }
+        }
+
+        return closestCollider;
+    }
+
+    public bool IsFalling() => this.isFalling;
 }

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -13,16 +14,18 @@ public class Tile : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private float timeToBreak = 3f;
     [SerializeField] private float timeToRespawn = 5f;
+    [SerializeField] private float timeOfBreakingAnimation = 5f;
     private float progress;
 
     [SerializeField] private Material normalMaterial;
     [SerializeField] private Material unstableMaterial;
+    [SerializeField] private Material highlightedMaterial;
 
     [SerializeField] private bool isClickToDigEnabled;
 
     private MeshRenderer meshRenderer;
 
-    private TileState tileState;
+    internal TileState tileState;
 
     private void Start()
     {
@@ -37,7 +40,7 @@ public class Tile : MonoBehaviour, IPointerClickHandler
             case TileState.Normal:
                 break;
             case TileState.Unstable:
-                UnstableUpdate();
+                this.UnstableUpdate();
                 break;
             case TileState.Respawning:
                 RespawningUpdate();
@@ -61,7 +64,7 @@ public class Tile : MonoBehaviour, IPointerClickHandler
         if (!this.isClickToDigEnabled)
             return;
 
-        DigTile();
+        this.DigTile();
     }
 
     private void UnstableUpdate()
@@ -82,11 +85,14 @@ public class Tile : MonoBehaviour, IPointerClickHandler
 
     private IEnumerator PlayBreakingAnimation()
     {
-        var breakingAnimationProgress = 3f;
-        var breakingAnimationSpeed = 1f;
+        var breakingAnimationProgress = this.timeOfBreakingAnimation;
+        var breakingAnimationSpeed = 10f / this.timeOfBreakingAnimation;
 
         while (breakingAnimationProgress > 0)
         {
+            if (this.tileState == TileState.Normal)
+                yield break;
+
             this.transform.position += breakingAnimationSpeed * Time.deltaTime * Vector3.down;
             breakingAnimationProgress -= Time.deltaTime;
             yield return new WaitForEndOfFrame();
@@ -108,5 +114,32 @@ public class Tile : MonoBehaviour, IPointerClickHandler
         this.meshRenderer.material = normalMaterial;
 
         this.tileState = TileState.Normal;
+    }
+
+    public IEnumerator HighlightTile()
+    {
+        if (this.tileState != TileState.Normal)
+            yield break;
+
+        this.meshRenderer.material = highlightedMaterial;
+
+        yield return new WaitForEndOfFrame();
+
+        ChangeMaterialAccordingToCurrentState();
+    }
+
+    private void ChangeMaterialAccordingToCurrentState()
+    {
+        switch (this.tileState)
+        {
+            case TileState.Normal:
+                this.meshRenderer.material = normalMaterial;
+                break;
+            case TileState.Unstable:
+                this.meshRenderer.material = unstableMaterial;
+                break;
+            case TileState.Respawning:
+                break;
+        }
     }
 }
