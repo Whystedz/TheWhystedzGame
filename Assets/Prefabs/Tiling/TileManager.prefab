@@ -50,4 +50,4 @@ MonoBehaviour:
   mapLength: 30
   xOffset: 2
   zOffset: 1.73
-  verticalOffset: 0.1
+  verticalOffset: 0.01

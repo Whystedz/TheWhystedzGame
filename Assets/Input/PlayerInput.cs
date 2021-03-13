@@ -20,9 +20,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
             ""actions"": [
                 {
                     ""name"": ""Movement"",
-                    ""type"": ""Value"",
+                    ""type"": ""Button"",
                     ""id"": ""2ae19b24-8427-4e66-94a8-cf3e8550bca8"",
-                    ""expectedControlType"": ""Vector2"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
                 },
@@ -36,9 +36,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": ""Digging"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""73d033ec-c4ac-4bc1-9170-02d6f241ea72"",
-                    ""expectedControlType"": """",
+                    ""type"": ""Button"",
+                    ""id"": ""2b7555a4-280b-4dd6-84cd-129ab948669d"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
                 }
@@ -102,7 +102,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 {
                     ""name"": ""Gamepad/Left Stick"",
                     ""id"": ""815d8046-7e46-4e10-bafa-89da8ec1c590"",
-                    ""path"": ""2DVector"",
+                    ""path"": ""2DVector(mode=2)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -178,8 +178,19 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""0ff0d5da-64ea-4be7-9ce8-0ca044837566"",
-                    ""path"": ""<Keyboard>/x"",
+                    ""id"": ""3175f016-2e22-489d-a7c5-2a6a0a6516fc"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Digging"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7e8237c2-858b-4a05-9f62-0dbb49942189"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
