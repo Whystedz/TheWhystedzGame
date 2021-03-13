@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: defaultMat
+  m_Name: AnimatedGrassMat
   m_Shader: {fileID: -6465566751694194690, guid: b590939c1423aec42b735cd15ad0cb51, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -110,13 +110,13 @@ Material:
     m_Floats:
     - Vector1_0d364db7fa164d94a0c7637380350f9a: 0.3
     - Vector1_184639b31f3f458b848e6544e3b21e15: 10
-    - Vector1_47144ac7539048f2a78f0ea69d5a4596: 0
+    - Vector1_47144ac7539048f2a78f0ea69d5a4596: 0.8
     - Vector1_52f9cc73bd4e41dc8a5609534ea1d319: 0
     - Vector1_5aba3126097f4cb5bcbb3868826d9eb1: 0.1
-    - Vector1_607bb716d7494e648fed875b1876e4eb: 2
-    - Vector1_c3fad4a192dd45f18d7bb3dcc339dd86: 5
+    - Vector1_607bb716d7494e648fed875b1876e4eb: 0.8
+    - Vector1_c3fad4a192dd45f18d7bb3dcc339dd86: 1
     - Vector1_d57595d4276d4fe1bb3fabba21c26498: 2
-    - Vector1_f727bb043d5b445596d61f35bafb8bb8: 3
+    - Vector1_f727bb043d5b445596d61f35bafb8bb8: 1
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
@@ -137,7 +137,7 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - Vector2_514e9303ca9a476e89fc8bf044313900: {r: 1, g: 1, b: 0, a: 0}
+    - Vector2_514e9303ca9a476e89fc8bf044313900: {r: 1, g: 0, b: 0, a: 0}
     - Vector2_e15fc7f6881945dfbd129e1f753c0311: {r: 0, g: 0, b: 0, a: 0}
     - Vector2_fc5ac062954f485aa1e326ede41fe301: {r: 6, g: 0, b: 0, a: 0}
     - _BASE_COLOR: {r: 0, g: 0, b: 0, a: 0}
