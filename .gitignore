@@ -22,7 +22,7 @@
 # Visual Studio cache directory
 .vs/
 
-# intellij IDE settings
+# intellij IDE setup
 .idea
 
 # Gradle cache directory
@@ -61,6 +61,5 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
-# Vivox
+# Vivox 
 /Assets/Vivox/
-

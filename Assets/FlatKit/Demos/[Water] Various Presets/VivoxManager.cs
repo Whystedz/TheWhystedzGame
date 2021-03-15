@@ -9,19 +9,19 @@ namespace Vivox
     public class VivoxManager : MonoBehaviour
     {
         // Vivox server credentials
-        private static readonly Uri ServerUri = new Uri("https://mt1s.www.vivox.com/api2");
-        private const string TokenDomain = "mt1s.vivox.com";
-        private const string Issuer = "hugozh5545-vi18-dev";
-        private const string SecretKey = "just055";
-        
-        private static readonly TimeSpan LogInTimeOut = TimeSpan.FromSeconds(90);
+        private static readonly Uri serverUri = new Uri("https://mt1s.www.vivox.com/api2");
+        private const string tokenDomain = "mt1s.vivox.com";
+        private const string issuer = "hugozh5545-vi18-dev";
+        private const string secretKey = "just055";
+
+        private static readonly TimeSpan tokenExpiration = TimeSpan.FromSeconds(90);
 
         private Client client = new Client();
         private AccountId accountId;
 
-        public ILoginSession loginSession;
+        private ILoginSession loginSession;
         public LoginState LoginState { get; private set; }
-        private const string ChannelName = "sampleChannelName";
+        private const string channelName = "sampleChannelName";
 
         private void Awake()
         {
@@ -36,15 +36,20 @@ namespace Vivox
             client.Uninitialize();
         }
 
+        #region Login Methods
+
+        /// <summary>
+        /// Login a player
+        /// </summary>
         public void LogIn()
         {
             string uniqueId = Guid.NewGuid().ToString();
-            // for proto purposes only, need to get a real token from server eventually
-            accountId = new AccountId(Issuer, uniqueId, TokenDomain);
+            // TODO: for proto purposes only, need to get a real token from server eventually
+            accountId = new AccountId(issuer, uniqueId, tokenDomain);
             loginSession = client.GetLoginSession(accountId);
             loginSession.PropertyChanged += OnLoginSessionPropertyChanged;
-            loginSession.BeginLogin(ServerUri,
-                loginSession.GetLoginToken(SecretKey, LogInTimeOut),
+            loginSession.BeginLogin(serverUri,
+                loginSession.GetLoginToken(secretKey, tokenExpiration),
                 asyncResult =>
                 {
                     try
@@ -54,11 +59,21 @@ namespace Vivox
                     catch (Exception e)
                     {
                         loginSession.PropertyChanged -= OnLoginSessionPropertyChanged;
-                        Debug.Log(e.Message);
+                        Debug.LogError(e.Message);
                     }
                 });
         }
 
+        public void LogOut()
+        {
+            if (loginSession == null || LoginState == LoginState.LoggedOut ||
+                LoginState == LoginState.LoggingOut) return;
+            // OnUserLoggedOutEvent?.Invoke();
+            loginSession.PropertyChanged -= OnLoginSessionPropertyChanged;
+            loginSession.Logout();
+        }
+
+        // callback on login state changed
         private void OnLoginSessionPropertyChanged(object sender,
             PropertyChangedEventArgs propertyChangedEventArgs)
         {
@@ -69,7 +84,6 @@ namespace Vivox
                 case LoginState.LoggingIn:
                     Debug.Log("[Vivox] Logging in...");
                     break;
-
                 case LoginState.LoggedIn:
                     Debug.Log("[Vivox] Login Success! ");
                     break;
@@ -85,20 +99,86 @@ namespace Vivox
             }
         }
 
-        public void LogOut()
+        #endregion
+
+        #region Channel Methods
+
+        /// <summary>
+        /// Join a channel
+        /// </summary>
+        /// <param name="channelName">channel name</param>
+        /// <param name="isConnectAudio">whether to connect audio</param>
+        /// <param name="isConnectText">whether to connect text</param>
+        /// <param name="channelType">the type of channel</param>
+        public void JoinChannel(string channelName, bool isConnectAudio, bool isConnectText,
+            ChannelType channelType)
         {
-            if (loginSession != null && LoginState != LoginState.LoggedOut &&
-                LoginState != LoginState.LoggingOut)
+            if (LoginState == LoginState.LoggedIn)
             {
-                // OnUserLoggedOutEvent?.Invoke();
-                loginSession.PropertyChanged -= OnLoginSessionPropertyChanged;
-                loginSession.Logout();
+                var channelId = new ChannelId(issuer, channelName, tokenDomain, channelType);
+                var channelSession = loginSession.GetChannelSession(channelId);
+                channelSession.PropertyChanged += OnChannelSessionPropertyChanged;
+                channelSession.BeginConnect(isConnectAudio, isConnectText, true,
+                    channelSession.GetConnectToken(secretKey, tokenExpiration),
+                    asyncResult =>
+                    {
+                        try
+                        {
+                            channelSession.EndConnect(asyncResult);
+                        }
+                        catch (Exception e)
+                        {
+                            channelSession.PropertyChanged -= OnChannelSessionPropertyChanged;
+                            Debug.LogError(e.Message);
+                        }
+                    });
+            }
+            else
+            {
+                Debug.LogError("[Vivox] Cannot join a channel when not logged in.");
             }
         }
 
-        public void JoinChannel()
+        public void LeaveChannel(IChannelSession channelSession)
         {
-            // vivoxVoiceManager.JoinChannel(CHANNEL_NAME,ChannelType.NonPositional, VivoxVoiceManager.ChatCapability.AudioOnly);
+            channelSession.Disconnect();
+        }
+
+        private void OnChannelSessionPropertyChanged(object sender,
+            PropertyChangedEventArgs propertyChangedEventArgs)
+        {
+            var session = (IChannelSession) sender;
+            switch (session.ChannelState)
+            {
+                case ConnectionState.Connecting:
+                    Debug.Log("Channel connecting...");
+                    break;
+                case ConnectionState.Connected:
+                    Debug.Log("Channel connected. ");
+                    break;
+                case ConnectionState.Disconnecting:
+                    Debug.Log("Channel disconnecting... ");
+                    break;
+                case ConnectionState.Disconnected:
+                    Debug.Log("Channel disconnected. ");
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        #endregion
+
+
+        // bind with UI Login Button
+        public void BtnLogin()
+        {
+            LogIn();
+        }
+
+        public void BtnJoinChannel()
+        {
+            JoinChannel(channelName, true, false, ChannelType.NonPositional);
         }
     }
 }
