@@ -5,7 +5,13 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/SceneSandbox/Elizabeth/Offline.unity
+    guid: bf8216f70ece0f1409906cc6ad12e4f4
+  - enabled: 1
+    path: Assets/SceneSandbox/Elizabeth/Lobby.unity
+    guid: 75e6fb2cd3554bb4982225e425f757e7
+  - enabled: 1
+    path: Assets/SceneSandbox/Elizabeth/Game.unity
+    guid: dcbc7493ad855a84597a931d7e201093
   m_configObjects: {}
