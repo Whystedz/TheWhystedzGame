@@ -43,11 +43,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53b031f19bad3264aa6e055457b6d787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilePrefab: {fileID: 5884525987830691854, guid: 623b51e3a02a55f4ebcadfaf5b7c3890, type: 3}
+  basicTilePrefab: {fileID: 5884525987830691854, guid: 623b51e3a02a55f4ebcadfaf5b7c3890, type: 3}
   tileSurfaceScale: 115
   tileDepthScale: 115
-  mapWidth: 30
-  mapLength: 30
+  mapWidth: 100
+  mapLength: 100
   xOffset: 2
   zOffset: 1.73
   verticalOffset: 0.01
