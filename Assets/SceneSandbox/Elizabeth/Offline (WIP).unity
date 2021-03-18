@@ -863,15 +863,15 @@ MonoBehaviour:
   serverTickRate: 30
   serverBatching: 0
   serverBatchInterval: 0
-  offlineScene: Assets/SceneSandbox/Elizabeth/Offline.unity
-  onlineScene: Assets/SceneSandbox/Elizabeth/Lobby.unity
+  offlineScene: Assets/SceneSandbox/Elizabeth/Offline (WIP).unity
+  onlineScene: Assets/Scenes/FPP.unity
   transport: {fileID: 775696260}
   networkAddress: 34.95.63.42
   maxConnections: 100
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
   authenticator: {fileID: 0}
-  playerPrefab: {fileID: 4276883729265749623, guid: da886a07fa5da014cafabf8a883c01bb, type: 3}
+  playerPrefab: {fileID: 6327377196063707621, guid: 9a38b8ca5a8093a43b837c369d1745a2, type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 0
   spawnPrefabs:
