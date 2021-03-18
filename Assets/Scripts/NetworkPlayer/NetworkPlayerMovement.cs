@@ -17,17 +17,27 @@ public class NetworkPlayerMovement : NetworkBehaviour
 
     private Vector3 initialPosition;
     private int layerMask;
-    
     // Falling vars
     [SerializeField] private float fallingVelocity = 10f;
     private bool isFalling;
 
+    // Camera
+    [SerializeField] private Vector2 maxFollowOffset = new Vector2(-5f, 6f);
+    [SerializeField] private Vector2 cameraVelocity = new Vector2(4f, 0.25f);
+    [SerializeField] private CinemachineVirtualCamera virtualCamera = null;
+    private CinemachineTransposer transposer;
+
     public override void OnStartAuthority()
     {
+        transposer = virtualCamera.GetCinemachineComponent<CinemachineTransposer>();
+        virtualCamera.gameObject.SetActive(true);
+
         layerMask = LayerMask.GetMask("TileMovementCollider");
         this.characterController = GetComponent<CharacterController>();
         this.inputManager = InputManager.GetInstance();
         this.initialPosition = transform.position;
+
+        inputManager.GetPlayerInput().PlayerControls.Camera.performed += ctx => Look(ctx.ReadValue<Vector2>());
     }
 
     void Update()
@@ -44,6 +54,14 @@ public class NetworkPlayerMovement : NetworkBehaviour
     private void Move()
     {
         this.isFalling = false;
+        /*
+        Vector3 right = this.characterController.transform.right;
+        Vector3 forward = this.characterController.transform.forward;
+        right.y = 0f;
+        forward.y = 0f;
+
+        Vector3 movement = right.normalized * this.inputManager.GetInputMovement().x + forward.normalized * this.inputManager.GetInputMovement().y;
+        */
 
         float forward = this.inputManager.GetInputMovement().y;
         //float rotation = this.inputManager.GetInputMovement().x;
@@ -54,6 +72,20 @@ public class NetworkPlayerMovement : NetworkBehaviour
 
         //transform.Rotate(new Vector3(0f, rotation * Time.deltaTime * rotationSpeed, 0f));
         this.characterController.Move(transform.TransformDirection(next));
+    }
+
+    private void Look(Vector2 lookAxis)
+    {
+        float deltaTime = Time.deltaTime;
+
+        float followOffset = Mathf.Clamp(
+            transposer.m_FollowOffset.y - (lookAxis.y * cameraVelocity.y * deltaTime),
+            maxFollowOffset.x,
+            maxFollowOffset.y);
+
+        transposer.m_FollowOffset.y = followOffset;
+
+        transform.Rotate(0f, lookAxis.x * cameraVelocity.x * deltaTime, 0f);
     }
 
     private void FallingMovementUpdate()
