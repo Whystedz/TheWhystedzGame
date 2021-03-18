@@ -377,6 +377,7 @@ GameObject:
   - component: {fileID: -3593077011509113349}
   - component: {fileID: 1057590888609944831}
   - component: {fileID: 6157132005728867793}
+  - component: {fileID: 1655673359900196742}
   m_Layer: 0
   m_Name: NetworkPlayer
   m_TagString: Player
@@ -472,9 +473,6 @@ MonoBehaviour:
   movementSpeed: 3
   rotationSpeed: 10
   fallingVelocity: 10
-  maxFollowOffset: {x: -1, y: 6}
-  cameraVelocity: {x: 4, y: 0.25}
-  virtualCamera: {fileID: 8902610801186227741}
 --- !u!114 &6157132005728867793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -492,6 +490,23 @@ MonoBehaviour:
   minDistanceToDiggableTile: 1.7
   maxDistanceToDiggableTile: 1.5
   enableDebugMode: 1
+--- !u!114 &1655673359900196742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6327377196063707621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce47de149359b074692916a955762e20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  maxFollowOffset: {x: -1, y: 6}
+  cameraVelocity: {x: 4, y: 0.25}
+  virtualCamera: {fileID: 8902610801186227741}
 --- !u!1 &6327377196359484314
 GameObject:
   m_ObjectHideFlags: 0
