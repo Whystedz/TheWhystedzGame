@@ -1,8 +1,9 @@
+using System.Linq;
 using UnityEngine;
 
 public class TileGenerator : MonoBehaviour
 {
-    [SerializeField] private GameObject tilePrefab;
+    [SerializeField] private GameObject basicTilePrefab;
     [SerializeField] private float tileSurfaceScale = 115f;
     [SerializeField] private float tileDepthScale = 200f;
 
@@ -20,26 +21,59 @@ public class TileGenerator : MonoBehaviour
         {
             for (int zIndex = 0; zIndex < mapLength; ++zIndex)
             {
-                var generatedTile = Instantiate(this.tilePrefab, this.transform);
+                var position = DetermineSpawnPosition(xIndex, zIndex);
+
+                var tileToSpawn = TileToSpawn(position);
+
+                var generatedTile = Instantiate(tileToSpawn, this.transform);
 
                 generatedTile.transform.localScale = new Vector3(
-                    this.tileSurfaceScale, 
-                    this.tileDepthScale, 
+                    this.tileSurfaceScale,
+                    this.tileDepthScale,
                     this.tileSurfaceScale);
 
-                generatedTile.transform.position = new Vector3(
-                    xIndex * this.xOffset, 
-                    0, 
-                    zIndex * this.zOffset);
-                
-                if (zIndex % 2 == 0)
-                    generatedTile.transform.position += 0.5f * this.xOffset * Vector3.right;
+                generatedTile.transform.position = position;
 
-                // for now, let's add some chaos so we can see the tile's depth
-                generatedTile.transform.localPosition += 
-                    Random.Range(-this.verticalOffset, this.verticalOffset) * Vector3.up;
+                AddVerticalOffsetChaos(generatedTile);
             }
         }
     }
-    
+
+    private void AddVerticalOffsetChaos(GameObject generatedTile)
+    {
+        // for now, let's add some chaos so we can see the tile's depth
+        generatedTile.transform.localPosition +=
+            Random.Range(-this.verticalOffset, this.verticalOffset) * Vector3.up;
+    }
+
+    private Vector3 DetermineSpawnPosition(int xIndex, int zIndex)
+    {
+        // index it
+        var position = new Vector3(xIndex * this.xOffset, 0, zIndex * this.zOffset);
+
+        // center it
+        position += new Vector3(-mapWidth / 2 * this.xOffset, 0, -mapLength / 2 * this.zOffset);
+
+        // offset it based on row
+        if (zIndex % 2 == 0)
+            position += 0.5f * this.xOffset * Vector3.right;
+
+        return position;
+    }
+
+    private GameObject TileToSpawn(Vector3 position)
+    {
+        var colliders = Physics.OverlapSphere(position, 1f);
+
+        colliders = colliders
+            .Where(collider => collider.GetComponent<BiomeRegion>() != null)
+            .ToArray();
+
+        if (colliders.Length == 0)
+            return this.basicTilePrefab;
+
+        var biomeRegion = colliders[0].GetComponent<BiomeRegion>();
+
+        return biomeRegion.GetRandomBiomeThemedTile();
+    }
 }
