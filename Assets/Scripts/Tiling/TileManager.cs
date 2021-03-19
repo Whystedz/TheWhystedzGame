@@ -152,7 +152,7 @@ public class TileManager : NetworkBehaviour
         switch (op)
         {
             case SyncList<HexTile>.Operation.OP_SET:
-                Debug.Log("Set");
+                //Debug.Log("Set");
                 UpdateMap(index, newTile);
                 break;
         }
@@ -160,7 +160,7 @@ public class TileManager : NetworkBehaviour
 
     void UpdateMap(int index, HexTile newTile)
     {
-        Debug.Log("Update Map");
+        //Debug.Log("Update Map");
         this.transform.GetChild(index).GetComponent<NetworkTile>().HexTile = newTile;
     }
 }

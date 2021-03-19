@@ -56,8 +56,14 @@ public class NetworkDigging : NetworkBehaviour
             StartCoroutine(tile.HighlightTile());
 
             if (inputManager.GetDigging())
-                tileManager.DigTile(tile.HexTile);
+                CmdDigTile(tile.HexTile);
         }
+    }
+
+    [Command]
+    void CmdDigTile(HexTile targetTile)
+    {
+        tileManager.DigTile(targetTile);
     }
 
     private void OnDrawGizmos()

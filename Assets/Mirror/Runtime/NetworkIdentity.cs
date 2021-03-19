@@ -323,7 +323,7 @@ namespace Mirror
                 // old not empty
                 if (!string.IsNullOrEmpty(oldAssetIdSrting))
                 {
-                    logger.LogError($"Can not Set AssetId on NetworkIdentity '{name}' because it already had an assetId, current assetId '{oldAssetIdSrting}', attempted new assetId '{newAssetIdString}'");
+                    logger.LogError($"Can not Set AssetId on NetworkIdentity '{name}' becasue it already had an assetId, current assetId '{oldAssetIdSrting}', attempted new assetId '{newAssetIdString}'");
                     return;
                 }
 
@@ -592,17 +592,6 @@ namespace Mirror
 
         void SetupIDs()
         {
-            // IMPORTANT: DO NOT EVER try to change ids at runtime!
-            //            fixes a bug where changing any NetworkIdentity setting
-            //            at runtime would clear the NetworkIdentity.assetId,
-            //            causing respawn bugs where client would receive an
-            //            empty assetId (forceHidden -> not forceHidden).
-            //            => changing any setting would call OnValidate
-            //            => OnValidate calls SetupIDs which would not find the
-            //               prefab connection at runtime and reset the assetId!
-            if (EditorApplication.isPlaying)
-                return;
-
             if (ThisIsAPrefab())
             {
                 // force 0 for prefabs

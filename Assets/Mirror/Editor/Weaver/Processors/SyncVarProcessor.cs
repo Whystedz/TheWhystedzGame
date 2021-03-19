@@ -451,11 +451,11 @@ namespace Mirror.Weaver
             // Writes this before method if it is not static
             void WriteStartFunctionCall()
             {
-                // don't add this (Ldarg_0) if method is static
+                // dont add this (Ldarg_0) if method is static
                 if (!hookMethod.IsStatic)
                 {
                     // this before method call
-                    // e.g. this.onValueChanged
+                    // eg this.onValueChanged
                     worker.Append(worker.Create(OpCodes.Ldarg_0));
                 }
             }

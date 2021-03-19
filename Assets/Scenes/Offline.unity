@@ -881,16 +881,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   port: 7777
   NoDelay: 1
-  SendTimeout: 5000
-  ReceiveTimeout: 5000
-  serverMaxMessageSize: 500000
+  serverMaxMessageSize: 262144
   serverMaxReceivesPerTick: 10000
-  serverSendQueueLimitPerConnection: 10000
-  serverReceiveQueueLimitPerConnection: 10000
-  clientMaxMessageSize: 500000
+  clientMaxMessageSize: 262144
   clientMaxReceivesPerTick: 1000
-  clientSendQueueLimit: 10000
-  clientReceiveQueueLimit: 10000
 --- !u!114 &775696261
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -913,7 +907,7 @@ MonoBehaviour:
   offlineScene: Assets/Scenes/Offline.unity
   onlineScene: Assets/Scenes/FPP.unity
   transport: {fileID: 775696260}
-  networkAddress: localhost
+  networkAddress: 34.95.63.42
   maxConnections: 100
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
