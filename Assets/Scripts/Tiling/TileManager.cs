@@ -1,5 +1,7 @@
 using System.Linq;
 using UnityEngine;
+using System.Collections;
+using System.Threading;
 using Mirror;
 
 public class TileManager : NetworkBehaviour
@@ -127,7 +129,16 @@ public class TileManager : NetworkBehaviour
         if(isServer)
         {
             int index = syncTileList.FindIndex(x => x.XIndex == targetTile.XIndex && x.ZIndex == targetTile.ZIndex);
-            UpdateTile(index, TileState.Unstable);
+            UpdateTile(index, this.timeToBreak, TileState.Unstable);
+        }
+    }
+
+    public void ResetTile(HexTile targetTile)
+    {
+        if(isServer)
+        {
+            int index = syncTileList.FindIndex(x => x.XIndex == targetTile.XIndex && x.ZIndex == targetTile.ZIndex);
+            UpdateTile(index, 0f, TileState.Normal);
         }
     }
 
@@ -139,10 +150,10 @@ public class TileManager : NetworkBehaviour
             instance = this;
     }
 
-    public void UpdateTile(int listIndex, TileState newState)
+    public void UpdateTile(int listIndex, float newProgress, TileState newState)
     {
         HexTile tempTile = syncTileList[listIndex];
-        tempTile.Progress = this.timeToBreak;
+        tempTile.Progress = newProgress;
         tempTile.TileState = newState;
         syncTileList[listIndex] = tempTile;
     }
@@ -153,14 +164,22 @@ public class TileManager : NetworkBehaviour
         {
             case SyncList<HexTile>.Operation.OP_SET:
                 //Debug.Log("Set");
-                UpdateMap(index, newTile);
+                StartCoroutine(UpdateMap(index, newTile));
                 break;
         }
     }
 
-    void UpdateMap(int index, HexTile newTile)
+    IEnumerator UpdateMap(int index, HexTile newTile)
     {
         //Debug.Log("Update Map");
         this.transform.GetChild(index).GetComponent<NetworkTile>().HexTile = newTile;
+
+        if(newTile.TileState == TileState.Normal)
+            yield break;
+            
+        while(this.transform.GetChild(index).GetComponent<NetworkTile>().HexTile.TileState != TileState.Normal)
+            yield return new WaitForEndOfFrame();
+        
+        ResetTile(this.transform.GetChild(index).GetComponent<NetworkTile>().HexTile);
     }
 }
