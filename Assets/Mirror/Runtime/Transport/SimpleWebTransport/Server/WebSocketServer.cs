@@ -55,7 +55,7 @@ namespace Mirror.SimpleWeb
             acceptThread = null;
 
 
-            Log.Info("Server stopped, Closing all connections...");
+            Log.Info("Server stoped, Closing all connections...");
             // make copy so that foreach doesn't break if values are removed
             Connection[] connectionsCopy = connections.Values.ToArray();
             foreach (Connection conn in connectionsCopy)
@@ -171,7 +171,7 @@ namespace Mirror.SimpleWeb
             catch (Exception e) { Log.Exception(e); }
             finally
             {
-                // close here in case connect fails
+                // close here incase connect fails
                 conn.Dispose();
             }
         }

@@ -3,6 +3,7 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 // Replaced by Kcp November 2020
 namespace Mirror
@@ -17,99 +18,39 @@ namespace Mirror
 
         public ushort port = 7777;
 
-        [Header("Common")]
         [Tooltip("Nagle Algorithm can be disabled by enabling NoDelay")]
         public bool NoDelay = true;
 
-        [Tooltip("Send timeout in milliseconds.")]
-        public int SendTimeout = 5000;
-
-        [Tooltip("Receive timeout in milliseconds.")]
-        public int ReceiveTimeout = 5000;
-
         [Header("Server")]
         [Tooltip("Protect against allocation attacks by keeping the max message size small. Otherwise an attacker might send multiple fake packets with 2GB headers, causing the server to run out of memory after allocating multiple large packets.")]
-        public int serverMaxMessageSize = 16 * 1024;
+        [FormerlySerializedAs("MaxMessageSize")] public int serverMaxMessageSize = 16 * 1024;
 
         [Tooltip("Server processes a limit amount of messages per tick to avoid a deadlock where it might end up processing forever if messages come in faster than we can process them.")]
         public int serverMaxReceivesPerTick = 10000;
 
-        [Tooltip("Server send queue limit per connection for pending messages. Telepathy will disconnect a connection's queues reach that limit for load balancing. Better to kick one slow client than slowing down the whole server.")]
-        public int serverSendQueueLimitPerConnection = 10000;
-
-        [Tooltip("Server receive queue limit per connection for pending messages. Telepathy will disconnect a connection's queues reach that limit for load balancing. Better to kick one slow client than slowing down the whole server.")]
-        public int serverReceiveQueueLimitPerConnection = 10000;
-
         [Header("Client")]
         [Tooltip("Protect against allocation attacks by keeping the max message size small. Otherwise an attacker host might send multiple fake packets with 2GB headers, causing the connected clients to run out of memory after allocating multiple large packets.")]
-        public int clientMaxMessageSize = 16 * 1024;
+        [FormerlySerializedAs("MaxMessageSize")] public int clientMaxMessageSize = 16 * 1024;
 
         [Tooltip("Client processes a limit amount of messages per tick to avoid a deadlock where it might end up processing forever if messages come in faster than we can process them.")]
         public int clientMaxReceivesPerTick = 1000;
 
-        [Tooltip("Client send queue limit for pending messages. Telepathy will disconnect if the connection's queues reach that limit in order to avoid ever growing latencies.")]
-        public int clientSendQueueLimit = 10000;
 
-        [Tooltip("Client receive queue limit for pending messages. Telepathy will disconnect if the connection's queues reach that limit in order to avoid ever growing latencies.")]
-        public int clientReceiveQueueLimit = 10000;
-
-        Telepathy.Client client;
-        Telepathy.Server server;
-
-        // scene change message needs to halt  message processing immediately
-        // Telepathy.Tick() has a enabledCheck parameter that we can use, but
-        // let's only allocate it once.
-        Func<bool> enabledCheck;
+        protected Telepathy.Client client = new Telepathy.Client();
+        protected Telepathy.Server server = new Telepathy.Server();
 
         void Awake()
         {
-            // create client & server
-            client = new Telepathy.Client(clientMaxMessageSize);
-            server = new Telepathy.Server(serverMaxMessageSize);
-
             // tell Telepathy to use Unity's Debug.Log
-            Telepathy.Log.Info = Debug.Log;
-            Telepathy.Log.Warning = Debug.LogWarning;
-            Telepathy.Log.Error = Debug.LogError;
+            Telepathy.Logger.Log = Debug.Log;
+            Telepathy.Logger.LogWarning = Debug.LogWarning;
+            Telepathy.Logger.LogError = Debug.LogError;
 
-            // client hooks
-            // other systems hook into transport events in OnCreate or
-            // OnStartRunning in no particular order. the only way to avoid
-            // race conditions where telepathy uses OnConnected before another
-            // system's hook (e.g. statistics OnData) was added is to wrap
-            // them all in a lambda and always call the latest hook.
-            // (= lazy call)
-            client.OnConnected = () => OnClientConnected.Invoke();
-            client.OnData = (segment) => OnClientDataReceived.Invoke(segment, Channels.DefaultReliable);
-            client.OnDisconnected = () => OnClientDisconnected.Invoke();
-
-            // client configuration
+            // configure
             client.NoDelay = NoDelay;
-            client.SendTimeout = SendTimeout;
-            client.ReceiveTimeout = ReceiveTimeout;
-            client.SendQueueLimit = clientSendQueueLimit;
-            client.ReceiveQueueLimit = clientReceiveQueueLimit;
-
-            // server hooks
-            // other systems hook into transport events in OnCreate or
-            // OnStartRunning in no particular order. the only way to avoid
-            // race conditions where telepathy uses OnConnected before another
-            // system's hook (e.g. statistics OnData) was added is to wrap
-            // them all in a lambda and always call the latest hook.
-            // (= lazy call)
-            server.OnConnected = (connectionId) => OnServerConnected.Invoke(connectionId);
-            server.OnData = (connectionId, segment) => OnServerDataReceived.Invoke(connectionId, segment, Channels.DefaultReliable);
-            server.OnDisconnected = (connectionId) => OnServerDisconnected.Invoke(connectionId);
-
-            // server configuration
+            client.MaxMessageSize = clientMaxMessageSize;
             server.NoDelay = NoDelay;
-            server.SendTimeout = SendTimeout;
-            server.ReceiveTimeout = ReceiveTimeout;
-            server.SendQueueLimit = serverSendQueueLimitPerConnection;
-            server.ReceiveQueueLimit = serverReceiveQueueLimitPerConnection;
-
-            // allocate enabled check only once
-            enabledCheck = () => enabled;
+            server.MaxMessageSize = serverMaxMessageSize;
 
             Debug.Log("TelepathyTransport initialized!");
         }
@@ -131,7 +72,40 @@ namespace Mirror
             int serverPort = uri.IsDefaultPort ? port : uri.Port;
             client.Connect(uri.Host, serverPort);
         }
-        public override void ClientSend(int channelId, ArraySegment<byte> segment) => client.Send(segment);
+        public override void ClientSend(int channelId, ArraySegment<byte> segment)
+        {
+            // telepathy doesn't support allocation-free sends yet.
+            // previously we allocated in Mirror. now we do it here.
+            byte[] data = new byte[segment.Count];
+            Array.Copy(segment.Array, segment.Offset, data, 0, segment.Count);
+            client.Send(data);
+        }
+
+        bool ProcessClientMessage()
+        {
+            if (client.GetNextMessage(out Telepathy.Message message))
+            {
+                switch (message.eventType)
+                {
+                    case Telepathy.EventType.Connected:
+                        OnClientConnected.Invoke();
+                        break;
+                    case Telepathy.EventType.Data:
+                        OnClientDataReceived.Invoke(new ArraySegment<byte>(message.data), Channels.DefaultReliable);
+                        break;
+                    case Telepathy.EventType.Disconnected:
+                        OnClientDisconnected.Invoke();
+                        break;
+                    default:
+                        // TODO:  Telepathy does not report errors at all
+                        // it just disconnects,  should be fixed
+                        OnClientDisconnected.Invoke();
+                        break;
+                }
+                return true;
+            }
+            return false;
+        }
         public override void ClientDisconnect() => client.Disconnect();
 
         // IMPORTANT: set script execution order to >1000 to call Transport's
@@ -148,17 +122,40 @@ namespace Mirror
                 return;
 
             // process a maximum amount of client messages per tick
-            // IMPORTANT: check .enabled to stop processing immediately after a
-            //            scene change message arrives!
-            client.Tick(clientMaxReceivesPerTick, enabledCheck);
+            for (int i = 0; i < clientMaxReceivesPerTick; ++i)
+            {
+                // stop when there is no more message
+                if (!ProcessClientMessage())
+                {
+                    break;
+                }
+
+                // Some messages can disable transport
+                // If this is disabled stop processing message in queue
+                if (!enabled)
+                {
+                    break;
+                }
+            }
 
             // process a maximum amount of server messages per tick
-            // IMPORTANT: check .enabled to stop processing immediately after a
-            //            scene change message arrives!
-            server.Tick(serverMaxReceivesPerTick, enabledCheck);
+            for (int i = 0; i < serverMaxReceivesPerTick; ++i)
+            {
+                // stop when there is no more message
+                if (!ProcessServerMessage())
+                {
+                    break;
+                }
+
+                // Some messages can disable transport
+                // If this is disabled stop processing message in queue
+                if (!enabled)
+                {
+                    break;
+                }
+            }
         }
 
-        // server
         public override Uri ServerUri()
         {
             UriBuilder builder = new UriBuilder();
@@ -167,9 +164,44 @@ namespace Mirror
             builder.Port = port;
             return builder.Uri;
         }
+
+        // server
         public override bool ServerActive() => server.Active;
         public override void ServerStart() => server.Start(port);
-        public override void ServerSend(int connectionId, int channelId, ArraySegment<byte> segment) => server.Send(connectionId, segment);
+        public override void ServerSend(int connectionId, int channelId, ArraySegment<byte> segment)
+        {
+            // telepathy doesn't support allocation-free sends yet.
+            // previously we allocated in Mirror. now we do it here.
+            byte[] data = new byte[segment.Count];
+            Array.Copy(segment.Array, segment.Offset, data, 0, segment.Count);
+
+            // send
+            server.Send(connectionId, data);
+        }
+        public bool ProcessServerMessage()
+        {
+            if (server.GetNextMessage(out Telepathy.Message message))
+            {
+                switch (message.eventType)
+                {
+                    case Telepathy.EventType.Connected:
+                        OnServerConnected.Invoke(message.connectionId);
+                        break;
+                    case Telepathy.EventType.Data:
+                        OnServerDataReceived.Invoke(message.connectionId, new ArraySegment<byte>(message.data), Channels.DefaultReliable);
+                        break;
+                    case Telepathy.EventType.Disconnected:
+                        OnServerDisconnected.Invoke(message.connectionId);
+                        break;
+                    default:
+                        // TODO handle errors from Telepathy when telepathy can report errors
+                        OnServerDisconnected.Invoke(message.connectionId);
+                        break;
+                }
+                return true;
+            }
+            return false;
+        }
         public override bool ServerDisconnect(int connectionId) => server.Disconnect(connectionId);
         public override string ServerGetClientAddress(int connectionId)
         {
@@ -221,7 +253,7 @@ namespace Mirror
             }
             else if (client.Connecting || client.Connected)
             {
-                return "Telepathy Client port: " + port;
+                return "Telepathy Client ip: " + client.client.Client.RemoteEndPoint;
             }
             return "Telepathy (inactive/disconnected)";
         }

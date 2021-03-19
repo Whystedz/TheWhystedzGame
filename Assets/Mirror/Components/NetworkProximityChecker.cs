@@ -13,7 +13,7 @@ namespace Mirror
     public class NetworkProximityChecker : NetworkVisibility
     {
         /// <summary>
-        /// The maximum range that objects will be visible at.
+        /// The maximim range that objects will be visible at.
         /// </summary>
         [Tooltip("The maximum range that objects will be visible at.")]
         public int visRange = 10;

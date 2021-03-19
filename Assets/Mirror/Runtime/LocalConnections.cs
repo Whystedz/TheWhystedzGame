@@ -44,7 +44,7 @@ namespace Mirror
     {
         readonly NetworkWriter writer = new NetworkWriter();
         readonly NetworkReader reader = new NetworkReader(default(ArraySegment<byte>));
-        // The buffer is at least 1500 bytes long. So need to keep track of
+        // The buffer is atleast 1500 bytes long. So need to keep track of
         // packet count to know how many ArraySegments are in the buffer
         int packetCount;
 
@@ -53,7 +53,7 @@ namespace Mirror
             writer.WriteBytesAndSizeSegment(segment);
             packetCount++;
 
-            // update buffer in case writer's length has changed
+            // update buffer incase writer's length has changed
             reader.buffer = writer.ToArraySegment();
         }
 
@@ -87,12 +87,6 @@ namespace Mirror
 
         public override string address => "localhost";
 
-        // see caller for comments on why we need this
-        bool connectedEventPending;
-        bool disconnectedEventPending;
-        internal void QueueConnectedEvent() => connectedEventPending = true;
-        internal void QueueDisconnectedEvent() => disconnectedEventPending = true;
-
         internal override void Send(ArraySegment<byte> segment, int channelId = Channels.DefaultReliable)
         {
             if (segment.Count == 0)
@@ -107,13 +101,6 @@ namespace Mirror
 
         internal void Update()
         {
-            // should we still process a connected event?
-            if (connectedEventPending)
-            {
-                connectedEventPending = false;
-                NetworkClient.OnConnectedEvent?.Invoke(this);
-            }
-
             // process internal messages so they are applied at the correct time
             while (buffer.HasPackets())
             {
@@ -125,13 +112,6 @@ namespace Mirror
             }
 
             buffer.ResetBuffer();
-
-            // should we still process a disconnected event?
-            if (disconnectedEventPending)
-            {
-                disconnectedEventPending = false;
-                NetworkClient.OnDisconnectedEvent?.Invoke(this);
-            }
         }
 
         /// <summary>

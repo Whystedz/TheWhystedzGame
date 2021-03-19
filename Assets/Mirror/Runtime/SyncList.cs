@@ -87,7 +87,7 @@ namespace Mirror
         public bool IsDirty => changes.Count > 0;
 
         // throw away all the changes
-        // this should be called after a successful sync
+        // this should be called after a successfull sync
         public void Flush() => changes.Clear();
 
         public void Reset()

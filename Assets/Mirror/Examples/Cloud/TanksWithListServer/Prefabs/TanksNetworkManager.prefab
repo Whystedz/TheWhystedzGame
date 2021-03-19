@@ -96,13 +96,11 @@ MonoBehaviour:
   autoStartServerBuild: 1
   showDebugMessages: 0
   serverTickRate: 30
-  serverBatching: 0
-  serverBatchInterval: 0
   offlineScene: Assets/Mirror/Examples/Cloud/TanksWithListServer/Scenes/ListServerLobbySceneTanks.unity
   onlineScene: Assets/Mirror/Examples/Tanks/Scenes/Scene.unity
   transport: {fileID: 5098311272746915055}
   networkAddress: localhost
-  maxConnections: 100
+  maxConnections: 4
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
   authenticator: {fileID: 0}
@@ -132,5 +130,4 @@ MonoBehaviour:
   SendWindowSize: 128
   ReceiveWindowSize: 128
   debugLog: 0
-  statisticsGUI: 0
-  statisticsLog: 0
+  debugGUI: 0

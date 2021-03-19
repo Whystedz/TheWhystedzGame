@@ -59,7 +59,7 @@ namespace Mirror.SimpleWeb
                 }
                 catch (Exception)
                 {
-                    // if interrupted we don't care about other exceptions
+                    // if interupted we dont care about other execptions
                     Utils.CheckForInterupt();
                     throw;
                 }

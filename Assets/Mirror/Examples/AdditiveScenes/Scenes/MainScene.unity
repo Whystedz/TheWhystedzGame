@@ -1747,13 +1747,11 @@ MonoBehaviour:
   autoStartServerBuild: 1
   showDebugMessages: 0
   serverTickRate: 30
-  serverBatching: 0
-  serverBatchInterval: 0
   offlineScene: 
   onlineScene: 
   transport: {fileID: 1661834280}
   networkAddress: localhost
-  maxConnections: 100
+  maxConnections: 4
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
   authenticator: {fileID: 0}
