@@ -12,7 +12,7 @@ public class NetworkDigging : NetworkBehaviour
     [SerializeField] private float maxDistanceToDiggableTile = 1.0f;
     private InputManager inputManager;
     private int layerMask;
-    private PlayerMovement playerMovement;
+    private NetworkPlayerMovement playerMovement;
 
     [SerializeField] private bool enableDebugMode = true;
     
@@ -21,7 +21,7 @@ public class NetworkDigging : NetworkBehaviour
     private void Awake()
     {
         layerMask = LayerMask.GetMask("TileMovementCollider");
-        playerMovement = this.GetComponent<PlayerMovement>();
+        playerMovement = this.GetComponent<NetworkPlayerMovement>();
         inputManager = InputManager.GetInstance();
         tileManager = TileManager.GetInstance();
     }
@@ -56,7 +56,7 @@ public class NetworkDigging : NetworkBehaviour
             StartCoroutine(tile.HighlightTile());
 
             if (inputManager.GetDigging())
-                tileManager.DigTile(tile);
+                tileManager.DigTile(tile.HexTile);
         }
     }
 

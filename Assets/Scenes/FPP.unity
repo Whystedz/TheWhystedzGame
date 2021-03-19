@@ -272,6 +272,14 @@ PrefabInstance:
       value: 62098861
       objectReference: {fileID: 0}
     - target: {fileID: 1514872325810132585, guid: 805356bf35e0adf49a29681cc49c3ad6, type: 3}
+      propertyPath: TimeToBreak
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1514872325810132585, guid: 805356bf35e0adf49a29681cc49c3ad6, type: 3}
+      propertyPath: syncInterval
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1514872325810132585, guid: 805356bf35e0adf49a29681cc49c3ad6, type: 3}
       propertyPath: basicTilePrefab
       value: 
       objectReference: {fileID: 226970777013656547, guid: 2bf8b30348d5a1f47ade6b1612541c1c, type: 3}

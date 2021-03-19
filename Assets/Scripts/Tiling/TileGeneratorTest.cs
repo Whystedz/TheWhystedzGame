@@ -32,7 +32,6 @@ public class TileGeneratorTest : MonoBehaviour
             {
                 HexTile tile = new HexTile
                 {
-                    TimeToBreak = this.timeToBreak,
                     TimeToRespawn = this.timeToRespawn,
                     TimeOfBreakingAnimation = this.timeOfBreakingAnimation,
                     Progress = 0f,

@@ -5,7 +5,6 @@ using UnityEngine.EventSystems;
 
 public struct HexTile
 {
-    public float TimeToBreak;
     public float TimeToRespawn;
     public float TimeOfBreakingAnimation;
     public float Progress;
