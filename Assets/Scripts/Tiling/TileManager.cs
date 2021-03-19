@@ -24,12 +24,13 @@ public class TileManager : NetworkBehaviour
 
     public SyncList<HexTile> syncTileList = new SyncList<HexTile>();
 
-    private void Awake()
-    {
-        MaintainSingleInstance();
-    }
+    private void Awake() => MaintainSingleInstance();
 
-    void Start() => SpawnMap();
+    void Start()
+    {
+        syncTileList.Callback += OnTileUpdated;
+        SpawnMap();
+    }
 
     public override void OnStartServer()
     {
@@ -44,7 +45,6 @@ public class TileManager : NetworkBehaviour
             {
                 HexTile tile = new HexTile
                 {
-                    TimeToBreak = this.timeToBreak,
                     TimeToRespawn = this.timeToRespawn,
                     TimeOfBreakingAnimation = this.timeOfBreakingAnimation,
                     Progress = 0f,
@@ -62,20 +62,26 @@ public class TileManager : NetworkBehaviour
     {
         foreach (HexTile tile in syncTileList)
         {
-            var position = DetermineSpawnPosition(tile.XIndex, tile.ZIndex);
-            var tileToSpawn = TileToSpawn(position);
-            var generatedTile = Instantiate(tileToSpawn, this.transform);
-            generatedTile.GetComponent<NetworkTile>().HexTile = tile;
-
-            generatedTile.transform.localScale = new Vector3(
-                    this.tileSurfaceScale,
-                    this.tileDepthScale,
-                    this.tileSurfaceScale);
-
-            generatedTile.transform.position = position;
-
-            AddVerticalOffsetChaos(generatedTile);
+            SpawnTile(tile);
         }
+    }
+
+    private void SpawnTile(HexTile tile)
+    {
+        var position = DetermineSpawnPosition(tile.XIndex, tile.ZIndex);
+        var tileToSpawn = TileToSpawn(position);
+        var generatedTile = Instantiate(tileToSpawn, this.transform);
+        generatedTile.GetComponent<NetworkTile>().HexTile = tile;
+
+        generatedTile.transform.localScale = new Vector3(
+            this.tileSurfaceScale,
+            this.tileDepthScale,
+            this.tileSurfaceScale);
+
+        generatedTile.transform.position = position;
+
+        // TODO: Add this to the struct so all clients have the same vertical offsets
+        AddVerticalOffsetChaos(generatedTile);
     }
 
     private void AddVerticalOffsetChaos(GameObject generatedTile)
@@ -116,12 +122,13 @@ public class TileManager : NetworkBehaviour
         return biomeRegion.GetRandomBiomeThemedTile();
     }
 
-    // Should be called by the agent wishing to dig the tile
-    public void DigTile(NetworkTile targetTile)
+    public void DigTile(HexTile targetTile)
     {
-        targetTile.HexTile.Progress = timeToBreak;
-        targetTile.HexTile.TileState = TileState.Unstable;
-        targetTile.ChangeMaterialAccordingToCurrentState();
+        if(isServer)
+        {
+            int index = syncTileList.FindIndex(x => x.XIndex == targetTile.XIndex && x.ZIndex == targetTile.ZIndex);
+            UpdateTile(index, TileState.Unstable);
+        }
     }
 
     private void MaintainSingleInstance()
@@ -130,5 +137,30 @@ public class TileManager : NetworkBehaviour
             Destroy(this);
         else
             instance = this;
+    }
+
+    public void UpdateTile(int listIndex, TileState newState)
+    {
+        HexTile tempTile = syncTileList[listIndex];
+        tempTile.Progress = this.timeToBreak;
+        tempTile.TileState = newState;
+        syncTileList[listIndex] = tempTile;
+    }
+
+    void OnTileUpdated(SyncList<HexTile>.Operation op, int index, HexTile oldTile, HexTile newTile)
+    {
+        switch (op)
+        {
+            case SyncList<HexTile>.Operation.OP_SET:
+                Debug.Log("Set");
+                UpdateMap(index, newTile);
+                break;
+        }
+    }
+
+    void UpdateMap(int index, HexTile newTile)
+    {
+        Debug.Log("Update Map");
+        this.transform.GetChild(index).GetComponent<NetworkTile>().HexTile = newTile;
     }
 }
