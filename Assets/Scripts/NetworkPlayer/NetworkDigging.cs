@@ -15,13 +15,16 @@ public class NetworkDigging : NetworkBehaviour
     private PlayerMovement playerMovement;
 
     [SerializeField] private bool enableDebugMode = true;
+    
+    private TileManager tileManager;
 
     private void Awake()
     {
         layerMask = LayerMask.GetMask("TileMovementCollider");
         playerMovement = this.GetComponent<PlayerMovement>();
+        inputManager = InputManager.GetInstance();
+        tileManager = TileManager.GetInstance();
     }
-    void Start() => inputManager = InputManager.GetInstance();
 
     void Update()
     {
@@ -46,17 +49,16 @@ public class NetworkDigging : NetworkBehaviour
 
             var hitGameObject = closestCollider.transform.parent.gameObject;
 
-            var tile = hitGameObject.GetComponent<Tile>();
-            if (tile.tileState != TileState.Normal)
+            var tile = hitGameObject.GetComponent<NetworkTile>();
+            if (tile.HexTile.TileState != TileState.Normal)
                 return;
 
             StartCoroutine(tile.HighlightTile());
 
             if (inputManager.GetDigging())
-                tile.DigTile();
+                tileManager.DigTile(tile);
         }
     }
-
 
     private void OnDrawGizmos()
     {

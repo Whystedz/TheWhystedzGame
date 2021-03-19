@@ -89,9 +89,9 @@ public class NetworkPlayerMovement : NetworkBehaviour
             closestCollider = GetClosestCollider(hitColliders);
         }
 
-        var tile = closestCollider.transform.parent.gameObject.GetComponent<Tile>();
+        var tile = closestCollider.transform.parent.gameObject.GetComponent<NetworkTile>();
 
-        return tile.tileState == TileState.Respawning;
+        return tile.HexTile.TileState == TileState.Respawning;
     }
 
     private Collider GetClosestCollider(Collider[] hitColliders)
