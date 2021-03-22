@@ -18,9 +18,9 @@ public class PlayerMovement : MonoBehaviour
     private Transform mainCamera;
     private GameObject freeLookCamera;
     private GameObject virtualCamera;
+    private GameObject fallingCamera;
     private Vector3 cameraForward;
     private Vector3 cameraRight;
-    private Vector3 initialPosition;
     private int layerMask;
     // Falling vars
     [SerializeField] private float fallingVelocity = 10f;
@@ -38,9 +38,10 @@ public class PlayerMovement : MonoBehaviour
         layerMask = LayerMask.GetMask("TileMovementCollider");
         this.characterController = GetComponent<CharacterController>();
         this.freeLookCamera = FindObjectOfType<CinemachineFreeLook>().gameObject;
-        this.virtualCamera = FindObjectOfType<CinemachineVirtualCamera>().gameObject;
+        this.fallingCamera = FindObjectsOfType<CinemachineVirtualCamera>(true)[1].gameObject;
+        this.virtualCamera = FindObjectsOfType<CinemachineVirtualCamera>(true)[0].gameObject;
 
-        if((int)this.movementState == 1 || (int)this.movementState == 2)
+        if ((int)this.movementState == 1 || (int)this.movementState == 2)
         {
             this.freeLookCamera.SetActive(true);
             this.virtualCamera.SetActive(false);
@@ -50,6 +51,7 @@ public class PlayerMovement : MonoBehaviour
             this.freeLookCamera.SetActive(false);
             this.virtualCamera.SetActive(true);
         }
+        this.fallingCamera.SetActive(false);
 
     }
 
@@ -57,7 +59,6 @@ public class PlayerMovement : MonoBehaviour
     {
         this.inputManager = InputManager.GetInstance();
         this.mainCamera = Camera.main.transform;
-        this.initialPosition = transform.position;
     }
 
     void Update()
@@ -66,12 +67,26 @@ public class PlayerMovement : MonoBehaviour
             FallingMovementUpdate();
         else
             RegularMovement();
-    
+
     }
 
     private void RegularMovement()
     {
+        if (isFalling)
+        {
+            if ((int)this.movementState == 1 || (int)this.movementState == 2)
+            {
+                this.freeLookCamera.SetActive(true);
+            }
+            else
+            {
+                this.virtualCamera.SetActive(true);
+            }
+            this.fallingCamera.SetActive(false);
+        }
+
         this.isFalling = false;
+
         switch ((int)this.movementState)
         {
             case 1:
@@ -114,20 +129,24 @@ public class PlayerMovement : MonoBehaviour
 
     private void FallingMovementUpdate()
     {
-        this.isFalling = true;
-        this.characterController.Move(Vector3.down * Time.deltaTime * this.fallingVelocity);
+        if (isFalling == false)
+        {
+            this.fallingCamera.SetActive(true);
+            isFalling = true;
+        }
 
-        if (transform.position.y <= -10f)
-            Respawn();
-    }
+        var movementPerUpdate = Vector3.down * Time.deltaTime * this.fallingVelocity;
+        if (transform.position.y < -10f)
+            this.characterController.Move(movementPerUpdate * 6);
+        else
+            this.characterController.Move(movementPerUpdate);
 
-    private void Respawn()
-    {
-        transform.position = this.initialPosition;
+
     }
 
     private bool HasFallenInHole()
     {
+
         var hitColliders = Physics.OverlapSphere(transform.position, 0.01f, layerMask);
         Collider closestCollider = null;
 
@@ -145,9 +164,16 @@ public class PlayerMovement : MonoBehaviour
             closestCollider = GetClosestCollider(hitColliders);
         }
 
-        var tile = closestCollider.transform.parent.gameObject.GetComponent<Tile>();
+        if (this.transform.position.y < -20)
+        {
+            return closestCollider == null;
+        }
+        else
+        {
+            var tile = closestCollider.transform.parent.gameObject.GetComponent<Tile>();
+            return tile.tileState == TileState.Respawning;
+        }
 
-        return tile.tileState == TileState.Respawning;
     }
 
     private Collider GetClosestCollider(Collider[] hitColliders)
