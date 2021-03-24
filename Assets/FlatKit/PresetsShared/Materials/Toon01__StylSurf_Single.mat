@@ -105,7 +105,7 @@ Material:
     - _GradientSize: 10
     - _GradientStart: 1.17
     - _GradientTop: 10
-    - _LightContribution: 0.5
+    - _LightContribution: 0.464
     - _LightFalloffSize: 0.0001
     - _LightmapDirectionPitch: 0
     - _LightmapDirectionYaw: 0
@@ -122,7 +122,7 @@ Material:
     - _SecondaryColorEnabled: 1
     - _SelfShadingSize: 0.81
     - _SelfShadingSizeExtra: 0.5
-    - _ShadowEdgeSize: 0.02
+    - _ShadowEdgeSize: 0
     - _ShadowEdgeSizeExtra: 0.05
     - _ShadowEdgeSmoothness: 0.01
     - _ShadowFalloff: 0.01
@@ -156,3 +156,4 @@ Material:
     - _FlatSpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _LightmapDirection: {r: 0, g: 1, b: 0, a: 0}
     - _UnityShadowColor: {r: 0.65, g: 0.65, b: 0.65, a: 1}
+  m_BuildTextureStacks: []
