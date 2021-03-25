@@ -1,5 +1,8 @@
+using Mirror.Cloud.Examples.Pong;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ComboManager : MonoBehaviour
@@ -43,4 +46,27 @@ public class ComboManager : MonoBehaviour
     
     // https://www.calculator.net/triangle-calculator.html?vc=120&vx=&vy=&va=30&vz=1&vb=30&angleunits=d&x=55&y=8
     public const float ComboRadiusModifier = 0.57735f;
+
+    private List<ComboPlayer> players;
+
+    private void Start()
+    {
+        this.players = FindObjectsOfType<ComboPlayer>().ToList();
+    }
+
+    private void Update()
+    {
+        CheckAllTriangleCombos();
+    }
+
+    private void CheckAllTriangleCombos()
+    {
+        foreach (var player in this.players)
+            CheckTriangleCombo(player);
+    }
+
+    private void CheckTriangleCombo(ComboPlayer player)
+    {
+        //var team = player.GetComponent<TeamPlayer>().
+    }
 }

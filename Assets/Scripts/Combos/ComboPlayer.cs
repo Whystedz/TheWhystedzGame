@@ -67,12 +67,12 @@ public class ComboPlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        DeactivateAllDebugSpheres();
+        //DeactivateAllDebugSpheres();
 
-        CooldownUpdate();
+        //CooldownUpdate();
 
         //Check4Combos();  
-        Check3Combos();  
+        //Check3Combos();  
         //Check2Combos();
     }
 

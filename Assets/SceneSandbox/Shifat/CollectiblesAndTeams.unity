@@ -309,6 +309,7 @@ GameObject:
   - component: {fileID: 395107238}
   - component: {fileID: 395107237}
   - component: {fileID: 395107236}
+  - component: {fileID: 395107241}
   m_Layer: 0
   m_Name: PlayerScoreTest (1)
   m_TagString: Untagged
@@ -328,8 +329,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b2f80813e374b348949ead86709be77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collectibleTag: Crystal
-  scoreChangedEvent: {fileID: 11400000, guid: aab81378dc55d834daaa70e3d9801213, type: 2}
+  scoreChangedEvent: {fileID: 0}
 --- !u!136 &395107237
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -407,6 +407,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &395107241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 395107235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 1451235916
+  serverOnly: 0
+  m_AssetId: 
+  hasSpawned: 0
 --- !u!1 &691864382
 GameObject:
   m_ObjectHideFlags: 0
@@ -780,6 +796,7 @@ GameObject:
   - component: {fileID: 1436161400}
   - component: {fileID: 1436161399}
   - component: {fileID: 1436161403}
+  - component: {fileID: 1436161404}
   m_Layer: 0
   m_Name: PlayerScoreTest
   m_TagString: Untagged
@@ -876,8 +893,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b2f80813e374b348949ead86709be77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collectibleTag: Crystal
-  scoreChangedEvent: {fileID: 11400000, guid: aab81378dc55d834daaa70e3d9801213, type: 2}
+  scoreChangedEvent: {fileID: 0}
+--- !u!114 &1436161404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1436161398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 1491890465
+  serverOnly: 0
+  m_AssetId: 
+  hasSpawned: 0
 --- !u!114 &1490725670 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3248257511165609267, guid: 926d665bab930e14789b55f49481bf14, type: 3}
@@ -1154,10 +1186,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2677445199595230505, guid: ed34099667a7830428efc2cb9c292540, type: 3}
+      propertyPath: Event
+      value: 
+      objectReference: {fileID: 11400000, guid: b53ac6530fb308344b7b62894fdeead0, type: 2}
+    - target: {fileID: 2677445199595230505, guid: ed34099667a7830428efc2cb9c292540, type: 3}
+      propertyPath: Response.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2677445199595230505, guid: ed34099667a7830428efc2cb9c292540, type: 3}
+      propertyPath: Response.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 11400000, guid: b53ac6530fb308344b7b62894fdeead0, type: 2}
+    - target: {fileID: 2677445199595230505, guid: ed34099667a7830428efc2cb9c292540, type: 3}
+      propertyPath: Response.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: PlayerScoreChangedEvent, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 2677445199595230510, guid: ed34099667a7830428efc2cb9c292540, type: 3}
       propertyPath: team
       value: 
       objectReference: {fileID: 1490725670}
+    - target: {fileID: 2677445199595230510, guid: ed34099667a7830428efc2cb9c292540, type: 3}
+      propertyPath: teamName
+      value: Team Red
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed34099667a7830428efc2cb9c292540, type: 3}
 --- !u!1001 &3248257512119463445

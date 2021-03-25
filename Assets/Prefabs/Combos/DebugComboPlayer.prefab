@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1645943089984039652}
   - component: {fileID: 1927788417424473103}
   - component: {fileID: 2651308343504522835}
+  - component: {fileID: 5089029451335586402}
   m_Layer: 0
   m_Name: DebugComboPlayer
   m_TagString: Untagged
@@ -113,3 +114,16 @@ MonoBehaviour:
   IsInvolvedInACombo3: 0
   debugSphereOuterPrefab: {fileID: 7717361812845497119, guid: e1cf823a046cbcb4b8f77e5aad80f15b, type: 3}
   debugSphereInnerPrefab: {fileID: 4286324393647848474, guid: 1db9f0eae33ab4747b2a0fa027e86ca2, type: 3}
+--- !u!114 &5089029451335586402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3212085286645250273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50f1316ece37e614fa6b56b48474e7cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  team: 0
