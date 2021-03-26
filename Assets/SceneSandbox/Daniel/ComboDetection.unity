@@ -450,17 +450,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54a667d5fd838f441a6ea0688231d8dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distanceCombo2: 10
-  triggerToleranceCombo2: 2
-  distanceCombo3: 15
-  triggerToleranceCombo3: 3
-  distanceCombo4: 20
-  triggerToleranceCombo4: 4
-  highlightingTolerance: 10
+  lineDistance: 5
+  lineTolerance: 1
+  triangleDistance: 10
+  triangleTolerance: 3
+  squareDistance: 15
+  squareTolerance: 3
+  highlightTolerance: 5
   hintColor: {r: 1, g: 1, b: 1, a: 1}
-  combo2Color: {r: 0.002169609, g: 0, b: 1, a: 1}
-  combo3Color: {r: 1, g: 0.52179044, b: 0, a: 1}
-  combo4Color: {r: 1, g: 0.8314501, b: 0, a: 1}
+  lineColor: {r: 0, g: 0.035513878, b: 1, a: 1}
+  triangleColor: {r: 0, g: 1, b: 0.05633402, a: 1}
+  squareColor: {r: 1, g: 0.67966217, b: 0, a: 0}
 --- !u!4 &729579303
 Transform:
   m_ObjectHideFlags: 0
