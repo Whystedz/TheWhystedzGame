@@ -1,15 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class TeamScore : MonoBehaviour
 {
-    [SerializeField] private TeamScoreUI teamScoreUI;
+    private TeamScoreUI teamScoreUI;
     [SerializeField] private Team team;
     public Team Team { get => this.team; }
 
     private int score;
+
+    private void Awake()
+    { 
+        teamScoreUI = FindObjectsOfType<TeamScoreUI>()
+            .Single(ui => ui.Team == this.team);
+    }
 
     public void Add(int amountToAdd)
     {

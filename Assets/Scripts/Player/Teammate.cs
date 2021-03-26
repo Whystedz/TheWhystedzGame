@@ -19,7 +19,7 @@ public class Teammate : MonoBehaviour
 
     private void Awake()
     {
-        this.teammates = GameObject.FindObjectsOfType<Teammate>()
+        this.teammates = FindObjectsOfType<Teammate>()
             .Where(teammate => teammate.Team == this.team && teammate != this)
             .ToList();
     }

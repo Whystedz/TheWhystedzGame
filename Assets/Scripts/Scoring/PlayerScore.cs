@@ -1,13 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class PlayerScore : MonoBehaviour
 {
     public int CurrentScore { get; private set; }
+    
     private Team team;
-
     private TeamScore teamScore;
 
     void Start()
@@ -39,7 +37,7 @@ public class PlayerScore : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Collectable")) { }
+        if (other.CompareTag("Collectable"))
             AddCollectableToScore(other.GetComponent<Collectable>());
     }
 

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class TeamScoreUI : MonoBehaviour
 {
     [SerializeField] private Team team;
+    public Team Team { get => this.team; }
 
     private Text text;
 
