@@ -6,12 +6,12 @@ using TMPro;
 
 public class UIPlayer : MonoBehaviour
 {
-    [SerializeField] public TMP_Text playerNameText;
-    LobbyPlayer player;
+    public TMP_Text PlayerNameText;
+    private LobbyPlayer player;
 
     public void SetPlayer(LobbyPlayer player)
     {
         this.player = player;
-        playerNameText.text = player.DisplayName;
+        PlayerNameText.text = player.DisplayName;
     }
 }

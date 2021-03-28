@@ -373,11 +373,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6327377196063707623}
   - component: {fileID: 6327377196063707620}
-  - component: {fileID: 2927167167306915266}
-  - component: {fileID: -3593077011509113349}
   - component: {fileID: 1057590888609944831}
   - component: {fileID: 6157132005728867793}
   - component: {fileID: 1655673359900196742}
+  - component: {fileID: 454461975986973136}
   m_Layer: 0
   m_Name: NetworkPlayer
   m_TagString: Player
@@ -422,40 +421,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2927167167306915266
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6327377196063707621}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16eb7dd8a52562041ae51d5ed21c343b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneId: 0
-  serverOnly: 0
-  m_AssetId: 
-  hasSpawned: 0
---- !u!114 &-3593077011509113349
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6327377196063707621}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f43a4b9db82479745a96d1773ea460af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  clientAuthority: 1
-  localPositionSensitivity: 0.01
-  localRotationSensitivity: 0.01
-  localScaleSensitivity: 0.01
 --- !u!114 &1057590888609944831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -507,6 +472,22 @@ MonoBehaviour:
   maxFollowOffset: {x: -1, y: 6}
   cameraVelocity: {x: 4, y: 0.25}
   virtualCamera: {fileID: 8902610801186227741}
+--- !u!114 &454461975986973136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6327377196063707621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  serverOnly: 0
+  m_AssetId: 
+  hasSpawned: 0
 --- !u!1 &6327377196359484314
 GameObject:
   m_ObjectHideFlags: 0

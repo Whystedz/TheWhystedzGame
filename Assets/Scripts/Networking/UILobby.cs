@@ -9,17 +9,18 @@ public class UILobby : MonoBehaviour
     public static UILobby instance;
 
     [Header("Host Join")]
-    [SerializeField] TMP_InputField joinMatchInput;
-    [SerializeField] TMP_InputField nameInputField;
-    [SerializeField] List<Selectable> lobbySelectables = new List<Selectable>();
-    [SerializeField] Canvas lobbyCanvas;
-    [SerializeField] Canvas searchCanvas;
+    [SerializeField] private TMP_InputField joinMatchInput;
+    [SerializeField] private TMP_InputField nameInputField;
+    [SerializeField] private List<Selectable> lobbySelectables = new List<Selectable>();
+    [SerializeField] private Canvas lobbyCanvas;
+    [SerializeField] private Canvas searchCanvas;
 
     [Header("Lobby")]
-    [SerializeField] Transform UIPlayerParent;
-    [SerializeField] GameObject UIPlayerPrefab;
-    [SerializeField] TMP_Text matchIDText;
-    [SerializeField] GameObject startGameButton;
+    [SerializeField] private Transform UIPlayerParent;
+    [SerializeField] private GameObject UIPlayerPrefab;
+    [SerializeField] private TMP_Text matchIDText;
+    [SerializeField] private GameObject startGameButton;
+    [SerializeField] private int minPlayers = 2;
 
     public const string PlayerPrefsNameKey = "PlayerName";
 
@@ -47,9 +48,9 @@ public class UILobby : MonoBehaviour
 
     public void SavePlayerName()
     {
-        LobbyPlayer.localPlayer.DisplayName = nameInputField.text;
+        LobbyPlayer.LocalPlayer.DisplayName = nameInputField.text;
 
-        PlayerPrefs.SetString(PlayerPrefsNameKey, LobbyPlayer.localPlayer.DisplayName);
+        PlayerPrefs.SetString(PlayerPrefsNameKey, LobbyPlayer.LocalPlayer.DisplayName);
     }
 
     // Creates a match ID
@@ -60,7 +61,7 @@ public class UILobby : MonoBehaviour
 
         lobbySelectables.ForEach(x => x.interactable = false);
 
-        LobbyPlayer.localPlayer.HostGame(false);
+        LobbyPlayer.LocalPlayer.HostGame(false);
     }
 
     public void HostPublic()
@@ -70,7 +71,7 @@ public class UILobby : MonoBehaviour
 
         lobbySelectables.ForEach(x => x.interactable = false);
 
-        LobbyPlayer.localPlayer.HostGame(true);
+        LobbyPlayer.LocalPlayer.HostGame(true);
     }
 
     public void HostSuccess(bool success, string matchID)
@@ -80,7 +81,7 @@ public class UILobby : MonoBehaviour
             lobbyCanvas.enabled = true;
             if (playerLobbyUI != null)
                 Destroy(playerLobbyUI);
-            playerLobbyUI = SpawnUIPlayerPrefab(LobbyPlayer.localPlayer);
+            playerLobbyUI = SpawnUIPlayerPrefab(LobbyPlayer.LocalPlayer);
             matchIDText.text = matchID;
             startGameButton.SetActive(true);
         }
@@ -98,7 +99,7 @@ public class UILobby : MonoBehaviour
         nameInputField.interactable = false;
         lobbySelectables.ForEach(x => x.interactable = false);
 
-        LobbyPlayer.localPlayer.JoinGame(joinMatchInput.text);
+        LobbyPlayer.LocalPlayer.JoinGame(joinMatchInput.text);
     }
 
     public void JoinSuccess(bool success, string matchID)
@@ -108,7 +109,7 @@ public class UILobby : MonoBehaviour
             lobbyCanvas.enabled = true;
             if (playerLobbyUI != null)
                 Destroy(playerLobbyUI);
-            playerLobbyUI = SpawnUIPlayerPrefab(LobbyPlayer.localPlayer);
+            playerLobbyUI = SpawnUIPlayerPrefab(LobbyPlayer.LocalPlayer);
             matchIDText.text = matchID;
         }
         else
@@ -123,13 +124,13 @@ public class UILobby : MonoBehaviour
     {
         GameObject newUIPlayer = Instantiate(UIPlayerPrefab, UIPlayerParent);
         newUIPlayer.GetComponent<UIPlayer>().SetPlayer(player);
-        newUIPlayer.transform.SetSiblingIndex(player.playerIndex - 1);
+        newUIPlayer.transform.SetSiblingIndex(player.PlayerIndex - 1);
         return newUIPlayer;
     }
 
     public void StartGame()
     {
-        LobbyPlayer.localPlayer.StartGame();
+        LobbyPlayer.LocalPlayer.StartGame();
     }
 
     public void SearchGame()
@@ -155,7 +156,7 @@ public class UILobby : MonoBehaviour
             else
             {
                 currentTime = searchInterval;
-                LobbyPlayer.localPlayer.SearchGame();
+                LobbyPlayer.LocalPlayer.SearchGame();
             }
             yield return null;
         }
@@ -182,7 +183,7 @@ public class UILobby : MonoBehaviour
     {
         if (playerLobbyUI != null)
             Destroy(playerLobbyUI);
-        LobbyPlayer.localPlayer.DisconnectGame();
+        LobbyPlayer.LocalPlayer.DisconnectGame();
 
         lobbyCanvas.enabled = false;
         joinMatchInput.interactable = true;

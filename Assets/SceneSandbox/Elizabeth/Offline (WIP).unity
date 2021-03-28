@@ -342,6 +342,7 @@ GameObject:
   - component: {fileID: 290835634}
   - component: {fileID: 290835633}
   - component: {fileID: 290835632}
+  - component: {fileID: 290835635}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -414,6 +415,38 @@ Transform:
   m_Father: {fileID: 483892183}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &290835635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 290835631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
 --- !u!1 &310901828
 GameObject:
   m_ObjectHideFlags: 0
@@ -663,7 +696,7 @@ GameObject:
   - component: {fileID: 372741620}
   - component: {fileID: 372741619}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Join
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -732,7 +765,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 372741620}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1270186612}
+        m_TargetAssemblyTypeName: AutoHostClient, Assembly-CSharp
+        m_MethodName: JoinLocal
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &372741620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -831,19 +876,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 775696259}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b0fecffa3f624585964b0d0eb21b18e, type: 3}
+  m_Script: {fileID: 11500000, guid: c7424c1070fad4ba2a7a96b02fbeb4bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Port: 7777
+  port: 7777
   NoDelay: 1
-  Interval: 10
-  FastResend: 2
-  CongestionWindow: 0
-  SendWindowSize: 4096
-  ReceiveWindowSize: 4096
-  debugLog: 0
-  statisticsGUI: 0
-  statisticsLog: 0
+  serverMaxMessageSize: 262144
+  serverMaxReceivesPerTick: 10000
+  clientMaxMessageSize: 262144
+  clientMaxReceivesPerTick: 1000
 --- !u!114 &775696261
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -864,18 +905,17 @@ MonoBehaviour:
   serverBatching: 0
   serverBatchInterval: 0
   offlineScene: Assets/SceneSandbox/Elizabeth/Offline (WIP).unity
-  onlineScene: Assets/Scenes/FPP.unity
+  onlineScene: Assets/SceneSandbox/Elizabeth/Lobby.unity
   transport: {fileID: 775696260}
-  networkAddress: 34.95.63.42
+  networkAddress: localhost
   maxConnections: 100
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
   authenticator: {fileID: 0}
-  playerPrefab: {fileID: 6327377196063707621, guid: 9a38b8ca5a8093a43b837c369d1745a2, type: 3}
+  playerPrefab: {fileID: 4436182248567351951, guid: d9bb46f661a0e71478654a3da6bc6e7e, type: 3}
   autoCreatePlayer: 1
-  playerSpawnMethod: 0
-  spawnPrefabs:
-  - {fileID: 1788263075214021521, guid: 3409383f212bc77458e58e1daed455bf, type: 3}
+  playerSpawnMethod: 1
+  spawnPrefabs: []
 --- !u!4 &775696262
 Transform:
   m_ObjectHideFlags: 0
@@ -1081,7 +1121,7 @@ GameObject:
   - component: {fileID: 2074859884}
   - component: {fileID: 2074859883}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Host
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1150,7 +1190,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2074859884}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 775696261}
+        m_TargetAssemblyTypeName: Mirror.NetworkManager, Mirror
+        m_MethodName: StartHost
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2074859884
 MonoBehaviour:
   m_ObjectHideFlags: 0

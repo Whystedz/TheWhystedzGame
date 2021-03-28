@@ -8,19 +8,27 @@ using System.Text;
 [System.Serializable]
 public class Match 
 {
-    public string matchID;
-    public bool publicMatch;
-    public bool inMatch;
-    public bool matchFull;
-    public SyncListGameObject players = new SyncListGameObject();
+    public string MatchID;
+    public bool IsPublicMatch;
+    public bool InMatch;
+    private int maxPlayers = 8;
+    public SyncListGameObject Players = new SyncListGameObject();
 
     public Match(string matchID, GameObject player)
     {
-        this.matchID = matchID;
-        players.Add(player);
+        this.MatchID = matchID;
+        Players.Add(player);
     }
 
     public Match() {}
+
+    public bool isMatchFull()
+    {
+        if(Players.Count == maxPlayers)
+            return true;
+        
+        return false;
+    }
 }
 
 [System.Serializable]
@@ -31,25 +39,22 @@ public class SyncListMatch : SyncList<Match> { }
 
 public class MatchMaker : NetworkBehaviour
 {
-    public static MatchMaker instance;
-    public SyncListMatch matches = new SyncListMatch();
-    public SyncList<string> matchIDs = new SyncList<string>();
-    [SerializeField] GameObject turnManagerPrefab;
+    public static MatchMaker Instance { get; set; }
+    public SyncListMatch Matches = new SyncListMatch();
+    public SyncList<string> MatchIDs = new SyncList<string>();
+    [SerializeField] GameObject gameManagerPrefab;
 
-    void Start()
-    {
-        instance = this;
-    }
+    void Start() => Instance = this;
 
-    public bool HostGame(string _matchID, GameObject _player, bool publicMatch, out int playerIndex)
+    public bool HostGame(string matchID, GameObject player, bool publicMatch, out int playerIndex)
     {
         playerIndex = -1;
-        if (!matchIDs.Contains(_matchID))
+        if (!MatchIDs.Contains(matchID))
         {
-            matchIDs.Add(_matchID);
-            Match match = new Match(_matchID, _player);
-            match.publicMatch = publicMatch;
-            matches.Add(match);
+            MatchIDs.Add(matchID);
+            Match match = new Match(matchID, player);
+            match.IsPublicMatch = publicMatch;
+            Matches.Add(match);
             Debug.Log($"Match generated");
             playerIndex = 1;
             return true;
@@ -61,17 +66,17 @@ public class MatchMaker : NetworkBehaviour
         }
     }
 
-    public bool JoinGame(string _matchID, GameObject _player, out int playerIndex)
+    public bool JoinGame(string matchID, GameObject player, out int playerIndex)
     {
         playerIndex = -1;
-        if (matchIDs.Contains(_matchID))
+        if (MatchIDs.Contains(matchID))
         {
-            for (int i = 0; i < matches.Count; i++)
+            for (int i = 0; i < Matches.Count; i++)
             {
-                if (matches[i].matchID == _matchID)
+                if (Matches[i].MatchID == matchID)
                 {
-                    matches[i].players.Add(_player);
-                    playerIndex = matches[i].players.Count;
+                    Matches[i].Players.Add(player);
+                    playerIndex = Matches[i].Players.Count;
                     break;
                 }
             }
@@ -86,17 +91,17 @@ public class MatchMaker : NetworkBehaviour
         }
     }
 
-    public bool SearchGame(GameObject _player, out int playerIndex, out string matchID)
+    public bool SearchGame(GameObject player, out int playerIndex, out string matchID)
     {
         playerIndex = -1;
         matchID = string.Empty;
 
-        for(int i = 0; i < matches.Count; i++)
+        for(int i = 0; i < Matches.Count; i++)
         {
-            if(matches[i].publicMatch && !matches[i].matchFull && !matches[i].inMatch)
+            if(Matches[i].IsPublicMatch && !Matches[i].isMatchFull() && !Matches[i].InMatch)
             {
-                matchID = matches[i].matchID;
-                if(JoinGame(matchID, _player, out playerIndex))
+                matchID = Matches[i].MatchID;
+                if(JoinGame(matchID, player, out playerIndex))
                 {
                     return true;
                 }
@@ -105,22 +110,22 @@ public class MatchMaker : NetworkBehaviour
         return false;
     }
 
-    public void StartGame(string _matchID)
+    public void StartGame(string matchID)
     {
-        GameObject newTurnManager = Instantiate(turnManagerPrefab);
+        GameObject newTurnManager = Instantiate(gameManagerPrefab);
         NetworkServer.Spawn(newTurnManager);
-        newTurnManager.GetComponent<NetworkMatchChecker>().matchId = _matchID.ToGuid();
+        newTurnManager.GetComponent<NetworkMatchChecker>().matchId = matchID.ToGuid();
         TurnManager turnManager = newTurnManager.GetComponent<TurnManager>();
 
-        for(int i = 0; i < matches.Count; i++)
+        for(int i = 0; i < Matches.Count; i++)
         {
-            if (matches[i].matchID == _matchID)
+            if (Matches[i].MatchID == matchID)
             {
-                foreach (var player in matches[i].players)
+                foreach (var player in Matches[i].Players)
                 {
-                    LobbyPlayer _player = player.GetComponent<LobbyPlayer>();
-                    turnManager.AddPlayer(_player);
-                    _player.StartMatch();
+                    LobbyPlayer lobbyPlayer = player.GetComponent<LobbyPlayer>();
+                    turnManager.AddPlayer(lobbyPlayer);
+                    lobbyPlayer.StartMatch();
                 }
                 break;
             }
@@ -148,21 +153,21 @@ public class MatchMaker : NetworkBehaviour
         return id;
     }
 
-    public void PlayerDisconnected(LobbyPlayer player, string _matchID)
+    public void PlayerDisconnect(LobbyPlayer player, string matchID)
     {
-        for (int i = 0; i < matches.Count; i++)
+        for (int i = 0; i < Matches.Count; i++)
         {
-            if(matches[i].matchID == _matchID)
+            if(Matches[i].MatchID == matchID)
             {
-                int playerIndex = matches[i].players.IndexOf(player.gameObject);
-                matches[i].players.RemoveAt(playerIndex);
-                Debug.Log($"Player disconnected from match {_matchID} | {matches[i].players.Count} players remainig");
+                int playerIndex = Matches[i].Players.IndexOf(player.gameObject);
+                Matches[i].Players.RemoveAt(playerIndex);
+                Debug.Log($"Player disconnected from match {matchID} | {Matches[i].Players.Count} players remainig");
 
-                if (matches[i].players.Count == 0)
+                if (Matches[i].Players.Count == 0)
                 {
-                    Debug.Log($"No more players in match. Terminating {_matchID}");
-                    matches.RemoveAt(i);
-                    matchIDs.Remove(_matchID);
+                    Debug.Log($"No more players in match. Terminating {matchID}");
+                    Matches.RemoveAt(i);
+                    MatchIDs.Remove(matchID);
                 }
                 break;
             }

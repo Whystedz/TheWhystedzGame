@@ -3663,6 +3663,7 @@ MonoBehaviour:
   UIPlayerPrefab: {fileID: 2441338206149707386, guid: bee706540f7d39f4bba35041f174022b, type: 3}
   matchIDText: {fileID: 1342674476}
   startGameButton: {fileID: 1366539965}
+  minPlayers: 2
 --- !u!1 &1366539965
 GameObject:
   m_ObjectHideFlags: 0
@@ -4336,7 +4337,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0
-  turnManagerPrefab: {fileID: 1788263075214021521, guid: 3409383f212bc77458e58e1daed455bf, type: 3}
+  gameManagerPrefab: {fileID: 0}
 --- !u!114 &1651935373
 MonoBehaviour:
   m_ObjectHideFlags: 0
