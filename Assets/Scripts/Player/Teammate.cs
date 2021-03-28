@@ -13,13 +13,11 @@ public class Teammate : MonoBehaviour
 {
     [SerializeField] private Team team;
     public Team Team { get => this.team; }
-
-    private List<Teammate> teammates;
-    public List<Teammate> Teammates { get => this.teammates; }
+    public List<Teammate> Teammates { get; private set; }
 
     private void Awake()
     {
-        this.teammates = FindObjectsOfType<Teammate>()
+        Teammates = FindObjectsOfType<Teammate>()
             .Where(teammate => teammate.Team == this.team && teammate != this)
             .ToList();
     }

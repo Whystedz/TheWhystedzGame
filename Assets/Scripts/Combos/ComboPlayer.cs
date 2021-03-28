@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 
 public class ComboPlayer : MonoBehaviour
@@ -19,53 +20,26 @@ public class ComboPlayer : MonoBehaviour
     public bool IsInvolvedInACombo4;
     public bool IsInvolvedInACombo3;
 
-    [SerializeField] private GameObject debugSphereOuterPrefab;
-    [SerializeField] private GameObject debugSphereInnerPrefab;
-
-    private GameObject[,] debugSpheresCombo4;
-    private GameObject[,] debugSpheresCombo3;
-
     private List<ComboPlayer> teammates;
-    public List<ComboPlayer> Teammates { get => this.teammates; }
 
     private void Awake()
     {
         var team = this.GetComponent<Teammate>().Team;
 
         this.teammates = FindObjectsOfType<Teammate>()
-            .Where(teammate => teammate.Team == team && teammate != this)
+            .Where(teammate => teammate.Team == team && teammate.gameObject != this.gameObject)
             .Select(teammate => teammate.GetComponent<ComboPlayer>())
             .ToList();
     }
 
-    private void InstantiateAllDebugSpheres()
+    public List<ComboPlayer> Teammates (bool includeSelf)
     {
-        this.debugSpheresCombo4 = new GameObject[3, 4];
-        for (var setIndex = 0; setIndex < 3; ++setIndex)
-        {
-            this.debugSpheresCombo4[setIndex, 0] = Instantiate(this.debugSphereOuterPrefab, this.transform); // Outer
-            for (var sphereIndex = 1; sphereIndex < 4; ++sphereIndex)
-                this.debugSpheresCombo4[setIndex, sphereIndex] = Instantiate(this.debugSphereInnerPrefab, this.transform); // Inner
-        }
+        var teammatesResult = new List<ComboPlayer>(this.teammates);
 
-        this.debugSpheresCombo3 = new GameObject[2, 3];
-        for (var setIndex = 0; setIndex < 2; ++setIndex)
-        {
-            this.debugSpheresCombo3[setIndex, 0] = Instantiate(this.debugSphereOuterPrefab, this.transform); // Outer
-            for (var sphereIndex = 1; sphereIndex < 3; ++sphereIndex)
-                this.debugSpheresCombo3[setIndex, sphereIndex] = Instantiate(this.debugSphereInnerPrefab, this.transform); // Inner
-        }
+        if (includeSelf)
+            teammatesResult.Add(this);
 
-        DeactivateAllDebugSpheres();
-    }
-
-    private void DeactivateAllDebugSpheres()
-    {
-        foreach (var sphere in this.debugSpheresCombo4)
-                sphere.SetActive(false);
-
-        foreach (var sphere in this.debugSpheresCombo3)
-                sphere.SetActive(false);
+        return teammatesResult;
     }
 
     void Start()
@@ -73,21 +47,16 @@ public class ComboPlayer : MonoBehaviour
         this.comboManager = FindObjectOfType<ComboManager>();
 
         this.team = FindObjectsOfType<ComboPlayer>().Where(member => member != this).ToArray();
-
-        InstantiateAllDebugSpheres();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        //DeactivateAllDebugSpheres();
+        // TODO include more digging logic in the following PR
 
         CooldownUpdate();
-
-        //Check4Combos();  
-        //Check3Combos();  
-        //Check2Combos();
     }
+
+    // TODO will be used for the digging hole phase
     private void StartCooldown()
     {
         this.IsOnCooldown = true;
@@ -99,6 +68,25 @@ public class ComboPlayer : MonoBehaviour
         this.cooldownProgress -= Time.deltaTime;
         
         if (this.cooldownProgress <= 0)
+        {
             this.IsOnCooldown = false;
+            this.cooldownProgress = this.cooldownMax;
+        }
+    }
+
+    public Tile TileCurrentlyAbove()
+    {
+        var colliders = Physics.OverlapSphere(transform.position, 0.1f);
+
+        var tile = colliders
+            .Where(collider => collider.GetComponentInParent<Tile>() != null)
+            .Select(collider => collider.GetComponentInParent<Tile>())
+            .OrderBy(tile => Vector3.Distance(this.transform.position, tile.transform.position))
+            .First();
+
+        if (tile is null)
+            Debug.LogError($"Tile is null", this.gameObject);
+
+        return tile;
     }
 }
