@@ -34,24 +34,38 @@ public class ComboManager : MonoBehaviour
     private void Update()
     {
         CombosAvailable.Clear();
+        
         CheckCombos();
+
+        HighlightAvailableCombos();
+    }
+
+    private void HighlightAvailableCombos()
+    {
+        foreach (var combo in CombosAvailable)
+            foreach (var playerA in combo.Players)
+                foreach (var playerB in combo.Players)
+                    if (playerA != playerB)
+                    {
+                        var comboColor = combo.ComboType == ComboType.Line ? this.lineColor : this.triangleColor;
+                        Highlight(playerA, playerB, comboColor);
+
+                        foreach (var tile in combo.Tiles)
+                            StartCoroutine(tile.HighlightTileForOneFrame());
+                    }
     }
 
     private void CheckCombos()
     {
         foreach (var player in this.players)
         {
-            CheckTriangleCombosForPlayer(player);
             CheckLineCombosForPlayer(player);
+            CheckTriangleCombosForPlayer(player);
         }
     }
 
     private void CheckLineCombosForPlayer(ComboPlayer player)
     {
-        if (CombosAvailable.Any(combo => combo.ComboType == ComboType.Triangle
-            && combo.InitiatingPlayer == player))
-            return;
-
         var teammates = player.Teammates(false).ToArray();
 
         teammates = teammates
@@ -85,7 +99,7 @@ public class ComboManager : MonoBehaviour
     {
         var combo = new Combo
         {
-            ComboType = ComboType.Triangle,
+            ComboType = ComboType.Line,
             InitiatingPlayer = a,
             Players = new List<ComboPlayer> { a, b },
             Center = (a.transform.position + b.transform.position) / 2,
@@ -110,11 +124,6 @@ public class ComboManager : MonoBehaviour
                     a.transform.position,
                     b.transform.position))
             .ToList();
-
-        foreach (var tile in combo.Tiles)
-            StartCoroutine(tile.HighlightTileForOneFrame());
-
-        Highlight(a, b, this.lineColor);
 
         CombosAvailable.Add(combo);
     }
@@ -200,25 +209,15 @@ public class ComboManager : MonoBehaviour
             .Take(this.maxTilesInTriangleCombo > 0 ? this.maxTilesInTriangleCombo : 100)
             .ToList();
 
-        // TODO if A B and C are in a line, no tiles are dug. Will require changing the flow
-        // Handy if we do more complex limiting down the road
-        //if (combo.Tiles.Count() < (2 * this.maxTilesInLineCombo))
-        //{
-        //    /* 
-        //     * E.g. the triangle is so critically obtuse, 
-        //     * players a b and c are effectively in a line,
-        //     * so 2 seperate line combos would do better
-        //    */
-        //    HandleLineComboHint(a, b);
-        //    return; // Don't count this one; not worth it
-        //}
+        var overlappingLineCombos = CombosAvailable
+            .Where(availableCombo => availableCombo.ComboType == ComboType.Line
+                && availableCombo.Players.Intersect(combo.Players).Count() == 2);
+        
+        foreach (var overlappingLineCombo in overlappingLineCombos)
+            combo.Tiles.AddRange(overlappingLineCombo.Tiles);
 
-        Highlight(a, b, this.triangleColor);
-        Highlight(a, c, this.triangleColor);
-        Highlight(b, c, this.triangleColor);
-
-        foreach (var tile in combo.Tiles)
-            StartCoroutine(tile.HighlightTileForOneFrame());
+        CombosAvailable
+            .RemoveAll(availableCombo => overlappingLineCombos.Contains(availableCombo));
 
         CombosAvailable.Add(combo);
     }
