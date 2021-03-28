@@ -486,10 +486,10 @@ MonoBehaviour:
   highlightTolerance: 5
   hintColor: {r: 1, g: 1, b: 1, a: 1}
   lineDistance: 10
-  maxTilesInLineCombo: 5
+  maxTilesInLineCombo: 20
   lineColor: {r: 0, g: 0.035513878, b: 1, a: 1}
   triangleDistance: 15
-  maxTilesInTriangleCombo: 15
+  maxTilesInTriangleCombo: 64
   triangleColor: {r: 0, g: 1, b: 0.05633402, a: 1}
 --- !u!4 &729579303
 Transform:

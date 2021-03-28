@@ -98,6 +98,17 @@ public class ComboManager : MonoBehaviour
         var tilesOccupiedByTeam = teammates
             .Select(teammate => teammate.TileCurrentlyAbove());
 
+        // Old line combo filtering based on center
+        //var colliders = Physics.OverlapSphere(combo.Center, shortestDistanceToCenter);
+        //combo.Tiles = colliders
+        //    .Where(collider => collider.GetComponentInParent<Tile>() != null)
+        //    .Select(collider => collider.GetComponentInParent<Tile>())
+        //    .Distinct()
+        //    .Where(tile => !tilesOccupiedByTeam.Contains(tile))
+        //    .OrderBy(tile => Vector3.Distance(combo.Center, tile.transform.position))
+        //    .Take(this.maxTilesInLineCombo > 0 ? this.maxTilesInLineCombo : 100)
+        //    .ToList();
+
         var colliders = Physics.OverlapSphere(combo.Center, shortestDistanceToCenter);
         combo.Tiles = colliders
             .Where(collider => collider.GetComponentInParent<Tile>() != null)
@@ -182,26 +193,33 @@ public class ComboManager : MonoBehaviour
 
         var tilesOccupiedByTeam = teammates
             .Select(player => player.TileCurrentlyAbove());
-        
+
         var colliders = Physics.OverlapSphere(combo.Center, shortestDistanceToCenter);
         combo.Tiles = colliders
             .Where(collider => collider.GetComponentInParent<Tile>() != null)
             .Select(collider => collider.GetComponentInParent<Tile>())
             .Distinct()
-            .Where(tile => !tilesOccupiedByTeam.Contains(tile))
+            .Where(tile => !tilesOccupiedByTeam.Contains(tile)
+                && IsWithinTriangle(tile.transform.position, 
+                    a.transform.position, 
+                    b.transform.position, 
+                    c.transform.position))
             .OrderBy(tile => Vector3.Distance(combo.Center, tile.transform.position))
             .Take(this.maxTilesInTriangleCombo > 0 ? this.maxTilesInTriangleCombo : 100)
             .ToList();
 
-        if (combo.Tiles.Count() < (2 * this.maxTilesInLineCombo))
-        { 
-            // E.g. the triangle is so critically obtuse, 
-            // players a b and c are in a line,
-            // so 2 seperate line combos would do better
-            HandleLineComboHint(a, b);
-
-            return; // Don't count this one, not worth it
-        }
+        // TODO if A B and C are in a line, no tiles are dug. Will require changing the flow
+        // Handy if we do more complex limiting down the road
+        //if (combo.Tiles.Count() < (2 * this.maxTilesInLineCombo))
+        //{
+        //    /* 
+        //     * E.g. the triangle is so critically obtuse, 
+        //     * players a b and c are effectively in a line,
+        //     * so 2 seperate line combos would do better
+        //    */
+        //    HandleLineComboHint(a, b);
+        //    return; // Don't count this one; not worth it
+        //}
 
         Highlight(a, b, this.triangleColor);
         Highlight(a, c, this.triangleColor);
@@ -232,5 +250,24 @@ public class ComboManager : MonoBehaviour
         var upperBound = maxTriggerDistance + hintingTolerance;
 
         return distance >= lowerBound && distance <= upperBound;
+    }
+
+    // Credits to https://www.youtube.com/watch?v=WaYS1gEXEFE
+    // Check that video for a great explanation of how we can manage this via math!
+    private bool IsWithinTriangle(Vector3 p, Vector3 a, Vector3 b, Vector3 c)
+    {
+        var ab = b - a;
+        var ac = c - a;
+
+        var w1 = (ac.x * (a.z - p.z) + ac.z * (p.x - a.x)) / (ab.x * ac.z - ab.z * ac.x);
+        var w2 = (p.z - a.z - w1 * ab.z) / ac.z;
+
+        Debug.Log((w1 >= 0)
+            && (w2 >= 0)
+            && ((w1 + w2) <= 1f));
+
+        return (w1 >= 0) 
+            && (w2 >= 0) 
+            && ((w1 + w2) <= 1f);
     }
 }
