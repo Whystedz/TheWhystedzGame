@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using UnityEngine;
 
 public class ComboManager : MonoBehaviour
@@ -10,6 +11,7 @@ public class ComboManager : MonoBehaviour
 
     [Header("Line Combo")]
     [SerializeField] [Range(0, 22)] private float lineDistance = 5;
+    [SerializeField] [Range(0, 20)] private float lineThickness = 1;
     [SerializeField] [Range(0, 20)] private int maxTilesInLineCombo = 5;
     [SerializeField] private Color lineColor = Color.blue;
 
@@ -32,7 +34,7 @@ public class ComboManager : MonoBehaviour
     private void Update()
     {
         CombosAvailable.Clear();
-        CheckCombos();  
+        CheckCombos();
     }
 
     private void CheckCombos()
@@ -64,7 +66,7 @@ public class ComboManager : MonoBehaviour
         if (teammates.Count() < 1)
             return;
 
-        foreach(var teammate in teammates)
+        foreach (var teammate in teammates)
             CheckLineCombo(player, teammate);
     }
 
@@ -98,25 +100,15 @@ public class ComboManager : MonoBehaviour
         var tilesOccupiedByTeam = teammates
             .Select(teammate => teammate.TileCurrentlyAbove());
 
-        // Old line combo filtering based on center
-        //var colliders = Physics.OverlapSphere(combo.Center, shortestDistanceToCenter);
-        //combo.Tiles = colliders
-        //    .Where(collider => collider.GetComponentInParent<Tile>() != null)
-        //    .Select(collider => collider.GetComponentInParent<Tile>())
-        //    .Distinct()
-        //    .Where(tile => !tilesOccupiedByTeam.Contains(tile))
-        //    .OrderBy(tile => Vector3.Distance(combo.Center, tile.transform.position))
-        //    .Take(this.maxTilesInLineCombo > 0 ? this.maxTilesInLineCombo : 100)
-        //    .ToList();
-
         var colliders = Physics.OverlapSphere(combo.Center, shortestDistanceToCenter);
         combo.Tiles = colliders
             .Where(collider => collider.GetComponentInParent<Tile>() != null)
             .Select(collider => collider.GetComponentInParent<Tile>())
             .Distinct()
-            .Where(tile => !tilesOccupiedByTeam.Contains(tile))
-            .OrderBy(tile => Vector3.Distance(combo.Center, tile.transform.position))
-            .Take(this.maxTilesInLineCombo > 0 ? this.maxTilesInLineCombo : 100)
+            .Where(tile => !tilesOccupiedByTeam.Contains(tile)
+                && IsWithinLineBounds(tile.transform.position,
+                    a.transform.position,
+                    b.transform.position))
             .ToList();
 
         foreach (var tile in combo.Tiles)
@@ -200,9 +192,9 @@ public class ComboManager : MonoBehaviour
             .Select(collider => collider.GetComponentInParent<Tile>())
             .Distinct()
             .Where(tile => !tilesOccupiedByTeam.Contains(tile)
-                && IsWithinTriangle(tile.transform.position, 
-                    a.transform.position, 
-                    b.transform.position, 
+                && IsWithinTriangle(tile.transform.position,
+                    a.transform.position,
+                    b.transform.position,
                     c.transform.position))
             .OrderBy(tile => Vector3.Distance(combo.Center, tile.transform.position))
             .Take(this.maxTilesInTriangleCombo > 0 ? this.maxTilesInTriangleCombo : 100)
@@ -231,7 +223,7 @@ public class ComboManager : MonoBehaviour
         CombosAvailable.Add(combo);
     }
 
-    private void Highlight(ComboPlayer a, ComboPlayer b, Color color) => 
+    private void Highlight(ComboPlayer a, ComboPlayer b, Color color) =>
         Debug.DrawLine(a.transform.position, b.transform.position, color);
 
     private bool IsWithinTriggeringDistance(ComboPlayer a, ComboPlayer b, float maxTriggerDistance, float minDistance = 0f)
@@ -241,7 +233,7 @@ public class ComboManager : MonoBehaviour
         return distance >= minDistance && distance <= maxTriggerDistance;
     }
 
-    private bool IsWithinHintingDistance(ComboPlayer a, ComboPlayer b, 
+    private bool IsWithinHintingDistance(ComboPlayer a, ComboPlayer b,
         float maxTriggerDistance, float hintingTolerance, float minDistance = 0f)
     {
         var distance = Vector3.Distance(a.transform.position, b.transform.position);
@@ -254,20 +246,38 @@ public class ComboManager : MonoBehaviour
 
     // Credits to https://www.youtube.com/watch?v=WaYS1gEXEFE
     // Check that video for a great explanation of how we can manage this via math!
-    private bool IsWithinTriangle(Vector3 p, Vector3 a, Vector3 b, Vector3 c)
+    private bool IsWithinTriangle(Vector3 point, Vector3 a, Vector3 b, Vector3 c)
     {
         var ab = b - a;
         var ac = c - a;
 
-        var w1 = (ac.x * (a.z - p.z) + ac.z * (p.x - a.x)) / (ab.x * ac.z - ab.z * ac.x);
-        var w2 = (p.z - a.z - w1 * ab.z) / ac.z;
+        var w1 = (ac.x * (a.z - point.z) + ac.z * (point.x - a.x)) / (ab.x * ac.z - ab.z * ac.x);
+        var w2 = (point.z - a.z - w1 * ab.z) / ac.z;
 
-        Debug.Log((w1 >= 0)
+        return (w1 >= 0)
             && (w2 >= 0)
-            && ((w1 + w2) <= 1f));
-
-        return (w1 >= 0) 
-            && (w2 >= 0) 
             && ((w1 + w2) <= 1f);
+    }
+
+    private bool IsWithinLineBounds(Vector3 point, Vector3 a, Vector3 b)
+    {
+        /*
+         * Let h1 h2 be corners of the line combo box on a's side
+         * Let h3 h4 be corners of the line combo box on b's side
+        */
+        var ab = b - a;
+        var directionAH1 = (Quaternion.AngleAxis(-45, Vector3.up) * ab).normalized;
+
+        var h1 = a + this.lineThickness / 2 * directionAH1;
+        var h2 = a - this.lineThickness / 2 * directionAH1;
+        var h3 = b + this.lineThickness / 2 * directionAH1;
+        var h4 = b - this.lineThickness / 2 * directionAH1;
+
+        /*
+         * There's "bound" to be a more optimal way of computing this (pun intended),
+         * but for now, since a rectangle is just 2 triangles, let's reuse our old equation:
+        */
+        return IsWithinTriangle(point, h1, h2, h3)
+            || IsWithinTriangle(point, h2, h3, h4);
     }
 }
