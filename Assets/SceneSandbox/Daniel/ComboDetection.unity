@@ -486,7 +486,7 @@ MonoBehaviour:
   highlightTolerance: 5
   hintColor: {r: 1, g: 1, b: 1, a: 1}
   lineDistance: 10
-  lineThickness: 3
+  lineThickness: 2
   maxTilesInLineCombo: 20
   lineColor: {r: 0, g: 0.035513878, b: 1, a: 1}
   triangleDistance: 15

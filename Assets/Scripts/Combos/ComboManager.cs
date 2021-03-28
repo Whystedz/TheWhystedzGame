@@ -11,13 +11,13 @@ public class ComboManager : MonoBehaviour
     [Header("Line Combo")]
     [SerializeField] [Range(0, 22)] private float lineDistance = 5;
     [SerializeField] [Range(0, 20)] private float lineThickness = 1;
-    [SerializeField] [Range(0, 20)] private int maxTilesInLineCombo = 5;
+    [SerializeField] [Range(0, 20)] private int maxTilesInLineCombo = 20;
     [SerializeField] private Color lineColor = Color.blue;
 
     [Header("Triangle Combo")]
     [SerializeField] [Range(0, 42)] private float triangleDistance = 10;
     [Tooltip("Ensure the maxTilesInTriangleCombo is set to at least twice the amount of the line combo's!")]
-    [SerializeField] [Range(0, 64)] int maxTilesInTriangleCombo = 10;
+    [SerializeField] [Range(0, 64)] int maxTilesInTriangleCombo = 64;
     [SerializeField] private Color triangleColor = Color.red;
 
     private List<ComboPlayer> players;
@@ -122,6 +122,8 @@ public class ComboManager : MonoBehaviour
                 && IsWithinLineBounds(tile.transform.position,
                     a.transform.position,
                     b.transform.position))
+            .OrderBy(tile => Vector3.Distance(combo.Center, tile.transform.position))
+            .Take(this.maxTilesInLineCombo)
             .ToList();
 
         CombosAvailable.Add(combo);
@@ -205,7 +207,7 @@ public class ComboManager : MonoBehaviour
                     b.transform.position,
                     c.transform.position))
             .OrderBy(tile => Vector3.Distance(combo.Center, tile.transform.position))
-            .Take(this.maxTilesInTriangleCombo > 0 ? this.maxTilesInTriangleCombo : 100)
+            .Take(this.maxTilesInTriangleCombo)
             .ToList();
 
         var overlappingLineCombos = CombosAvailable
@@ -244,38 +246,54 @@ public class ComboManager : MonoBehaviour
 
     // Credits to https://www.youtube.com/watch?v=WaYS1gEXEFE
     // Check that video for a great explanation of how we can manage this via math!
-    private bool IsWithinTriangle(Vector3 point, Vector3 a, Vector3 b, Vector3 c)
+    private bool IsWithinTriangle(Vector3 point, Vector3 vertexA, Vector3 vertexB, Vector3 vertexC)
     {
-        var ab = b - a;
-        var ac = c - a;
+        Vector2 P = new Vector2(point.x, point.z);
+        Vector2 A = new Vector2(vertexA.x, vertexA.z);
+        Vector2 B = new Vector2(vertexB.x, vertexB.z);
+        Vector2 C = new Vector2(vertexC.x, vertexC.z);
 
-        var w1 = (ac.x * (a.z - point.z) + ac.z * (point.x - a.x)) / (ab.x * ac.z - ab.z * ac.x);
-        var w2 = (point.z - a.z - w1 * ab.z) / ac.z;
+        var AB = B - A;
+        var AC = C - A;
+
+        var w1 = (AC.x * (A.y - P.y) + AC.y * (P.x - A.x)) / (AB.x * AC.y - AB.y * AC.x);
+        var w2 = (P.y - A.y - w1 * AB.y) / AC.y;
 
         return (w1 >= 0)
             && (w2 >= 0)
             && ((w1 + w2) <= 1f);
     }
 
-    private bool IsWithinLineBounds(Vector3 point, Vector3 a, Vector3 b)
+    private bool IsWithinLineBounds(Vector3 point, Vector3 endA, Vector3 endB)
     {
         /*
-         * Let h1 h2 be corners of the line combo box on a's side
-         * Let h3 h4 be corners of the line combo box on b's side
+         * Let H1 H2 be corners of the line combo box on a's side
+         * Let H3 H4 be corners of the line combo box on b's side
         */
-        var ab = b - a;
-        var directionAH1 = (Quaternion.AngleAxis(-45, Vector3.up) * ab).normalized;
+        Vector3 A = endA;
+        A.y = 0;
+        Vector3 B = endB;
+        B.y = 0;
+        
+        var AB = B - A;
+        var directionAH1 = (Quaternion.AngleAxis(-90, Vector3.up) * AB).normalized;
 
-        var h1 = a + this.lineThickness / 2 * directionAH1;
-        var h2 = a - this.lineThickness / 2 * directionAH1;
-        var h3 = b + this.lineThickness / 2 * directionAH1;
-        var h4 = b - this.lineThickness / 2 * directionAH1;
+        var H1 = A + this.lineThickness / 2 * directionAH1;
+        var H2 = A - this.lineThickness / 2 * directionAH1;
+        var H3 = B + this.lineThickness / 2 * directionAH1;
+        var H4 = B - this.lineThickness / 2 * directionAH1;
+
+        //Debug.DrawLine(A, H1);
+        //Debug.DrawLine(A, H2);
+        //Debug.DrawLine(B, H3);
+        //Debug.DrawLine(B, H4);
 
         /*
          * There's "bound" to be a more optimal way of computing this (pun intended),
          * but for now, since a rectangle is just 2 triangles, let's reuse our old equation:
         */
-        return IsWithinTriangle(point, h1, h2, h3)
-            || IsWithinTriangle(point, h2, h3, h4);
+        return IsWithinTriangle(point, H1, H3, H2)
+            || IsWithinTriangle(point, H2, H3, H4);
     }
 }
+ 
