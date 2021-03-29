@@ -7,14 +7,9 @@ public class ComboPlayer : MonoBehaviour
     [Range(0, 10f)]
     [SerializeField] private float cooldownMax;
 
-    private ComboManager comboManager;
-    private ComboPlayer[] team;
     private float cooldownProgress;
 
     public bool IsOnCooldown { get; private set; }
-
-    public bool IsInvolvedInACombo4;
-    public bool IsInvolvedInACombo3;
 
     private List<ComboPlayer> teammates;
 
@@ -36,13 +31,6 @@ public class ComboPlayer : MonoBehaviour
             teammatesResult.Add(this);
 
         return teammatesResult;
-    }
-
-    void Start()
-    {
-        this.comboManager = FindObjectOfType<ComboManager>();
-
-        this.team = FindObjectsOfType<ComboPlayer>().Where(member => member != this).ToArray();
     }
 
     void Update()

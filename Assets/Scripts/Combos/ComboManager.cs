@@ -283,10 +283,10 @@ public class ComboManager : MonoBehaviour
         var H3 = B + this.lineThickness / 2 * directionAH1;
         var H4 = B - this.lineThickness / 2 * directionAH1;
 
-        //Debug.DrawLine(A, H1);
-        //Debug.DrawLine(A, H2);
-        //Debug.DrawLine(B, H3);
-        //Debug.DrawLine(B, H4);
+        Debug.DrawLine(A, H1);
+        Debug.DrawLine(A, H2);
+        Debug.DrawLine(B, H3);
+        Debug.DrawLine(B, H4);
 
         /*
          * There's "bound" to be a more optimal way of computing this (pun intended),
