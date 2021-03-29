@@ -1,3 +1,5 @@
+using Mirror.Cloud.Examples.Pong;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -36,12 +38,23 @@ public class ComboManager : MonoBehaviour
         
         CheckCombos();
 
-        HighlightAvailableCombos();
+        //HighlightAvailableCombos(); // TODO highlight only for specific player
+
+        AssignCombosToPlayers();
     }
 
-    private void HighlightAvailableCombos()
+    private void AssignCombosToPlayers()
     {
         foreach (var combo in CombosAvailable)
+            combo.InitiatingPlayer.CurrentlyAvailableCombos.Add(combo);
+    }
+
+    public void HighlightPlayersCombos(ComboPlayer comboPlayer) =>
+        HighlightCombos(comboPlayer.CurrentlyAvailableCombos);
+
+    private void HighlightCombos(List<Combo> combos)
+    {
+        foreach (var combo in combos)
             foreach (var playerA in combo.Players)
                 foreach (var playerB in combo.Players)
                     if (playerA != playerB)

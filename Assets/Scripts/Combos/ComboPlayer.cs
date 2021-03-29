@@ -6,12 +6,20 @@ public class ComboPlayer : MonoBehaviour
 {
     [Range(0, 10f)]
     [SerializeField] private float cooldownMax;
+    
+    [SerializeField] private bool displayCombos;
 
     private float cooldownProgress;
 
     public bool IsOnCooldown { get; private set; }
 
     private List<ComboPlayer> teammates;
+
+    public List<Combo> CurrentlyAvailableCombos;
+
+    private ComboManager comboManager;
+
+
 
     private void Awake()
     {
@@ -21,6 +29,9 @@ public class ComboPlayer : MonoBehaviour
             .Where(teammate => teammate.Team == team && teammate.gameObject != this.gameObject)
             .Select(teammate => teammate.GetComponent<ComboPlayer>())
             .ToList();
+
+        this.comboManager = FindObjectOfType<ComboManager>();
+        this.CurrentlyAvailableCombos = new List<Combo>();
     }
 
     public List<ComboPlayer> Teammates (bool includeSelf)
@@ -38,6 +49,11 @@ public class ComboPlayer : MonoBehaviour
         // TODO include more digging logic in the following PR
 
         CooldownUpdate();
+
+        if (displayCombos)
+            this.comboManager.HighlightPlayersCombos(this);
+
+        this.CurrentlyAvailableCombos.Clear();
     }
 
     // TODO will be used for the digging hole phase

@@ -771,6 +771,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2651308343504522835, guid: 772a989d9c2ed824da2c7e2cd9d23ff8, type: 3}
+      propertyPath: displayCombos
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3212085286645250273, guid: 772a989d9c2ed824da2c7e2cd9d23ff8, type: 3}
       propertyPath: m_Name
       value: DebugComboPlayer
