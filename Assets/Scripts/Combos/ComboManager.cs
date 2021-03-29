@@ -9,6 +9,7 @@ public class ComboManager : MonoBehaviour
     [Header("General")]
     [SerializeField] [Range(0, 64)] private float highlightTolerance;
     [SerializeField] private Color hintColor = Color.white;
+    [SerializeField] private bool showExtendedTeamCombos = true;
 
     [Header("Line Combo")]
     [SerializeField] [Range(0, 22)] private float lineDistance = 5;
@@ -38,33 +39,84 @@ public class ComboManager : MonoBehaviour
         
         CheckCombos();
 
-        //HighlightAvailableCombos(); // TODO highlight only for specific player
-
         AssignCombosToPlayers();
     }
 
     private void AssignCombosToPlayers()
     {
         foreach (var combo in CombosAvailable)
-            combo.InitiatingPlayer.CurrentlyAvailableCombos.Add(combo);
+            combo.InitiatingPlayer.Combos.Add(combo);
     }
 
     public void HighlightPlayersCombos(ComboPlayer comboPlayer) =>
-        HighlightCombos(comboPlayer.CurrentlyAvailableCombos);
+        HighlightCombos(comboPlayer.Combos);
+
+    internal void HighlightComboHints(ComboPlayer comboPlayer)
+    {
+        foreach (var comboHint in comboPlayer.ComboHints)
+            HighlightComboHint(comboHint);
+    }
+
+    private void HighlightComboHint(ComboHint comboHint)
+    {
+        Highlight(comboHint.OriginPlayer,
+            comboHint.TargetPlayer,
+            this.hintColor);
+    }
 
     private void HighlightCombos(List<Combo> combos)
     {
         foreach (var combo in combos)
-            foreach (var playerA in combo.Players)
-                foreach (var playerB in combo.Players)
-                    if (playerA != playerB)
-                    {
-                        var comboColor = combo.ComboType == ComboType.Line ? this.lineColor : this.triangleColor;
-                        Highlight(playerA, playerB, comboColor);
+            HighlightCombo(combo);
+    }
 
-                        foreach (var tile in combo.Tiles)
-                            StartCoroutine(tile.HighlightTileForOneFrame());
-                    }
+    private void HighlightCombo(Combo combo, bool isExtendedCombo = false, List<Combo> visitedExtendedCombos = null)
+    {
+        if (isExtendedCombo && visitedExtendedCombos is null)
+            return; // recursion exit case for extended combos
+
+        foreach (var tile in combo.Tiles)
+            StartCoroutine(tile.HighlightTileForOneFrame());
+
+        foreach (var playerA in combo.Players)
+            foreach (var playerB in combo.Players)
+            {
+                if (playerA == playerB)
+                    continue;
+
+                var comboColor = combo.ComboType == ComboType.Line ? this.lineColor : this.triangleColor;
+                
+                Highlight(playerA, playerB, comboColor);
+            }
+
+        if (this.showExtendedTeamCombos)
+            HighlightExtendedCombo(combo, visitedExtendedCombos);
+    }
+
+    private void HighlightExtendedCombo(Combo combo, List<Combo> visitedExtendedCombos)
+    {
+        foreach (var player in combo.Players)
+        {
+            if (player == combo.InitiatingPlayer)
+                continue;
+
+            foreach (var extendedCombo in player.Combos)
+            {
+                if (visitedExtendedCombos != null 
+                    && visitedExtendedCombos.Contains(extendedCombo))
+                    return;
+
+                var updatedVisitedExtendedCombos = new List<Combo>
+                {
+                    combo
+                };
+
+                if (visitedExtendedCombos != null)
+                    updatedVisitedExtendedCombos.AddRange(visitedExtendedCombos);
+
+                HighlightCombo(extendedCombo, true, updatedVisitedExtendedCombos);
+            }
+        }
     }
 
     private void CheckCombos()
@@ -104,7 +156,19 @@ public class ComboManager : MonoBehaviour
             return;
         }
 
-        HandleLineComboHint(a, b);
+        AddTriangleComboHint(a, b);
+    }
+
+    private static void AddTriangleComboHint(ComboPlayer a, ComboPlayer b)
+    {
+        var comboHint = new ComboHint
+        {
+            OriginPlayer = a,
+            TargetPlayer = b,
+            ComboType = ComboType.Line,
+            MoveTowards = true
+        };
+        a.ComboHints.Add(comboHint);
     }
 
     private void HandleTriggerableLineCombo(ComboPlayer a, ComboPlayer b)
@@ -142,9 +206,6 @@ public class ComboManager : MonoBehaviour
         CombosAvailable.Add(combo);
     }
 
-    private void HandleLineComboHint(ComboPlayer a, ComboPlayer b) =>
-        Highlight(a, b, this.hintColor);
-
     private void CheckTriangleCombosForPlayer(ComboPlayer player)
     {
         var teammates = player.Teammates(false).ToArray();
@@ -163,9 +224,13 @@ public class ComboManager : MonoBehaviour
 
         CheckTriangleCombo(player, teammates[0], teammates[1]);
 
-        // With 4 players, a second set of 3 may be possible involving this player:
+        // With 4 players in range, 
+        // a second or even third set of 3 may be possible involving this player:
         if (teammates.Count() >= 3)
+        {
+            CheckTriangleCombo(player, teammates[0], teammates[2]);
             CheckTriangleCombo(player, teammates[1], teammates[2]);
+        }
     }
 
     private void CheckTriangleCombo(ComboPlayer a, ComboPlayer b, ComboPlayer c)
@@ -178,14 +243,27 @@ public class ComboManager : MonoBehaviour
             return;
         }
 
-        HandleTriangleComboHint(a, b, c);
+        AddTriangleComboHint(a, b, c);
     }
 
-    private void HandleTriangleComboHint(ComboPlayer a, ComboPlayer b, ComboPlayer c)
+    private static void AddTriangleComboHint(ComboPlayer a, ComboPlayer b, ComboPlayer c)
     {
-        Highlight(a, b, this.hintColor);
-        Highlight(a, c, this.hintColor);
-        Highlight(b, c, this.hintColor);
+        var comboHintB = new ComboHint
+        {
+            OriginPlayer = a,
+            TargetPlayer = b,
+            ComboType = ComboType.Triangle,
+            MoveTowards = true
+        };
+        var comboHintC = new ComboHint
+        {
+            OriginPlayer = a,
+            TargetPlayer = c,
+            ComboType = ComboType.Triangle,
+            MoveTowards = true
+        };
+        a.ComboHints.Add(comboHintB);
+        a.ComboHints.Add(comboHintC);
     }
 
     private void HandleTriggerableTriangleCombo(ComboPlayer a, ComboPlayer b, ComboPlayer c)

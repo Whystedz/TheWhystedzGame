@@ -8,6 +8,7 @@ public class ComboPlayer : MonoBehaviour
     [SerializeField] private float cooldownMax;
     
     [SerializeField] private bool displayCombos;
+    [SerializeField] private bool displayComboHints;
 
     private float cooldownProgress;
 
@@ -15,10 +16,10 @@ public class ComboPlayer : MonoBehaviour
 
     private List<ComboPlayer> teammates;
 
-    public List<Combo> CurrentlyAvailableCombos;
+    public List<Combo> Combos;
+    public List<ComboHint> ComboHints;
 
     private ComboManager comboManager;
-
 
 
     private void Awake()
@@ -31,7 +32,8 @@ public class ComboPlayer : MonoBehaviour
             .ToList();
 
         this.comboManager = FindObjectOfType<ComboManager>();
-        this.CurrentlyAvailableCombos = new List<Combo>();
+        this.Combos = new List<Combo>();
+        this.ComboHints = new List<ComboHint>();
     }
 
     public List<ComboPlayer> Teammates (bool includeSelf)
@@ -50,10 +52,13 @@ public class ComboPlayer : MonoBehaviour
 
         CooldownUpdate();
 
+        if (displayComboHints)
+            this.comboManager.HighlightComboHints(this);
         if (displayCombos)
             this.comboManager.HighlightPlayersCombos(this);
 
-        this.CurrentlyAvailableCombos.Clear();
+        this.Combos.Clear();
+        this.ComboHints.Clear();
     }
 
     // TODO will be used for the digging hole phase
