@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class ComboPlayer : MonoBehaviour
 {
-    [Range(0, 10f)]
+    [Range(0, 100f)]
     [SerializeField] private float cooldownMax;
     
     [SerializeField] private bool displayCombos;
     [SerializeField] private bool displayComboHints;
+    [SerializeField] private bool canTriggerCombos;
+
+    private InputManager inputManager;
+
+    void Start() => inputManager = InputManager.GetInstance();
 
     private float cooldownProgress;
 
@@ -34,6 +39,8 @@ public class ComboPlayer : MonoBehaviour
         this.comboManager = FindObjectOfType<ComboManager>();
         this.Combos = new List<Combo>();
         this.ComboHints = new List<ComboHint>();
+
+        this.cooldownProgress = this.cooldownMax;
     }
 
     public List<ComboPlayer> Teammates (bool includeSelf)
@@ -57,12 +64,19 @@ public class ComboPlayer : MonoBehaviour
         if (displayCombos)
             this.comboManager.HighlightPlayersCombos(this);
 
+        if (this.canTriggerCombos
+            && inputManager.GetDigging()
+            && Combos.Count() > 0
+            && !this.IsOnCooldown)
+            TriggerCombos();
+
         this.Combos.Clear();
         this.ComboHints.Clear();
     }
 
-    // TODO will be used for the digging hole phase
-    private void StartCooldown()
+    private void TriggerCombos() => this.comboManager.TriggerCombos(this);
+
+    internal void StartCooldown()
     {
         this.IsOnCooldown = true;
         this.cooldownProgress = this.cooldownMax;
@@ -70,6 +84,9 @@ public class ComboPlayer : MonoBehaviour
 
     private void CooldownUpdate()
     {
+        if (!this.IsOnCooldown)
+            return;
+        
         this.cooldownProgress -= Time.deltaTime;
         
         if (this.cooldownProgress <= 0)

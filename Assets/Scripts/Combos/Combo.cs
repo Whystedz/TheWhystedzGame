@@ -14,4 +14,5 @@ public class Combo
     public Vector3 Center { get; set; }
     public ComboType ComboType { get; set; }
     public ComboPlayer InitiatingPlayer { get; set; }
+    public bool IsTriggered { get; set; }
 }

@@ -1,5 +1,3 @@
-using Mirror.Cloud.Examples.Pong;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -10,6 +8,7 @@ public class ComboManager : MonoBehaviour
     [SerializeField] [Range(0, 64)] private float highlightTolerance;
     [SerializeField] private Color hintColor = Color.white;
     [SerializeField] private bool showExtendedTeamCombos = true;
+    [SerializeField] private bool triggerExtendedTeamCombos = true;
 
     [Header("Line Combo")]
     [SerializeField] [Range(0, 22)] private float lineDistance = 5;
@@ -55,6 +54,33 @@ public class ComboManager : MonoBehaviour
     {
         foreach (var comboHint in comboPlayer.ComboHints)
             HighlightComboHint(comboHint);
+    }
+
+    internal void TriggerCombos(ComboPlayer comboPlayer)
+    {
+        foreach (var combo in comboPlayer.Combos)
+            TriggerCombo(combo);
+    }
+
+    private void TriggerCombo(Combo combo)
+    {
+        if (combo.IsTriggered)
+            return;
+        
+        combo.IsTriggered = true;
+        combo.InitiatingPlayer.StartCooldown();
+
+        foreach (var player in combo.Players)
+        {
+            player.StartCooldown();
+
+            if (this.triggerExtendedTeamCombos)
+                foreach (var extendedCombo in player.Combos)
+                    TriggerCombo(extendedCombo);
+        }
+
+        foreach (var tile in combo.Tiles)
+            tile.DigTile();
     }
 
     private void HighlightComboHint(ComboHint comboHint)
