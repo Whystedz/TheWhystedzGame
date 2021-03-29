@@ -6,6 +6,7 @@ TagManager:
   tags:
   - BiomeRegion
   - Crystal
+  - Collectable
   layers:
   - Default
   - TransparentFX

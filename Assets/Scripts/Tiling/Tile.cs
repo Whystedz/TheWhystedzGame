@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -27,6 +26,8 @@ public class Tile : MonoBehaviour, IPointerClickHandler
 
     internal TileState tileState;
 
+    private bool isHighlighted;
+
     private void Start()
     {
         this.meshRenderer = GetComponentInChildren<MeshRenderer>();
@@ -35,6 +36,8 @@ public class Tile : MonoBehaviour, IPointerClickHandler
 
     void Update()
     {
+        ChangeMaterialAccordingToCurrentState();
+
         switch (this.tileState)
         {
             case TileState.Normal:
@@ -116,20 +119,23 @@ public class Tile : MonoBehaviour, IPointerClickHandler
         this.tileState = TileState.Normal;
     }
 
-    public IEnumerator HighlightTile()
+    public IEnumerator HighlightTileForOneFrame()
     {
         if (this.tileState != TileState.Normal)
             yield break;
 
-        this.meshRenderer.material = highlightedMaterial;
-
-        yield return new WaitForEndOfFrame();
-
-        ChangeMaterialAccordingToCurrentState();
+        this.isHighlighted = true;
     }
 
     private void ChangeMaterialAccordingToCurrentState()
     {
+        if (this.isHighlighted)
+        {
+            this.meshRenderer.material = highlightedMaterial;
+            this.isHighlighted = false;
+            return; 
+        }
+
         switch (this.tileState)
         {
             case TileState.Normal:
@@ -142,4 +148,5 @@ public class Tile : MonoBehaviour, IPointerClickHandler
                 break;
         }
     }
+
 }

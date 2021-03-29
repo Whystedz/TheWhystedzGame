@@ -48,7 +48,7 @@ public class Digging : MonoBehaviour
         if (tile.tileState != TileState.Normal)
             return;
 
-        StartCoroutine(tile.HighlightTile());
+        StartCoroutine(tile.HighlightTileForOneFrame());
 
         if (inputManager.GetDigging())
             tile.DigTile();
