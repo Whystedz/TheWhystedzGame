@@ -140,6 +140,7 @@ GameObject:
   - component: {fileID: 2927167167306915266}
   - component: {fileID: -6651294746768266907}
   - component: {fileID: 3752298209473233816}
+  - component: {fileID: -4131916122285525065}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -196,7 +197,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ce0b76c51c4c234794c20f12366aced, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementState: 2
   movementSpeed: 3
   fallingVelocity: 10
 --- !u!114 &6327377196063707617
@@ -253,6 +253,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 50f1316ece37e614fa6b56b48474e7cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-4131916122285525065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6327377196063707621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa8ee0da422f18041a8b58dd3c9487d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6327377196359484314

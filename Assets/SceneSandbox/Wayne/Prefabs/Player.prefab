@@ -1,5 +1,18 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &4359644389461535743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 366505858313804102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02705f09df9f14148990edb388289490, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterController: {fileID: 3194201816923887868}
 --- !u!1 &3194201814950283906
 GameObject:
   m_ObjectHideFlags: 0
@@ -221,19 +234,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4359644389461535743
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 366505858313804102}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02705f09df9f14148990edb388289490, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterController: {fileID: 3194201816923887868}
 --- !u!1 &3194201816505824577
 GameObject:
   m_ObjectHideFlags: 0
@@ -278,6 +278,7 @@ GameObject:
   - component: {fileID: 3194201816923887865}
   - component: {fileID: 5981953133619500250}
   - component: {fileID: 3194201816304412449}
+  - component: {fileID: -7433878014753255333}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -382,6 +383,18 @@ MonoBehaviour:
   timeToDie: 15
   undergroundYLevel: -68
   respawnPosition: {x: 0, y: 1.5, z: 0}
+--- !u!114 &-7433878014753255333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3194201816923887869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa8ee0da422f18041a8b58dd3c9487d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &709175048491623447
 PrefabInstance:
   m_ObjectHideFlags: 0
