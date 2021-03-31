@@ -44,7 +44,6 @@ public class PlayerMovement : MonoBehaviour
             FallingMovementUpdate();
         else
             RegularMovement();
-
     }
 
     private void RegularMovement()
@@ -57,18 +56,16 @@ public class PlayerMovement : MonoBehaviour
 
         this.isFalling = false;
 
-        MovePlayerCharacterAndCameraIndependent();
-
+        MovePlayer();
     }
 
-    void MovePlayerCharacterAndCameraIndependent()
+    void MovePlayer()
     {
         this.direction = new Vector3(this.inputManager.GetInputMovement().x, 0f, this.inputManager.GetInputMovement().y);
         this.characterController.Move(this.direction * Time.deltaTime * this.movementSpeed);
 
         if (this.direction != Vector3.zero)
             transform.forward = this.direction;
-
     }
 
     private void FallingMovementUpdate()
@@ -84,8 +81,6 @@ public class PlayerMovement : MonoBehaviour
             this.characterController.Move(movementPerUpdate * 6);
         else
             this.characterController.Move(movementPerUpdate);
-
-
     }
 
     private bool HasFallenInHole()
@@ -117,7 +112,6 @@ public class PlayerMovement : MonoBehaviour
             var tile = closestCollider.transform.parent.gameObject.GetComponent<Tile>();
             return tile.tileState == TileState.Respawning;
         }
-
     }
 
     private Collider GetClosestCollider(Collider[] hitColliders)
