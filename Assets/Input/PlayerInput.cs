@@ -41,6 +41,38 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""DropRope"",
+                    ""type"": ""Button"",
+                    ""id"": ""d45e5497-923a-4726-83a8-d1b359123056"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""MuteSelf"",
+                    ""type"": ""Button"",
+                    ""id"": ""3d6349d7-198f-489f-a82b-bc52c4471b2e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""InitiateCombo"",
+                    ""type"": ""Button"",
+                    ""id"": ""767a5bd7-2b5f-463b-a8c3-679bd7233bb9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""MainMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""98344ab9-9143-40b4-8bb1-681868d7472b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -178,6 +210,17 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""7e8237c2-858b-4a05-9f62-0dbb49942189"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Digging"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""3175f016-2e22-489d-a7c5-2a6a0a6516fc"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
@@ -189,12 +232,89 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""7e8237c2-858b-4a05-9f62-0dbb49942189"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""id"": ""1d39b373-832e-4b1d-9ef7-24409be3d479"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Digging"",
+                    ""action"": ""DropRope"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""47b810ee-9ef4-4e11-b150-0a19eb4214ad"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DropRope"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""69832e5e-0d35-49d9-bd2a-89d2b0e9437b"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MuteSelf"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ce80a824-3be4-4ea0-a8b5-81b8a6f331f5"",
+                    ""path"": ""<Keyboard>/m"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MuteSelf"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a0cd5632-2eb9-4213-bf71-5e5650b7b818"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InitiateCombo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9722928c-cf48-4a78-8c6d-bc89c981a17d"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InitiateCombo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6e013af3-55d1-4702-8587-c3984cf6ad5d"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MainMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a173e90a-01b0-424c-b5dc-939d0f4af2cf"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MainMenu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -208,6 +328,10 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         m_PlayerControls_Movement = m_PlayerControls.FindAction("Movement", throwIfNotFound: true);
         m_PlayerControls_Camera = m_PlayerControls.FindAction("Camera", throwIfNotFound: true);
         m_PlayerControls_Digging = m_PlayerControls.FindAction("Digging", throwIfNotFound: true);
+        m_PlayerControls_DropRope = m_PlayerControls.FindAction("DropRope", throwIfNotFound: true);
+        m_PlayerControls_MuteSelf = m_PlayerControls.FindAction("MuteSelf", throwIfNotFound: true);
+        m_PlayerControls_InitiateCombo = m_PlayerControls.FindAction("InitiateCombo", throwIfNotFound: true);
+        m_PlayerControls_MainMenu = m_PlayerControls.FindAction("MainMenu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -260,6 +384,10 @@ public class @PlayerInput : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerControls_Movement;
     private readonly InputAction m_PlayerControls_Camera;
     private readonly InputAction m_PlayerControls_Digging;
+    private readonly InputAction m_PlayerControls_DropRope;
+    private readonly InputAction m_PlayerControls_MuteSelf;
+    private readonly InputAction m_PlayerControls_InitiateCombo;
+    private readonly InputAction m_PlayerControls_MainMenu;
     public struct PlayerControlsActions
     {
         private @PlayerInput m_Wrapper;
@@ -267,6 +395,10 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         public InputAction @Movement => m_Wrapper.m_PlayerControls_Movement;
         public InputAction @Camera => m_Wrapper.m_PlayerControls_Camera;
         public InputAction @Digging => m_Wrapper.m_PlayerControls_Digging;
+        public InputAction @DropRope => m_Wrapper.m_PlayerControls_DropRope;
+        public InputAction @MuteSelf => m_Wrapper.m_PlayerControls_MuteSelf;
+        public InputAction @InitiateCombo => m_Wrapper.m_PlayerControls_InitiateCombo;
+        public InputAction @MainMenu => m_Wrapper.m_PlayerControls_MainMenu;
         public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -285,6 +417,18 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @Digging.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDigging;
                 @Digging.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDigging;
                 @Digging.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDigging;
+                @DropRope.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDropRope;
+                @DropRope.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDropRope;
+                @DropRope.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDropRope;
+                @MuteSelf.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnMuteSelf;
+                @MuteSelf.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnMuteSelf;
+                @MuteSelf.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnMuteSelf;
+                @InitiateCombo.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnInitiateCombo;
+                @InitiateCombo.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnInitiateCombo;
+                @InitiateCombo.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnInitiateCombo;
+                @MainMenu.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnMainMenu;
+                @MainMenu.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnMainMenu;
+                @MainMenu.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnMainMenu;
             }
             m_Wrapper.m_PlayerControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -298,6 +442,18 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @Digging.started += instance.OnDigging;
                 @Digging.performed += instance.OnDigging;
                 @Digging.canceled += instance.OnDigging;
+                @DropRope.started += instance.OnDropRope;
+                @DropRope.performed += instance.OnDropRope;
+                @DropRope.canceled += instance.OnDropRope;
+                @MuteSelf.started += instance.OnMuteSelf;
+                @MuteSelf.performed += instance.OnMuteSelf;
+                @MuteSelf.canceled += instance.OnMuteSelf;
+                @InitiateCombo.started += instance.OnInitiateCombo;
+                @InitiateCombo.performed += instance.OnInitiateCombo;
+                @InitiateCombo.canceled += instance.OnInitiateCombo;
+                @MainMenu.started += instance.OnMainMenu;
+                @MainMenu.performed += instance.OnMainMenu;
+                @MainMenu.canceled += instance.OnMainMenu;
             }
         }
     }
@@ -307,5 +463,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnCamera(InputAction.CallbackContext context);
         void OnDigging(InputAction.CallbackContext context);
+        void OnDropRope(InputAction.CallbackContext context);
+        void OnMuteSelf(InputAction.CallbackContext context);
+        void OnInitiateCombo(InputAction.CallbackContext context);
+        void OnMainMenu(InputAction.CallbackContext context);
     }
 }

@@ -28,6 +28,38 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "DropRope",
+                    "type": "Button",
+                    "id": "d45e5497-923a-4726-83a8-d1b359123056",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "MuteSelf",
+                    "type": "Button",
+                    "id": "3d6349d7-198f-489f-a82b-bc52c4471b2e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "InitiateCombo",
+                    "type": "Button",
+                    "id": "767a5bd7-2b5f-463b-a8c3-679bd7233bb9",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "MainMenu",
+                    "type": "Button",
+                    "id": "98344ab9-9143-40b4-8bb1-681868d7472b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -165,6 +197,17 @@
                 },
                 {
                     "name": "",
+                    "id": "7e8237c2-858b-4a05-9f62-0dbb49942189",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Digging",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "3175f016-2e22-489d-a7c5-2a6a0a6516fc",
                     "path": "<Keyboard>/space",
                     "interactions": "",
@@ -176,12 +219,89 @@
                 },
                 {
                     "name": "",
-                    "id": "7e8237c2-858b-4a05-9f62-0dbb49942189",
-                    "path": "<Gamepad>/buttonSouth",
+                    "id": "1d39b373-832e-4b1d-9ef7-24409be3d479",
+                    "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Digging",
+                    "action": "DropRope",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "47b810ee-9ef4-4e11-b150-0a19eb4214ad",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DropRope",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "69832e5e-0d35-49d9-bd2a-89d2b0e9437b",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MuteSelf",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ce80a824-3be4-4ea0-a8b5-81b8a6f331f5",
+                    "path": "<Keyboard>/m",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MuteSelf",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a0cd5632-2eb9-4213-bf71-5e5650b7b818",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "InitiateCombo",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9722928c-cf48-4a78-8c6d-bc89c981a17d",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "InitiateCombo",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6e013af3-55d1-4702-8587-c3984cf6ad5d",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MainMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a173e90a-01b0-424c-b5dc-939d0f4af2cf",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MainMenu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
