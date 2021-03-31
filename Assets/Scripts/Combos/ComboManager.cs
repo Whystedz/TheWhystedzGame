@@ -27,13 +27,18 @@ public class ComboManager : MonoBehaviour
 
     private void Start()
     {
-        this.players = FindObjectsOfType<ComboPlayer>().ToList();
+        FindPlayers();
 
         CombosAvailable = new List<Combo>();
     }
 
+    private void FindPlayers() => this.players = FindObjectsOfType<ComboPlayer>().ToList();
+
     private void Update()
     {
+        if (this.players.Count() == 0)
+            FindPlayers();
+
         CombosAvailable.Clear();
         
         CheckCombos();

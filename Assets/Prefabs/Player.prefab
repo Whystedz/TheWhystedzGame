@@ -137,6 +137,7 @@ GameObject:
   - component: {fileID: 6327377196063707620}
   - component: {fileID: 6327377196063707622}
   - component: {fileID: 6327377196063707617}
+  - component: {fileID: 5185924481443453287}
   - component: {fileID: 2927167167306915266}
   - component: {fileID: -6651294746768266907}
   - component: {fileID: 3752298209473233816}
@@ -214,6 +215,22 @@ MonoBehaviour:
   minDistanceToDiggableTile: 1.7
   maxDistanceToDiggableTile: 1.5
   enableDebugMode: 1
+--- !u!114 &5185924481443453287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6327377196063707621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d837c754de3b74e9dc27598622cd34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldownMax: 5
+  displayCombos: 0
+  displayComboHints: 0
+  canTriggerCombos: 0
 --- !u!114 &2927167167306915266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,7 +259,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b2f80813e374b348949ead86709be77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreChangedEvent: {fileID: 11400000, guid: aab81378dc55d834daaa70e3d9801213, type: 2}
 --- !u!114 &3752298209473233816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -255,6 +271,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50f1316ece37e614fa6b56b48474e7cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  team: 0
 --- !u!114 &-4131916122285525065
 MonoBehaviour:
   m_ObjectHideFlags: 0
