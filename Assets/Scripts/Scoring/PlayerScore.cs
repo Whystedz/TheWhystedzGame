@@ -7,6 +7,7 @@ public class PlayerScore : MonoBehaviour
     
     private Team team;
     private TeamScore teamScore;
+    [SerializeField] private PlayerScoreUI playerScoreUI;
 
     void Start()
     {
@@ -22,7 +23,7 @@ public class PlayerScore : MonoBehaviour
     {
         CurrentScore += amountToAdd;
 
-        teamScore.Add(amountToAdd);
+        this.teamScore.Add(amountToAdd);
     }
 
     public void Substract(int amountToSubstract)
@@ -32,7 +33,7 @@ public class PlayerScore : MonoBehaviour
         if (CurrentScore < 0)
             CurrentScore = 0;
 
-        teamScore.Substract(amountToSubstract);
+        this.teamScore.Substract(amountToSubstract);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -44,7 +45,8 @@ public class PlayerScore : MonoBehaviour
     private void AddCollectableToScore(Collectable collectable)
     {
         Add(collectable.PointsWorth);
-
+        this.playerScoreUI.UpdateScore(CurrentScore);
+        
         Destroy(collectable.gameObject);
     }
 }
