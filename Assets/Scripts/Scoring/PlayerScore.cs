@@ -15,7 +15,7 @@ public class PlayerScore : MonoBehaviour
         this.team = this.GetComponent<Teammate>().Team;
 
         teamScore = FindObjectsOfType<TeamScore>()
-            .Single(teamscore => teamscore.Team == this.team);
+            .SingleOrDefault(teamscore => teamscore.Team == this.team);
     }
 
     public void Add(int amountToAdd)
