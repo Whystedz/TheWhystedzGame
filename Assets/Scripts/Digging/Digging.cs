@@ -6,27 +6,29 @@ using UnityEngine.InputSystem;
 
 public class Digging : MonoBehaviour
 {
-
+ 
     [SerializeField] private float minDistanceToDiggableTile = 1.0f;
     [SerializeField] private float maxDistanceToDiggableTile = 1.0f;
     private InputManager inputManager;
     private int layerMask;
     private PlayerMovement playerMovement;
-
+    [SerializeField] private Rope rope;
     [SerializeField] private bool enableDebugMode = true;
-
+    [SerializeField] private float maxDistanceToRope = 1.5f;
+    [SerializeField] private float speedTowardsRope = 6.0f;
     private void Awake()
     {
-        layerMask = LayerMask.GetMask("TileMovementCollider");
+        layerMask = LayerMask.GetMask("TileMovementCollider") | LayerMask.GetMask("TileRope");
         playerMovement = this.GetComponent<PlayerMovement>();
+        
     }
     void Start() => inputManager = InputManager.GetInstance();
 
     void Update()
     {
-        if (playerMovement.IsFalling())
-            return;
 
+        if (this.playerMovement.isInUnderground)
+            return;
 
         var hits = Physics.RaycastAll(transform.position,
             transform.TransformDirection(Vector3.forward),
@@ -45,13 +47,26 @@ public class Digging : MonoBehaviour
         var hitGameObject = closestCollider.transform.parent.gameObject;
 
         var tile = hitGameObject.GetComponent<Tile>();
-        if (tile.tileState != TileState.Normal)
+
+        if (playerMovement.IsFalling())
+        {
+            this.rope.gameObject.SetActive(false);
+            tile.tileState = TileState.Respawning;
             return;
+        }
 
         StartCoroutine(tile.HighlightTileForOneFrame());
 
         if (inputManager.GetDigging())
-            tile.DigTile();
+            InterctWithTile(tile);
+            
+
+        if (this.rope.ropeState == RopeState.Saved)
+        {
+            tile.tileState = TileState.Respawning;
+            tile.Respawn();
+            this.rope.CleanUpAfterSave();
+        }
     }
 
 
@@ -94,4 +109,45 @@ public class Digging : MonoBehaviour
 
         return closestCollider;
     }
+
+    public IEnumerator ThrowRope(GameObject ropeObject, Tile tile)
+    {
+        Vector3 tileSurfacePosition = new Vector3(tile.transform.position.x, this.transform.position.y, tile.transform.position.z);
+        while (Vector3.Distance(this.transform.position, tileSurfacePosition) > maxDistanceToRope)
+        {
+            playerMovement.MoveTowards(ropeObject.transform.forward, speedTowardsRope);
+            yield return null;
+        }
+        playerMovement.MoveTowards(Vector3.zero, 0);
+        ropeObject.transform.position = new Vector3(tile.transform.position.x, ropeObject.transform.position.y, tile.transform.position.z);
+        ropeObject.SetActive(true);
+        yield return null;
+    }
+
+    public void InterctWithTile(Tile tile)
+    {
+        
+        if (tile.tileState == TileState.Normal)
+            tile.DigTile();
+        else if (rope.ropeState == RopeState.Normal && ((this.rope.gameObject.activeSelf && tile.tileState == TileState.RopeIn) || (!this.rope.gameObject.activeSelf && tile.tileState == TileState.Respawning)))
+        {
+            playerMovement.isMovementDisabled = !playerMovement.isMovementDisabled;
+
+            if (tile.tileState == TileState.RopeIn)
+                tile.tileState = TileState.Respawning;
+            else
+                tile.tileState = TileState.RopeIn;
+
+            if (tile.tileState == TileState.RopeIn)
+                StartCoroutine(ThrowRope(this.rope.gameObject, tile));
+            else
+            {
+                rope.ropeState = RopeState.Normal;
+                tile.tileState = TileState.Respawning;
+                this.rope.gameObject.SetActive(false);
+            }
+        }
+    }
 }
+
+    

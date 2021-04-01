@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -16,14 +17,16 @@ public class PlayerMovement : MonoBehaviour
     private GameObject virtualCamera;
     private GameObject fallingCamera;
     private int layerMask;
-
+    public bool isMovementDisabled;
     // Falling vars
     [SerializeField] private float fallingVelocity = 10f;
     private bool isFalling;
-
+    public bool isInUnderground;
+    [SerializeField] private Image img;
+    [SerializeField] private float timeToFadeIn = 2f;
     void Awake()
     {
-        layerMask = LayerMask.GetMask("TileMovementCollider");
+        layerMask = LayerMask.GetMask("TileMovementCollider") | LayerMask.GetMask("Underground");
         this.characterController = GetComponent<CharacterController>();
         this.fallingCamera = FindObjectsOfType<CinemachineVirtualCamera>(true)[1].gameObject;
         this.virtualCamera = FindObjectsOfType<CinemachineVirtualCamera>(true)[0].gameObject;
@@ -40,12 +43,16 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        if (isMovementDisabled)
+            return;
+
         if (HasFallenInHole())
             FallingMovementUpdate();
         else
             RegularMovement();
     }
 
+   
     private void RegularMovement()
     {
         if (isFalling)
@@ -94,14 +101,16 @@ public class PlayerMovement : MonoBehaviour
             //No tile found! If we're still in testing mode, the hole falls down, so we return true here
             return true;
         }
-        else if (hitColliders.Length == 1)
-        {
-            closestCollider = hitColliders[0];
-        }
+        else if (hitColliders.Length == 1)   
+            closestCollider = hitColliders[0];   
+
         else if (hitColliders.Length > 1)
-        {
             closestCollider = GetClosestCollider(hitColliders);
-        }
+
+        if (closestCollider.gameObject.layer == LayerMask.NameToLayer("Underground"))
+            isInUnderground = true;
+        else
+            isInUnderground = false;
 
         if (this.transform.position.y < -20)
         {
@@ -133,4 +142,39 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public bool IsFalling() => this.isFalling;
+    public void MoveTowards(Vector3 direction, float speed) => this.characterController.Move(direction * Time.deltaTime * speed);
+
+    public IEnumerator ClimbRope(float height,Vector3 surfacePosition)
+    {
+        StartCoroutine(FadeIn());
+        while (this.transform.position.y < -70 + height)
+        {
+            this.characterController.Move(Vector3.up * Time.deltaTime * this.movementSpeed);
+            yield return null;
+        }
+        yield return new WaitForSeconds(0.2f);
+        this.transform.position = new Vector3(surfacePosition.x, surfacePosition.y+1f, surfacePosition.z);
+        yield return StartCoroutine(FadeOut());
+    }
+
+    public IEnumerator FadeIn()
+    {
+        for (float opacity = 0; opacity <= timeToFadeIn; opacity += Time.deltaTime)
+        {
+            // set color with i as alpha
+            this.img.color = new Color(0, 0, 0, opacity);
+            yield return null;
+        }
+    }
+
+    public IEnumerator FadeOut()
+    {
+        for (float opacity = timeToFadeIn; opacity >= 0; opacity -= Time.deltaTime)
+        {
+            // set color with i as alpha
+            this.img.color = new Color(0, 0, 0, opacity);
+            yield return null;
+        }
+    }
+
 }

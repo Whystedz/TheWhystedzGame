@@ -6,7 +6,8 @@ public enum TileState
 {
     Normal, 
     Unstable, 
-    Respawning
+    Respawning,
+    RopeIn
 }
 
 public class Tile : MonoBehaviour, IPointerClickHandler
@@ -18,7 +19,9 @@ public class Tile : MonoBehaviour, IPointerClickHandler
 
     [SerializeField] private Material normalMaterial;
     [SerializeField] private Material unstableMaterial;
+    [SerializeField] private Material destroyedMaterial;
     [SerializeField] private Material highlightedMaterial;
+    [SerializeField] private Material ropeMaterial;
 
     [SerializeField] private bool isClickToDigEnabled;
 
@@ -48,18 +51,20 @@ public class Tile : MonoBehaviour, IPointerClickHandler
             case TileState.Respawning:
                 RespawningUpdate();
                 break;
+            case TileState.RopeIn:
+                break;
         }
     }
 
     // Should be called by the agent wishing to dig the tile
     public void DigTile()
     {
+
         this.progress = this.timeToBreak;
-
         this.meshRenderer.material = unstableMaterial;
-
         this.tileState = TileState.Unstable;
     }
+
 
     // For debug purposes, dig a tile up upon clicking on it
     public void OnPointerClick(PointerEventData eventData)
@@ -76,13 +81,15 @@ public class Tile : MonoBehaviour, IPointerClickHandler
 
         if (progress <= 0)
             Break();
+    
     }
 
     private void Break()
     {
-        StartCoroutine(PlayBreakingAnimation());
-
+        //StartCoroutine(PlayBreakingAnimation());
+        this.gameObject.layer = LayerMask.NameToLayer("TileRope");
         this.tileState = TileState.Respawning;
+        this.meshRenderer.material = destroyedMaterial;
         this.progress = this.timeToRespawn;
     }
 
@@ -104,24 +111,24 @@ public class Tile : MonoBehaviour, IPointerClickHandler
 
     private void RespawningUpdate()
     {
-        progress -= Time.deltaTime;
+        this.progress -= Time.deltaTime;
 
         if (progress <= 0)
             Respawn();
     }
-
-    private void Respawn()
+     
+    public void Respawn()
     {
+        this.gameObject.layer = LayerMask.NameToLayer("TileMovementCollider");
         transform.position = new Vector3(transform.position.x, 0, transform.position.z);
-
         this.meshRenderer.material = normalMaterial;
-
         this.tileState = TileState.Normal;
     }
 
     public IEnumerator HighlightTileForOneFrame()
     {
-        if (this.tileState != TileState.Normal)
+        
+        if (this.tileState != TileState.Normal && this.tileState != TileState.Respawning)
             yield break;
 
         this.isHighlighted = true;
@@ -131,11 +138,17 @@ public class Tile : MonoBehaviour, IPointerClickHandler
     {
         if (this.isHighlighted)
         {
-            this.meshRenderer.material = highlightedMaterial;
+            if (this.tileState == TileState.Respawning)
+                this.meshRenderer.material = ropeMaterial;
+    
+            else if (this.tileState == TileState.Normal)
+                this.meshRenderer.material = highlightedMaterial;
+            
             this.isHighlighted = false;
             return; 
         }
-
+        
+        
         switch (this.tileState)
         {
             case TileState.Normal:
@@ -145,6 +158,10 @@ public class Tile : MonoBehaviour, IPointerClickHandler
                 this.meshRenderer.material = unstableMaterial;
                 break;
             case TileState.Respawning:
+                this.meshRenderer.material = destroyedMaterial;
+                break;
+            case TileState.RopeIn:
+                this.meshRenderer.material = destroyedMaterial;
                 break;
         }
     }

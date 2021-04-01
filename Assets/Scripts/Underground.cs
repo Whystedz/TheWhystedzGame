@@ -8,16 +8,19 @@ public class Underground : MonoBehaviour
     [SerializeField] private int undergroundYLevel = -68;
     [SerializeField] private Vector3 respawnPosition;
     private float timer;
-
+    private PlayerMovement playerMovement;
     // Start is called before the first frame update
     void Start()
     {
-        timer = 0;
+        this.timer = 0;
+        this.playerMovement = this.GetComponent<PlayerMovement>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (this.playerMovement.isMovementDisabled)
+            return;
         if (this.transform.position.y <= undergroundYLevel)
         {
 
