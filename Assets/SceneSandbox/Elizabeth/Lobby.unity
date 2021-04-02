@@ -225,7 +225,7 @@ MonoBehaviour:
   onlineScene: 
   transport: {fileID: 743036208}
   networkAddress: localhost
-  maxConnections: 4
+  maxConnections: 100
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
   authenticator: {fileID: 0}
@@ -741,49 +741,17 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1345557162}
-    - target: {fileID: 4081649630391883320, guid: 3fe942720e769684f8e72b125aa437e9, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: RequestStartMatch
-      objectReference: {fileID: 0}
-    - target: {fileID: 4081649630391883320, guid: 3fe942720e769684f8e72b125aa437e9, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: CanvasController, Assembly-CSharp
-      objectReference: {fileID: 0}
     - target: {fileID: 4081649631062719365, guid: 3fe942720e769684f8e72b125aa437e9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1345557162}
-    - target: {fileID: 4081649631062719365, guid: 3fe942720e769684f8e72b125aa437e9, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: RequestReadyChange
-      objectReference: {fileID: 0}
-    - target: {fileID: 4081649631062719365, guid: 3fe942720e769684f8e72b125aa437e9, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: CanvasController, Assembly-CSharp
-      objectReference: {fileID: 0}
     - target: {fileID: 4081649631595124970, guid: 3fe942720e769684f8e72b125aa437e9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1345557162}
-    - target: {fileID: 4081649631595124970, guid: 3fe942720e769684f8e72b125aa437e9, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: RequestLeaveMatch
-      objectReference: {fileID: 0}
-    - target: {fileID: 4081649631595124970, guid: 3fe942720e769684f8e72b125aa437e9, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: CanvasController, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 4081649632019695773, guid: 3fe942720e769684f8e72b125aa437e9, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4346224594474817433, guid: 3fe942720e769684f8e72b125aa437e9, type: 3}
       propertyPath: m_Name
       value: RoomGUI
-      objectReference: {fileID: 0}
-    - target: {fileID: 4346224594474817433, guid: 3fe942720e769684f8e72b125aa437e9, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3fe942720e769684f8e72b125aa437e9, type: 3}

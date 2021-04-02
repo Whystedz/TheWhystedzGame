@@ -11,6 +11,8 @@ public class RoomGUI : MonoBehaviour
     [SerializeField] private TMP_Text[] playerNameTexts;
     [SerializeField] private TMP_Text[] playerReadyTexts;
 
+    private bool isHost;
+
     public void SetRoomCode(string code)
     {
         matchIDText.text = code;
@@ -18,7 +20,7 @@ public class RoomGUI : MonoBehaviour
 
     public void RefreshRoomPlayers(PlayerInfo[] playerInfos)
     {
-        for (int i = 0; i < playerInfos.Length; i++)
+        for (int i = 0; i < playerNameTexts.Length; i++)
         {
             playerNameTexts[i].text = string.Empty;
             playerReadyTexts[i].text = string.Empty;
@@ -36,6 +38,12 @@ public class RoomGUI : MonoBehaviour
                 isEveryoneReady = false;
         }
 
-        startGameButton.SetActive(isEveryoneReady);
+        if (isHost)
+            startGameButton.SetActive(isEveryoneReady);
+    }
+
+    public void SetHost(bool isHost)
+    {
+        this.isHost = isHost;
     }
 }

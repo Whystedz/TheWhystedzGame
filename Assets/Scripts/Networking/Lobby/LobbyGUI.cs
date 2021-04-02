@@ -48,7 +48,7 @@ public class LobbyGUI : MonoBehaviour
 
     IEnumerator SearchingForGame()
     {
-        searchCanvas.enabled = true;
+        EnableSearchCanvas(true);
 
         searching = true;
         float searchInterval = 1f;
@@ -68,6 +68,11 @@ public class LobbyGUI : MonoBehaviour
             yield return null;
         }
 
-        searchCanvas.enabled = false;
+        EnableSearchCanvas(false);
+    }
+
+    public void EnableSearchCanvas(bool isEnabled)
+    {
+        this.searchCanvas.enabled = isEnabled;
     }
 }

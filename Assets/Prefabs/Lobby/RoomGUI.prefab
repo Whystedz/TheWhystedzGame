@@ -1176,7 +1176,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4081649630391883321
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1280,8 +1280,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UILobby, Assembly-CSharp
-        m_MethodName: StartGame
+        m_TargetAssemblyTypeName: CanvasController, Assembly-CSharp
+        m_MethodName: RequestStartMatch
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2423,8 +2423,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UILobby, Assembly-CSharp
-        m_MethodName: SetReadyState
+        m_TargetAssemblyTypeName: CanvasController, Assembly-CSharp
+        m_MethodName: RequestReadyChange
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3872,8 +3872,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UILobby, Assembly-CSharp
-        m_MethodName: DisconnectLobby
+        m_TargetAssemblyTypeName: CanvasController, Assembly-CSharp
+        m_MethodName: RequestLeaveMatch
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4411,7 +4411,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4081649632019695772
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4488,7 +4488,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3197273081740198181
 RectTransform:
   m_ObjectHideFlags: 0

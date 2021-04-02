@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Mirror;
 
@@ -13,7 +14,13 @@ public class LobbyPlayer : NetworkBehaviour
     }
 
     public void SetMatchIdGuid(string matchId)
-    {
+    {   
+        if (matchId == string.Empty)
+        {
+            this.networkMatchChecker.matchId = Guid.Empty;
+            return;
+        }
+
         this.networkMatchChecker.matchId = matchId.ToGuid();
     }
 }

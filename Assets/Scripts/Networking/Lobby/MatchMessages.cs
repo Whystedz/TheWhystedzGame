@@ -68,6 +68,7 @@ public enum ClientMatchOperation : byte
     Joined,
     Departed,
     UpdateRoom,
+    UpdateHost,
     Started
 }
 
