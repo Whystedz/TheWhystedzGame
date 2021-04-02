@@ -1,13 +1,22 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public enum TileState
 {
-    Normal, 
+    Normal,
     Unstable, 
     Respawning,
-    RopeIn
+    Rope,
+}
+
+public enum TileHighlightState
+{
+    NoHighlight,
+    SimpleHighlight,
+    ComboHighlight,
+    RopeHighlight
 }
 
 public class Tile : MonoBehaviour, IPointerClickHandler
@@ -28,8 +37,7 @@ public class Tile : MonoBehaviour, IPointerClickHandler
     private MeshRenderer meshRenderer;
 
     internal TileState tileState;
-
-    private bool isHighlighted;
+    internal TileHighlightState tileHighlightState;
 
     private void Start()
     {
@@ -51,7 +59,7 @@ public class Tile : MonoBehaviour, IPointerClickHandler
             case TileState.Respawning:
                 RespawningUpdate();
                 break;
-            case TileState.RopeIn:
+            case TileState.Rope:
                 break;
         }
     }
@@ -59,7 +67,6 @@ public class Tile : MonoBehaviour, IPointerClickHandler
     // Should be called by the agent wishing to dig the tile
     public void DigTile()
     {
-
         this.progress = this.timeToBreak;
         this.meshRenderer.material = unstableMaterial;
         this.tileState = TileState.Unstable;
@@ -81,13 +88,12 @@ public class Tile : MonoBehaviour, IPointerClickHandler
 
         if (progress <= 0)
             Break();
-    
     }
 
     private void Break()
     {
-        //StartCoroutine(PlayBreakingAnimation());
-        this.gameObject.layer = LayerMask.NameToLayer("TileRope");
+        StartCoroutine(PlayBreakingAnimation());
+
         this.tileState = TileState.Respawning;
         this.meshRenderer.material = destroyedMaterial;
         this.progress = this.timeToRespawn;
@@ -103,7 +109,9 @@ public class Tile : MonoBehaviour, IPointerClickHandler
             if (this.tileState == TileState.Normal)
                 yield break;
 
-            this.transform.position += breakingAnimationSpeed * Time.deltaTime * Vector3.down;
+            //this.transform.position += breakingAnimationSpeed * Time.deltaTime * Vector3.down;
+            // TODO change to a simple opacity change
+            // TODO TODO eventually get a nicer animation 
             breakingAnimationProgress -= Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
@@ -119,36 +127,66 @@ public class Tile : MonoBehaviour, IPointerClickHandler
      
     public void Respawn()
     {
-        this.gameObject.layer = LayerMask.NameToLayer("TileMovementCollider");
         transform.position = new Vector3(transform.position.x, 0, transform.position.z);
         this.meshRenderer.material = normalMaterial;
         this.tileState = TileState.Normal;
     }
 
-    public IEnumerator HighlightTileForOneFrame()
+    public IEnumerator HighlightTileSimpleDigPreview()
     {
-        
-        if (this.tileState != TileState.Normal && this.tileState != TileState.Respawning)
+        if (this.tileState != TileState.Normal)
             yield break;
 
-        this.isHighlighted = true;
+        this.tileHighlightState = TileHighlightState.SimpleHighlight;
+    }
+
+    public IEnumerator HighlightTileComboDigPreview()
+    {
+        if (this.tileState != TileState.Normal)
+            yield break;
+
+        // maybe some logic if it is already a simple combo highlight? 
+
+        this.tileHighlightState = TileHighlightState.ComboHighlight;
+    }
+
+    public IEnumerator HighlightTileRopePreview()
+    {
+        if (this.tileState != TileState.Respawning)
+            yield break;
+
+        this.tileHighlightState = TileHighlightState.RopeHighlight;
     }
 
     private void ChangeMaterialAccordingToCurrentState()
-    {
-        if (this.isHighlighted)
+    {       
+        switch (this.tileHighlightState)
         {
-            if (this.tileState == TileState.Respawning)
-                this.meshRenderer.material = ropeMaterial;
-    
-            else if (this.tileState == TileState.Normal)
-                this.meshRenderer.material = highlightedMaterial;
-            
-            this.isHighlighted = false;
-            return; 
+            case TileHighlightState.NoHighlight:
+                ChangeMaterialAccordingToCurrentStateNoHighlight();
+                break;
+            case TileHighlightState.SimpleHighlight:
+                ChangeMaterialForSimpleHighlight();
+                break;
+            case TileHighlightState.ComboHighlight:
+                ChangeMaterialForComboHighlight();
+                break;
+            case TileHighlightState.RopeHighlight:
+                ChangeMaterialForRopePreviewHighlight();
+                break;
         }
-        
-        
+
+        this.tileHighlightState = TileHighlightState.NoHighlight;
+    }
+
+    private void ChangeMaterialForRopePreviewHighlight() => this.meshRenderer.material = ropeMaterial;
+
+    private void ChangeMaterialForComboHighlight() => this.meshRenderer.material = highlightedMaterial;
+
+    private void ChangeMaterialForSimpleHighlight() => this.meshRenderer.material = highlightedMaterial;
+
+    private void ChangeMaterialAccordingToCurrentStateNoHighlight()
+    {
         switch (this.tileState)
         {
             case TileState.Normal:
@@ -160,10 +198,9 @@ public class Tile : MonoBehaviour, IPointerClickHandler
             case TileState.Respawning:
                 this.meshRenderer.material = destroyedMaterial;
                 break;
-            case TileState.RopeIn:
+            case TileState.Rope:
                 this.meshRenderer.material = destroyedMaterial;
                 break;
         }
     }
-
 }

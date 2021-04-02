@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using UnityEngine.UI;
@@ -9,24 +8,37 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController characterController;
     private InputManager inputManager;
 
+    [Header("Movement")]
     [SerializeField]
     private float movementSpeed = 3f;
     private Vector3 direction;
+    public bool IsMovementDisabled;
 
     // Camera vars
     private GameObject virtualCamera;
     private GameObject fallingCamera;
-    private int layerMask;
-    public bool isMovementDisabled;
-    // Falling vars
-    [SerializeField] private float fallingVelocity = 10f;
+    
+    private int tileLayerMask;
+    private int groundLayerMask;
+    
+    [Header("Falling")]
+    [SerializeField] private float fallingSpeed = 10f;
     private bool isFalling;
-    public bool isInUnderground;
-    [SerializeField] private Image img;
+    private Image blackoutImage;
     [SerializeField] private float timeToFadeIn = 2f;
+
+    public bool isInUnderground;
+    [SerializeField] private float undergroundCheckThreshold = 1.5f;
+    [SerializeField] private float heightOffset = 1.3f;
+
+    private GameObject surface;
+    private GameObject underground;
+
     void Awake()
     {
-        layerMask = LayerMask.GetMask("TileMovementCollider") | LayerMask.GetMask("Underground");
+        this.tileLayerMask = LayerMask.GetMask("Tile");
+        this.groundLayerMask = LayerMask.GetMask("Tile") | LayerMask.GetMask("Underground");
+        
         this.characterController = GetComponent<CharacterController>();
         this.fallingCamera = FindObjectsOfType<CinemachineVirtualCamera>(true)[1].gameObject;
         this.virtualCamera = FindObjectsOfType<CinemachineVirtualCamera>(true)[0].gameObject;
@@ -34,6 +46,11 @@ public class PlayerMovement : MonoBehaviour
         this.virtualCamera.SetActive(true);
         this.fallingCamera.SetActive(false);
 
+        this.surface = GameObject.FindGameObjectWithTag("Surface");
+        this.underground = GameObject.FindGameObjectWithTag("Underground");
+
+        this.blackoutImage = GameObject.FindGameObjectWithTag("BlackoutImage")
+            .GetComponent<Image>();
     }
 
     private void Start()
@@ -41,33 +58,35 @@ public class PlayerMovement : MonoBehaviour
         this.inputManager = InputManager.GetInstance();
     }
 
-    void Update()
+    void PlayerMovementUpdate()
     {
-        if (isMovementDisabled)
-            return;
+        CheckIfUnderground();
 
-        if (HasFallenInHole())
+        CheckIfFalling();
+
+        if (this.isFalling)
             FallingMovementUpdate();
         else
             RegularMovement();
     }
 
+    void Update()
+    {
+        if (IsMovementDisabled)
+            return;
+
+
+        // movement update, based on player input! 
+
+        PlayerMovementUpdate();
+    }
+
    
     private void RegularMovement()
     {
-        if (isFalling)
-        {
-            this.virtualCamera.SetActive(true);
+        if (this.fallingCamera.activeSelf)
             this.fallingCamera.SetActive(false);
-        }
 
-        this.isFalling = false;
-
-        MovePlayer();
-    }
-
-    void MovePlayer()
-    {
         this.direction = new Vector3(this.inputManager.GetInputMovement().x, 0f, this.inputManager.GetInputMovement().y);
         this.characterController.Move(this.direction * Time.deltaTime * this.movementSpeed);
 
@@ -77,50 +96,50 @@ public class PlayerMovement : MonoBehaviour
 
     private void FallingMovementUpdate()
     {
-        if (!isFalling)
-        {
+        Debug.Log("FallingMovementUpdate");
+        if (!this.fallingCamera.activeSelf)
             this.fallingCamera.SetActive(true);
-            isFalling = true;
-        }
 
-        var movementPerUpdate = Vector3.down * Time.deltaTime * this.fallingVelocity;
-        if (transform.position.y < -10f)
-            this.characterController.Move(movementPerUpdate * 6);
-        else
-            this.characterController.Move(movementPerUpdate);
+        var fallingVelocity = Vector3.down * Time.deltaTime * this.fallingSpeed;
+        this.characterController.Move(fallingVelocity);
     }
 
-    private bool HasFallenInHole()
+    private void CheckIfFalling()
     {
-
-        var hitColliders = Physics.OverlapSphere(transform.position, 0.01f, layerMask);
-        Collider closestCollider = null;
-
-        if (hitColliders.Length == 0)
+        if (this.isInUnderground)
         {
-            //No tile found! If we're still in testing mode, the hole falls down, so we return true here
-            return true;
+            this.isFalling = false;
+            return;
         }
-        else if (hitColliders.Length == 1)   
-            closestCollider = hitColliders[0];   
 
-        else if (hitColliders.Length > 1)
-            closestCollider = GetClosestCollider(hitColliders);
+        var tileColliders = Physics.OverlapSphere(transform.position, 0.01f, tileLayerMask);
+        Collider closestTileCollider = null;
 
-        if (closestCollider.gameObject.layer == LayerMask.NameToLayer("Underground"))
-            isInUnderground = true;
-        else
-            isInUnderground = false;
-
-        if (this.transform.position.y < -20)
+        if (tileColliders.Length == 0)
         {
-            return closestCollider == null;
+            this.isFalling = true;
+            return;
         }
-        else
+        else if (tileColliders.Length == 1)
         {
-            var tile = closestCollider.transform.parent.gameObject.GetComponent<Tile>();
-            return tile.tileState == TileState.Respawning;
+            closestTileCollider = tileColliders[0];
+
         }
+        else if (tileColliders.Length > 1)
+        {
+            closestTileCollider = GetClosestCollider(tileColliders);
+        }
+
+        var tile = closestTileCollider.transform.parent.gameObject.GetComponent<Tile>();
+        this.isFalling = tile.tileState == TileState.Respawning
+            || tile.tileState == TileState.Rope;
+    }
+
+    private void CheckIfUnderground()
+    {
+        var distanceToUnderground = transform.position.y - this.underground.transform.position.y;
+        distanceToUnderground = Mathf.Abs(distanceToUnderground);
+        this.isInUnderground = distanceToUnderground <= this.undergroundCheckThreshold;
     }
 
     private Collider GetClosestCollider(Collider[] hitColliders)
@@ -147,13 +166,13 @@ public class PlayerMovement : MonoBehaviour
     public IEnumerator ClimbRope(float height,Vector3 surfacePosition)
     {
         StartCoroutine(FadeIn());
-        while (this.transform.position.y < -70 + height)
+        while (this.transform.position.y < underground.transform.position.y + height)
         {
             this.characterController.Move(Vector3.up * Time.deltaTime * this.movementSpeed);
             yield return null;
         }
         yield return new WaitForSeconds(0.2f);
-        this.transform.position = new Vector3(surfacePosition.x, surfacePosition.y+1f, surfacePosition.z);
+        this.transform.position = surfacePosition + Vector3.up * this.heightOffset;
         yield return StartCoroutine(FadeOut());
     }
 
@@ -162,7 +181,7 @@ public class PlayerMovement : MonoBehaviour
         for (float opacity = 0; opacity <= timeToFadeIn; opacity += Time.deltaTime)
         {
             // set color with i as alpha
-            this.img.color = new Color(0, 0, 0, opacity);
+            this.blackoutImage.color = new Color(0, 0, 0, opacity);
             yield return null;
         }
     }
@@ -172,7 +191,7 @@ public class PlayerMovement : MonoBehaviour
         for (float opacity = timeToFadeIn; opacity >= 0; opacity -= Time.deltaTime)
         {
             // set color with i as alpha
-            this.img.color = new Color(0, 0, 0, opacity);
+            this.blackoutImage.color = new Color(0, 0, 0, opacity);
             yield return null;
         }
     }

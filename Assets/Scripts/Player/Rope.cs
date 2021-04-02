@@ -63,13 +63,13 @@ public class Rope : MonoBehaviour
     {
         ropeState = RopeState.Normal;
         this.gameObject.SetActive(false);
-        this.playerMovement.isMovementDisabled = false;
+        this.playerMovement.IsMovementDisabled = false;
     }
 
     public IEnumerator ClimbRope()
     {
         ropeState = RopeState.InUse;
-        this.playerMovement.isMovementDisabled = true;
+        this.playerMovement.IsMovementDisabled = true;
         var directionToRope = (this.transform.position - this.playerMovement.transform.position).normalized;
         directionToRope = new Vector3(directionToRope.x, 0,directionToRope.z);
         var ropePositionWithoutY = new Vector3(this.transform.position.x, this.playerMovement.transform.position.y, this.transform.position.z);

@@ -263,10 +263,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 3
-  isMovementDisabled: 0
-  fallingVelocity: 20
-  img: {fileID: 0}
+  IsMovementDisabled: 0
+  fallingSpeed: 50
   timeToFadeIn: 2
+  isInUnderground: 0
+  undergroundCheckThreshold: 2
 --- !u!114 &6327377196063707617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -329,6 +330,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b2f80813e374b348949ead86709be77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerScoreUI: {fileID: 0}
 --- !u!114 &3752298209473233816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -367,8 +369,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeToDie: 100
-  undergroundYLevel: -68
   respawnPosition: {x: 0, y: 1.4, z: 0}
+  undergroundOffset: 2
 --- !u!1 &6327377196359484314
 GameObject:
   m_ObjectHideFlags: 0
@@ -602,14 +604,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}
---- !u!1 &5262643398048106678 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}
-  m_PrefabInstance: {fileID: 5028765517951497703}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4774795154622386700 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}
+  m_PrefabInstance: {fileID: 5028765517951497703}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5262643398048106678 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}
   m_PrefabInstance: {fileID: 5028765517951497703}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6327377196500167811

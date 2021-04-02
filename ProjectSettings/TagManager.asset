@@ -7,11 +7,14 @@ TagManager:
   - BiomeRegion
   - Crystal
   - Collectable
+  - Underground
+  - Surface
+  - BlackoutImage
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - TileMovementCollider
+  - Tile
   - Water
   - UI
   - BiomeRegion

@@ -107,7 +107,7 @@ public class ComboManager : MonoBehaviour
             return; // recursion exit case for extended combos
 
         foreach (var tile in combo.Tiles)
-            StartCoroutine(tile.HighlightTileForOneFrame());
+            StartCoroutine(tile.HighlightTileComboDigPreview());
 
         foreach (var playerA in combo.Players)
             foreach (var playerB in combo.Players)

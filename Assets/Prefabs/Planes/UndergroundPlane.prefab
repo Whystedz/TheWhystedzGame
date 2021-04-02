@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 6474438845002051395}
   - component: {fileID: 6474438845002051394}
   m_Layer: 8
-  m_Name: Plane
-  m_TagString: Untagged
+  m_Name: UndergroundPlane
+  m_TagString: Underground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
