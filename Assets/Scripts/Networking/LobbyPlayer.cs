@@ -8,39 +8,57 @@ public class LobbyPlayer : NetworkBehaviour
 {
     public static LobbyPlayer LocalPlayer { get; set; }
     [SyncVar] public string MatchID;
-    [SyncVar] public int PlayerIndex;
-    [SyncVar] public bool IsReady;
     private NetworkMatchChecker networkMatchChecker;
-    private GameObject playerLobbyUI;
+    public bool IsHost { get; set; }
 
-    [SyncVar(hook = nameof(OnNameChanged))] 
-    public string DisplayName;
+    [SyncVar(hook = nameof(OnDisplayNameChanged))] 
+    public string DisplayName = "";
+    [SyncVar(hook = nameof(OnReadyStatusChanged))]
+    public bool IsReady;
 
     void Awake()
     {
         this.networkMatchChecker = GetComponent<NetworkMatchChecker>();
     }
 
-    void OnNameChanged(string oldName, string newName)
-    {
-        DisplayName = newName;
-    }
-
     public override void OnStartClient()
     {
         if (isLocalPlayer)
-        {
             LocalPlayer = this;
-        }
-        else
-        {
-            Debug.Log($"Spawning other player UI");
-            playerLobbyUI = UILobby.instance.SpawnUIPlayerPrefab(this);
-        }
+
+        ResetData();
+    }
+
+    public void ResetData()
+    {
+        MatchID = string.Empty;
+        IsHost = false;
+        IsReady = false;
+    }
+
+    public void OnDisplayNameChanged(string oldValue, string newValue) => UpdateLobbyUI();
+    public void OnReadyStatusChanged(bool oldValue, bool newValue) => UpdateLobbyUI();
+
+    public void UpdateLobbyUI()
+    {
+        if (MatchID != string.Empty)
+            MatchMaker.Instance.UpdateLobbyUI(MatchID);
+    }
+
+    public void UpdateLocalUI(Match match)
+    {
+        UILobby.Instance.UpdateLobbyUI(match);
+        //TargetUpdateLocalUI(match);
+    }
+
+    [TargetRpc]
+    public void TargetUpdateLocalUI(Match match)
+    {
+        UILobby.Instance.UpdateLobbyUI(match);
     }
 
     [Command]
-    public void CmdSetupPlayer(string displayName)
+    public void CmdSetDisplayName(string displayName)
     {
         DisplayName = displayName;
     }
@@ -67,27 +85,27 @@ public class LobbyPlayer : NetworkBehaviour
 
     [Command]
     void CmdHostGame(string matchID, bool publicMatch)
-    {
-        if (MatchMaker.Instance.HostGame(matchID, gameObject, publicMatch, out PlayerIndex))
+    {   
+        Match match;
+        if (MatchMaker.Instance.HostGame(matchID, this, publicMatch, out match))
         {
             MatchID = matchID;
             Debug.Log($"<color=green>Game hosted successfully</color>");
             this.networkMatchChecker.matchId = matchID.ToGuid();
-            TargetHostGame(true, matchID, PlayerIndex);
+            TargetHostGame(true, matchID, match);
         }
         else
         {
             Debug.Log($"<color=red>Game host failed</color>");
-            TargetHostGame(false, matchID, PlayerIndex);
+            TargetHostGame(false, matchID, match);
         }
     }
 
     [TargetRpc]
-    void TargetHostGame(bool success, string matchID, int _playerIndex)
+    void TargetHostGame(bool success, string matchID, Match match)
     {
-        PlayerIndex = _playerIndex;
         Debug.Log($"Match ID: {MatchID} == {matchID}");
-        UILobby.instance.HostSuccess(success, matchID);
+        UILobby.Instance.HostSuccess(success, match);
     }
 
     //---- JOIN GAME LOGIC ----
@@ -100,27 +118,27 @@ public class LobbyPlayer : NetworkBehaviour
     [Command]
     void CmdJoinGame(string matchID)
     {
-        if (MatchMaker.Instance.JoinGame(matchID, gameObject, out PlayerIndex))
+        Match match;
+        if (MatchMaker.Instance.JoinGame(matchID, this, out match))
         {
             MatchID = matchID;
             Debug.Log($"<color=green>Game joined successfully</color>");
             this.networkMatchChecker.matchId = matchID.ToGuid();
-            TargetJoinGame(true, matchID, PlayerIndex);
+            TargetJoinGame(true, matchID, match);
         }
         else
         {
             Debug.Log($"<color=red>Game join failed</color>");
-            TargetJoinGame(false, matchID, PlayerIndex);
+            TargetJoinGame(false, matchID, match);
         }
     }
 
     [TargetRpc]
-    void TargetJoinGame(bool success, string matchID, int _playerIndex)
+    void TargetJoinGame(bool success, string matchID, Match match)
     {
-        PlayerIndex = _playerIndex;
         MatchID = matchID;
         Debug.Log($"Match ID: {MatchID} == {matchID}");
-        UILobby.instance.JoinSuccess(success, matchID);
+        UILobby.Instance.JoinSuccess(success, match);
     }
 
     //---- SEARCH GAME LOGIC ----
@@ -133,26 +151,49 @@ public class LobbyPlayer : NetworkBehaviour
     [Command]
     public void CmdSearchGame()
     {
-        if (MatchMaker.Instance.SearchGame(gameObject, out PlayerIndex, out MatchID))
+        Match match;
+        if (MatchMaker.Instance.SearchGame(this, out match, out MatchID))
         {
             Debug.Log($"<color=green>Game found</color>");
             this.networkMatchChecker.matchId = MatchID.ToGuid();
-            TargetSearchGame(true, MatchID, PlayerIndex);
+            TargetSearchGame(true, MatchID, match);
         }
         else
         {
             Debug.Log($"<color=red>Game not found</color>");
-            TargetSearchGame(false, MatchID, PlayerIndex);
+            TargetSearchGame(false, MatchID, match);
         }
     }
 
     [TargetRpc]
-    public void TargetSearchGame(bool success, string matchID, int _playerIndex)
+    public void TargetSearchGame(bool success, string matchID, Match match)
     {
-        PlayerIndex = _playerIndex;
         MatchID = matchID;
         Debug.Log($"Match ID: {MatchID} == {matchID}");
-        UILobby.instance.SearchSuccess(success, matchID);
+        UpdateLobbyUI();
+        UILobby.Instance.SearchSuccess(success, match);
+    }
+
+    //---- READY UP LOGIC ----
+
+    public void ReadyUp()
+    {
+        CmdReadyUp();
+    }
+
+    [Command]
+    void CmdReadyUp()
+    {
+        IsReady = !IsReady;
+
+        //MatchMaker.Instance.NotifyPlayersOfReadyState(MatchID);
+    }
+
+    public void HandleReadyToStart(bool readyToStart)
+    {
+        if (!IsHost) { return; }
+
+        //startGameButton.interactable = readyToStart;
     }
 
     //---- START GAME LOGIC ----
@@ -199,6 +240,7 @@ public class LobbyPlayer : NetworkBehaviour
     {
         MatchMaker.Instance.PlayerDisconnect(this, MatchID);
         this.networkMatchChecker.matchId = string.Empty.ToGuid();
+        ResetData();
         RpcDisconnectGame();
     }
 
@@ -210,7 +252,6 @@ public class LobbyPlayer : NetworkBehaviour
 
     void ClientDisconnect()
     {
-        if(playerLobbyUI != null)
-            Destroy(playerLobbyUI);
+
     }
 }

@@ -6,7 +6,7 @@ using TMPro;
 
 public class UILobby : MonoBehaviour
 {
-    public static UILobby instance;
+    public static UILobby Instance { get; set; }
 
     [Header("Host Join")]
     [SerializeField] private TMP_InputField joinMatchInput;
@@ -20,17 +20,16 @@ public class UILobby : MonoBehaviour
     [SerializeField] private GameObject UIPlayerPrefab;
     [SerializeField] private TMP_Text matchIDText;
     [SerializeField] private GameObject startGameButton;
-    [SerializeField] private int minPlayers = 2;
+    public TMP_Text[] playerNameTexts;
+    public TMP_Text[] playerReadyTexts;
 
     public const string PlayerPrefsNameKey = "PlayerName";
-
-    GameObject playerLobbyUI;
 
     bool searching = false;
 
     void Start()
     {
-        instance = this;
+        Instance = this;
         joinMatchInput.onValidateInput += delegate(string input, int charIndex, char addedChar) { return char.ToUpper(addedChar); };
         if (!PlayerPrefs.HasKey(PlayerPrefsNameKey)) { return; }
 
@@ -48,7 +47,7 @@ public class UILobby : MonoBehaviour
 
     public void SavePlayerName()
     {
-        LobbyPlayer.LocalPlayer.DisplayName = nameInputField.text;
+        LobbyPlayer.LocalPlayer.CmdSetDisplayName(nameInputField.text);
 
         PlayerPrefs.SetString(PlayerPrefsNameKey, LobbyPlayer.LocalPlayer.DisplayName);
     }
@@ -74,15 +73,13 @@ public class UILobby : MonoBehaviour
         LobbyPlayer.LocalPlayer.HostGame(true);
     }
 
-    public void HostSuccess(bool success, string matchID)
+    public void HostSuccess(bool success, Match match)
     {
         if (success)
         {
             lobbyCanvas.enabled = true;
-            if (playerLobbyUI != null)
-                Destroy(playerLobbyUI);
-            playerLobbyUI = SpawnUIPlayerPrefab(LobbyPlayer.LocalPlayer);
-            matchIDText.text = matchID;
+            matchIDText.text = match.MatchID;
+            //UpdateLobbyUI(match);
             startGameButton.SetActive(true);
         }
         else
@@ -102,15 +99,13 @@ public class UILobby : MonoBehaviour
         LobbyPlayer.LocalPlayer.JoinGame(joinMatchInput.text);
     }
 
-    public void JoinSuccess(bool success, string matchID)
+    public void JoinSuccess(bool success, Match match)
     {
         if (success)
         {
             lobbyCanvas.enabled = true;
-            if (playerLobbyUI != null)
-                Destroy(playerLobbyUI);
-            playerLobbyUI = SpawnUIPlayerPrefab(LobbyPlayer.LocalPlayer);
-            matchIDText.text = matchID;
+            matchIDText.text = match.MatchID;
+            //UpdateLobbyUI(match);
         }
         else
         {
@@ -118,14 +113,6 @@ public class UILobby : MonoBehaviour
             nameInputField.interactable = true;
             lobbySelectables.ForEach(x => x.interactable = true);
         }
-    }
-
-    public GameObject SpawnUIPlayerPrefab(LobbyPlayer player)
-    {
-        GameObject newUIPlayer = Instantiate(UIPlayerPrefab, UIPlayerParent);
-        newUIPlayer.GetComponent<UIPlayer>().SetPlayer(player);
-        newUIPlayer.transform.SetSiblingIndex(player.PlayerIndex - 1);
-        return newUIPlayer;
     }
 
     public void StartGame()
@@ -164,13 +151,13 @@ public class UILobby : MonoBehaviour
         searchCanvas.enabled = false;
     }
 
-    public void SearchSuccess(bool success, string matchID)
+    public void SearchSuccess(bool success, Match match)
     {
         if (success)
         {
             searchCanvas.enabled = false;
             searching = false;
-            JoinSuccess(success, matchID);
+            JoinSuccess(success, match);
         }
     }
 
@@ -181,8 +168,6 @@ public class UILobby : MonoBehaviour
 
     public void DisconnectLobby()
     {
-        if (playerLobbyUI != null)
-            Destroy(playerLobbyUI);
         LobbyPlayer.LocalPlayer.DisconnectGame();
 
         lobbyCanvas.enabled = false;
@@ -190,5 +175,28 @@ public class UILobby : MonoBehaviour
         nameInputField.interactable = true;
         lobbySelectables.ForEach(x => x.interactable = true);
         startGameButton.SetActive(false);
+    }
+
+    public void SetReadyState()
+    {
+        LobbyPlayer.LocalPlayer.ReadyUp();
+    }
+
+    public void UpdateLobbyUI(Match currentRoom)
+    {
+        for (int i = 0; i < playerNameTexts.Length; i++)
+        {
+            playerNameTexts[i].text = string.Empty;
+            playerReadyTexts[i].text = string.Empty;
+        }
+
+        for (int i = 0; i < currentRoom.Players.Count; i++)
+        {
+            Debug.Log($"Player {i} name {currentRoom.Players[i].DisplayName}");
+            playerNameTexts[i].text = currentRoom.Players[i].DisplayName;
+            playerReadyTexts[i].text = currentRoom.Players[i].IsReady ?
+                "<color=green>Ready</color>" :
+                "<color=red>Not Ready</color>";
+        }
     }
 }

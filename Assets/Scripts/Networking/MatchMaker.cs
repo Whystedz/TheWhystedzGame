@@ -11,12 +11,13 @@ public class Match
     public string MatchID;
     public bool IsPublicMatch;
     public bool InMatch;
-    private int maxPlayers = 8;
-    public SyncListGameObject Players = new SyncListGameObject();
+    private int maxPlayers;
+    public SyncListLobbyPlayer Players = new SyncListLobbyPlayer();
 
-    public Match(string matchID, GameObject player)
+    public Match(string matchID, LobbyPlayer player, int maxPlayers)
     {
         this.MatchID = matchID;
+        this.maxPlayers = maxPlayers;
         Players.Add(player);
     }
 
@@ -32,7 +33,7 @@ public class Match
 }
 
 [System.Serializable]
-public class SyncListGameObject : SyncList<GameObject> { }
+public class SyncListLobbyPlayer : SyncList<LobbyPlayer> { }
 
 [System.Serializable]
 public class SyncListMatch : SyncList<Match> { }
@@ -43,20 +44,22 @@ public class MatchMaker : NetworkBehaviour
     public SyncListMatch Matches = new SyncListMatch();
     public SyncList<string> MatchIDs = new SyncList<string>();
     [SerializeField] GameObject gameManagerPrefab;
+    [SerializeField] private int maxPlayers = 8;
+    [SerializeField] private int minPlayers = 2;
 
     void Start() => Instance = this;
 
-    public bool HostGame(string matchID, GameObject player, bool publicMatch, out int playerIndex)
+    public bool HostGame(string matchID, LobbyPlayer player, bool publicMatch, out Match match)
     {
-        playerIndex = -1;
+        match = null;
         if (!MatchIDs.Contains(matchID))
         {
             MatchIDs.Add(matchID);
-            Match match = new Match(matchID, player);
-            match.IsPublicMatch = publicMatch;
-            Matches.Add(match);
+            Match newMatch = new Match(matchID, player, this.maxPlayers);
+            newMatch.IsPublicMatch = publicMatch;
+            Matches.Add(newMatch);
             Debug.Log($"Match generated");
-            playerIndex = 1;
+            match = newMatch;
             return true;
         }
         else
@@ -66,9 +69,9 @@ public class MatchMaker : NetworkBehaviour
         }
     }
 
-    public bool JoinGame(string matchID, GameObject player, out int playerIndex)
+    public bool JoinGame(string matchID, LobbyPlayer player, out Match match)
     {
-        playerIndex = -1;
+        match = null;
         if (MatchIDs.Contains(matchID))
         {
             for (int i = 0; i < Matches.Count; i++)
@@ -76,7 +79,7 @@ public class MatchMaker : NetworkBehaviour
                 if (Matches[i].MatchID == matchID)
                 {
                     Matches[i].Players.Add(player);
-                    playerIndex = Matches[i].Players.Count;
+                    match = Matches[i];
                     break;
                 }
             }
@@ -91,9 +94,9 @@ public class MatchMaker : NetworkBehaviour
         }
     }
 
-    public bool SearchGame(GameObject player, out int playerIndex, out string matchID)
+    public bool SearchGame(LobbyPlayer player, out Match match, out string matchID)
     {
-        playerIndex = -1;
+        match = null;
         matchID = string.Empty;
 
         for(int i = 0; i < Matches.Count; i++)
@@ -101,7 +104,7 @@ public class MatchMaker : NetworkBehaviour
             if(Matches[i].IsPublicMatch && !Matches[i].isMatchFull() && !Matches[i].InMatch)
             {
                 matchID = Matches[i].MatchID;
-                if(JoinGame(matchID, player, out playerIndex))
+                if(JoinGame(matchID, player, out match))
                 {
                     return true;
                 }
@@ -159,7 +162,7 @@ public class MatchMaker : NetworkBehaviour
         {
             if(Matches[i].MatchID == matchID)
             {
-                int playerIndex = Matches[i].Players.IndexOf(player.gameObject);
+                int playerIndex = Matches[i].Players.IndexOf(player);
                 Matches[i].Players.RemoveAt(playerIndex);
                 Debug.Log($"Player disconnected from match {matchID} | {Matches[i].Players.Count} players remainig");
 
@@ -170,6 +173,51 @@ public class MatchMaker : NetworkBehaviour
                     MatchIDs.Remove(matchID);
                 }
                 break;
+            }
+        }
+    }
+
+    public bool IsReadyToStart(Match match)
+    {
+
+        if(match.Players.Count < minPlayers)
+            return false;
+
+        foreach (var player in match.Players)
+        {
+            if(!player.IsReady)
+                 return false;
+        }
+
+        return true;
+    }
+
+    public void NotifyPlayersOfReadyState(string matchID)
+    {
+        for(int i = 0; i < Matches.Count; i++)
+        {
+            if (Matches[i].MatchID == matchID)
+            {
+                foreach (var player in Matches[i].Players)
+                {
+                    player.HandleReadyToStart(IsReadyToStart(Matches[i]));
+                }
+            }
+        }
+    }
+
+    public void UpdateLobbyUI(string matchID)
+    {  
+        Match currentRoom = null;
+        for(int i = 0; i < Matches.Count; i++)
+        {
+            if (Matches[i].MatchID == matchID)
+            {
+                currentRoom = Matches[i];
+                foreach (var player in currentRoom.Players)
+                {
+                    player.UpdateLocalUI(currentRoom);
+                }
             }
         }
     }
