@@ -49,8 +49,12 @@ public class PlayerMovement : MonoBehaviour
         this.surface = GameObject.FindGameObjectWithTag("Surface");
         this.underground = GameObject.FindGameObjectWithTag("Underground");
 
-        this.blackoutImage = GameObject.FindGameObjectWithTag("BlackoutImage")
-            .GetComponent<Image>();
+        var blackoutImageGO = GameObject.FindGameObjectWithTag("BlackoutImage");
+        if (blackoutImageGO != null)
+            this.blackoutImage = blackoutImageGO.GetComponent<Image>();
+        else
+            Debug.LogWarning("Please attach a Blackout Image (a prefab) to this player instance from the canvas!");
+        
     }
 
     private void Start()
@@ -96,7 +100,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void FallingMovementUpdate()
     {
-        Debug.Log("FallingMovementUpdate");
         if (!this.fallingCamera.activeSelf)
             this.fallingCamera.SetActive(true);
 
