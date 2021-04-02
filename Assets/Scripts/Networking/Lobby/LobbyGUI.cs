@@ -33,7 +33,8 @@ public class LobbyGUI : MonoBehaviour
     public void SavePlayerName()
     {
         CanvasController.Instance.SetDisplayName(nameInputField.text);
-        PlayerPrefs.SetString(PlayerPrefsNameKey, nameInputField.text);
+        if (!string.IsNullOrEmpty(nameInputField.text))
+            PlayerPrefs.SetString(PlayerPrefsNameKey, nameInputField.text);
     }
 
     public void SearchGame()
