@@ -53,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
         if (blackoutImageGO != null)
             this.blackoutImage = blackoutImageGO.GetComponent<Image>();
         else
-            Debug.LogWarning("Please attach a Blackout Image (a prefab) to this player instance from the canvas!");
+            Debug.LogWarning("Please add a Blackout Image (a prefab) to the GUI canvas!");
         
     }
 
