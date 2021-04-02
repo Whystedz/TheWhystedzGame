@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,6 +8,7 @@ using Mirror;
 
 public class CanvasController : MonoBehaviour
 {
+    public static CanvasController Instance { get; set; }
     public event Action<NetworkConnection> OnPlayerDisconnected;
 
     // Cross-reference of client that created the corresponding match in openMatches below
@@ -22,18 +24,14 @@ public class CanvasController : MonoBehaviour
     internal string localJoinedMatchId = string.Empty;
     internal string enteredMatchId = string.Empty;
 
-    string displayName = string.Empty;
+    private string displayName = string.Empty;
 
     [Header("GUI References")]
-    [SerializeField] private GameObject matchList;
-    [SerializeField] private GameObject matchPrefab;
-    [SerializeField] private GameObject matchControllerPrefab;
-    [SerializeField] private Button createButton;
-    [SerializeField] private Button joinButton;
     [SerializeField] private GameObject lobbyView;
     [SerializeField] private GameObject roomView;
-    //[SerializeField] private RoomGUI roomGUI;
-    [SerializeField] private ToggleGroup toggleGroup;
+    [SerializeField] private RoomGUI roomGUI;
+
+    void Start() => Instance = this;
 
     #region UI Functions
 
@@ -60,6 +58,11 @@ public class CanvasController : MonoBehaviour
         this.lobbyView.SetActive(false);
         this.roomView.SetActive(false);
         this.gameObject.SetActive(false);
+    }
+
+    public void SetDisplayName(string newName)
+    {
+        this.displayName = newName;
     }
 
     #endregion
@@ -90,6 +93,14 @@ public class CanvasController : MonoBehaviour
         NetworkClient.connection.Send(new ServerMatchMessage { ServerMatchOperation = ServerMatchOperation.Join, MatchId = this.enteredMatchId, PlayerName = this.displayName });
     }
 
+    // Assigned in inspector to Search button
+    public void RequestSearchMatch()
+    {
+        if (!NetworkClient.active) return;
+
+        NetworkClient.connection.Send(new ServerMatchMessage { ServerMatchOperation = ServerMatchOperation.Search, PlayerName = this.displayName });
+    }
+
     // Assigned in inspector to Leave button
     public void RequestLeaveMatch()
     {
@@ -111,8 +122,11 @@ public class CanvasController : MonoBehaviour
     {
         if (!NetworkClient.active || (this.localHostedMatchId == string.Empty && this.localJoinedMatchId == string.Empty)) return;
 
-        string matchId = this.localJoinedMatchId == string.Empty ? this.localJoinedMatchId : this.localHostedMatchId;
-
+        string matchId;
+        if (this.localJoinedMatchId == string.Empty) 
+            matchId = this.localHostedMatchId;
+        else
+            matchId = this.localJoinedMatchId;
         NetworkClient.connection.Send(new ServerMatchMessage { ServerMatchOperation = ServerMatchOperation.Ready, MatchId = matchId });
     }
 
@@ -152,6 +166,11 @@ public class CanvasController : MonoBehaviour
         }
     }
 
+    public void SetEnteredMatchId(string code)
+    {
+        this.enteredMatchId = code;
+    }
+    
     #endregion
 
     #region Server & Client Callbacks
@@ -199,9 +218,9 @@ public class CanvasController : MonoBehaviour
             }
         }
 
-        foreach (KeyValuePair<string, HashSet<NetworkConnection>> element in matchConnections)
+        foreach (KeyValuePair<string, HashSet<NetworkConnection>> entry in matchConnections)
         {
-            element.Value.Remove(connection);
+            entry.Value.Remove(connection);
         }
 
         PlayerInfo playerInfo = playerInfos[connection];
@@ -242,15 +261,12 @@ public class CanvasController : MonoBehaviour
         playerInfos.Add(connection, new PlayerInfo { DisplayName = this.displayName, IsReady = false, IsHost = false });
     }
 
-    // TODO: Fix this
     internal void OnStartClient()
     {
         if (!NetworkClient.active) return;
 
         InitializeData();
         ShowLobbyView();
-        createButton.gameObject.SetActive(true);
-        joinButton.gameObject.SetActive(true);
         NetworkClient.RegisterHandler<ClientMatchMessage>(OnClientMatchMessage);
     }
 
@@ -311,6 +327,11 @@ public class CanvasController : MonoBehaviour
                     OnServerLeaveMatch(connection, message.MatchId);
                     break;
                 }
+            case ServerMatchOperation.Search:
+                {
+                    OnServerSearchMatch(connection, message.PlayerName);
+                    break;
+                }
             case ServerMatchOperation.Ready:
                 {
                     OnServerPlayerReady(connection, message.MatchId);
@@ -353,9 +374,11 @@ public class CanvasController : MonoBehaviour
         playerInfo.MatchId = string.Empty;
         playerInfos[connection] = playerInfo;
 
-        foreach (KeyValuePair<string, HashSet<NetworkConnection>> element in matchConnections)
+        LobbyPlayer.LocalPlayer.SetMatchIdGuid(matchId);
+
+        foreach (KeyValuePair<string, HashSet<NetworkConnection>> entry in matchConnections)
         {
-            element.Value.Remove(connection);
+            entry.Value.Remove(connection);
         }
 
         HashSet<NetworkConnection> connections = matchConnections[matchId];
@@ -376,6 +399,7 @@ public class CanvasController : MonoBehaviour
         if (!NetworkServer.active || playerMatches.ContainsKey(connection)) return;
 
         string newMatchId = MatchMaker.GetRandomMatchID();
+        LobbyPlayer.LocalPlayer.SetMatchIdGuid(newMatchId);
         matchConnections.Add(newMatchId, new HashSet<NetworkConnection>());
         matchConnections[newMatchId].Add(connection);
         playerMatches.Add(connection, newMatchId);
@@ -401,6 +425,7 @@ public class CanvasController : MonoBehaviour
         if (!NetworkServer.active || playerMatches.ContainsKey(connection)) return;
 
         string newMatchId = MatchMaker.GetRandomMatchID();
+        LobbyPlayer.LocalPlayer.SetMatchIdGuid(newMatchId);
         matchConnections.Add(newMatchId, new HashSet<NetworkConnection>());
         matchConnections[newMatchId].Add(connection);
         playerMatches.Add(connection, newMatchId);
@@ -411,6 +436,7 @@ public class CanvasController : MonoBehaviour
         playerInfo.IsReady = false;
         playerInfo.IsHost = true;
         playerInfo.MatchId = newMatchId;
+        playerInfo.DisplayName = playerName;
         playerInfos[connection] = playerInfo;
 
         PlayerInfo[] infos = matchConnections[newMatchId].Select(playerConnection => playerInfos[playerConnection]).ToArray();
@@ -515,6 +541,8 @@ public class CanvasController : MonoBehaviour
         playerInfo.MatchId = matchId;
         playerInfos[connection] = playerInfo;
 
+        LobbyPlayer.LocalPlayer.SetMatchIdGuid(matchId);
+
         PlayerInfo[] infos = matchConnections[matchId].Select(playerConnection => playerInfos[playerConnection]).ToArray();
         SendMatchList();
 
@@ -523,6 +551,21 @@ public class CanvasController : MonoBehaviour
         foreach (NetworkConnection playerConnection in matchConnections[matchId])
         {
             playerConnection.Send(new ClientMatchMessage { ClientMatchOperation = ClientMatchOperation.UpdateRoom, PlayerInfos = infos });
+        }
+    }
+
+    void OnServerSearchMatch(NetworkConnection connection, string playerName)
+    {
+        if (!NetworkServer.active) return;
+
+        foreach (KeyValuePair<string, MatchInfo> entry in openMatches)
+        {
+            MatchInfo matchInfo = entry.Value;
+            if (matchInfo.IsPublic)
+            {
+                OnServerJoinMatch(connection, matchInfo.MatchId, playerName);
+                break;
+            }
         }
     }
 
@@ -554,7 +597,8 @@ public class CanvasController : MonoBehaviour
                 {
                     this.localHostedMatchId = message.MatchId;
                     ShowRoomView();
-                    //roomGUI.RefreshRoomPlayers(message.PlayerInfos);
+                    roomGUI.SetRoomCode(message.MatchId);
+                    roomGUI.RefreshRoomPlayers(message.PlayerInfos);
                     //roomGUI.SetOwner(true);
                     break;
                 }
@@ -568,7 +612,8 @@ public class CanvasController : MonoBehaviour
                 {
                     this.localJoinedMatchId = message.MatchId;
                     ShowRoomView();
-                    //roomGUI.RefreshRoomPlayers(message.playerInfos);
+                    roomGUI.SetRoomCode(message.MatchId);
+                    roomGUI.RefreshRoomPlayers(message.PlayerInfos);
                     //roomGUI.SetOwner(false);
                     break;
                 }
@@ -580,7 +625,7 @@ public class CanvasController : MonoBehaviour
                 }
             case ClientMatchOperation.UpdateRoom:
                 {
-                    //roomGUI.RefreshRoomPlayers(message.PlayerInfos);
+                    roomGUI.RefreshRoomPlayers(message.PlayerInfos);
                     break;
                 }
             case ClientMatchOperation.Started:
@@ -592,22 +637,10 @@ public class CanvasController : MonoBehaviour
         }
     }
 
-    // TODO: this.
     void ShowLobbyView()
     {
-        /*
         lobbyView.SetActive(true);
         roomView.SetActive(false);
-
-        foreach (Transform child in matchList.transform)
-        {
-            if (child.gameObject.GetComponent<MatchGUI>().GetMatchId() == enteredMatchId)
-            {
-                Toggle toggle = child.gameObject.GetComponent<Toggle>();
-                toggle.isOn = true;
-            }
-        }
-        */
     }
 
     void ShowRoomView()

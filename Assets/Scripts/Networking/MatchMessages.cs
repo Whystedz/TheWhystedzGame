@@ -55,6 +55,7 @@ public enum ServerMatchOperation : byte
     Start,
     Join,
     Leave,
+    Search,
     Ready
 }
 

@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4587717040380326568}
   - component: {fileID: 6281450180499074448}
-  - component: {fileID: 8319545961427369805}
   - component: {fileID: 3658564185169680647}
+  - component: {fileID: 4037519519882600862}
   m_Layer: 0
   m_Name: LobbyPlayer
   m_TagString: Untagged
@@ -49,24 +49,6 @@ MonoBehaviour:
   serverOnly: 0
   m_AssetId: 
   hasSpawned: 0
---- !u!114 &8319545961427369805
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4436182248567351951}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b51a502700d59c74ba7c24f8eeb784ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  MatchID: 
-  PlayerIndex: 0
-  IsReady: 0
-  DisplayName: 
 --- !u!114 &3658564185169680647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82,3 +64,17 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   currentMatchDebug: 
+--- !u!114 &4037519519882600862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4436182248567351951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b51a502700d59c74ba7c24f8eeb784ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1

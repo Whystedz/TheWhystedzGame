@@ -858,8 +858,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 775696262}
-  - component: {fileID: 775696261}
   - component: {fileID: 775696260}
+  - component: {fileID: 775696261}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -908,15 +908,14 @@ MonoBehaviour:
   onlineScene: Assets/SceneSandbox/Elizabeth/Lobby.unity
   transport: {fileID: 775696260}
   networkAddress: localhost
-  maxConnections: 100
+  maxConnections: 4
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
   authenticator: {fileID: 0}
   playerPrefab: {fileID: 4436182248567351951, guid: d9bb46f661a0e71478654a3da6bc6e7e, type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 1
-  spawnPrefabs:
-  - {fileID: 1788263075214021521, guid: 3409383f212bc77458e58e1daed455bf, type: 3}
+  spawnPrefabs: []
 --- !u!4 &775696262
 Transform:
   m_ObjectHideFlags: 0
@@ -960,7 +959,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe117b4178707594f89cf560475a2414, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  networkManager: {fileID: 775696261}
+  networkManager: {fileID: 0}
 --- !u!4 &1270186613
 Transform:
   m_ObjectHideFlags: 0
@@ -1192,7 +1191,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 775696261}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Mirror.NetworkManager, Mirror
         m_MethodName: StartHost
         m_Mode: 1
