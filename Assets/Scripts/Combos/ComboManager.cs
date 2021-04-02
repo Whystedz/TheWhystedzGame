@@ -154,6 +154,9 @@ public class ComboManager : MonoBehaviour
     {
         foreach (var player in this.players)
         {
+            if (!player.gameObject.activeSelf)
+                return;
+
             CheckLineCombosForPlayer(player);
             CheckTriangleCombosForPlayer(player);
         }
@@ -164,7 +167,7 @@ public class ComboManager : MonoBehaviour
         var teammates = player.Teammates(false).ToArray();
 
         teammates = teammates
-            .Where(teammate => !teammate.IsOnCooldown)
+            .Where(teammate => !teammate.IsOnCooldown && teammate.gameObject.activeSelf)
             .ToArray();
         if (teammates.Count() == 0)
             return;
@@ -242,7 +245,7 @@ public class ComboManager : MonoBehaviour
         var teammates = player.Teammates(false).ToArray();
 
         teammates = teammates
-            .Where(player => !player.IsOnCooldown)
+            .Where(teammate => !teammate.IsOnCooldown && teammate.gameObject.activeSelf)
             .ToArray();
         if (teammates.Count() == 0)
             return;
