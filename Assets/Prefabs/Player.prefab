@@ -262,7 +262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ce0b76c51c4c234794c20f12366aced, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 3
+  movementSpeed: 8
   IsMovementDisabled: 0
   fallingSpeed: 50
   timeToFadeIn: 2
