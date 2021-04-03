@@ -11,6 +11,7 @@ TagManager:
   - Surface
   - BlackoutImage
   - _Dynamic
+  - RespawnPoint
   layers:
   - Default
   - TransparentFX

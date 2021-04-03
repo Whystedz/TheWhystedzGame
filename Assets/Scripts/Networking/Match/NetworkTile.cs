@@ -3,23 +3,16 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public struct HexTile
-{
-    public float TimeToRespawn;
-    public float TimeOfBreakingAnimation;
-    public float Progress;
-    public int XIndex;
-    public int ZIndex;
-    public TileState TileState;
-}
-
 public class NetworkTile : MonoBehaviour
 {
-    public HexTile HexTile;
+    public TileInfo TileInfo;
 
     [SerializeField] private Material normalMaterial;
     [SerializeField] private Material unstableMaterial;
+    [SerializeField] private Material destroyedMaterial;
     [SerializeField] private Material highlightedMaterial;
+    [SerializeField] private Material comboHighlightedMaterial;
+    [SerializeField] private Material ropeMaterial;
 
     private MeshRenderer meshRenderer;
 
@@ -31,7 +24,9 @@ public class NetworkTile : MonoBehaviour
 
     void Update()
     {
-        switch (HexTile.TileState)
+        ChangeMaterialAccordingToCurrentState();
+
+        switch (TileInfo.TileState)
         {
             case TileState.Normal:
                 break;
@@ -41,14 +36,16 @@ public class NetworkTile : MonoBehaviour
             case TileState.Respawning:
                 RespawningUpdate();
                 break;
+            case TileState.Rope:
+                break;
         }
     }
 
     private void UnstableUpdate()
     {
-        HexTile.Progress -= Time.deltaTime;
+        TileInfo.Progress -= Time.deltaTime;
 
-        if (HexTile.Progress <= 0)
+        if (TileInfo.Progress <= 0)
             Break();
     }
 
@@ -56,21 +53,21 @@ public class NetworkTile : MonoBehaviour
     {
         StartCoroutine(PlayBreakingAnimation());
 
-        HexTile.TileState = TileState.Respawning;
-        HexTile.Progress = HexTile.TimeToRespawn;
+        TileInfo.TileState = TileState.Respawning;
+        this.meshRenderer.material = destroyedMaterial;
+        TileInfo.Progress = TileInfo.TimeToRespawn;
     }
 
     private IEnumerator PlayBreakingAnimation()
     {
-        var breakingAnimationProgress = HexTile.TimeOfBreakingAnimation;
-        var breakingAnimationSpeed = 10f / HexTile.TimeOfBreakingAnimation;
+        var breakingAnimationProgress = TileInfo.TimeOfBreakingAnimation;
+        var breakingAnimationSpeed = 10f / TileInfo.TimeOfBreakingAnimation;
 
         while (breakingAnimationProgress > 0)
         {
-            if (HexTile.TileState == TileState.Normal)
+            if (TileInfo.TileState == TileState.Normal)
                 yield break;
 
-            this.transform.position += breakingAnimationSpeed * Time.deltaTime * Vector3.down;
             breakingAnimationProgress -= Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
@@ -78,36 +75,73 @@ public class NetworkTile : MonoBehaviour
 
     private void RespawningUpdate()
     {
-        HexTile.Progress -= Time.deltaTime;
+        TileInfo.Progress -= Time.deltaTime;
 
-        if (HexTile.Progress <= 0)
+        if (TileInfo.Progress <= 0)
             Respawn();
     }
 
-    private void Respawn()
+    public void Respawn()
     {
         transform.position = new Vector3(transform.position.x, 0, transform.position.z);
-
         this.meshRenderer.material = normalMaterial;
-
-        HexTile.TileState = TileState.Normal;
+        TileInfo.TileState = TileState.Normal;
     }
 
-    public IEnumerator HighlightTile()
+    public IEnumerator HighlightTileSimpleDigPreview()
     {
-        if (HexTile.TileState != TileState.Normal)
+        if (TileInfo.TileState != TileState.Normal)
             yield break;
 
-        this.meshRenderer.material = highlightedMaterial;
-
-        yield return new WaitForEndOfFrame();
-
-        ChangeMaterialAccordingToCurrentState();
+        TileInfo.TileHighlightState = TileHighlightState.SimpleHighlight;
     }
 
-    public void ChangeMaterialAccordingToCurrentState()
+    public IEnumerator HighlightTileComboDigPreview()
     {
-        switch (HexTile.TileState)
+        if (TileInfo.TileState != TileState.Normal)
+            yield break;
+
+        TileInfo.TileHighlightState = TileHighlightState.ComboHighlight;
+    }
+
+    public IEnumerator HighlightTileRopePreview()
+    {
+        if (TileInfo.TileState != TileState.Respawning)
+            yield break;
+
+        TileInfo.TileHighlightState = TileHighlightState.RopeHighlight;
+    }
+
+    private void ChangeMaterialAccordingToCurrentState()
+    {       
+        switch (TileInfo.TileHighlightState)
+        {
+            case TileHighlightState.NoHighlight:
+                ChangeMaterialAccordingToCurrentStateNoHighlight();
+                break;
+            case TileHighlightState.SimpleHighlight:
+                ChangeMaterialForSimpleHighlight();
+                break;
+            case TileHighlightState.ComboHighlight:
+                ChangeMaterialForComboHighlight();
+                break;
+            case TileHighlightState.RopeHighlight:
+                ChangeMaterialForRopePreviewHighlight();
+                break;
+        }
+
+        TileInfo.TileHighlightState = TileHighlightState.NoHighlight;
+    }
+
+    private void ChangeMaterialForRopePreviewHighlight() => this.meshRenderer.material = ropeMaterial;
+
+    private void ChangeMaterialForComboHighlight() => this.meshRenderer.material = comboHighlightedMaterial;
+
+    private void ChangeMaterialForSimpleHighlight() => this.meshRenderer.material = highlightedMaterial;
+
+    private void ChangeMaterialAccordingToCurrentStateNoHighlight()
+    {
+        switch (TileInfo.TileState)
         {
             case TileState.Normal:
                 this.meshRenderer.material = normalMaterial;
@@ -116,6 +150,10 @@ public class NetworkTile : MonoBehaviour
                 this.meshRenderer.material = unstableMaterial;
                 break;
             case TileState.Respawning:
+                this.meshRenderer.material = destroyedMaterial;
+                break;
+            case TileState.Rope:
+                this.meshRenderer.material = destroyedMaterial;
                 break;
         }
     }
