@@ -40,14 +40,14 @@ public class AnimationManager : MonoBehaviour
             this.fallingTrigger = false;
 
 
-        animator.SetBool("isClimbing", this.playerMovement.IsClimbing);
+        this.animator.SetBool("isClimbing", this.playerMovement.IsClimbing);
 
 
         if (this.inputManager.GetDigging() && !this.playerMovement.IsInUnderground)
             this.animator.SetTrigger("Shoot");
         
 
-        isRunning = (Mathf.Abs(this.characterController.velocity.x) > 0 || Mathf.Abs(this.characterController.velocity.z) > 0) ? true : false;
+        this.isRunning = (Mathf.Abs(this.characterController.velocity.x) > 0 || Mathf.Abs(this.characterController.velocity.z) > 0) ? true : false;
         this.animator.SetBool("isRunning", isRunning);
 
     }
