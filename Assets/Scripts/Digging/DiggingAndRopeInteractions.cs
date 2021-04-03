@@ -24,7 +24,7 @@ public class DiggingAndRopeInteractions : MonoBehaviour
 
     void Update()
     {
-        if (this.playerMovement.isInUnderground)
+        if (this.playerMovement.IsInUnderground)
             return;
 
         var hits = Physics.RaycastAll(transform.position,
@@ -45,7 +45,7 @@ public class DiggingAndRopeInteractions : MonoBehaviour
 
         var tile = hitGameObject.GetComponent<Tile>();
 
-        if (playerMovement.IsFalling())
+        if (playerMovement.IsFalling() && this.rope != null)
         {
             this.rope.gameObject.SetActive(false);
             tile.tileState = TileState.Respawning;
@@ -69,7 +69,7 @@ public class DiggingAndRopeInteractions : MonoBehaviour
         if (inputManager.GetDigging())
             InteractWithTile(tile);
 
-        if (this.rope.ropeState == RopeState.Saved)
+        if (this.rope != null && this.rope.ropeState == RopeState.Saved)
         {
             tile.tileState = TileState.Respawning;
             tile.Respawn();
