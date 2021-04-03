@@ -27,10 +27,7 @@ public class AnimationManager : MonoBehaviour
     void Update()
     {
         if (!this.playerMovement.IsInUnderground && (animator.GetCurrentAnimatorStateInfo(0).IsName("IdleUnderGround") || animator.GetCurrentAnimatorStateInfo(0).IsName("RunningUnderGround")))
-        {
             this.animator.SetTrigger("Reset");
-            Debug.LogError("Checkerino");
-        }
             
 
         if (this.playerMovement.IsFalling() && !this.fallingTrigger && this.playerMovement.IsInUnderground)
