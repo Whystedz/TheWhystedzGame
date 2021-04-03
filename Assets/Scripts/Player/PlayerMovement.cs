@@ -27,7 +27,8 @@ public class PlayerMovement : MonoBehaviour
     private Image blackoutImage;
     [SerializeField] private float timeToFadeIn = 2f;
 
-    public bool isInUnderground;
+    public bool IsClimbing { get; private set; }
+    public bool IsInUnderground { get; private set; }
     [SerializeField] private float undergroundCheckThreshold = 1.5f;
     [SerializeField] private float heightOffset = 1.3f;
 
@@ -64,7 +65,7 @@ public class PlayerMovement : MonoBehaviour
 
     void PlayerMovementUpdate()
     {
-        CheckIfUnderground();
+        if(this.underground != null) CheckIfUnderground();
 
         CheckIfFalling();
 
@@ -109,7 +110,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void CheckIfFalling()
     {
-        if (this.isInUnderground)
+        if (this.IsInUnderground)
         {
             this.isFalling = false;
             return;
@@ -142,7 +143,7 @@ public class PlayerMovement : MonoBehaviour
     {
         var distanceToUnderground = transform.position.y - this.underground.transform.position.y;
         distanceToUnderground = Mathf.Abs(distanceToUnderground);
-        this.isInUnderground = distanceToUnderground <= this.undergroundCheckThreshold;
+        this.IsInUnderground = distanceToUnderground <= this.undergroundCheckThreshold;
     }
 
     private Collider GetClosestCollider(Collider[] hitColliders)
@@ -168,6 +169,7 @@ public class PlayerMovement : MonoBehaviour
 
     public IEnumerator ClimbRope(float height,Vector3 surfacePosition)
     {
+        IsClimbing = true;
         StartCoroutine(FadeIn());
         while (this.transform.position.y < underground.transform.position.y + height)
         {
@@ -177,6 +179,7 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         this.transform.position = surfacePosition + Vector3.up * this.heightOffset;
         yield return StartCoroutine(FadeOut());
+        IsClimbing = false;
     }
 
     public IEnumerator FadeIn()
