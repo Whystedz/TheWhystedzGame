@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 using Mirror;
 
 public struct ServerMatchMessage : NetworkMessage
@@ -45,6 +47,26 @@ public struct TileInfo
     public int ZIndex;
     public TileState TileState;
     public TileHighlightState TileHighlightState;
+}
+
+[Serializable]
+public struct ComboHintInfo
+{
+    public NetworkComboPlayer OriginPlayer;
+    public NetworkComboPlayer TargetPlayer;
+    public ComboType ComboType;
+    public bool MoveTowards;
+}
+
+[Serializable]
+public struct ComboInfo
+{
+    public List<NetworkTile> Tiles;
+    public List<NetworkComboPlayer> Players;
+    public Vector3 Center;
+    public ComboType ComboType;
+    public NetworkComboPlayer InitiatingPlayer;
+    public bool IsTriggered;
 }
 
 public enum ServerMatchOperation : byte

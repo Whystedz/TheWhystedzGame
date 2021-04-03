@@ -10,10 +10,10 @@ public class NetworkPlayerMovement : NetworkBehaviour
     private InputManager inputManager;
 
     [Header("Movement")]
-    [SerializeField]
-    private float movementSpeed = 3f;
+    [SerializeField] private float movementSpeed = 3f;
     private Vector3 direction;
     public bool IsMovementDisabled;
+    [SerializeField] private Animator animator;
 
     // Camera vars
     private GameObject virtualCamera;
@@ -95,6 +95,11 @@ public class NetworkPlayerMovement : NetworkBehaviour
 
         this.direction = new Vector3(this.inputManager.GetInputMovement().x, 0f, this.inputManager.GetInputMovement().y);
         this.characterController.Move(this.direction * Time.deltaTime * this.movementSpeed);
+
+        if (Mathf.Abs(characterController.velocity.x) > 0 || Mathf.Abs(characterController.velocity.z) > 0)
+            animator.SetBool("isRunning", true);
+        else
+            animator.SetBool("isRunning", false);
 
         if (this.direction != Vector3.zero)
             transform.forward = this.direction;

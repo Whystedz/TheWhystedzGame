@@ -21,7 +21,6 @@ public class NetworkUnderground : MonoBehaviour
         this.respawnPoint = GameObject.FindGameObjectWithTag("RespawnPoint").transform;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (this.playerMovement.IsMovementDisabled)

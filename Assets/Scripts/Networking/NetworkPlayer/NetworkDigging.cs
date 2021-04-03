@@ -86,7 +86,7 @@ public class NetworkDigging : NetworkBehaviour
     }
 
     [Command]
-    void CmdDigTile(TileInfo targetTile)
+    public void CmdDigTile(TileInfo targetTile)
     {
         this.tileManager.DigTile(targetTile);
     }

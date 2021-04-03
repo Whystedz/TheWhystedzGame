@@ -881,9 +881,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   port: 7777
   NoDelay: 1
-  serverMaxMessageSize: 262144
+  serverMaxMessageSize: 350000
   serverMaxReceivesPerTick: 10000
-  clientMaxMessageSize: 262144
+  clientMaxMessageSize: 350000
   clientMaxReceivesPerTick: 1000
 --- !u!114 &775696261
 MonoBehaviour:
