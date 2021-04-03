@@ -262,12 +262,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ce0b76c51c4c234794c20f12366aced, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 3
+  movementSpeed: 8
   IsMovementDisabled: 0
   fallingSpeed: 50
   timeToFadeIn: 2
   isInUnderground: 0
   undergroundCheckThreshold: 2
+  heightOffset: 1.3
 --- !u!114 &6327377196063707617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -368,8 +369,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6c747124b41703429ac7f2bd1caacef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToDie: 100
-  respawnPosition: {x: 0, y: 1.4, z: 0}
+  timeToDie: 20
+  respawnPoint: {fileID: 0}
   undergroundOffset: 2
 --- !u!1 &6327377196359484314
 GameObject:

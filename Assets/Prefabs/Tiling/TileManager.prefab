@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7368095176666420730
+--- !u!1 &6946614955462017477
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 706979560931834706}
-  - component: {fileID: 6607531922117436047}
+  - component: {fileID: 5748530503810269683}
+  - component: {fileID: 1052910048026237714}
   m_Layer: 0
-  m_Name: TeamScore
+  m_Name: TileManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &706979560931834706
+--- !u!4 &5748530503810269683
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7368095176666420730}
+  m_GameObject: {fileID: 6946614955462017477}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -31,16 +31,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6607531922117436047
+--- !u!114 &1052910048026237714
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7368095176666420730}
+  m_GameObject: {fileID: 6946614955462017477}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 672a18e403db27e47b41e491ae163f57, type: 3}
+  m_Script: {fileID: 11500000, guid: 53b031f19bad3264aa6e055457b6d787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  team: 0
+  basicTilePrefab: {fileID: 5884525987830691854, guid: 623b51e3a02a55f4ebcadfaf5b7c3890, type: 3}
+  tileSurfaceScale: 115
+  tileDepthScale: 115
+  mapWidth: 100
+  mapLength: 100
+  xOffset: 2
+  zOffset: 1.73
+  verticalOffset: 0.01

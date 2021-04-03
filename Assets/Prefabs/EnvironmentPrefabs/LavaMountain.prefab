@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3190390747097873364}
   - component: {fileID: 2011227693365408881}
   - component: {fileID: 4327299155013255355}
+  - component: {fileID: 5298178458162377425}
   m_Layer: 0
   m_Name: LavaMountain
   m_TagString: Untagged
@@ -25,8 +26,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2814006324336419182}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -49.2, y: -5.3, z: 22.4}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -82,3 +83,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &5298178458162377425
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2814006324336419182}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 23.546154, y: 17.96584, z: 22.349365}
+  m_Center: {x: 1.1260705, y: 8.410683, z: -0.5473938}

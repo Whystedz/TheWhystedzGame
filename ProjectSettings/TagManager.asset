@@ -10,6 +10,7 @@ TagManager:
   - Underground
   - Surface
   - BlackoutImage
+  - _Dynamic
   layers:
   - Default
   - TransparentFX

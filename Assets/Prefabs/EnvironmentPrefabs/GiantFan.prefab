@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 7478665668709614698}
   - component: {fileID: 5793411807495818191}
   - component: {fileID: 8611623635633274629}
+  - component: {fileID: 1929910823307392837}
+  - component: {fileID: 1541864431955007783}
   m_Layer: 0
   m_Name: GiantFan
   m_TagString: Untagged
@@ -25,8 +27,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7818915677194477264}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -184.53, y: -2.85, z: -83.715}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2.5122, y: 2.5122, z: 2.5122}
   m_Children: []
   m_Father: {fileID: 0}
@@ -83,3 +85,29 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &1929910823307392837
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7818915677194477264}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.2243361, y: 10.018191, z: 2.6291308}
+  m_Center: {x: -0.105652735, y: 5.007767, z: 0.23618577}
+--- !u!65 &1541864431955007783
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7818915677194477264}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 10.72321, y: 2.5640254, z: 11.000857}
+  m_Center: {x: -0.012568366, y: 8.734847, z: 0.020436311}

@@ -30,6 +30,7 @@ public class Tile : MonoBehaviour, IPointerClickHandler
     [SerializeField] private Material unstableMaterial;
     [SerializeField] private Material destroyedMaterial;
     [SerializeField] private Material highlightedMaterial;
+    [SerializeField] private Material comboHighlightedMaterial;
     [SerializeField] private Material ropeMaterial;
 
     [SerializeField] private bool isClickToDigEnabled;
@@ -181,7 +182,7 @@ public class Tile : MonoBehaviour, IPointerClickHandler
 
     private void ChangeMaterialForRopePreviewHighlight() => this.meshRenderer.material = ropeMaterial;
 
-    private void ChangeMaterialForComboHighlight() => this.meshRenderer.material = highlightedMaterial;
+    private void ChangeMaterialForComboHighlight() => this.meshRenderer.material = comboHighlightedMaterial;
 
     private void ChangeMaterialForSimpleHighlight() => this.meshRenderer.material = highlightedMaterial;
 

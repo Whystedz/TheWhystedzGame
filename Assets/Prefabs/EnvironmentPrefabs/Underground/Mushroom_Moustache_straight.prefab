@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4065930385474309873}
   - component: {fileID: 1135696220265038164}
   - component: {fileID: 2893064647990457758}
+  - component: {fileID: 2170069907227359520}
   m_Layer: 0
   m_Name: Mushroom_Moustache_straight
   m_TagString: Untagged
@@ -25,9 +26,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3685851633156723787}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -39.38, y: -70.87, z: 39.42}
-  m_LocalScale: {x: 0.42444, y: 0.42444, z: 0.42444}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -85,3 +86,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &2170069907227359520
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3685851633156723787}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.6658096, y: 6.8675017, z: 2.6352985}
+  m_Center: {x: 0.16277695, y: 3.3837898, z: 0.07491934}
