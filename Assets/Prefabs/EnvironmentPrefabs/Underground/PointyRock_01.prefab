@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5289506807126710311}
   - component: {fileID: 9135483673423075202}
   - component: {fileID: 6423037649674806088}
+  - component: {fileID: 3991959714324850575}
   m_Layer: 0
   m_Name: PointyRock_01
   m_TagString: Untagged
@@ -81,3 +82,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &3991959714324850575
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4765875782868009629}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4.6003056, y: 9.269337, z: 3.676134}
+  m_Center: {x: -0.27975237, y: 4.2762146, z: 0.24432445}
