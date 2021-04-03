@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/SceneSandbox/Elizabeth/Lobby.unity
-    guid: 75e6fb2cd3554bb4982225e425f757e7
+    path: Assets/Scenes/Offline.unity
+    guid: 657602a3dc621be40a9785f3cc914b48
+  - enabled: 1
+    path: Assets/Scenes/TheMainSceneOnline.unity
+    guid: 05a7e6c5397e52a41af475b76e19a69c
   m_configObjects: {}

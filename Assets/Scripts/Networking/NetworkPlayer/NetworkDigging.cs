@@ -7,36 +7,37 @@ using Mirror;
 
 public class NetworkDigging : NetworkBehaviour
 {
-
     [SerializeField] private float minDistanceToDiggableTile = 1.0f;
     [SerializeField] private float maxDistanceToDiggableTile = 1.0f;
     private InputManager inputManager;
-    private int layerMask;
+    private int tileLayerMask;
     private NetworkPlayerMovement playerMovement;
-
+    [SerializeField] private Rope rope;
     [SerializeField] private bool enableDebugMode = true;
-    
+    [SerializeField] private float maxDistanceToRope = 1.5f;
+    [SerializeField] private float speedTowardsRope = 6.0f;
+
     private TileManager tileManager;
 
     private void Awake()
     {
-        layerMask = LayerMask.GetMask("TileMovementCollider");
-        playerMovement = this.GetComponent<NetworkPlayerMovement>();
-        inputManager = InputManager.GetInstance();
-        tileManager = TileManager.GetInstance();
+        this.tileLayerMask = LayerMask.GetMask("Tile");
+        this.playerMovement = this.GetComponent<NetworkPlayerMovement>();
+        this.inputManager = InputManager.GetInstance();
+        this.tileManager = TileManager.GetInstance();
     }
 
     void Update()
     {
         if (base.hasAuthority)
         {
-            if (playerMovement.IsFalling())
-                return;
+            if (this.playerMovement.isInUnderground)
+            return;
 
             var hits = Physics.RaycastAll(transform.position,
                 transform.TransformDirection(Vector3.forward),
                 this.maxDistanceToDiggableTile,
-                layerMask
+                this.tileLayerMask
                 );
 
             if (hits.Length == 0)
@@ -50,20 +51,44 @@ public class NetworkDigging : NetworkBehaviour
             var hitGameObject = closestCollider.transform.parent.gameObject;
 
             var tile = hitGameObject.GetComponent<NetworkTile>();
-            if (tile.HexTile.TileState != TileState.Normal)
-                return;
 
-            StartCoroutine(tile.HighlightTile());
+            if (playerMovement.IsFalling())
+            {
+                rope.gameObject.SetActive(false);
+                tile.TileInfo.TileState = TileState.Respawning;
+                return;
+            }
+
+            switch (tile.TileInfo.TileState)
+            {
+                case TileState.Normal:
+                    StartCoroutine(tile.HighlightTileSimpleDigPreview());
+                    break;
+                case TileState.Unstable:
+                    break;
+                case TileState.Respawning:
+                    StartCoroutine(tile.HighlightTileRopePreview());
+                    break;
+                case TileState.Rope:
+                    break;
+            }
 
             if (inputManager.GetDigging())
-                CmdDigTile(tile.HexTile);
+                InteractWithTile(tile);
+
+            if (rope.ropeState == RopeState.Saved)
+            {
+                tile.TileInfo.TileState = TileState.Respawning;
+                tile.Respawn();
+                rope.CleanUpAfterSave();
+            }
         }
     }
 
     [Command]
-    void CmdDigTile(HexTile targetTile)
+    public void CmdDigTile(TileInfo targetTile)
     {
-        tileManager.DigTile(targetTile);
+        this.tileManager.DigTile(targetTile);
     }
 
     private void OnDrawGizmos()
@@ -104,5 +129,46 @@ public class NetworkDigging : NetworkBehaviour
         }
 
         return closestCollider;
+    }
+
+    public void InteractWithTile(NetworkTile tile)
+    {
+        
+        if (tile.TileInfo.TileState == TileState.Normal)
+            CmdDigTile(tile.TileInfo);
+        else if (rope.ropeState == RopeState.Normal && 
+            ((this.rope.gameObject.activeSelf && tile.TileInfo.TileState == TileState.Rope) 
+            || (!this.rope.gameObject.activeSelf && tile.TileInfo.TileState == TileState.Respawning)))
+        {
+            playerMovement.IsMovementDisabled = !playerMovement.IsMovementDisabled;
+
+            if (tile.TileInfo.TileState == TileState.Rope)
+                tile.TileInfo.TileState = TileState.Respawning;
+            else
+                tile.TileInfo.TileState = TileState.Rope;
+
+            if (tile.TileInfo.TileState == TileState.Rope)
+                StartCoroutine(ThrowRope(this.rope.gameObject, tile));
+            else
+            {
+                rope.ropeState = RopeState.Normal;
+                tile.TileInfo.TileState = TileState.Respawning;
+                this.rope.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    public IEnumerator ThrowRope(GameObject ropeObject, NetworkTile tile)
+    {
+        Vector3 tileSurfacePosition = new Vector3(tile.transform.position.x, this.transform.position.y, tile.transform.position.z);
+        while (Vector3.Distance(this.transform.position, tileSurfacePosition) > maxDistanceToRope)
+        {
+            playerMovement.MoveTowards(ropeObject.transform.forward, speedTowardsRope);
+            yield return null;
+        }
+        playerMovement.MoveTowards(Vector3.zero, 0);
+        ropeObject.transform.position = new Vector3(tile.transform.position.x, ropeObject.transform.position.y, tile.transform.position.z);
+        ropeObject.SetActive(true);
+        yield return null;
     }
 }

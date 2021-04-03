@@ -45,9 +45,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af80d41242d914c468ab3d7a97ccbbe0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TileInfo:
+    TimeToRespawn: 0
+    TimeOfBreakingAnimation: 0
+    Progress: 0
+    XIndex: 0
+    ZIndex: 0
+    TileState: 0
+    TileHighlightState: 0
   normalMaterial: {fileID: 2100000, guid: fec6f71f310647c4c8b7467ef16e9544, type: 2}
   unstableMaterial: {fileID: 2100000, guid: b56a22789220f774480e6e124aa8bd3c, type: 2}
+  destroyedMaterial: {fileID: 2100000, guid: 4e0f81e0ccf4fe2458d0fbddadda44c4, type: 2}
   highlightedMaterial: {fileID: 2100000, guid: 47b6b079f3dd20648b3b3611d3eb27cc, type: 2}
+  comboHighlightedMaterial: {fileID: 2100000, guid: 0457aface7c99d74abad6e60cf40646b, type: 2}
+  ropeMaterial: {fileID: 2100000, guid: e5d5dcde4aa19ad4aa848bd64a4f488f, type: 2}
 --- !u!64 &226970777695015492
 MeshCollider:
   m_ObjectHideFlags: 0

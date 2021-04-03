@@ -22,9 +22,11 @@ public class TileManager : NetworkBehaviour
     [SerializeField] private float timeToRespawn = 5f;
     [SerializeField] private float timeOfBreakingAnimation = 5f;
 
+    private PlayerMovement playerMovement;
+
     public static TileManager GetInstance() => instance;
 
-    public SyncList<HexTile> syncTileList = new SyncList<HexTile>();
+    public SyncList<TileInfo> syncTileList = new SyncList<TileInfo>();
 
     private void Awake() => MaintainSingleInstance();
 
@@ -45,7 +47,7 @@ public class TileManager : NetworkBehaviour
         {
             for (int zIndex = 0; zIndex < mapLength; ++zIndex)
             {
-                HexTile tile = new HexTile
+                TileInfo tile = new TileInfo
                 {
                     TimeToRespawn = this.timeToRespawn,
                     TimeOfBreakingAnimation = this.timeOfBreakingAnimation,
@@ -62,18 +64,18 @@ public class TileManager : NetworkBehaviour
 
     private void SpawnMap()
     {
-        foreach (HexTile tile in syncTileList)
+        foreach (TileInfo tile in syncTileList)
         {
             SpawnTile(tile);
         }
     }
 
-    private void SpawnTile(HexTile tile)
+    private void SpawnTile(TileInfo tile)
     {
         var position = DetermineSpawnPosition(tile.XIndex, tile.ZIndex);
         var tileToSpawn = TileToSpawn(position);
         var generatedTile = Instantiate(tileToSpawn, this.transform);
-        generatedTile.GetComponent<NetworkTile>().HexTile = tile;
+        generatedTile.GetComponent<NetworkTile>().TileInfo = tile;
 
         generatedTile.transform.localScale = new Vector3(
             this.tileSurfaceScale,
@@ -121,10 +123,11 @@ public class TileManager : NetworkBehaviour
 
         var biomeRegion = colliders[0].GetComponent<BiomeRegion>();
 
-        return biomeRegion.GetRandomBiomeThemedTile();
+        //return biomeRegion.GetRandomBiomeThemedTile();
+        return this.basicTilePrefab;
     }
 
-    public void DigTile(HexTile targetTile)
+    public void DigTile(TileInfo targetTile)
     {
         if(isServer)
         {
@@ -133,7 +136,7 @@ public class TileManager : NetworkBehaviour
         }
     }
 
-    public void ResetTile(HexTile targetTile)
+    public void ResetTile(TileInfo targetTile)
     {
         if(isServer)
         {
@@ -152,34 +155,34 @@ public class TileManager : NetworkBehaviour
 
     public void UpdateTile(int listIndex, float newProgress, TileState newState)
     {
-        HexTile tempTile = syncTileList[listIndex];
+        TileInfo tempTile = syncTileList[listIndex];
         tempTile.Progress = newProgress;
         tempTile.TileState = newState;
         syncTileList[listIndex] = tempTile;
     }
 
-    void OnTileUpdated(SyncList<HexTile>.Operation op, int index, HexTile oldTile, HexTile newTile)
+    void OnTileUpdated(SyncList<TileInfo>.Operation op, int index, TileInfo oldTile, TileInfo newTile)
     {
         switch (op)
         {
-            case SyncList<HexTile>.Operation.OP_SET:
+            case SyncList<TileInfo>.Operation.OP_SET:
                 //Debug.Log("Set");
                 StartCoroutine(UpdateMap(index, newTile));
                 break;
         }
     }
 
-    IEnumerator UpdateMap(int index, HexTile newTile)
+    IEnumerator UpdateMap(int index, TileInfo newTile)
     {
         //Debug.Log("Update Map");
-        this.transform.GetChild(index).GetComponent<NetworkTile>().HexTile = newTile;
+        this.transform.GetChild(index).GetComponent<NetworkTile>().TileInfo = newTile;
 
         if(newTile.TileState == TileState.Normal)
             yield break;
             
-        while(this.transform.GetChild(index).GetComponent<NetworkTile>().HexTile.TileState != TileState.Normal)
+        while(this.transform.GetChild(index).GetComponent<NetworkTile>().TileInfo.TileState != TileState.Normal)
             yield return new WaitForEndOfFrame();
         
-        ResetTile(this.transform.GetChild(index).GetComponent<NetworkTile>().HexTile);
+        ResetTile(this.transform.GetChild(index).GetComponent<NetworkTile>().TileInfo);
     }
 }

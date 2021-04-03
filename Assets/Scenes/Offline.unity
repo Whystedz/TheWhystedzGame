@@ -881,9 +881,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   port: 7777
   NoDelay: 1
-  serverMaxMessageSize: 262144
+  serverMaxMessageSize: 350000
   serverMaxReceivesPerTick: 10000
-  clientMaxMessageSize: 262144
+  clientMaxMessageSize: 350000
   clientMaxReceivesPerTick: 1000
 --- !u!114 &775696261
 MonoBehaviour:
@@ -905,14 +905,14 @@ MonoBehaviour:
   serverBatching: 0
   serverBatchInterval: 0
   offlineScene: Assets/Scenes/Offline.unity
-  onlineScene: Assets/Scenes/FPP.unity
+  onlineScene: Assets/Scenes/TheMainSceneOnline.unity
   transport: {fileID: 775696260}
-  networkAddress: 34.95.63.42
+  networkAddress: localhost
   maxConnections: 100
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
   authenticator: {fileID: 0}
-  playerPrefab: {fileID: 6327377196063707621, guid: d33e2ceabcfc6b74d9afe85544fe46d9, type: 3}
+  playerPrefab: {fileID: 6327377196063707621, guid: 089b5bd4919889945b1369e9eeb5d0cd, type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 1
   spawnPrefabs: []
