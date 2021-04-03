@@ -65,7 +65,7 @@ public class PlayerMovement : MonoBehaviour
 
     void PlayerMovementUpdate()
     {
-        if(this.underground != null) CheckIfUnderground();
+        CheckIfUnderground();
 
         CheckIfFalling();
 
@@ -110,7 +110,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void CheckIfFalling()
     {
-        if (this.IsInUnderground)
+        if (IsInUnderground)
         {
             this.isFalling = false;
             return;
@@ -143,7 +143,7 @@ public class PlayerMovement : MonoBehaviour
     {
         var distanceToUnderground = transform.position.y - this.underground.transform.position.y;
         distanceToUnderground = Mathf.Abs(distanceToUnderground);
-        this.IsInUnderground = distanceToUnderground <= this.undergroundCheckThreshold;
+        IsInUnderground = distanceToUnderground <= this.undergroundCheckThreshold;
     }
 
     private Collider GetClosestCollider(Collider[] hitColliders)
@@ -170,6 +170,7 @@ public class PlayerMovement : MonoBehaviour
     public IEnumerator ClimbRope(float height,Vector3 surfacePosition)
     {
         IsClimbing = true;
+
         StartCoroutine(FadeIn());
         while (this.transform.position.y < underground.transform.position.y + height)
         {
@@ -179,6 +180,7 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         this.transform.position = surfacePosition + Vector3.up * this.heightOffset;
         yield return StartCoroutine(FadeOut());
+
         IsClimbing = false;
     }
 
