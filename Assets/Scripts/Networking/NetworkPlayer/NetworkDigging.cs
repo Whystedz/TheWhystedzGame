@@ -7,6 +7,7 @@ using Mirror;
 
 public class NetworkDigging : NetworkBehaviour
 {
+    [SerializeField] private Animator animator;
     [SerializeField] private float minDistanceToDiggableTile = 1.0f;
     [SerializeField] private float maxDistanceToDiggableTile = 1.0f;
     private InputManager inputManager;
@@ -36,7 +37,7 @@ public class NetworkDigging : NetworkBehaviour
     {
         if (base.hasAuthority)
         {
-            if (this.playerMovement.isInUnderground)
+            if (this.playerMovement.IsInUnderground)
                 return;
 
             var hits = Physics.RaycastAll(transform.position,
@@ -163,7 +164,10 @@ public class NetworkDigging : NetworkBehaviour
     {
         
         if (tile.TileInfo.TileState == TileState.Normal)
+        {
+            this.animator.SetTrigger("Shoot");
             CmdDigTile(tile.TileInfo);
+        }
         else if (RopeState == RopeState.Normal && 
             ((IsRopeInUse && tile.TileInfo.TileState == TileState.Rope) 
             || (!IsRopeInUse && tile.TileInfo.TileState == TileState.Respawning)))
@@ -185,10 +189,11 @@ public class NetworkDigging : NetworkBehaviour
 
     public IEnumerator RemoveRope()
     {
-        rope.SetRopeState(RopeState.Normal);
+        this.rope.SetRopeState(RopeState.Normal);
         while (RopeState != RopeState.Normal)
             yield return null;
 
+        this.rope.DisableMovement(false);
         CmdUseRope(false);
         this.playerMovement.IsMovementDisabled = false;
     }

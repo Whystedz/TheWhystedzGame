@@ -53,10 +53,18 @@ public class NetworkRope : MonoBehaviour
         this.networkDigging.CmdSetRopeState(newState);
     }
 
+    public void DisableMovement(bool isDisabled)
+    {
+        if(this.playerMovement != null)
+        {
+            this.playerMovement.IsMovementDisabled = isDisabled;
+        }
+    }
+
     public IEnumerator ClimbRope()
     {
         SetRopeState(RopeState.InUse);
-        this.playerMovement.IsMovementDisabled = true;
+        DisableMovement(true);
         var directionToRope = (this.transform.position - this.playerMovement.transform.position).normalized;
         directionToRope = new Vector3(directionToRope.x, 0,directionToRope.z);
         var ropePositionWithoutY = new Vector3(this.transform.position.x, this.playerMovement.transform.position.y, this.transform.position.z);

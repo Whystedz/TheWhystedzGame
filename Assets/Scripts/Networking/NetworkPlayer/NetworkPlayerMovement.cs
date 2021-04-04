@@ -10,10 +10,11 @@ public class NetworkPlayerMovement : NetworkBehaviour
     private InputManager inputManager;
 
     [Header("Movement")]
+    [SerializeField] private Animator animator;
     [SerializeField] private float movementSpeed = 3f;
     private Vector3 direction;
     public bool IsMovementDisabled;
-    [SerializeField] private Animator animator;
+    private bool isRunning = false;
 
     // Camera vars
     private GameObject virtualCamera;
@@ -28,7 +29,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
     private Image blackoutImage;
     [SerializeField] private float timeToFadeIn = 2f;
 
-    public bool isInUnderground;
+    public bool IsInUnderground { get; private set; }
     [SerializeField] private float undergroundCheckThreshold = 1.5f;
     [SerializeField] private float heightOffset = 1.3f;
 
@@ -96,10 +97,8 @@ public class NetworkPlayerMovement : NetworkBehaviour
         this.direction = new Vector3(this.inputManager.GetInputMovement().x, 0f, this.inputManager.GetInputMovement().y);
         this.characterController.Move(this.direction * Time.deltaTime * this.movementSpeed);
 
-        if (Mathf.Abs(characterController.velocity.x) > 0 || Mathf.Abs(characterController.velocity.z) > 0)
-            animator.SetBool("isRunning", true);
-        else
-            animator.SetBool("isRunning", false);
+        this.isRunning = (Mathf.Abs(this.characterController.velocity.x) > 0 || Mathf.Abs(this.characterController.velocity.z) > 0) ? true : false;
+        this.animator.SetBool("isRunning", isRunning);
 
         if (this.direction != Vector3.zero)
             transform.forward = this.direction;
@@ -107,6 +106,8 @@ public class NetworkPlayerMovement : NetworkBehaviour
 
     private void FallingMovementUpdate()
     {
+        this.animator.SetTrigger("Fall");
+
         if (!this.fallingCamera.activeSelf)
             this.fallingCamera.SetActive(true);
 
@@ -116,7 +117,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
 
     private void CheckIfFalling()
     {
-        if (this.isInUnderground)
+        if (this.IsInUnderground)
         {
             this.isFalling = false;
             return;
@@ -149,7 +150,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
     {
         var distanceToUnderground = transform.position.y - this.underground.transform.position.y;
         distanceToUnderground = Mathf.Abs(distanceToUnderground);
-        this.isInUnderground = distanceToUnderground <= this.undergroundCheckThreshold;
+        this.IsInUnderground = distanceToUnderground <= this.undergroundCheckThreshold;
     }
 
     private Collider GetClosestCollider(Collider[] hitColliders)
@@ -175,6 +176,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
 
     public IEnumerator ClimbRope(float height, Vector3 surfacePosition)
     {
+        this.animator.SetBool("isClimbing", true);
         StartCoroutine(FadeIn());
         while (this.transform.position.y < underground.transform.position.y + height)
         {
@@ -183,7 +185,9 @@ public class NetworkPlayerMovement : NetworkBehaviour
         }
         yield return new WaitForSeconds(0.2f);
         this.transform.position = surfacePosition + Vector3.up * this.heightOffset;
-        yield return StartCoroutine(FadeOut());  
+        this.animator.SetBool("isClimbing", false);
+        yield return StartCoroutine(FadeOut());
+        this.animator.SetTrigger("Reset");
     }
 
     public IEnumerator FadeIn()
