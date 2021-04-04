@@ -24,7 +24,7 @@ public class Underground : MonoBehaviour
         if (this.playerMovement.IsMovementDisabled)
             return;
 
-        if (this.underground != null && this.transform.position.y <= this.underground.transform.position.y + undergroundOffset)
+        if (this.transform.position.y <= this.underground.transform.position.y + undergroundOffset)
         {
             timer += Time.deltaTime;
             if (timer >= timeToDie)
