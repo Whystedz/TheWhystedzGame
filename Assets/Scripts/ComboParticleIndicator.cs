@@ -1,16 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
 public class ComboParticleIndicator : MonoBehaviour
 {
-    [SerializeField] private ComboPlayer targetPlayer;
-    [SerializeField] private ComboPlayer initializingPlayer;
+    private ComboPlayer targetPlayer;
+    private ComboPlayer initializingPlayer;
 
+    [SerializeField] private float particleHintSizeFrom;
+    [SerializeField] private float particleHintSizeTo;
     [SerializeField] private Gradient colorGradientHint1;
     [SerializeField] private Gradient colorGradientHint2;
 
+    [SerializeField] private float particleComboSizeFrom;
+    [SerializeField] private float particleComboSizeTo;
     [SerializeField] private Gradient colorGradientLineCombo1;
     [SerializeField] private Gradient colorGradientLineCombo2;
 
@@ -39,24 +42,31 @@ public class ComboParticleIndicator : MonoBehaviour
         {
             if (ComboHints[i].OriginPlayer == this.initializingPlayer
                 && ComboHints[i].TargetPlayer == this.targetPlayer
-                )
+                && !this.initializingPlayer.IsOnCooldown
+                && !this.targetPlayer.IsOnCooldown)
             {
                 this.showParticles = true;
                 ParticleSystemMain.startColor = new ParticleSystem.MinMaxGradient(this.colorGradientHint1, this.colorGradientHint2);
+                ParticleSystemMain.startSize = new ParticleSystem.MinMaxCurve(this.particleHintSizeFrom, this.particleHintSizeTo);
                 break;
             }
         }
 
         for (int i = 0; i < Combos.Count; i++)
         {
-            if (Combos[i].InitiatingPlayer == this.initializingPlayer && Combos[i].Players.Contains(this.targetPlayer))
+            if (Combos[i].InitiatingPlayer == this.initializingPlayer
+                && Combos[i].Players.Contains(this.targetPlayer)
+                && !this.initializingPlayer.IsOnCooldown
+                && !this.targetPlayer.IsOnCooldown)
             {
                 this.showParticles = true;
                 if (Combos[i].ComboType == ComboType.Line)
                     ParticleSystemMain.startColor = new ParticleSystem.MinMaxGradient(this.colorGradientLineCombo1, this.colorGradientLineCombo2);
                 else
                     ParticleSystemMain.startColor = new ParticleSystem.MinMaxGradient(this.colorGradientTriangleCombo1, this.colorGradientTriangleCombo2);
-
+                
+                ParticleSystemMain.startSize = new ParticleSystem.MinMaxCurve(this.particleComboSizeFrom, this.particleComboSizeTo);
+                
                 break;
             }
         }

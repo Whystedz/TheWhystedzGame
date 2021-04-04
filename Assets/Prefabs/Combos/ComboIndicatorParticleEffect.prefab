@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3177227359520601574}
   - component: {fileID: 2335824935715730900}
   m_Layer: 0
-  m_Name: ComboHintParticleEffect
+  m_Name: ComboIndicatorParticleEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -285,7 +285,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.3
+      scalar: 0.1
       minScalar: 0.01
       maxCurve:
         serializedVersion: 2
@@ -1305,7 +1305,7 @@ ParticleSystem:
         m_RotationOrder: 4
     separateAxes: 0
   ColorModule:
-    enabled: 0
+    enabled: 1
     gradient:
       serializedVersion: 2
       minMaxState: 1
@@ -1330,8 +1330,8 @@ ParticleSystem:
         ctime6: 0
         ctime7: 0
         atime0: 0
-        atime1: 33346
-        atime2: 65535
+        atime1: 41441
+        atime2: 50886
         atime3: 65535
         atime4: 0
         atime5: 0
@@ -4829,10 +4829,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetPlayer: {fileID: 0}
   initializingPlayer: {fileID: 0}
+  particleHintSizeFrom: 0.01
+  particleHintSizeTo: 0.1
   colorGradientHint1:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 0.49019608}
-    key1: {r: 1, g: 1, b: 1, a: 0.49019608}
+    key1: {r: 1, g: 1, b: 1, a: 0}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -4861,7 +4863,7 @@ MonoBehaviour:
   colorGradientHint2:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 0.49019608}
-    key1: {r: 1, g: 1, b: 1, a: 0.49019608}
+    key1: {r: 1, g: 1, b: 1, a: 0}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -4887,6 +4889,8 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
+  particleComboSizeFrom: 0.01
+  particleComboSizeTo: 0.3
   colorGradientLineCombo1:
     serializedVersion: 2
     key0: {r: 0, g: 0.09174347, b: 1, a: 1}
@@ -5003,5 +5007,3 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  inComboHint: 0
-  inCombo: 0
