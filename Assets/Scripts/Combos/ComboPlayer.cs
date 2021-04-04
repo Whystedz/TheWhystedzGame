@@ -26,6 +26,7 @@ public class ComboPlayer : MonoBehaviour
 
     private ComboManager comboManager;
 
+    [SerializeField] private Transform comboParticleGenerator;
 
     private void Awake()
     {
@@ -69,6 +70,9 @@ public class ComboPlayer : MonoBehaviour
             && Combos.Count() > 0
             && !this.IsOnCooldown)
             TriggerCombos();
+
+        foreach (Transform child in comboParticleGenerator)
+            child.GetComponent<ComboParticleIndicator>().UpdateParticles(this.Combos, this.ComboHints);
 
         this.Combos.Clear();
         this.ComboHints.Clear();
