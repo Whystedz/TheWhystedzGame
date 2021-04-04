@@ -35,19 +35,17 @@ public class ComboParticleIndicator : MonoBehaviour
     {
         this.showParticles = false;
 
-        var ParticleSystemMain = this.particleSystem.main;
-        ParticleSystemMain.startSpeed = Vector3.Distance(this.initializingPlayer.transform.position, this.targetPlayer.transform.position);
+        var particleSystemMain = this.particleSystem.main;
+        particleSystemMain.startSpeed = Vector3.Distance(this.initializingPlayer.transform.position, this.targetPlayer.transform.position);
 
         for (int i = 0; i < ComboHints.Count; i++)
         {
             if (ComboHints[i].OriginPlayer == this.initializingPlayer
-                && ComboHints[i].TargetPlayer == this.targetPlayer
-                && !this.initializingPlayer.IsOnCooldown
-                && !this.targetPlayer.IsOnCooldown)
+                && ComboHints[i].TargetPlayer == this.targetPlayer)
             {
                 this.showParticles = true;
-                ParticleSystemMain.startColor = new ParticleSystem.MinMaxGradient(this.colorGradientHint1, this.colorGradientHint2);
-                ParticleSystemMain.startSize = new ParticleSystem.MinMaxCurve(this.particleHintSizeFrom, this.particleHintSizeTo);
+                particleSystemMain.startColor = new ParticleSystem.MinMaxGradient(this.colorGradientHint1, this.colorGradientHint2);
+                particleSystemMain.startSize = new ParticleSystem.MinMaxCurve(this.particleHintSizeFrom, this.particleHintSizeTo);
                 break;
             }
         }
@@ -55,17 +53,15 @@ public class ComboParticleIndicator : MonoBehaviour
         for (int i = 0; i < Combos.Count; i++)
         {
             if (Combos[i].InitiatingPlayer == this.initializingPlayer
-                && Combos[i].Players.Contains(this.targetPlayer)
-                && !this.initializingPlayer.IsOnCooldown
-                && !this.targetPlayer.IsOnCooldown)
+                && Combos[i].Players.Contains(this.targetPlayer))
             {
                 this.showParticles = true;
                 if (Combos[i].ComboType == ComboType.Line)
-                    ParticleSystemMain.startColor = new ParticleSystem.MinMaxGradient(this.colorGradientLineCombo1, this.colorGradientLineCombo2);
+                    particleSystemMain.startColor = new ParticleSystem.MinMaxGradient(this.colorGradientLineCombo1, this.colorGradientLineCombo2);
                 else
-                    ParticleSystemMain.startColor = new ParticleSystem.MinMaxGradient(this.colorGradientTriangleCombo1, this.colorGradientTriangleCombo2);
+                    particleSystemMain.startColor = new ParticleSystem.MinMaxGradient(this.colorGradientTriangleCombo1, this.colorGradientTriangleCombo2);
                 
-                ParticleSystemMain.startSize = new ParticleSystem.MinMaxCurve(this.particleComboSizeFrom, this.particleComboSizeTo);
+                particleSystemMain.startSize = new ParticleSystem.MinMaxCurve(this.particleComboSizeFrom, this.particleComboSizeTo);
                 
                 break;
             }

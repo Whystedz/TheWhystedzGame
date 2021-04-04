@@ -16,9 +16,9 @@ public class ComboParticleGenerator : MonoBehaviour
 
         for(int i = 0; i < this.teammates.Count; i++)
         {
-            Instantiate(this.particleConnectionPrefab, transform)
-                .GetComponent<ComboParticleIndicator>()
-                .SetPlayers(this.comboPlayer, this.teammates[i].GetComponent<ComboPlayer>());
+            var particleConnectionGameObject = Instantiate(this.particleConnectionPrefab, transform);
+            var comboParticleIndicator = particleConnectionGameObject.GetComponent<ComboParticleIndicator>();
+            comboParticleIndicator.SetPlayers(this.comboPlayer, this.teammates[i].GetComponent<ComboPlayer>());
             
             /* TODO: Nice to have - complete the particle effect logic for triangle combos - lines originating from the other two participants
             for (int j = 0; j < this.teammates.Count; j++)
