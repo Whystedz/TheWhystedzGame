@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6474438845002051420}
   - component: {fileID: 6474438845002051395}
   - component: {fileID: 6474438845002051394}
+  - component: {fileID: 4490923608680112070}
   m_Layer: 8
   m_Name: UndergroundPlane
   m_TagString: Underground
@@ -97,6 +98,18 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &4490923608680112070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6474438845002051393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e568142e1063014f9a584aa01a85ed9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6474438845314239648
 GameObject:
   m_ObjectHideFlags: 0

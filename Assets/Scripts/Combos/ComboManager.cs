@@ -190,10 +190,10 @@ public class ComboManager : MonoBehaviour
             return;
         }
 
-        AddTriangleComboHint(a, b);
+        AddLineComboHint(a, b);
     }
 
-    private static void AddTriangleComboHint(ComboPlayer a, ComboPlayer b)
+    private static void AddLineComboHint(ComboPlayer a, ComboPlayer b)
     {
         var comboHint = new ComboHint
         {
@@ -350,6 +350,8 @@ public class ComboManager : MonoBehaviour
 
     private void Highlight(ComboPlayer a, ComboPlayer b, Color color) =>
         Debug.DrawLine(a.transform.position, b.transform.position, color);
+
+    public float MaxHighlightingDistance() => this.triangleDistance + this.highlightTolerance;
 
     private bool IsWithinTriggeringDistance(ComboPlayer a, ComboPlayer b, float maxTriggerDistance, float minDistance = 0f)
     {

@@ -7357,10 +7357,6 @@ PrefabInstance:
       value: SurfacePlane
       objectReference: {fileID: 0}
     - target: {fileID: 4692303708131121393, guid: a32faa6f1d668164ea4a8ba35b89c09e, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4692303708131121393, guid: a32faa6f1d668164ea4a8ba35b89c09e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -7370,7 +7366,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4692303708131121393, guid: a32faa6f1d668164ea4a8ba35b89c09e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10
+      value: -1.9887
       objectReference: {fileID: 0}
     - target: {fileID: 4692303708131121393, guid: a32faa6f1d668164ea4a8ba35b89c09e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -7387,18 +7383,6 @@ PrefabInstance:
     - target: {fileID: 4692303708131121393, guid: a32faa6f1d668164ea4a8ba35b89c09e, type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4692303708131121393, guid: a32faa6f1d668164ea4a8ba35b89c09e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4692303708131121393, guid: a32faa6f1d668164ea4a8ba35b89c09e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4692303708131121393, guid: a32faa6f1d668164ea4a8ba35b89c09e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a32faa6f1d668164ea4a8ba35b89c09e, type: 3}
@@ -18736,7 +18720,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 839950661169388294, guid: be74c2ee1ea44b8428777a21009b0720, type: 3}
       propertyPath: far clip plane
-      value: 20
+      value: 5000
       objectReference: {fileID: 0}
     - target: {fileID: 839950661169388295, guid: be74c2ee1ea44b8428777a21009b0720, type: 3}
       propertyPath: m_RootOrder
@@ -27981,7 +27965,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8557534108105486560, guid: 508a0eead97bef247a3951d5361218cc, type: 3}
       propertyPath: m_Name
-      value: CrystalSpawnManager
+      value: CrystalManager
       objectReference: {fileID: 0}
     - target: {fileID: 8557534108105486563, guid: 508a0eead97bef247a3951d5361218cc, type: 3}
       propertyPath: m_RootOrder
