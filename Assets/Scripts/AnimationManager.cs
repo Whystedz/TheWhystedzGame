@@ -10,7 +10,6 @@ public class AnimationManager : MonoBehaviour
     private Animator animator;
 
     private bool fallingTrigger = false;
-    private bool isRunning = false;
 
     private void Awake()
     {
@@ -40,15 +39,19 @@ public class AnimationManager : MonoBehaviour
             this.fallingTrigger = false;
 
 
-        animator.SetBool("isClimbing", this.playerMovement.IsClimbing);
+        if (this.playerMovement.IsClimbing)
+            animator.SetBool("isClimbing", true);
+        else
+            this.animator.SetBool("isClimbing", false);
 
 
         if (this.inputManager.GetDigging() && !this.playerMovement.IsInUnderground)
             this.animator.SetTrigger("Shoot");
         
 
-        isRunning = (Mathf.Abs(this.characterController.velocity.x) > 0 || Mathf.Abs(this.characterController.velocity.z) > 0) ? true : false;
-        this.animator.SetBool("isRunning", isRunning);
-
+        if (Mathf.Abs(this.characterController.velocity.x) > 0 || Mathf.Abs(this.characterController.velocity.z) > 0)
+            this.animator.SetBool("isRunning", true);
+        else
+            this.animator.SetBool("isRunning", false);
     }
 }
