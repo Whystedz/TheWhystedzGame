@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4692303708131121391}
   - component: {fileID: 4692303708131121390}
   - component: {fileID: 255877349459275054}
+  - component: {fileID: 1786932440784084075}
   m_Layer: 8
   m_Name: SurfacePlane
   m_TagString: Surface
@@ -29,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 4692303708131121389}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 10}
-  m_LocalScale: {x: 21, y: 1, z: 20}
+  m_LocalScale: {x: 21, y: 1, z: 17.602001}
   m_Children:
   - {fileID: 4692303708439132941}
   m_Father: {fileID: 0}
@@ -108,6 +109,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 033e3297453160a45adaa80ad178bcc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1786932440784084075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4692303708131121389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e568142e1063014f9a584aa01a85ed9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4692303708439132940

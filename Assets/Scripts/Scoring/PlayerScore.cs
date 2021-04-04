@@ -45,8 +45,9 @@ public class PlayerScore : MonoBehaviour
     private void AddCollectableToScore(Collectable collectable)
     {
         Add(collectable.PointsWorth);
+
         this.playerScoreUI.UpdateScore(CurrentScore);
-        
-        Destroy(collectable.gameObject);
+
+        collectable.Collect();
     }
 }
