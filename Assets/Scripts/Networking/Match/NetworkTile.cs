@@ -15,6 +15,9 @@ public class NetworkTile : MonoBehaviour
     [SerializeField] private Material ropeMaterial;
 
     private MeshRenderer meshRenderer;
+    internal TileHighlightState tileHighlightState;
+
+    TileManager tileManager = TileManager.GetInstance();
 
     private void Start()
     {
@@ -31,7 +34,7 @@ public class NetworkTile : MonoBehaviour
             case TileState.Normal:
                 break;
             case TileState.Unstable:
-                this.UnstableUpdate();
+                UnstableUpdate();
                 break;
             case TileState.Respawning:
                 RespawningUpdate();
@@ -53,9 +56,8 @@ public class NetworkTile : MonoBehaviour
     {
         StartCoroutine(PlayBreakingAnimation());
 
-        TileInfo.TileState = TileState.Respawning;
         this.meshRenderer.material = destroyedMaterial;
-        TileInfo.Progress = TileInfo.TimeToRespawn;
+        this.tileManager.SetTileState(TileInfo, TileState.Respawning, TileInfo.TimeToRespawn);
     }
 
     private IEnumerator PlayBreakingAnimation()
@@ -85,7 +87,7 @@ public class NetworkTile : MonoBehaviour
     {
         transform.position = new Vector3(transform.position.x, 0, transform.position.z);
         this.meshRenderer.material = normalMaterial;
-        TileInfo.TileState = TileState.Normal;
+        this.tileManager.ResetTile(TileInfo);
     }
 
     public void HighlightTileSimpleDigPreview()
@@ -93,7 +95,7 @@ public class NetworkTile : MonoBehaviour
         if (TileInfo.TileState != TileState.Normal)
             return;
 
-        TileInfo.TileHighlightState = TileHighlightState.SimpleHighlight;
+        this.tileHighlightState = TileHighlightState.SimpleHighlight;
     }
 
     public IEnumerator HighlightTileComboDigPreview()
@@ -101,7 +103,7 @@ public class NetworkTile : MonoBehaviour
         if (TileInfo.TileState != TileState.Normal)
             yield break;
 
-        TileInfo.TileHighlightState = TileHighlightState.ComboHighlight;
+        this.tileHighlightState = TileHighlightState.ComboHighlight;
     }
 
     public void HighlightTileRopePreview()
@@ -109,12 +111,12 @@ public class NetworkTile : MonoBehaviour
         if (TileInfo.TileState != TileState.Respawning)
             return;
 
-        TileInfo.TileHighlightState = TileHighlightState.RopeHighlight;
+        this.tileHighlightState = TileHighlightState.RopeHighlight;
     }
 
     private void ChangeMaterialAccordingToCurrentState()
     {       
-        switch (TileInfo.TileHighlightState)
+        switch (this.tileHighlightState)
         {
             case TileHighlightState.NoHighlight:
                 ChangeMaterialAccordingToCurrentStateNoHighlight();
@@ -130,7 +132,7 @@ public class NetworkTile : MonoBehaviour
                 break;
         }
 
-        TileInfo.TileHighlightState = TileHighlightState.NoHighlight;
+        this.tileHighlightState = TileHighlightState.NoHighlight;
     }
 
     private void ChangeMaterialForRopePreviewHighlight() => this.meshRenderer.material = ropeMaterial;

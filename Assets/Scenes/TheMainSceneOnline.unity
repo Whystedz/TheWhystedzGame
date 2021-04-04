@@ -4061,7 +4061,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 839950661169388294, guid: be74c2ee1ea44b8428777a21009b0720, type: 3}
       propertyPath: far clip plane
-      value: 20
+      value: 5000
       objectReference: {fileID: 0}
     - target: {fileID: 839950661169388295, guid: be74c2ee1ea44b8428777a21009b0720, type: 3}
       propertyPath: m_RootOrder
@@ -6154,18 +6154,10 @@ PrefabInstance:
       propertyPath: sceneId
       value: 1106740678
       objectReference: {fileID: 0}
-    - target: {fileID: 1514872325810132585, guid: 805356bf35e0adf49a29681cc49c3ad6, type: 3}
-      propertyPath: TimeToBreak
-      value: 0.25
+    - target: {fileID: 1514872325810132584, guid: 805356bf35e0adf49a29681cc49c3ad6, type: 3}
+      propertyPath: m_AssetId
+      value: 805356bf35e0adf49a29681cc49c3ad6
       objectReference: {fileID: 0}
-    - target: {fileID: 1514872325810132585, guid: 805356bf35e0adf49a29681cc49c3ad6, type: 3}
-      propertyPath: syncInterval
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1514872325810132585, guid: 805356bf35e0adf49a29681cc49c3ad6, type: 3}
-      propertyPath: basicTilePrefab
-      value: 
-      objectReference: {fileID: 226970777013656547, guid: 2bf8b30348d5a1f47ade6b1612541c1c, type: 3}
     - target: {fileID: 1514872325810132586, guid: 805356bf35e0adf49a29681cc49c3ad6, type: 3}
       propertyPath: m_Name
       value: TileManager (Network)

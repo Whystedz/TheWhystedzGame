@@ -62,7 +62,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0.1
+  syncInterval: 0.01
   basicTilePrefab: {fileID: 226970777013656547, guid: 2bf8b30348d5a1f47ade6b1612541c1c, type: 3}
   tileSurfaceScale: 115
   tileDepthScale: 115

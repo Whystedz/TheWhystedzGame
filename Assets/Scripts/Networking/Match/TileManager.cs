@@ -145,6 +145,23 @@ public class TileManager : NetworkBehaviour
         }
     }
 
+    public void SetTileState(TileInfo targetTile, TileState newState, float newProgress)
+    {
+        if(isServer)
+        {
+            int index = syncTileList.FindIndex(x => x.XIndex == targetTile.XIndex && x.ZIndex == targetTile.ZIndex);
+            UpdateTile(index, newProgress, newState);
+        }
+    }
+
+    private void UpdateTile(int listIndex, float newProgress, TileState newState)
+    {
+        TileInfo tempTile = syncTileList[listIndex];
+        tempTile.Progress = newProgress;
+        tempTile.TileState = newState;
+        syncTileList[listIndex] = tempTile;
+    }
+
     private void MaintainSingleInstance()
     {
         if (instance != null && instance != this)
@@ -153,36 +170,13 @@ public class TileManager : NetworkBehaviour
             instance = this;
     }
 
-    public void UpdateTile(int listIndex, float newProgress, TileState newState)
-    {
-        TileInfo tempTile = syncTileList[listIndex];
-        tempTile.Progress = newProgress;
-        tempTile.TileState = newState;
-        syncTileList[listIndex] = tempTile;
-    }
-
     void OnTileUpdated(SyncList<TileInfo>.Operation op, int index, TileInfo oldTile, TileInfo newTile)
     {
         switch (op)
         {
             case SyncList<TileInfo>.Operation.OP_SET:
-                //Debug.Log("Set");
-                StartCoroutine(UpdateMap(index, newTile));
+                this.transform.GetChild(index).GetComponent<NetworkTile>().TileInfo = newTile;
                 break;
         }
-    }
-
-    IEnumerator UpdateMap(int index, TileInfo newTile)
-    {
-        //Debug.Log("Update Map");
-        this.transform.GetChild(index).GetComponent<NetworkTile>().TileInfo = newTile;
-
-        if(newTile.TileState == TileState.Normal)
-            yield break;
-            
-        while(this.transform.GetChild(index).GetComponent<NetworkTile>().TileInfo.TileState != TileState.Normal)
-            yield return new WaitForEndOfFrame();
-        
-        ResetTile(this.transform.GetChild(index).GetComponent<NetworkTile>().TileInfo);
     }
 }

@@ -57,7 +57,6 @@ public struct TileInfo
     public int XIndex;
     public int ZIndex;
     public TileState TileState;
-    public TileHighlightState TileHighlightState;
 }
 
 [Serializable]
@@ -105,11 +104,4 @@ public enum ClientMatchOperation : byte
     UpdateRoom,
     UpdateHost,
     Started
-}
-
-public enum ServerTileOperation : byte
-{
-    None,
-    Generate,
-    UpdateState
 }

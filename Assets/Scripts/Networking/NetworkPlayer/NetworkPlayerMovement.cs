@@ -173,7 +173,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
     public bool IsFalling() => this.isFalling;
     public void MoveTowards(Vector3 direction, float speed) => this.characterController.Move(direction * Time.deltaTime * speed);
 
-    public IEnumerator ClimbRope(float height,Vector3 surfacePosition)
+    public IEnumerator ClimbRope(float height, Vector3 surfacePosition)
     {
         StartCoroutine(FadeIn());
         while (this.transform.position.y < underground.transform.position.y + height)
@@ -183,7 +183,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
         }
         yield return new WaitForSeconds(0.2f);
         this.transform.position = surfacePosition + Vector3.up * this.heightOffset;
-        yield return StartCoroutine(FadeOut());
+        yield return StartCoroutine(FadeOut());  
     }
 
     public IEnumerator FadeIn()

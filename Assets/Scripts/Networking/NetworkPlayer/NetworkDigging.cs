@@ -12,7 +12,12 @@ public class NetworkDigging : NetworkBehaviour
     private InputManager inputManager;
     private int tileLayerMask;
     private NetworkPlayerMovement playerMovement;
-    [SerializeField] private Rope rope;
+
+    [SyncVar(hook = nameof(OnRopeUsed))]
+    public bool IsRopeInUse = false;
+    [SerializeField] private NetworkRope rope;
+    [SyncVar]
+    public RopeState RopeState = RopeState.Normal;
     [SerializeField] private bool enableDebugMode = true;
     [SerializeField] private float maxDistanceToRope = 1.5f;
     [SerializeField] private float speedTowardsRope = 6.0f;
@@ -32,7 +37,7 @@ public class NetworkDigging : NetworkBehaviour
         if (base.hasAuthority)
         {
             if (this.playerMovement.isInUnderground)
-            return;
+                return;
 
             var hits = Physics.RaycastAll(transform.position,
                 transform.TransformDirection(Vector3.forward),
@@ -52,10 +57,10 @@ public class NetworkDigging : NetworkBehaviour
 
             var tile = hitGameObject.GetComponent<NetworkTile>();
 
-            if (playerMovement.IsFalling())
+            if (this.playerMovement.IsFalling())
             {
-                rope.gameObject.SetActive(false);
-                tile.TileInfo.TileState = TileState.Respawning;
+                CmdUseRope(false);
+                CmdSetTileState(tile.TileInfo, TileState.Respawning, tile.TileInfo.Progress);
                 return;
             }
 
@@ -76,11 +81,10 @@ public class NetworkDigging : NetworkBehaviour
             if (inputManager.GetDigging())
                 InteractWithTile(tile);
 
-            if (rope.ropeState == RopeState.Saved)
+            if (RopeState == RopeState.Saved)
             {
-                tile.TileInfo.TileState = TileState.Respawning;
-                tile.Respawn();
-                rope.CleanUpAfterSave();
+                CmdSetTileState(tile.TileInfo, TileState.Respawning, 0f);
+                StartCoroutine(RemoveRope());
             }
         }
     }
@@ -89,6 +93,30 @@ public class NetworkDigging : NetworkBehaviour
     public void CmdDigTile(TileInfo targetTile)
     {
         this.tileManager.DigTile(targetTile);
+    }
+
+    [Command]
+    public void CmdUseRope(bool isUsing)
+    {
+        IsRopeInUse = isUsing;
+    }
+
+    [Command]
+    public void CmdSetTileState(TileInfo targetTile, TileState newState, float newProgress)
+    {
+        this.tileManager.SetTileState(targetTile, newState, newProgress);
+    }
+
+    [Command(ignoreAuthority = true)]
+    public void CmdSetRopeState(RopeState newState)
+    {
+        RopeState = newState;
+    }
+
+    private void OnRopeUsed(bool oldValue, bool newValue)
+    {
+        this.rope.gameObject.SetActive(newValue);
+        Debug.Log("Used rope");
     }
 
     private void OnDrawGizmos()
@@ -136,26 +164,33 @@ public class NetworkDigging : NetworkBehaviour
         
         if (tile.TileInfo.TileState == TileState.Normal)
             CmdDigTile(tile.TileInfo);
-        else if (rope.ropeState == RopeState.Normal && 
-            ((this.rope.gameObject.activeSelf && tile.TileInfo.TileState == TileState.Rope) 
-            || (!this.rope.gameObject.activeSelf && tile.TileInfo.TileState == TileState.Respawning)))
+        else if (RopeState == RopeState.Normal && 
+            ((IsRopeInUse && tile.TileInfo.TileState == TileState.Rope) 
+            || (!IsRopeInUse && tile.TileInfo.TileState == TileState.Respawning)))
         {
-            playerMovement.IsMovementDisabled = !playerMovement.IsMovementDisabled;
+            this.playerMovement.IsMovementDisabled = !this.playerMovement.IsMovementDisabled;
 
             if (tile.TileInfo.TileState == TileState.Rope)
-                tile.TileInfo.TileState = TileState.Respawning;
-            else
-                tile.TileInfo.TileState = TileState.Rope;
-
-            if (tile.TileInfo.TileState == TileState.Rope)
-                StartCoroutine(ThrowRope(this.rope.gameObject, tile));
+            {
+                CmdSetTileState(tile.TileInfo, TileState.Respawning, tile.TileInfo.Progress);
+                StartCoroutine(RemoveRope());
+            }
             else
             {
-                rope.ropeState = RopeState.Normal;
-                tile.TileInfo.TileState = TileState.Respawning;
-                this.rope.gameObject.SetActive(false);
+                CmdSetTileState(tile.TileInfo, TileState.Rope, tile.TileInfo.Progress);
+                StartCoroutine(ThrowRope(this.rope.gameObject, tile));
             }
         }
+    }
+
+    public IEnumerator RemoveRope()
+    {
+        rope.SetRopeState(RopeState.Normal);
+        while (RopeState != RopeState.Normal)
+            yield return null;
+
+        CmdUseRope(false);
+        this.playerMovement.IsMovementDisabled = false;
     }
 
     public IEnumerator ThrowRope(GameObject ropeObject, NetworkTile tile)
@@ -168,7 +203,7 @@ public class NetworkDigging : NetworkBehaviour
         }
         playerMovement.MoveTowards(Vector3.zero, 0);
         ropeObject.transform.position = new Vector3(tile.transform.position.x, ropeObject.transform.position.y, tile.transform.position.z);
-        ropeObject.SetActive(true);
+        CmdUseRope(true);
         yield return null;
     }
 }
