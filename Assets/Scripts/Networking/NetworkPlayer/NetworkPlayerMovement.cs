@@ -174,7 +174,34 @@ public class NetworkPlayerMovement : NetworkBehaviour
     public bool IsFalling() => this.isFalling;
     public void MoveTowards(Vector3 direction, float speed) => this.characterController.Move(direction * Time.deltaTime * speed);
 
-    public IEnumerator ClimbRope(float height, Vector3 surfacePosition)
+    public void StartClimbing(GameObject rope, float height)
+    {
+        StartCoroutine(ClimbRope(rope, height));
+    }
+
+    public IEnumerator ClimbRope(GameObject rope, float height)
+    {
+        rope.GetComponent<NetworkRope>().SetRopeState(RopeState.InUse);
+        IsMovementDisabled = true;
+        var directionToRope = (rope.transform.position - this.transform.position).normalized;
+        directionToRope = new Vector3(directionToRope.x, 0,directionToRope.z);
+        var ropePositionWithoutY = new Vector3(rope.transform.position.x, this.transform.position.y, rope.transform.position.z);
+        this.transform.LookAt(ropePositionWithoutY);
+
+        while (Vector3.Distance(this.transform.position, ropePositionWithoutY) > 1.0f)
+        {
+            MoveTowards(directionToRope, 120f);
+            yield return null;
+        }
+        this.transform.LookAt(ropePositionWithoutY);
+
+        yield return StartCoroutine(TransitionToTop(height, rope.transform.position));
+        rope.GetComponent<NetworkRope>().SetRopeState(RopeState.Saved);
+        yield return new WaitForSecondsRealtime(0.5f);
+        IsMovementDisabled = false;
+    }
+
+    public IEnumerator TransitionToTop(float height, Vector3 surfacePosition)
     {
         this.animator.SetBool("isClimbing", true);
         StartCoroutine(FadeIn());

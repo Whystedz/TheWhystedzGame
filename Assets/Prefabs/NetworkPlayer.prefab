@@ -275,7 +275,7 @@ MonoBehaviour:
   fallingSpeed: 50
   timeToFadeIn: 2
   undergroundCheckThreshold: 2
-  heightOffset: 1.1
+  heightOffset: 1.05
 --- !u!114 &1242045881163087873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -345,7 +345,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0.1
+  syncInterval: 0
   clientAuthority: 1
   localPositionSensitivity: 0.01
   localRotationSensitivity: 0.01
@@ -363,7 +363,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0.1
+  syncInterval: 0
   clientAuthority: 1
   animator: {fileID: 4551319788818375171}
 --- !u!1 &6327377197209976905

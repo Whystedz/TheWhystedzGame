@@ -4061,7 +4061,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 839950661169388294, guid: be74c2ee1ea44b8428777a21009b0720, type: 3}
       propertyPath: far clip plane
-      value: 5000
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 839950661169388295, guid: be74c2ee1ea44b8428777a21009b0720, type: 3}
       propertyPath: m_RootOrder
@@ -6157,6 +6157,10 @@ PrefabInstance:
     - target: {fileID: 1514872325810132584, guid: 805356bf35e0adf49a29681cc49c3ad6, type: 3}
       propertyPath: m_AssetId
       value: 805356bf35e0adf49a29681cc49c3ad6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1514872325810132585, guid: 805356bf35e0adf49a29681cc49c3ad6, type: 3}
+      propertyPath: syncInterval
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1514872325810132586, guid: 805356bf35e0adf49a29681cc49c3ad6, type: 3}
       propertyPath: m_Name

@@ -193,7 +193,6 @@ public class NetworkDigging : NetworkBehaviour
         while (RopeState != RopeState.Normal)
             yield return null;
 
-        this.rope.DisableMovement(false);
         CmdUseRope(false);
         this.playerMovement.IsMovementDisabled = false;
     }

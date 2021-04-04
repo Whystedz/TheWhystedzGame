@@ -24,7 +24,7 @@ public class NetworkRope : MonoBehaviour
     {
         if (this.inputManager.GetDigging() && networkDigging.RopeState != RopeState.InUse && this.inZone)
         {
-            StartCoroutine(ClimbRope());
+            this.playerMovement.StartClimbing(this.gameObject, heightToClimb);
         }
     }
 
@@ -51,32 +51,5 @@ public class NetworkRope : MonoBehaviour
     public void SetRopeState(RopeState newState)
     {
         this.networkDigging.CmdSetRopeState(newState);
-    }
-
-    public void DisableMovement(bool isDisabled)
-    {
-        if(this.playerMovement != null)
-        {
-            this.playerMovement.IsMovementDisabled = isDisabled;
-        }
-    }
-
-    public IEnumerator ClimbRope()
-    {
-        SetRopeState(RopeState.InUse);
-        DisableMovement(true);
-        var directionToRope = (this.transform.position - this.playerMovement.transform.position).normalized;
-        directionToRope = new Vector3(directionToRope.x, 0,directionToRope.z);
-        var ropePositionWithoutY = new Vector3(this.transform.position.x, this.playerMovement.transform.position.y, this.transform.position.z);
-        this.playerMovement.transform.LookAt(ropePositionWithoutY);
-
-        while (Vector3.Distance(this.playerMovement.transform.position, ropePositionWithoutY) > 1.0f)
-        {
-            this.playerMovement.MoveTowards(directionToRope, 120f);
-            yield return null;
-        }
-        this.playerMovement.transform.LookAt(ropePositionWithoutY);
-        yield return StartCoroutine(this.playerMovement.ClimbRope(heightToClimb, this.transform.position));
-        SetRopeState(RopeState.Saved);
     }
 }
