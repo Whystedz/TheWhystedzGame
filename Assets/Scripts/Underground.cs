@@ -6,7 +6,7 @@ public class Underground : MonoBehaviour
     [SerializeField] private Transform respawnPoint;
     private float timer;
     private PlayerMovement playerMovement;
-
+    private LoseCrystals loseCrystals;
     private GameObject underground;
     [SerializeField] private float undergroundOffset;
 
@@ -14,7 +14,7 @@ public class Underground : MonoBehaviour
     {
         this.timer = 0;
         this.playerMovement = this.GetComponent<PlayerMovement>();
-
+        this.loseCrystals = this.GetComponent<LoseCrystals>();
         this.underground = GameObject.FindGameObjectWithTag("Underground");
     }
 
@@ -26,17 +26,23 @@ public class Underground : MonoBehaviour
 
         if (this.transform.position.y <= this.underground.transform.position.y + undergroundOffset)
         {
-            timer += Time.deltaTime;
-            if (timer >= timeToDie)
+            this.timer += Time.deltaTime;
+            if (this.timer >= this.timeToDie)
                 Die();
 
         } else
-            timer = 0;
+            this.timer = 0;
 
     }
 
     void Die()
     {
+        this.loseCrystals.LoseCrystal();
         this.transform.position = respawnPoint.position;
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Underground"))
+            this.loseCrystals.LoseCrystal();
     }
 }
