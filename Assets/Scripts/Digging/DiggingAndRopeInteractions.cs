@@ -11,6 +11,7 @@ public class DiggingAndRopeInteractions : MonoBehaviour
     private InputManager inputManager;
     private int tileLayerMask;
     private PlayerMovement playerMovement;
+    private PlayerAudio playerAudio;
     [SerializeField] private Rope rope;
     [SerializeField] private bool enableDebugMode = true;
     [SerializeField] private float maxDistanceToRope = 1.5f;
@@ -19,6 +20,7 @@ public class DiggingAndRopeInteractions : MonoBehaviour
     {
         this.tileLayerMask = LayerMask.GetMask("Tile");
         this.playerMovement = this.GetComponent<PlayerMovement>();
+        this.playerAudio = this.GetComponent<PlayerAudio>();
     }
     void Start() => inputManager = InputManager.GetInstance();
 
@@ -120,6 +122,7 @@ public class DiggingAndRopeInteractions : MonoBehaviour
 
     public IEnumerator ThrowRope(GameObject ropeObject, Tile tile)
     {
+        playerAudio.PlayRopeAudio();
         Vector3 tileSurfacePosition = new Vector3(tile.transform.position.x, this.transform.position.y, tile.transform.position.z);
         while (Vector3.Distance(this.transform.position, tileSurfacePosition) > maxDistanceToRope)
         {
@@ -134,12 +137,15 @@ public class DiggingAndRopeInteractions : MonoBehaviour
 
     public void InteractWithTile(Tile tile)
     {
-        
+
         if (tile.tileState == TileState.Normal)
+        {
+            this.playerAudio.PlayLaserAudio();
             tile.DigTile();
+        }
         else if (rope.ropeState == RopeState.Normal && 
-            ((this.rope.gameObject.activeSelf && tile.tileState == TileState.Rope) 
-            || (!this.rope.gameObject.activeSelf && tile.tileState == TileState.Respawning)))
+                 ((this.rope.gameObject.activeSelf && tile.tileState == TileState.Rope) 
+                  || (!this.rope.gameObject.activeSelf && tile.tileState == TileState.Respawning)))
         {
             playerMovement.IsMovementDisabled = !playerMovement.IsMovementDisabled;
 
@@ -152,6 +158,7 @@ public class DiggingAndRopeInteractions : MonoBehaviour
                 StartCoroutine(ThrowRope(this.rope.gameObject, tile));
             else
             {
+                playerAudio.PlayRopeAudio();
                 rope.ropeState = RopeState.Normal;
                 tile.tileState = TileState.Respawning;
                 this.rope.gameObject.SetActive(false);
