@@ -71,7 +71,7 @@ public struct ComboHintInfo
 [Serializable]
 public struct ComboInfo
 {
-    public List<NetworkTile> Tiles;
+    public List<TileInfo> Tiles;
     public List<NetworkComboPlayer> Players;
     public Vector3 Center;
     public ComboType ComboType;

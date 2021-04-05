@@ -907,7 +907,7 @@ MonoBehaviour:
   offlineScene: Assets/Scenes/Offline.unity
   onlineScene: Assets/Scenes/TheMainSceneOnline.unity
   transport: {fileID: 775696260}
-  networkAddress: 34.95.63.42
+  networkAddress: localhost
   maxConnections: 100
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60

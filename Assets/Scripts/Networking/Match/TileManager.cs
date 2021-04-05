@@ -162,6 +162,12 @@ public class TileManager : NetworkBehaviour
         syncTileList[listIndex] = tempTile;
     }
 
+    public NetworkTile GetTileScript(TileInfo tileInfo)
+    {
+        int index = syncTileList.FindIndex(x => x.XIndex == tileInfo.XIndex && x.ZIndex == tileInfo.ZIndex);
+        return this.transform.GetChild(index).GetComponent<NetworkTile>();
+    }
+
     private void MaintainSingleInstance()
     {
         if (instance != null && instance != this)

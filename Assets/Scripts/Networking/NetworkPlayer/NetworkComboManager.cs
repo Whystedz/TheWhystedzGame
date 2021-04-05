@@ -1,44 +1,66 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Mirror;
 
-public class NetworkComboManager : MonoBehaviour
+public class NetworkComboManager : NetworkBehaviour
 {
     [Header("General")]
     [SerializeField] [Range(0, 64)] private float highlightTolerance;
-    [SerializeField] private Color hintColor = Color.white;
-    [SerializeField] private bool showExtendedTeamCombos = true;
     [SerializeField] private bool triggerExtendedTeamCombos = true;
 
     [Header("Line Combo")]
     [SerializeField] [Range(0, 22)] private float lineDistance = 5;
     [SerializeField] [Range(0, 20)] private float lineThickness = 1;
     [SerializeField] [Range(0, 20)] private int maxTilesInLineCombo = 20;
-    [SerializeField] private Color lineColor = Color.blue;
 
     [Header("Triangle Combo")]
     [SerializeField] [Range(0, 42)] private float triangleDistance = 10;
     [Tooltip("Ensure the maxTilesInTriangleCombo is set to at least twice the amount of the line combo's!")]
     [SerializeField] [Range(0, 64)] int maxTilesInTriangleCombo = 64;
-    [SerializeField] private Color triangleColor = Color.red;
 
-    private List<NetworkComboPlayer> players;
-    public List<ComboInfo> CombosAvailable;
+    public SyncList<ComboInfo> CombosAvailable = new SyncList<ComboInfo>();
+
+    public SyncList<uint> PlayerIds = new SyncList<uint>();
+    private List<GameObject> players = new List<GameObject>();
+    private int numOfPlayers = 0;
+
+    internal NetworkComboPlayer localComboPlayer;
+
+    public void RegisterPlayer(uint netId)
+    {   
+        if(isServer)
+            PlayerIds.Add(netId);
+    }
+
+    internal void OnClientDisconnect()
+    {
+        if (!NetworkClient.active) return;
+    }
+
+    public void RemovePlayer(uint netId)
+    {   
+        if(isServer)
+        {
+            int index = PlayerIds.FindIndex(x => x == netId);
+            PlayerIds.RemoveAt(index);
+        }
+    }
 
     private void Start()
     {
-        FindPlayers();
-        CombosAvailable = new List<ComboInfo>();
+        CombosAvailable.Callback += OnComboUpdated;
+        PlayerIds.Callback += OnPlayerListUpdated;
     }
-
-    private void FindPlayers() => this.players = FindObjectsOfType<NetworkComboPlayer>().ToList();
 
     private void Update()
     {
-        if (this.players.Count() == 0)
-            FindPlayers();
+        if (this.players == null || this.players.Count() == 0)
+            return;
 
-        CombosAvailable.Clear();
+        if(isServer)
+            CombosAvailable.Clear();
         
         CheckCombos();
 
@@ -49,15 +71,6 @@ public class NetworkComboManager : MonoBehaviour
     {
         foreach (var combo in CombosAvailable)
             combo.InitiatingPlayer.Combos.Add(combo);
-    }
-
-    public void HighlightPlayersCombos(NetworkComboPlayer comboPlayer) =>
-        HighlightCombos(comboPlayer.Combos);
-
-    internal void HighlightComboHintInfos(NetworkComboPlayer comboPlayer)
-    {
-        foreach (var ComboHintInfo in comboPlayer.ComboHintInfos)
-            HighlightComboHintInfo(ComboHintInfo);
     }
 
     internal void TriggerCombos(NetworkComboPlayer comboPlayer)
@@ -84,80 +97,19 @@ public class NetworkComboManager : MonoBehaviour
         }
 
         foreach (var tile in combo.Tiles)
-            combo.InitiatingPlayer.DigTile(tile.TileInfo);
-    }
-
-    private void HighlightComboHintInfo(ComboHintInfo ComboHintInfo)
-    {
-        Highlight(ComboHintInfo.OriginPlayer,
-            ComboHintInfo.TargetPlayer,
-            this.hintColor);
-    }
-
-    private void HighlightCombos(List<ComboInfo> combos)
-    {
-        foreach (var combo in combos)
-            HighlightCombo(combo);
-    }
-
-    private void HighlightCombo(ComboInfo combo, bool isExtendedCombo = false, List<ComboInfo> visitedExtendedCombos = null)
-    {
-        if (isExtendedCombo && visitedExtendedCombos is null)
-            return; // recursion exit case for extended combos
-
-        foreach (var tile in combo.Tiles)
-            StartCoroutine(tile.HighlightTileComboDigPreview());
-
-        foreach (var playerA in combo.Players)
-            foreach (var playerB in combo.Players)
-            {
-                if (playerA == playerB)
-                    continue;
-
-                var comboColor = combo.ComboType == ComboType.Line ? this.lineColor : this.triangleColor;
-                
-                Highlight(playerA, playerB, comboColor);
-            }
-
-        if (this.showExtendedTeamCombos)
-            HighlightExtendedCombo(combo, visitedExtendedCombos);
-    }
-
-    private void HighlightExtendedCombo(ComboInfo combo, List<ComboInfo> visitedExtendedCombos)
-    {
-        foreach (var player in combo.Players)
-        {
-            if (player == combo.InitiatingPlayer)
-                continue;
-
-            foreach (var extendedCombo in player.Combos)
-            {
-                if (visitedExtendedCombos != null 
-                    && visitedExtendedCombos.Contains(extendedCombo))
-                    return;
-
-                var updatedVisitedExtendedCombos = new List<ComboInfo>
-                {
-                    combo
-                };
-
-                if (visitedExtendedCombos != null)
-                    updatedVisitedExtendedCombos.AddRange(visitedExtendedCombos);
-
-                HighlightCombo(extendedCombo, true, updatedVisitedExtendedCombos);
-            }
-        }
+            combo.InitiatingPlayer.DigTile(tile);
     }
 
     private void CheckCombos()
     {
         foreach (var player in this.players)
         {
-            if (!player.gameObject.activeSelf)
+            if (!player.activeSelf)
                 return;
-
-            CheckLineCombosForPlayer(player);
-            CheckTriangleCombosForPlayer(player);
+            
+            NetworkComboPlayer comboPlayer = player.GetComponent<NetworkComboPlayer>();
+            CheckLineCombosForPlayer(comboPlayer);
+            CheckTriangleCombosForPlayer(comboPlayer);
         }
     }
 
@@ -224,19 +176,22 @@ public class NetworkComboManager : MonoBehaviour
             .Select(teammate => teammate.TileCurrentlyAbove());
 
         var colliders = Physics.OverlapSphere(combo.Center, shortestDistanceToCenter);
-        combo.Tiles = colliders
+        List<NetworkTile> tilesGameObjects = colliders
             .Where(collider => collider.GetComponentInParent<NetworkTile>() != null)
             .Select(collider => collider.GetComponentInParent<NetworkTile>())
             .Distinct()
-            .Where(tile => !tilesOccupiedByTeam.Contains(tile)
+            .Where(tile => !tilesOccupiedByTeam.Contains(tile.TileInfo)
                 && IsWithinLineBounds(tile.transform.position,
                     a.transform.position,
                     b.transform.position))
             .OrderBy(tile => Vector3.Distance(combo.Center, tile.transform.position))
             .Take(this.maxTilesInLineCombo)
             .ToList();
+        
+        combo.Tiles = tilesGameObjects.Select(tile => tile.TileInfo).ToList();
 
-        CombosAvailable.Add(combo);
+        if (isServer)
+            CombosAvailable.Add(combo);
     }
 
     private void CheckTriangleCombosForPlayer(NetworkComboPlayer player)
@@ -321,11 +276,11 @@ public class NetworkComboManager : MonoBehaviour
             .Select(player => player.TileCurrentlyAbove());
 
         var colliders = Physics.OverlapSphere(combo.Center, shortestDistanceToCenter);
-        combo.Tiles = colliders
+        List<NetworkTile> tilesGameObjects = colliders
             .Where(collider => collider.GetComponentInParent<NetworkTile>() != null)
             .Select(collider => collider.GetComponentInParent<NetworkTile>())
             .Distinct()
-            .Where(tile => !tilesOccupiedByTeam.Contains(tile)
+            .Where(tile => !tilesOccupiedByTeam.Contains(tile.TileInfo)
                 && IsWithinTriangle(tile.transform.position,
                     a.transform.position,
                     b.transform.position,
@@ -334,6 +289,8 @@ public class NetworkComboManager : MonoBehaviour
             .Take(this.maxTilesInTriangleCombo)
             .ToList();
 
+        combo.Tiles = tilesGameObjects.Select(tile => tile.TileInfo).ToList();
+
         var overlappingLineCombos = CombosAvailable
             .Where(availableCombo => availableCombo.ComboType == ComboType.Line
                 && availableCombo.Players.Intersect(combo.Players).Count() == 2);
@@ -341,14 +298,14 @@ public class NetworkComboManager : MonoBehaviour
         foreach (var overlappingLineCombo in overlappingLineCombos)
             combo.Tiles.AddRange(overlappingLineCombo.Tiles);
 
-        CombosAvailable
-            .RemoveAll(availableCombo => overlappingLineCombos.Contains(availableCombo));
+        if (isServer)
+        {
+            CombosAvailable
+                .RemoveAll(availableCombo => overlappingLineCombos.Contains(availableCombo));
 
-        CombosAvailable.Add(combo);
+            CombosAvailable.Add(combo);
+        }
     }
-
-    private void Highlight(NetworkComboPlayer a, NetworkComboPlayer b, Color color) =>
-        Debug.DrawLine(a.transform.position, b.transform.position, color);
 
     private bool IsWithinTriggeringDistance(NetworkComboPlayer a, NetworkComboPlayer b, float maxTriggerDistance, float minDistance = 0f)
     {
@@ -418,6 +375,61 @@ public class NetworkComboManager : MonoBehaviour
         */
         return IsWithinTriangle(point, H1, H3, H2)
             || IsWithinTriangle(point, H2, H3, H4);
+    }
+
+    void OnComboUpdated(SyncList<ComboInfo>.Operation op, int index, ComboInfo oldCombo, ComboInfo newcombo)
+    {
+        switch (op)
+        {
+            case SyncList<ComboInfo>.Operation.OP_SET:
+                break;
+        }
+    }
+
+    void OnPlayerListUpdated(SyncList<uint>.Operation op, int index, uint oldId, uint newId)
+    {
+        switch (op)
+        {
+            case SyncList<uint>.Operation.OP_ADD:
+                Debug.Log("Player registered");
+                this.numOfPlayers++;
+
+                if (NetworkIdentity.spawned.TryGetValue(PlayerIds.Last(), out NetworkIdentity identity))
+                    players.Add(identity.gameObject);
+                else
+                    StartCoroutine(AddPlayer());
+
+                RefreshPlayersTeammates();
+                break;
+            case SyncList<uint>.Operation.OP_CLEAR:
+                break;
+            case SyncList<uint>.Operation.OP_REMOVEAT:
+                Debug.Log("Player disconnected");
+                players.RemoveAt(index);
+                RefreshPlayersTeammates();
+                break;
+        }
+    }
+
+    IEnumerator AddPlayer()
+    {
+        while (players.Count != this.numOfPlayers)
+        {
+            yield return null;
+            if (NetworkIdentity.spawned.TryGetValue(PlayerIds.Last(), out NetworkIdentity identity))
+                players.Add(identity.gameObject);
+        }
+    }
+    
+    public void RefreshPlayersTeammates()
+    {
+        foreach (var player in this.players)
+        {
+            if (!player.activeSelf)
+                return;
+            
+            player.GetComponent<NetworkComboPlayer>().RefreshTeammates();
+        }
     }
 }
  
