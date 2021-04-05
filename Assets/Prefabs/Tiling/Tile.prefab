@@ -24,6 +24,7 @@ GameObject:
   m_Component:
   - component: {fileID: 375306892246645587}
   - component: {fileID: 7534003349226739454}
+  - component: {fileID: 435899489474036427}
   m_Layer: 3
   m_Name: Tile
   m_TagString: Untagged
@@ -68,7 +69,24 @@ MonoBehaviour:
   highlightedMaterial: {fileID: 2100000, guid: 47b6b079f3dd20648b3b3611d3eb27cc, type: 2}
   comboHighlightedMaterial: {fileID: 2100000, guid: 0457aface7c99d74abad6e60cf40646b, type: 2}
   ropeMaterial: {fileID: 2100000, guid: e5d5dcde4aa19ad4aa848bd64a4f488f, type: 2}
+  unbreakableMaterial: {fileID: 2100000, guid: ae3b3b680b19d6f4ea7a9b92065d3037, type: 2}
   isClickToDigEnabled: 1
+--- !u!54 &435899489474036427
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5884525987830691854}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!64 &6996657616730853586
 MeshCollider:
   m_ObjectHideFlags: 0

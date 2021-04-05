@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -9,6 +10,7 @@ public enum TileState
     Unstable, 
     Respawning,
     Rope,
+    Unbreakable,
 }
 
 public enum TileHighlightState
@@ -21,18 +23,25 @@ public enum TileHighlightState
 
 public class Tile : MonoBehaviour, IPointerClickHandler
 {
+    [Header("General")]
+    [SerializeField] private float obstacleCheckRadius = 1f;
+
+    [Header("Animations")]
     [SerializeField] private float timeToBreak = 3f;
     [SerializeField] private float timeToRespawn = 5f;
     [SerializeField] private float timeOfBreakingAnimation = 5f;
     private float progress;
 
+    [Header("Materials")]
     [SerializeField] private Material normalMaterial;
     [SerializeField] private Material unstableMaterial;
     [SerializeField] private Material destroyedMaterial;
     [SerializeField] private Material highlightedMaterial;
     [SerializeField] private Material comboHighlightedMaterial;
     [SerializeField] private Material ropeMaterial;
+    [SerializeField] private Material unbreakableMaterial;
 
+    [Header("Debug")]
     [SerializeField] private bool isClickToDigEnabled;
 
     private MeshRenderer meshRenderer;
@@ -40,10 +49,12 @@ public class Tile : MonoBehaviour, IPointerClickHandler
     internal TileState tileState;
     internal TileHighlightState tileHighlightState;
 
-    private void Start()
+    protected virtual void Start()
     {
         this.meshRenderer = GetComponentInChildren<MeshRenderer>();
         this.meshRenderer.material = this.normalMaterial;
+
+        CheckObstacles();
     }
 
     void Update()
@@ -61,6 +72,8 @@ public class Tile : MonoBehaviour, IPointerClickHandler
                 RespawningUpdate();
                 break;
             case TileState.Rope:
+                break;
+            case TileState.Unbreakable:
                 break;
         }
     }
@@ -191,17 +204,61 @@ public class Tile : MonoBehaviour, IPointerClickHandler
         switch (this.tileState)
         {
             case TileState.Normal:
-                this.meshRenderer.material = normalMaterial;
+                this.meshRenderer.material = this.normalMaterial;
                 break;
             case TileState.Unstable:
-                this.meshRenderer.material = unstableMaterial;
+                this.meshRenderer.material = this.unstableMaterial;
                 break;
             case TileState.Respawning:
-                this.meshRenderer.material = destroyedMaterial;
+                this.meshRenderer.material = this.destroyedMaterial;
                 break;
             case TileState.Rope:
-                this.meshRenderer.material = destroyedMaterial;
+                this.meshRenderer.material = this.destroyedMaterial;
+                break;
+            case TileState.Unbreakable:
+                this.meshRenderer.material = this.unbreakableMaterial;
                 break;
         }
     }
+
+    // TODO let's use this static method call for all the other similar 
+    // calls we have been doing lately in seperate classes! 
+    public static Tile FindTileAtPosition(Vector3 position)
+    {
+        var colliders = Physics.OverlapSphere(position, 0.1f);
+        if (colliders.Count() == 0) return null;
+
+        var tile = colliders
+            .Where(collider => collider.GetComponentInParent<Tile>() != null)
+            .Select(collider => collider.GetComponentInParent<Tile>())
+            .OrderBy(tile => Vector3.Distance(position, tile.transform.position))
+            .First();
+
+        return tile;
+    }
+
+    private void CheckObstacles()
+    {
+        var colliders = Physics.OverlapSphere(transform.position, this.obstacleCheckRadius);
+        if (colliders.Count() == 0) return;
+
+        var obstacles = colliders
+            .Where(collider => collider.gameObject.CompareTag("Obstacle"));
+
+        if (obstacles.Count() == 0)
+            return;
+
+        SetUnbreakable();
+    }
+
+    protected void SetUnbreakable()
+    {
+        if (this.tileState == TileState.Unbreakable)
+            return;
+
+        this.tileState = TileState.Unbreakable;
+        this.meshRenderer.material = this.unbreakableMaterial;
+    }
+
+    internal bool IsDiggable() => this.tileState == TileState.Normal;
 }

@@ -103,15 +103,13 @@ public class ComboPlayer : MonoBehaviour
     public Tile TileCurrentlyAbove()
     {
         var colliders = Physics.OverlapSphere(transform.position, 0.1f);
+        if (colliders.Count() == 0) return null;
 
         var tile = colliders
             .Where(collider => collider.GetComponentInParent<Tile>() != null)
             .Select(collider => collider.GetComponentInParent<Tile>())
             .OrderBy(tile => Vector3.Distance(this.transform.position, tile.transform.position))
-            .First();
-
-        if (tile is null)
-            Debug.LogError($"Tile is null", this.gameObject);
+            .FirstOrDefault();
 
         return tile;
     }
