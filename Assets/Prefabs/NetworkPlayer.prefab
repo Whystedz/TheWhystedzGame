@@ -332,6 +332,10 @@ MonoBehaviour:
   displayCombos: 1
   displayComboHintInfos: 1
   canTriggerCombos: 1
+  showExtendedTeamCombos: 0
+  hintColor: {r: 1, g: 1, b: 1, a: 1}
+  lineColor: {r: 0, g: 0, b: 1, a: 1}
+  triangleColor: {r: 0, g: 1, b: 0, a: 1}
   Combos: []
   ComboHintInfos: []
 --- !u!114 &4056083355115853930

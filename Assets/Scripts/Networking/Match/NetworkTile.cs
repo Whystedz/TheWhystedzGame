@@ -98,10 +98,10 @@ public class NetworkTile : MonoBehaviour
         this.tileHighlightState = TileHighlightState.SimpleHighlight;
     }
 
-    public IEnumerator HighlightTileComboDigPreview()
+    public void HighlightTileComboDigPreview()
     {
         if (TileInfo.TileState != TileState.Normal)
-            yield break;
+            return;
 
         this.tileHighlightState = TileHighlightState.ComboHighlight;
     }

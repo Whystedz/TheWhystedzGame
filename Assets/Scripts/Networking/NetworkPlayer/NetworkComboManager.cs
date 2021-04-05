@@ -56,7 +56,7 @@ public class NetworkComboManager : NetworkBehaviour
 
     private void Update()
     {
-        if (this.players == null || this.players.Count() == 0)
+        if (this.players.Count() == 0)
             return;
 
         if(isServer)
@@ -79,9 +79,15 @@ public class NetworkComboManager : NetworkBehaviour
             TriggerCombo(combo);
     }
 
-    private void TriggerCombo(ComboInfo combo)
+    private void TriggerCombo(ComboInfo combo, int callDepth = 0, NetworkComboPlayer initialPlayer = null)
     {
+        if (initialPlayer is null)
+            initialPlayer = combo.InitiatingPlayer;
+
         if (combo.IsTriggered)
+            return;
+
+        if (callDepth > 3)
             return;
         
         combo.IsTriggered = true;
@@ -93,19 +99,28 @@ public class NetworkComboManager : NetworkBehaviour
 
             if (this.triggerExtendedTeamCombos)
                 foreach (var extendedCombo in player.Combos)
-                    TriggerCombo(extendedCombo);
+                    TriggerCombo(extendedCombo, ++callDepth, initialPlayer);
         }
 
         foreach (var tile in combo.Tiles)
-            combo.InitiatingPlayer.DigTile(tile);
+        {
+            if (tile.TileState == TileState.Normal)
+                initialPlayer.DigTile(tile);
+        }
     }
 
     private void CheckCombos()
     {
         foreach (var player in this.players)
         {
-            if (!player.activeSelf)
+            if(player is null || !player.activeSelf)
+            {
+                RemoveNullPlayer();
+
+                if (isServer)
+                    RpcRefreshPlayersTeammates();
                 return;
+            }
             
             NetworkComboPlayer comboPlayer = player.GetComponent<NetworkComboPlayer>();
             CheckLineCombosForPlayer(comboPlayer);
@@ -405,7 +420,6 @@ public class NetworkComboManager : NetworkBehaviour
                 break;
             case SyncList<uint>.Operation.OP_REMOVEAT:
                 Debug.Log("Player disconnected");
-                players.RemoveAt(index);
                 RefreshPlayersTeammates();
                 break;
         }
@@ -419,6 +433,21 @@ public class NetworkComboManager : NetworkBehaviour
             if (NetworkIdentity.spawned.TryGetValue(PlayerIds.Last(), out NetworkIdentity identity))
                 players.Add(identity.gameObject);
         }
+    }
+
+    public void RemoveNullPlayer()
+    {   
+        int index = players.FindIndex(x => x is null);
+        players.RemoveAt(index);
+
+        if (isServer)
+            PlayerIds.RemoveAt(index);
+    }
+
+    [ClientRpc]
+    public void RpcRefreshPlayersTeammates()
+    {
+        RefreshPlayersTeammates();
     }
     
     public void RefreshPlayersTeammates()

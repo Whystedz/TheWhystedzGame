@@ -33,7 +33,7 @@ public class NetworkComboPlayer : NetworkBehaviour
     private NetworkDigging networkDigging;
     TileManager tileManager = TileManager.GetInstance();
 
-    public override void OnStopAuthority()
+    public override void OnStopClient()
     {
         CmdRemoveFromComboManager();
     }
@@ -81,7 +81,7 @@ public class NetworkComboPlayer : NetworkBehaviour
     [Command]
     public void CmdRemoveFromComboManager()
     {
-        this.comboManager.RemovePlayer(this.GetComponent<NetworkIdentity>().netId);
+        this.comboManager.RemoveNullPlayer();
     }
 
     void Update()
@@ -180,21 +180,8 @@ public class NetworkComboPlayer : NetworkBehaviour
         {
             NetworkTile targetTile = this.tileManager.GetTileScript(tile);
             if(targetTile)
-                StartCoroutine(targetTile.HighlightTileComboDigPreview());
+                targetTile.HighlightTileComboDigPreview();
         }
-
-        /*
-        foreach (var playerA in combo.Players)
-            foreach (var playerB in combo.Players)
-            {
-                if (playerA == playerB)
-                    continue;
-
-                var comboColor = combo.ComboType == ComboType.Line ? this.lineColor : this.triangleColor;
-                
-                Highlight(playerA, playerB, comboColor);
-            }
-        */
 
         if (this.showExtendedTeamCombos)
             HighlightExtendedCombo(combo, visitedExtendedCombos);
@@ -228,5 +215,4 @@ public class NetworkComboPlayer : NetworkBehaviour
 
     private void Highlight(NetworkComboPlayer a, NetworkComboPlayer b, Color color) =>
         Debug.DrawLine(a.transform.position, b.transform.position, color);
-    
 }

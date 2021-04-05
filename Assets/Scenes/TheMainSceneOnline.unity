@@ -35308,7 +35308,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6332428031633548184, guid: 3476ff742f97a8840a6c91fc91e9ac44, type: 3}
       propertyPath: triggerExtendedTeamCombos
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6332428031633548185, guid: 3476ff742f97a8840a6c91fc91e9ac44, type: 3}
       propertyPath: m_RootOrder
