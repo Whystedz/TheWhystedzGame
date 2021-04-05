@@ -34,6 +34,7 @@ public class PlayerScore : MonoBehaviour
             CurrentScore = 0;
 
         this.teamScore.Substract(amountToSubstract);
+        this.playerScoreUI.UpdateScore(CurrentScore);
     }
 
     private void OnTriggerEnter(Collider other)

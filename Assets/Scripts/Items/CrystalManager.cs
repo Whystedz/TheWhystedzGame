@@ -11,13 +11,13 @@ public class CrystalManager : MonoBehaviour
 
     [SerializeField] private float surfaceBoundsOffset = 5f;
     [SerializeField] private float undergroundBoundsOffset = 5f;
-    
+
     [SerializeField] private float crystalVerticalOffsetHeight = 2f;
     
     [SerializeField] private float spawningCollisionPaddingRadius = 1f;
 
     private PlaneBounds surface;
-    private PlaneBounds underground;
+    public PlaneBounds underground { get; private set; }
 
     private int totalCrystalsInstantiated;
     private int currentCrystalsSurface;
@@ -40,13 +40,13 @@ public class CrystalManager : MonoBehaviour
 
     private void SpawnCrystal(int attempts = 0)
     {
-        var randomPositionOnSurface = RandomPointInRectangle(surface.UpperLeftCorner,
-            surface.UpperRightCorner,
-            surface.LowerLeftCorner,
-            surface.LowerRightCorner);
+        var randomPositionOnSurface = RandomPointInRectangle(this.surface.UpperLeftCorner,
+            this.surface.UpperRightCorner,
+            this.surface.LowerLeftCorner,
+            this.surface.LowerRightCorner);
 
         var chosenPosition = randomPositionOnSurface
-            + Vector3.up * crystalVerticalOffsetHeight;
+            + Vector3.up * this.crystalVerticalOffsetHeight;
 
         var obstacleColliders = Physics.OverlapSphere(chosenPosition,
             this.spawningCollisionPaddingRadius,
@@ -127,4 +127,6 @@ public class CrystalManager : MonoBehaviour
         else
             this.currentCrystalsUnderground += 1;
     }
+
+    public float GetHeightOffset() => crystalVerticalOffsetHeight;
 }

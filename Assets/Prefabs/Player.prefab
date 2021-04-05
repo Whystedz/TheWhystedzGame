@@ -237,6 +237,7 @@ GameObject:
   - component: {fileID: 3752298209473233816}
   - component: {fileID: -4131916122285525065}
   - component: {fileID: 1482465603}
+  - component: {fileID: 352302799}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -406,6 +407,22 @@ MonoBehaviour:
   timeToDie: 20
   respawnPoint: {fileID: 0}
   undergroundOffset: 2
+--- !u!114 &352302799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6327377196063707621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b8769336e9647b4b8cc0acb3bc5258f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radiusOfForce: 10
+  radiusOfSpawnCircle: 0.5
+  power: 30
+  crystalPrefab: {fileID: 7863378476046910972, guid: 81f156ceeb8f64946b8fd7b503cc028d, type: 3}
 --- !u!1 &6327377196359484314
 GameObject:
   m_ObjectHideFlags: 0

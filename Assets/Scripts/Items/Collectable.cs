@@ -23,7 +23,7 @@ public class Collectable : MonoBehaviour
 
     public void UpdateRestPosition(Vector3 restPosition) => this.restPosition = restPosition;
 
-    private void Update()
+    protected void Update()
     {
         this.transform.Rotate(Vector3.up * this.rotationSpeed, Space.Self);
 

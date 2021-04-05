@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 7142871710200567037}
   - component: {fileID: 6341033529164949252}
   - component: {fileID: 1288736155292075250}
-  m_Layer: 0
+  - component: {fileID: 4265854697885692305}
+  m_Layer: 9
   m_Name: Crystal
   m_TagString: Collectable
   m_Icon: {fileID: 0}
@@ -50,6 +51,8 @@ MonoBehaviour:
   pointsWorth: 1
   rotationSpeed: 1
   verticalAnimationAmplitude: 0.5
+  isExploding: 0
+  extraForceIfLandedWrong: 3
 --- !u!33 &7142871710200567037
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -113,6 +116,22 @@ CapsuleCollider:
   m_Height: 1.95
   m_Direction: 1
   m_Center: {x: -0.0060638636, y: 0.115882754, z: 0.00093548}
+--- !u!54 &4265854697885692305
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7863378476046910972}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
 --- !u!1001 &6431324597948560046
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -167,6 +186,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: d15f0e323e2b087439dbc9fd2b578d40, type: 3}
       propertyPath: m_Name
       value: SingleCrystal_upright
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d15f0e323e2b087439dbc9fd2b578d40, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d15f0e323e2b087439dbc9fd2b578d40, type: 3}
