@@ -232,10 +232,13 @@ public class ComboManager : MonoBehaviour
             .Where(tile => !tilesOccupiedByTeam.Contains(tile)
                 && IsWithinLineBounds(tile.transform.position,
                     a.transform.position,
-                    b.transform.position))
+                    b.transform.position)
+                && tile.IsDiggable())
             .OrderBy(tile => Vector3.Distance(combo.Center, tile.transform.position))
             .Take(this.maxTilesInLineCombo)
             .ToList();
+
+        if (combo.Tiles.Count() == 0) return;
 
         CombosAvailable.Add(combo);
     }
@@ -319,6 +322,7 @@ public class ComboManager : MonoBehaviour
         var teammates = a.Teammates(true);
 
         var tilesOccupiedByTeam = teammates
+            .Where(player => player.TileCurrentlyAbove() != null)
             .Select(player => player.TileCurrentlyAbove());
 
         var colliders = Physics.OverlapSphere(combo.Center, shortestDistanceToCenter);
@@ -330,7 +334,8 @@ public class ComboManager : MonoBehaviour
                 && IsWithinTriangle(tile.transform.position,
                     a.transform.position,
                     b.transform.position,
-                    c.transform.position))
+                    c.transform.position)
+                && tile.IsDiggable())
             .OrderBy(tile => Vector3.Distance(combo.Center, tile.transform.position))
             .Take(this.maxTilesInTriangleCombo)
             .ToList();
@@ -341,6 +346,8 @@ public class ComboManager : MonoBehaviour
         
         foreach (var overlappingLineCombo in overlappingLineCombos)
             combo.Tiles.AddRange(overlappingLineCombo.Tiles);
+
+        if (combo.Tiles.Count == 0) return;
 
         CombosAvailable
             .RemoveAll(availableCombo => overlappingLineCombos.Contains(availableCombo));

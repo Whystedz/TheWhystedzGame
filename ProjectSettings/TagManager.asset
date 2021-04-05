@@ -12,6 +12,7 @@ TagManager:
   - BlackoutImage
   - _Dynamic
   - RespawnPoint
+  - Obstacle
   layers:
   - Default
   - TransparentFX

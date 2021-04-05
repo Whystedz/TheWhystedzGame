@@ -72,7 +72,11 @@ public class TileGenerator : MonoBehaviour
         if (colliders.Length == 0)
             return this.basicTilePrefab;
 
-        var biomeRegion = colliders[0].GetComponent<BiomeRegion>();
+        var biomeRegion = colliders
+            .Where(collider => collider.GetComponent<BiomeRegion>() != null)
+            .Select(collider => collider.GetComponent<BiomeRegion>())
+            .OrderBy(biome => Vector3.Distance(transform.position, biome.transform.position))
+            .First();
 
         return biomeRegion.GetRandomBiomeThemedTile();
     }

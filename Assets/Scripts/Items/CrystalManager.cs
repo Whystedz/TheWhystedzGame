@@ -87,7 +87,8 @@ public class CrystalManager : MonoBehaviour
 
         var tile = downwardTileHit.collider.gameObject.GetComponentInParent<Tile>();
 
-        return tile.tileState == TileState.Normal;
+        return tile.tileState == TileState.Normal
+            || tile.tileState == TileState.Unbreakable;
     }
 
     private Vector3 RandomPointInRectangle(Vector3 upperLeft, Vector3 upperRight, Vector3 lowerLeft, Vector3 lowerRight)
