@@ -7,6 +7,7 @@ public class AnimationManager : MonoBehaviour
     [SerializeField] private CharacterController characterController;
     private InputManager inputManager;
     private PlayerMovement playerMovement;
+    private PlayerAudio playerAudio;
     private Animator animator;
 
     private bool fallingTrigger = false;
@@ -23,6 +24,7 @@ public class AnimationManager : MonoBehaviour
     {
         this.inputManager = InputManager.GetInstance();
         this.playerMovement = transform.parent.GetComponent<PlayerMovement>();
+        this.playerAudio = transform.parent.GetComponent<PlayerAudio>();
     }
 
     void Update()
@@ -51,4 +53,6 @@ public class AnimationManager : MonoBehaviour
         this.animator.SetBool("isRunning", isRunning);
 
     }
+
+    public void PlayFootstepAudio() => this.playerAudio.PlayFootstepAudio();
 }

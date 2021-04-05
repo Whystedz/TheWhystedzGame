@@ -143,6 +143,12 @@ public class PlayerMovement : MonoBehaviour
     {
         var distanceToUnderground = transform.position.y - this.underground.transform.position.y;
         distanceToUnderground = Mathf.Abs(distanceToUnderground);
+        
+        if(IsInUnderground && distanceToUnderground > this.undergroundCheckThreshold)
+            AudioManager.StopUndergroundFX();
+        else if(!IsInUnderground && distanceToUnderground <= this.undergroundCheckThreshold)
+            AudioManager.PlayUndergroundFX();
+        
         IsInUnderground = distanceToUnderground <= this.undergroundCheckThreshold;
     }
 

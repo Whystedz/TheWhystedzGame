@@ -11,7 +11,11 @@ public class GameTimer : MonoBehaviour
     
     [SerializeField] private TextMeshProUGUI timerText;
 
-    private void Start() => gameEnded = false;
+    private void Start()
+    {
+        this.gameEnded = false;
+        StartCoroutine(DoHalfTimeEvent(gameTime / 2));
+    }
 
     void Update()
     {
@@ -30,6 +34,12 @@ public class GameTimer : MonoBehaviour
                 this.gameEnded = true;
             }
         }
+    }
+
+    private IEnumerator DoHalfTimeEvent(float time)
+    {
+        yield return new WaitForSeconds(time);
+        AudioManager.PlayTenseMusic();
     }
 
     private void DisplayTimer(float time)

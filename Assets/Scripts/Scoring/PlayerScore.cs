@@ -9,6 +9,8 @@ public class PlayerScore : MonoBehaviour
     private TeamScore teamScore;
     [SerializeField] private PlayerScoreUI playerScoreUI;
 
+    private PlayerAudio playerAudio;
+
     void Start()
     {
         CurrentScore = 0;
@@ -17,6 +19,8 @@ public class PlayerScore : MonoBehaviour
 
         teamScore = FindObjectsOfType<TeamScore>()
             .SingleOrDefault(teamscore => teamscore.Team == this.team);
+
+        this.playerAudio = GetComponentInParent<PlayerAudio>();
     }
 
     public void Add(int amountToAdd)
@@ -45,6 +49,7 @@ public class PlayerScore : MonoBehaviour
 
     private void AddCollectableToScore(Collectable collectable)
     {
+        playerAudio.PlayCollectAudio();
         Add(collectable.PointsWorth);
 
         this.playerScoreUI.UpdateScore(CurrentScore);
