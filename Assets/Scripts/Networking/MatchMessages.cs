@@ -35,6 +35,7 @@ public struct PlayerInfo
     public string DisplayName;
     public bool IsReady;
     public bool IsHost;
+    public Team Team;
 }
 
 [Serializable]

@@ -8,8 +8,16 @@ using System.Text;
 public class MatchMaker : NetworkBehaviour
 {
     public static MatchMaker Instance { get; set; }
-    [SerializeField] private int maxPlayers = 8;
-    [SerializeField] private int minPlayers = 2;
+    [SerializeField] private byte maxPlayers = 8;
+    [SerializeField] private byte minPlayers = 2;
+
+    public byte MaxPlayers
+    {
+        get
+        {
+            return this.maxPlayers;
+        }
+    }
 
     void Start() => Instance = this;
 
