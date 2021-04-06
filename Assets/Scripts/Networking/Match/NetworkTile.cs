@@ -1,20 +1,25 @@
 using System.Collections;
 using System.Threading;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class NetworkTile : MonoBehaviour
 {
+    [Header("General")]
+    [SerializeField] private float obstacleCheckRadius = 1f;
     public TileInfo TileInfo;
 
+    [Header("Materials")]
     [SerializeField] private Material normalMaterial;
     [SerializeField] private Material unstableMaterial;
     [SerializeField] private Material destroyedMaterial;
     [SerializeField] private Material highlightedMaterial;
     [SerializeField] private Material comboHighlightedMaterial;
     [SerializeField] private Material ropeMaterial;
+    [SerializeField] private Material unbreakableMaterial;
 
-    private MeshRenderer meshRenderer;
+    internal MeshRenderer meshRenderer;
     internal TileHighlightState tileHighlightState;
 
     TileManager tileManager = TileManager.GetInstance();
@@ -23,6 +28,8 @@ public class NetworkTile : MonoBehaviour
     {
         this.meshRenderer = GetComponentInChildren<MeshRenderer>();
         this.meshRenderer.material = this.normalMaterial;
+
+        CheckObstacles();
     }
 
     void Update()
@@ -40,6 +47,8 @@ public class NetworkTile : MonoBehaviour
                 RespawningUpdate();
                 break;
             case TileState.Rope:
+                break;
+            case TileState.Unbreakable:
                 break;
         }
     }
@@ -157,6 +166,50 @@ public class NetworkTile : MonoBehaviour
             case TileState.Rope:
                 this.meshRenderer.material = destroyedMaterial;
                 break;
+            case TileState.Unbreakable:
+                this.meshRenderer.material = this.unbreakableMaterial;
+                break;
         }
     }
+
+    // TODO let's use this static method call for all the other similar 
+    // calls we have been doing lately in seperate classes! 
+    public static NetworkTile FindTileAtPosition(Vector3 position)
+    {
+        var colliders = Physics.OverlapSphere(position, 0.1f);
+        if (colliders.Count() == 0) return null;
+
+        var tile = colliders
+            .Where(collider => collider.GetComponentInParent<NetworkTile>() != null)
+            .Select(collider => collider.GetComponentInParent<NetworkTile>())
+            .OrderBy(tile => Vector3.Distance(position, tile.transform.position))
+            .First();
+
+        return tile;
+    }
+
+    private void CheckObstacles()
+    {
+        var colliders = Physics.OverlapSphere(transform.position, this.obstacleCheckRadius);
+        if (colliders.Count() == 0) return;
+
+        var obstacles = colliders
+            .Where(collider => collider.gameObject.CompareTag("Obstacle"));
+
+        if (obstacles.Count() == 0)
+            return;
+
+        SetUnbreakable();
+    }
+
+    protected void SetUnbreakable()
+    {
+        if (this.TileInfo.TileState == TileState.Unbreakable)
+            return;
+
+        this.TileInfo.TileState = TileState.Unbreakable;
+        this.meshRenderer.material = this.unbreakableMaterial;
+    }
+
+    internal bool IsDiggable() => this.TileInfo.TileState == TileState.Normal;
 }

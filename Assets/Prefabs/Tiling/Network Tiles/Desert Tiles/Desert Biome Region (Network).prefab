@@ -1,0 +1,91 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &2521452713365225659
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2793472526279511043, guid: ffd465c18ee63ad49b2c5d3875a5393c, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2793472526279511043, guid: ffd465c18ee63ad49b2c5d3875a5393c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2793472526279511043, guid: ffd465c18ee63ad49b2c5d3875a5393c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2793472526279511043, guid: ffd465c18ee63ad49b2c5d3875a5393c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2793472526279511043, guid: ffd465c18ee63ad49b2c5d3875a5393c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2793472526279511043, guid: ffd465c18ee63ad49b2c5d3875a5393c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2793472526279511043, guid: ffd465c18ee63ad49b2c5d3875a5393c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2793472526279511043, guid: ffd465c18ee63ad49b2c5d3875a5393c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2793472526279511043, guid: ffd465c18ee63ad49b2c5d3875a5393c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2793472526279511043, guid: ffd465c18ee63ad49b2c5d3875a5393c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2793472526279511043, guid: ffd465c18ee63ad49b2c5d3875a5393c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2849920066024777685, guid: ffd465c18ee63ad49b2c5d3875a5393c, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c29da4dd9333d1345ae91e7de8153d28, type: 2}
+    - target: {fileID: 5462147624284648152, guid: ffd465c18ee63ad49b2c5d3875a5393c, type: 3}
+      propertyPath: tiles.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5462147624284648152, guid: ffd465c18ee63ad49b2c5d3875a5393c, type: 3}
+      propertyPath: tiles.Array.data[0]
+      value: 
+      objectReference: {fileID: 7352586211022941527, guid: d18d4c8d5e408c142a78c74245671f1b, type: 3}
+    - target: {fileID: 5462147624284648152, guid: ffd465c18ee63ad49b2c5d3875a5393c, type: 3}
+      propertyPath: tiles.Array.data[1]
+      value: 
+      objectReference: {fileID: 7352586211022941527, guid: 4d1a80a3af4974b4cbcf09c170ee2de0, type: 3}
+    - target: {fileID: 5462147624284648152, guid: ffd465c18ee63ad49b2c5d3875a5393c, type: 3}
+      propertyPath: tiles.Array.data[2]
+      value: 
+      objectReference: {fileID: 7352586211022941527, guid: 738e5aac315bc2146aee1a880514dff1, type: 3}
+    - target: {fileID: 5462147624284648152, guid: ffd465c18ee63ad49b2c5d3875a5393c, type: 3}
+      propertyPath: tiles.Array.data[3]
+      value: 
+      objectReference: {fileID: 7352586211022941527, guid: d1aa3d1683ebc3a4fafbf9c9040598b2, type: 3}
+    - target: {fileID: 5462147624284648152, guid: ffd465c18ee63ad49b2c5d3875a5393c, type: 3}
+      propertyPath: tiles.Array.data[4]
+      value: 
+      objectReference: {fileID: 7352586211022941527, guid: d29a4594932148142b05e936a5ac3927, type: 3}
+    - target: {fileID: 5462147624284648152, guid: ffd465c18ee63ad49b2c5d3875a5393c, type: 3}
+      propertyPath: tiles.Array.data[5]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6031126035654540198, guid: ffd465c18ee63ad49b2c5d3875a5393c, type: 3}
+      propertyPath: m_Name
+      value: Desert Biome Region (Network)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ffd465c18ee63ad49b2c5d3875a5393c, type: 3}

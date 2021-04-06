@@ -123,8 +123,8 @@ public class TileManager : NetworkBehaviour
 
         var biomeRegion = colliders[0].GetComponent<BiomeRegion>();
 
-        //return biomeRegion.GetRandomBiomeThemedTile();
-        return this.basicTilePrefab;
+        return biomeRegion.GetRandomBiomeThemedTile();
+        //return this.basicTilePrefab;
     }
 
     public void DigTile(TileInfo targetTile)

@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af80d41242d914c468ab3d7a97ccbbe0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  obstacleCheckRadius: 1
   TileInfo:
     TimeToRespawn: 0
     TimeOfBreakingAnimation: 0
@@ -58,6 +59,7 @@ MonoBehaviour:
   highlightedMaterial: {fileID: 2100000, guid: 47b6b079f3dd20648b3b3611d3eb27cc, type: 2}
   comboHighlightedMaterial: {fileID: 2100000, guid: 0457aface7c99d74abad6e60cf40646b, type: 2}
   ropeMaterial: {fileID: 2100000, guid: e5d5dcde4aa19ad4aa848bd64a4f488f, type: 2}
+  unbreakableMaterial: {fileID: 2100000, guid: ae3b3b680b19d6f4ea7a9b92065d3037, type: 2}
 --- !u!64 &226970777613697409
 MeshCollider:
   m_ObjectHideFlags: 0
