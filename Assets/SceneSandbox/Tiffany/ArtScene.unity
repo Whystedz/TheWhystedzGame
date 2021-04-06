@@ -270,6 +270,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mushroom_Moustache_straight (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 3685851633156723787, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4065930385474309873, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
       propertyPath: m_RootOrder
       value: 39
@@ -823,6 +827,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ChandelierGreen (12)
       objectReference: {fileID: 0}
+    - target: {fileID: 3792036656683408501, guid: 642292548c8265b448022a15a54a66ca, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4606009871562671823, guid: 642292548c8265b448022a15a54a66ca, type: 3}
       propertyPath: m_RootOrder
       value: 38
@@ -1002,6 +1010,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Underground_Mushroom_Enoki (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 7897524532161244997, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
 --- !u!4 &51213201 stripped
@@ -1019,6 +1031,10 @@ PrefabInstance:
     - target: {fileID: 4765875782868009629, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
       propertyPath: m_Name
       value: PointyRock_01 (14)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4765875782868009629, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5289506807126710311, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
       propertyPath: m_RootOrder
@@ -1309,6 +1325,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mushroom_Moustache_straight (16)
       objectReference: {fileID: 0}
+    - target: {fileID: 3685851633156723787, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4065930385474309873, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
       propertyPath: m_RootOrder
       value: 63
@@ -1382,6 +1402,10 @@ PrefabInstance:
     - target: {fileID: 3600652608427632745, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
       propertyPath: m_Name
       value: Underground_Mushroom_Chandelier_orange (12)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3600652608427632745, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4229943093133701843, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
       propertyPath: m_RootOrder
@@ -1576,6 +1600,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mushroom_Moustache (16)
       objectReference: {fileID: 0}
+    - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 6836917502841092284, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_RootOrder
       value: 65
@@ -1649,6 +1677,10 @@ PrefabInstance:
     - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_Name
       value: Mushroom_Moustache (13)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6836917502841092284, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_RootOrder
@@ -1781,6 +1813,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WitchMushroom (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 4843782011205764614, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5220589785351494844, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -1836,6 +1872,10 @@ PrefabInstance:
     - target: {fileID: 5220589785351494844, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7256319930703232330, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
@@ -1990,6 +2030,10 @@ PrefabInstance:
     - target: {fileID: 4765875782868009629, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
       propertyPath: m_Name
       value: PointyRock_01 (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4765875782868009629, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5289506807126710311, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
       propertyPath: m_RootOrder
@@ -2284,6 +2328,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ChandelierGreen (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3792036656683408501, guid: 642292548c8265b448022a15a54a66ca, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4606009871562671823, guid: 642292548c8265b448022a15a54a66ca, type: 3}
       propertyPath: m_RootOrder
       value: 24
@@ -2389,6 +2437,10 @@ PrefabInstance:
     - target: {fileID: 5763539004807991719, guid: 44d56677810a25443a9950c4968f3bf2, type: 3}
       propertyPath: m_Name
       value: Greenbulb (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5763539004807991719, guid: 44d56677810a25443a9950c4968f3bf2, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44d56677810a25443a9950c4968f3bf2, type: 3}
@@ -2689,6 +2741,10 @@ PrefabInstance:
     - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_Name
       value: Mushroom_Moustache (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6836917502841092284, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_RootOrder
@@ -3013,6 +3069,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Underground_Mushroom_Enoki (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 7897524532161244997, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
 --- !u!4 &183034388 stripped
@@ -3074,6 +3134,10 @@ PrefabInstance:
     - target: {fileID: 8693444045776838695, guid: da69787fd84aab3498d200f43445cff6, type: 3}
       propertyPath: m_Name
       value: PointyRock_03 (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8693444045776838695, guid: da69787fd84aab3498d200f43445cff6, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da69787fd84aab3498d200f43445cff6, type: 3}
@@ -3154,6 +3218,10 @@ PrefabInstance:
     - target: {fileID: 3600652608427632745, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
       propertyPath: m_Name
       value: Underground_Mushroom_Chandelier_orange (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3600652608427632745, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4229943093133701843, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
       propertyPath: m_RootOrder
@@ -3409,6 +3477,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Greenbulb (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 5763539004807991719, guid: 44d56677810a25443a9950c4968f3bf2, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44d56677810a25443a9950c4968f3bf2, type: 3}
 --- !u!4 &207419518 stripped
@@ -3426,6 +3498,10 @@ PrefabInstance:
     - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_Name
       value: Mushroom_Moustache (17)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6836917502841092284, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_RootOrder
@@ -3681,6 +3757,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PointyRock_03 (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 8693444045776838695, guid: da69787fd84aab3498d200f43445cff6, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da69787fd84aab3498d200f43445cff6, type: 3}
 --- !u!4 &213480453 stripped
@@ -3698,6 +3778,10 @@ PrefabInstance:
     - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_Name
       value: Mushroom_Moustache (14)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6836917502841092284, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_RootOrder
@@ -3835,6 +3919,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WitchMushroom (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4843782011205764614, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5220589785351494844, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -3890,6 +3978,10 @@ PrefabInstance:
     - target: {fileID: 5220589785351494844, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7256319930703232330, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
@@ -4027,6 +4119,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PointyRock_03 (11)
       objectReference: {fileID: 0}
+    - target: {fileID: 8693444045776838695, guid: da69787fd84aab3498d200f43445cff6, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da69787fd84aab3498d200f43445cff6, type: 3}
 --- !u!4 &222275801 stripped
@@ -4108,9 +4204,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1733346636}
     m_Modifications:
+    - target: {fileID: 1532644324696602026, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2295475331043400787, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 3911721844609051707, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
       propertyPath: m_Name
       value: TripleBulbs (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911721844609051707, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5395062840491690190, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8312000530781316379, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
       propertyPath: m_RootOrder
@@ -4222,6 +4334,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Underground_Mushroom_Enoki (14)
       objectReference: {fileID: 0}
+    - target: {fileID: 7897524532161244997, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
 --- !u!4 &238741377 stripped
@@ -4239,6 +4355,10 @@ PrefabInstance:
     - target: {fileID: 3685851633156723787, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
       propertyPath: m_Name
       value: Mushroom_Moustache_straight (13)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3685851633156723787, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4065930385474309873, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
       propertyPath: m_RootOrder
@@ -4606,6 +4726,10 @@ PrefabInstance:
     - target: {fileID: 7897524532161244997, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
       propertyPath: m_Name
       value: Underground_Mushroom_Enoki (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7897524532161244997, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
@@ -5082,6 +5206,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -4804939585653776431, guid: be74c2ee1ea44b8428777a21009b0720, type: 3}
+      propertyPath: m_RendererIndex
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 839950661169388291, guid: be74c2ee1ea44b8428777a21009b0720, type: 3}
       propertyPath: m_Name
       value: Main Camera
@@ -5157,11 +5285,11 @@ PrefabInstance:
     - target: {fileID: 839950661633661182, guid: be74c2ee1ea44b8428777a21009b0720, type: 3}
       propertyPath: m_Follow
       value: 
-      objectReference: {fileID: 1756160127}
+      objectReference: {fileID: 0}
     - target: {fileID: 839950661633661182, guid: be74c2ee1ea44b8428777a21009b0720, type: 3}
       propertyPath: m_LookAt
       value: 
-      objectReference: {fileID: 728176370}
+      objectReference: {fileID: 0}
     - target: {fileID: 839950662014611856, guid: be74c2ee1ea44b8428777a21009b0720, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -5177,11 +5305,11 @@ PrefabInstance:
     - target: {fileID: 839950662014611871, guid: be74c2ee1ea44b8428777a21009b0720, type: 3}
       propertyPath: m_Follow
       value: 
-      objectReference: {fileID: 1756160127}
+      objectReference: {fileID: 1822691980}
     - target: {fileID: 839950662014611871, guid: be74c2ee1ea44b8428777a21009b0720, type: 3}
       propertyPath: m_LookAt
       value: 
-      objectReference: {fileID: 728176370}
+      objectReference: {fileID: 1822691981}
     - target: {fileID: 839950662111410436, guid: be74c2ee1ea44b8428777a21009b0720, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -5281,11 +5409,11 @@ PrefabInstance:
     - target: {fileID: 1876199538058764282, guid: be74c2ee1ea44b8428777a21009b0720, type: 3}
       propertyPath: m_Follow
       value: 
-      objectReference: {fileID: 1756160127}
+      objectReference: {fileID: 1822691980}
     - target: {fileID: 1876199538058764282, guid: be74c2ee1ea44b8428777a21009b0720, type: 3}
       propertyPath: m_LookAt
       value: 
-      objectReference: {fileID: 728176370}
+      objectReference: {fileID: 1822691981}
     - target: {fileID: 5405873167855703736, guid: be74c2ee1ea44b8428777a21009b0720, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -5516,6 +5644,10 @@ PrefabInstance:
     - target: {fileID: 4765875782868009629, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
       propertyPath: m_Name
       value: PointyRock_01 (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4765875782868009629, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5289506807126710311, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
       propertyPath: m_RootOrder
@@ -5759,6 +5891,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PointyRock_03 (16)
       objectReference: {fileID: 0}
+    - target: {fileID: 8693444045776838695, guid: da69787fd84aab3498d200f43445cff6, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da69787fd84aab3498d200f43445cff6, type: 3}
 --- !u!4 &321856574 stripped
@@ -5974,79 +6110,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7570850440909537781, guid: b79db62518c95d74a90cd6b1e4680862, type: 3}
   m_PrefabInstance: {fileID: 348414138}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &353969887
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2927167167306915266, guid: 9a38b8ca5a8093a43b837c369d1745a2, type: 3}
-      propertyPath: sceneId
-      value: 3802771134
-      objectReference: {fileID: 0}
-    - target: {fileID: 2927167167306915266, guid: 9a38b8ca5a8093a43b837c369d1745a2, type: 3}
-      propertyPath: serverOnly
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6327377196063707621, guid: 9a38b8ca5a8093a43b837c369d1745a2, type: 3}
-      propertyPath: m_Name
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 6327377196063707621, guid: 9a38b8ca5a8093a43b837c369d1745a2, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6327377196063707622, guid: 9a38b8ca5a8093a43b837c369d1745a2, type: 3}
-      propertyPath: movementState
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6327377196063707623, guid: 9a38b8ca5a8093a43b837c369d1745a2, type: 3}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6327377196063707623, guid: 9a38b8ca5a8093a43b837c369d1745a2, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -5.32
-      objectReference: {fileID: 0}
-    - target: {fileID: 6327377196063707623, guid: 9a38b8ca5a8093a43b837c369d1745a2, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.491
-      objectReference: {fileID: 0}
-    - target: {fileID: 6327377196063707623, guid: 9a38b8ca5a8093a43b837c369d1745a2, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 63.26
-      objectReference: {fileID: 0}
-    - target: {fileID: 6327377196063707623, guid: 9a38b8ca5a8093a43b837c369d1745a2, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6327377196063707623, guid: 9a38b8ca5a8093a43b837c369d1745a2, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6327377196063707623, guid: 9a38b8ca5a8093a43b837c369d1745a2, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6327377196063707623, guid: 9a38b8ca5a8093a43b837c369d1745a2, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6327377196063707623, guid: 9a38b8ca5a8093a43b837c369d1745a2, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6327377196063707623, guid: 9a38b8ca5a8093a43b837c369d1745a2, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6327377196063707623, guid: 9a38b8ca5a8093a43b837c369d1745a2, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 9a38b8ca5a8093a43b837c369d1745a2, type: 3}
 --- !u!1001 &376761491
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6057,6 +6120,10 @@ PrefabInstance:
     - target: {fileID: 3685851633156723787, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
       propertyPath: m_Name
       value: Mushroom_Moustache_straight (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3685851633156723787, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4065930385474309873, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
       propertyPath: m_RootOrder
@@ -6245,6 +6312,10 @@ PrefabInstance:
     - target: {fileID: 8693444045776838695, guid: da69787fd84aab3498d200f43445cff6, type: 3}
       propertyPath: m_Name
       value: PointyRock_03 (14)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8693444045776838695, guid: da69787fd84aab3498d200f43445cff6, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da69787fd84aab3498d200f43445cff6, type: 3}
@@ -6462,6 +6533,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WitchMushroom (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 4843782011205764614, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5220589785351494844, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
       propertyPath: m_RootOrder
       value: 11
@@ -6505,6 +6580,10 @@ PrefabInstance:
     - target: {fileID: 5220589785351494844, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7256319930703232330, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
@@ -6696,6 +6775,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Underground_Mushroom_Enoki (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 7897524532161244997, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
 --- !u!4 &405781154 stripped
@@ -6847,6 +6930,10 @@ PrefabInstance:
     - target: {fileID: 7897524532161244997, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
       propertyPath: m_Name
       value: Underground_Mushroom_Enoki (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7897524532161244997, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
@@ -7014,6 +7101,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RibbonMushroom (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 6975388299097921690, guid: 767ef1bb8a1342e46889366c55e9b7cc, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 7747983700210844192, guid: 767ef1bb8a1342e46889366c55e9b7cc, type: 3}
       propertyPath: m_RootOrder
       value: 7
@@ -7087,6 +7178,10 @@ PrefabInstance:
     - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_Name
       value: Mushroom_Moustache (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6836917502841092284, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_RootOrder
@@ -7765,6 +7860,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Underground_Mushroom_Enoki (12)
       objectReference: {fileID: 0}
+    - target: {fileID: 7897524532161244997, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
 --- !u!4 &473677954 stripped
@@ -7946,6 +8045,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Greenbulb (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 5763539004807991719, guid: 44d56677810a25443a9950c4968f3bf2, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44d56677810a25443a9950c4968f3bf2, type: 3}
 --- !u!4 &482845913 stripped
@@ -8118,6 +8221,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Underground_Mushroom_Enoki (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7897524532161244997, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
 --- !u!4 &497461054 stripped
@@ -8267,6 +8374,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mushroom_Moustache (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 6836917502841092284, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_RootOrder
       value: 33
@@ -8329,6 +8440,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WitchMushroom (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 4843782011205764614, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5220589785351494844, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -8384,6 +8499,10 @@ PrefabInstance:
     - target: {fileID: 5220589785351494844, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7256319930703232330, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
@@ -8977,6 +9096,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ChandelierGreen (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 3792036656683408501, guid: 642292548c8265b448022a15a54a66ca, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4606009871562671823, guid: 642292548c8265b448022a15a54a66ca, type: 3}
       propertyPath: m_RootOrder
       value: 32
@@ -9344,6 +9467,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Greenbulb (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5763539004807991719, guid: 44d56677810a25443a9950c4968f3bf2, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44d56677810a25443a9950c4968f3bf2, type: 3}
 --- !u!4 &579660394 stripped
@@ -9361,6 +9488,10 @@ PrefabInstance:
     - target: {fileID: 3792036656683408501, guid: 642292548c8265b448022a15a54a66ca, type: 3}
       propertyPath: m_Name
       value: ChandelierGreen (16)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3792036656683408501, guid: 642292548c8265b448022a15a54a66ca, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4606009871562671823, guid: 642292548c8265b448022a15a54a66ca, type: 3}
       propertyPath: m_RootOrder
@@ -9623,6 +9754,10 @@ PrefabInstance:
     - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_Name
       value: Mushroom_Moustache (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6836917502841092284, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_RootOrder
@@ -9974,6 +10109,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PointyRock_01 (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 4765875782868009629, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5289506807126710311, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
       propertyPath: m_RootOrder
       value: 13
@@ -10174,6 +10313,10 @@ PrefabInstance:
     - target: {fileID: 4765875782868009629, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
       propertyPath: m_Name
       value: PointyRock_01 (13)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4765875782868009629, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5289506807126710311, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
       propertyPath: m_RootOrder
@@ -10509,6 +10652,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mushroom_Moustache_straight (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 3685851633156723787, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4065930385474309873, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
       propertyPath: m_RootOrder
       value: 45
@@ -10581,7 +10728,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 628366051}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: UndergroundVolcanic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11146,6 +11293,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Greenbulb (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 5763539004807991719, guid: 44d56677810a25443a9950c4968f3bf2, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44d56677810a25443a9950c4968f3bf2, type: 3}
 --- !u!4 &660159033 stripped
@@ -11207,6 +11358,10 @@ PrefabInstance:
     - target: {fileID: 8693444045776838695, guid: da69787fd84aab3498d200f43445cff6, type: 3}
       propertyPath: m_Name
       value: PointyRock_03 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8693444045776838695, guid: da69787fd84aab3498d200f43445cff6, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da69787fd84aab3498d200f43445cff6, type: 3}
@@ -11504,6 +11659,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Underground_Mushroom_Enoki (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 7897524532161244997, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
 --- !u!4 &666160667 stripped
@@ -11701,6 +11860,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mushroom_Moustache (12)
       objectReference: {fileID: 0}
+    - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 6836917502841092284, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_RootOrder
       value: 55
@@ -11836,6 +11999,10 @@ PrefabInstance:
     - target: {fileID: 3685851633156723787, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
       propertyPath: m_Name
       value: Mushroom_Moustache_straight (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3685851633156723787, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4065930385474309873, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
       propertyPath: m_RootOrder
@@ -12098,9 +12265,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1733346636}
     m_Modifications:
+    - target: {fileID: 1532644324696602026, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2295475331043400787, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 3911721844609051707, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
       propertyPath: m_Name
       value: TripleBulbs (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911721844609051707, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5395062840491690190, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8312000530781316379, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
       propertyPath: m_RootOrder
@@ -12358,9 +12541,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1733346636}
     m_Modifications:
+    - target: {fileID: 1532644324696602026, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2295475331043400787, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 3911721844609051707, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
       propertyPath: m_Name
       value: TripleBulbs (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911721844609051707, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5395062840491690190, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8312000530781316379, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
       propertyPath: m_RootOrder
@@ -12619,11 +12818,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8342663070043319196, guid: bde254494c05e0f48b8d81a3eb55464a, type: 3}
   m_PrefabInstance: {fileID: 725264359}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &728176370 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6327377197209976904, guid: 9a38b8ca5a8093a43b837c369d1745a2, type: 3}
-  m_PrefabInstance: {fileID: 353969887}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &728968625
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12849,7 +13043,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &735395431
 Transform:
   m_ObjectHideFlags: 0
@@ -13075,9 +13269,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1733346636}
     m_Modifications:
+    - target: {fileID: 1532644324696602026, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2295475331043400787, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 3911721844609051707, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
       propertyPath: m_Name
       value: TripleBulbs (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911721844609051707, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5395062840491690190, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8312000530781316379, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
       propertyPath: m_RootOrder
@@ -13560,6 +13770,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WitchMushroom (12)
       objectReference: {fileID: 0}
+    - target: {fileID: 4843782011205764614, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5220589785351494844, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
       propertyPath: m_RootOrder
       value: 12
@@ -13615,6 +13829,10 @@ PrefabInstance:
     - target: {fileID: 5220589785351494844, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7256319930703232330, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
@@ -13707,6 +13925,10 @@ PrefabInstance:
     - target: {fileID: 4765875782868009629, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
       propertyPath: m_Name
       value: PointyRock_01 (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4765875782868009629, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5289506807126710311, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
       propertyPath: m_RootOrder
@@ -14055,7 +14277,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 795315856}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: UndergroundForest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14136,6 +14358,10 @@ PrefabInstance:
     - target: {fileID: 3685851633156723787, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
       propertyPath: m_Name
       value: Mushroom_Moustache_straight (15)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3685851633156723787, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4065930385474309873, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
       propertyPath: m_RootOrder
@@ -14649,6 +14875,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PointyRock_03 (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 8693444045776838695, guid: da69787fd84aab3498d200f43445cff6, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da69787fd84aab3498d200f43445cff6, type: 3}
 --- !u!4 &829872764 stripped
@@ -15112,6 +15342,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Underground_Mushroom_Chandelier_orange (14)
       objectReference: {fileID: 0}
+    - target: {fileID: 3600652608427632745, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4229943093133701843, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
       propertyPath: m_RootOrder
       value: 49
@@ -15239,6 +15473,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WitchMushroom (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 4843782011205764614, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5220589785351494844, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
       propertyPath: m_RootOrder
       value: 7
@@ -15294,6 +15532,10 @@ PrefabInstance:
     - target: {fileID: 5220589785351494844, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7256319930703232330, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
@@ -15386,6 +15628,10 @@ PrefabInstance:
     - target: {fileID: 3792036656683408501, guid: 642292548c8265b448022a15a54a66ca, type: 3}
       propertyPath: m_Name
       value: ChandelierGreen (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3792036656683408501, guid: 642292548c8265b448022a15a54a66ca, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4606009871562671823, guid: 642292548c8265b448022a15a54a66ca, type: 3}
       propertyPath: m_RootOrder
@@ -15630,6 +15876,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ChandelierGreen (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 3792036656683408501, guid: 642292548c8265b448022a15a54a66ca, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4606009871562671823, guid: 642292548c8265b448022a15a54a66ca, type: 3}
       propertyPath: m_RootOrder
       value: 25
@@ -15752,7 +16002,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 933269051}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: UndergroundDesert
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15963,6 +16213,10 @@ PrefabInstance:
     - target: {fileID: 7897524532161244997, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
       propertyPath: m_Name
       value: Underground_Mushroom_Enoki (13)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7897524532161244997, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
@@ -16367,6 +16621,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PointyRock_01 (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 4765875782868009629, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5289506807126710311, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
       propertyPath: m_RootOrder
       value: 12
@@ -16565,9 +16823,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1733346636}
     m_Modifications:
+    - target: {fileID: 1532644324696602026, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2295475331043400787, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 3911721844609051707, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
       propertyPath: m_Name
       value: TripleBulbs (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911721844609051707, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5395062840491690190, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8312000530781316379, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
       propertyPath: m_RootOrder
@@ -16675,6 +16949,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Greenbulb (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 5763539004807991719, guid: 44d56677810a25443a9950c4968f3bf2, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44d56677810a25443a9950c4968f3bf2, type: 3}
 --- !u!4 &987823975 stripped
@@ -16771,6 +17049,10 @@ PrefabInstance:
     - target: {fileID: 4765875782868009629, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
       propertyPath: m_Name
       value: PointyRock_01 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4765875782868009629, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5289506807126710311, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
       propertyPath: m_RootOrder
@@ -17076,6 +17358,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PointyRock_03 (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 8693444045776838695, guid: da69787fd84aab3498d200f43445cff6, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da69787fd84aab3498d200f43445cff6, type: 3}
 --- !u!4 &1016501360 stripped
@@ -17159,6 +17445,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PointyRock_01 (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 4765875782868009629, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5289506807126710311, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
       propertyPath: m_RootOrder
       value: 15
@@ -17232,6 +17522,10 @@ PrefabInstance:
     - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_Name
       value: Mushroom_Moustache (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6836917502841092284, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_RootOrder
@@ -17436,6 +17730,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ChandelierGreen (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 3792036656683408501, guid: 642292548c8265b448022a15a54a66ca, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4606009871562671823, guid: 642292548c8265b448022a15a54a66ca, type: 3}
       propertyPath: m_RootOrder
       value: 28
@@ -17629,6 +17927,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Underground_Mushroom_Enoki (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 7897524532161244997, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
 --- !u!4 &1041478241 stripped
@@ -17708,6 +18010,10 @@ PrefabInstance:
     - target: {fileID: 3600652608427632745, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
       propertyPath: m_Name
       value: Underground_Mushroom_Chandelier_orange (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3600652608427632745, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4229943093133701843, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
       propertyPath: m_RootOrder
@@ -17888,6 +18194,10 @@ PrefabInstance:
     - target: {fileID: 5763539004807991719, guid: 44d56677810a25443a9950c4968f3bf2, type: 3}
       propertyPath: m_Name
       value: Greenbulb (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5763539004807991719, guid: 44d56677810a25443a9950c4968f3bf2, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44d56677810a25443a9950c4968f3bf2, type: 3}
@@ -18229,6 +18539,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ChandelierGreen (13)
       objectReference: {fileID: 0}
+    - target: {fileID: 3792036656683408501, guid: 642292548c8265b448022a15a54a66ca, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4606009871562671823, guid: 642292548c8265b448022a15a54a66ca, type: 3}
       propertyPath: m_RootOrder
       value: 40
@@ -18307,6 +18621,10 @@ PrefabInstance:
     - target: {fileID: 3685851633156723787, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
       propertyPath: m_Name
       value: Mushroom_Moustache_straight (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3685851633156723787, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4065930385474309873, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
       propertyPath: m_RootOrder
@@ -18666,6 +18984,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mushroom_Moustache (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 6836917502841092284, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_RootOrder
       value: 43
@@ -18739,6 +19061,10 @@ PrefabInstance:
     - target: {fileID: 3685851633156723787, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
       propertyPath: m_Name
       value: Mushroom_Moustache_straight (12)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3685851633156723787, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4065930385474309873, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
       propertyPath: m_RootOrder
@@ -19002,6 +19328,10 @@ PrefabInstance:
     - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_Name
       value: Mushroom_Moustache (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6836917502841092284, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_RootOrder
@@ -19282,6 +19612,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WitchMushroom (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 4843782011205764614, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5220589785351494844, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
       propertyPath: m_RootOrder
       value: 9
@@ -19337,6 +19671,10 @@ PrefabInstance:
     - target: {fileID: 5220589785351494844, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7256319930703232330, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
@@ -19556,6 +19894,10 @@ PrefabInstance:
     - target: {fileID: 3600652608427632745, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
       propertyPath: m_Name
       value: Underground_Mushroom_Chandelier_orange (13)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3600652608427632745, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4229943093133701843, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
       propertyPath: m_RootOrder
@@ -19791,6 +20133,10 @@ PrefabInstance:
     - target: {fileID: 5763539004807991719, guid: 44d56677810a25443a9950c4968f3bf2, type: 3}
       propertyPath: m_Name
       value: Greenbulb (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5763539004807991719, guid: 44d56677810a25443a9950c4968f3bf2, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44d56677810a25443a9950c4968f3bf2, type: 3}
@@ -20053,6 +20399,10 @@ PrefabInstance:
     - target: {fileID: 5763539004807991719, guid: 44d56677810a25443a9950c4968f3bf2, type: 3}
       propertyPath: m_Name
       value: Greenbulb
+      objectReference: {fileID: 0}
+    - target: {fileID: 5763539004807991719, guid: 44d56677810a25443a9950c4968f3bf2, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44d56677810a25443a9950c4968f3bf2, type: 3}
@@ -20466,6 +20816,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PointyRock_03 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 8693444045776838695, guid: da69787fd84aab3498d200f43445cff6, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da69787fd84aab3498d200f43445cff6, type: 3}
 --- !u!4 &1263715389 stripped
@@ -20540,6 +20894,10 @@ PrefabInstance:
     - target: {fileID: 4765875782868009629, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
       propertyPath: m_Name
       value: PointyRock_01 (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4765875782868009629, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5289506807126710311, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
       propertyPath: m_RootOrder
@@ -21257,6 +21615,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Underground_Mushroom_Enoki (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 7897524532161244997, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
 --- !u!4 &1311073280 stripped
@@ -21414,6 +21776,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RibbonMushroom (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 6975388299097921690, guid: 767ef1bb8a1342e46889366c55e9b7cc, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 7747983700210844192, guid: 767ef1bb8a1342e46889366c55e9b7cc, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -21537,6 +21903,10 @@ PrefabInstance:
     - target: {fileID: 3685851633156723787, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
       propertyPath: m_Name
       value: Mushroom_Moustache_straight (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3685851633156723787, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4065930385474309873, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
       propertyPath: m_RootOrder
@@ -21752,6 +22122,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WitchMushroom (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 4843782011205764614, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5220589785351494844, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -21807,6 +22181,10 @@ PrefabInstance:
     - target: {fileID: 5220589785351494844, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7256319930703232330, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
@@ -22148,9 +22526,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1733346636}
     m_Modifications:
+    - target: {fileID: 1532644324696602026, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2295475331043400787, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 3911721844609051707, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
       propertyPath: m_Name
       value: TripleBulbs (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911721844609051707, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5395062840491690190, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8312000530781316379, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
       propertyPath: m_RootOrder
@@ -22262,6 +22656,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Underground_Mushroom_Enoki (11)
       objectReference: {fileID: 0}
+    - target: {fileID: 7897524532161244997, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
 --- !u!4 &1362126595 stripped
@@ -22279,6 +22677,10 @@ PrefabInstance:
     - target: {fileID: 4765875782868009629, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
       propertyPath: m_Name
       value: PointyRock_01 (12)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4765875782868009629, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5289506807126710311, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
       propertyPath: m_RootOrder
@@ -22738,6 +23140,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PointyRock_03 (12)
       objectReference: {fileID: 0}
+    - target: {fileID: 8693444045776838695, guid: da69787fd84aab3498d200f43445cff6, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da69787fd84aab3498d200f43445cff6, type: 3}
 --- !u!4 &1372826375 stripped
@@ -22829,6 +23235,10 @@ PrefabInstance:
     - target: {fileID: 3792036656683408501, guid: 642292548c8265b448022a15a54a66ca, type: 3}
       propertyPath: m_Name
       value: ChandelierGreen (17)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3792036656683408501, guid: 642292548c8265b448022a15a54a66ca, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4606009871562671823, guid: 642292548c8265b448022a15a54a66ca, type: 3}
       propertyPath: m_RootOrder
@@ -22956,6 +23366,10 @@ PrefabInstance:
     - target: {fileID: 7897524532161244997, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
       propertyPath: m_Name
       value: Underground_Mushroom_Enoki (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7897524532161244997, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
@@ -23096,7 +23510,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1406934827}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: UndergroundAssets
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23468,6 +23882,10 @@ PrefabInstance:
     - target: {fileID: 3600652608427632745, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
       propertyPath: m_Name
       value: Underground_Mushroom_Chandelier_orange (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3600652608427632745, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4229943093133701843, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
       propertyPath: m_RootOrder
@@ -23966,6 +24384,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PointyRock_03 (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 8693444045776838695, guid: da69787fd84aab3498d200f43445cff6, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da69787fd84aab3498d200f43445cff6, type: 3}
 --- !u!4 &1466116724 stripped
@@ -24040,6 +24462,10 @@ PrefabInstance:
     - target: {fileID: 3600652608427632745, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
       propertyPath: m_Name
       value: Underground_Mushroom_Chandelier_orange (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3600652608427632745, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4229943093133701843, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
       propertyPath: m_RootOrder
@@ -24159,6 +24585,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PointyRock_03 (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 8693444045776838695, guid: da69787fd84aab3498d200f43445cff6, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da69787fd84aab3498d200f43445cff6, type: 3}
 --- !u!4 &1482997267 stripped
@@ -24176,6 +24606,10 @@ PrefabInstance:
     - target: {fileID: 3792036656683408501, guid: 642292548c8265b448022a15a54a66ca, type: 3}
       propertyPath: m_Name
       value: ChandelierGreen (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3792036656683408501, guid: 642292548c8265b448022a15a54a66ca, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4606009871562671823, guid: 642292548c8265b448022a15a54a66ca, type: 3}
       propertyPath: m_RootOrder
@@ -24350,6 +24784,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PointyRock_03 (13)
       objectReference: {fileID: 0}
+    - target: {fileID: 8693444045776838695, guid: da69787fd84aab3498d200f43445cff6, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da69787fd84aab3498d200f43445cff6, type: 3}
 --- !u!4 &1494852421 stripped
@@ -24367,6 +24805,10 @@ PrefabInstance:
     - target: {fileID: 3685851633156723787, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
       propertyPath: m_Name
       value: Mushroom_Moustache_straight (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3685851633156723787, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4065930385474309873, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
       propertyPath: m_RootOrder
@@ -24480,12 +24922,12 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 1
+    m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
-    m_Bias: 1
-    m_NormalBias: 1
+    m_Bias: 2
+    m_NormalBias: 0
     m_NearPlane: 0.2
     m_CullingMatrixOverride:
       e00: 1
@@ -24511,9 +24953,9 @@ Light:
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 767
   m_RenderingLayerMask: 1
-  m_Lightmapping: 2
+  m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -24531,13 +24973,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1498230650}
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: 0.36822134, y: 0.1624321, z: 0.21444477, w: 0.8899676}
   m_LocalPosition: {x: -49.732788, y: 59.3, z: -56.46421}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 35.856, y: 33.475, z: 38.209}
 --- !u!1001 &1505522264
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24668,6 +25110,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mushroom_Moustache_straight (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 3685851633156723787, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4065930385474309873, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
       propertyPath: m_RootOrder
       value: 46
@@ -24786,6 +25232,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PointyRock_03 (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 8693444045776838695, guid: da69787fd84aab3498d200f43445cff6, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da69787fd84aab3498d200f43445cff6, type: 3}
 --- !u!4 &1516017241 stripped
@@ -24803,6 +25253,10 @@ PrefabInstance:
     - target: {fileID: 3685851633156723787, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
       propertyPath: m_Name
       value: Mushroom_Moustache_straight (18)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3685851633156723787, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4065930385474309873, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
       propertyPath: m_RootOrder
@@ -24945,6 +25399,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PointyRock_01 (15)
       objectReference: {fileID: 0}
+    - target: {fileID: 4765875782868009629, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5289506807126710311, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
       propertyPath: m_RootOrder
       value: 72
@@ -25026,7 +25484,7 @@ Transform:
   - {fileID: 857638330}
   - {fileID: 778277878}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1553157443
 PrefabInstance:
@@ -25192,6 +25650,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WitchMushroom (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 4843782011205764614, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5220589785351494844, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -25247,6 +25709,10 @@ PrefabInstance:
     - target: {fileID: 5220589785351494844, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7256319930703232330, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
@@ -25519,6 +25985,10 @@ PrefabInstance:
     - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_Name
       value: Mushroom_Moustache (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6836917502841092284, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_RootOrder
@@ -25897,6 +26367,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Underground_Mushroom_Enoki (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 7897524532161244997, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
 --- !u!4 &1609350339 stripped
@@ -25914,6 +26388,10 @@ PrefabInstance:
     - target: {fileID: 3600652608427632745, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
       propertyPath: m_Name
       value: Underground_Mushroom_Chandelier_orange (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3600652608427632745, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4229943093133701843, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
       propertyPath: m_RootOrder
@@ -26059,6 +26537,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mushroom_Moustache (19)
       objectReference: {fileID: 0}
+    - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 6836917502841092284, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_RootOrder
       value: 69
@@ -26180,6 +26662,10 @@ PrefabInstance:
     - target: {fileID: 7897524532161244997, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
       propertyPath: m_Name
       value: Underground_Mushroom_Enoki (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7897524532161244997, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
@@ -26304,6 +26790,10 @@ PrefabInstance:
     - target: {fileID: 8693444045776838695, guid: da69787fd84aab3498d200f43445cff6, type: 3}
       propertyPath: m_Name
       value: PointyRock_03 (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8693444045776838695, guid: da69787fd84aab3498d200f43445cff6, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da69787fd84aab3498d200f43445cff6, type: 3}
@@ -26595,6 +27085,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PointyRock_01 (11)
       objectReference: {fileID: 0}
+    - target: {fileID: 4765875782868009629, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5289506807126710311, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
       propertyPath: m_RootOrder
       value: 17
@@ -26797,6 +27291,10 @@ PrefabInstance:
     - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_Name
       value: Mushroom_Moustache (20)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6836917502841092284, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_RootOrder
@@ -27330,6 +27828,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ChandelierGreen (18)
       objectReference: {fileID: 0}
+    - target: {fileID: 3792036656683408501, guid: 642292548c8265b448022a15a54a66ca, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4606009871562671823, guid: 642292548c8265b448022a15a54a66ca, type: 3}
       propertyPath: m_RootOrder
       value: 48
@@ -27669,6 +28171,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WitchMushroom (11)
       objectReference: {fileID: 0}
+    - target: {fileID: 4843782011205764614, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5220589785351494844, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
       propertyPath: m_RootOrder
       value: 10
@@ -27724,6 +28230,10 @@ PrefabInstance:
     - target: {fileID: 5220589785351494844, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7256319930703232330, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
@@ -27962,6 +28472,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RibbonMushroom (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 6975388299097921690, guid: 767ef1bb8a1342e46889366c55e9b7cc, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 7747983700210844192, guid: 767ef1bb8a1342e46889366c55e9b7cc, type: 3}
       propertyPath: m_RootOrder
       value: 9
@@ -28158,7 +28672,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1733346636}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: UndergroundSwamp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28289,6 +28803,10 @@ PrefabInstance:
     - target: {fileID: 3792036656683408501, guid: 642292548c8265b448022a15a54a66ca, type: 3}
       propertyPath: m_Name
       value: ChandelierGreen (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3792036656683408501, guid: 642292548c8265b448022a15a54a66ca, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4606009871562671823, guid: 642292548c8265b448022a15a54a66ca, type: 3}
       propertyPath: m_RootOrder
@@ -28457,6 +28975,10 @@ PrefabInstance:
     - target: {fileID: 8693444045776838695, guid: da69787fd84aab3498d200f43445cff6, type: 3}
       propertyPath: m_Name
       value: PointyRock_03 (15)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8693444045776838695, guid: da69787fd84aab3498d200f43445cff6, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da69787fd84aab3498d200f43445cff6, type: 3}
@@ -28781,6 +29303,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ChandelierGreen (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 3792036656683408501, guid: 642292548c8265b448022a15a54a66ca, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4606009871562671823, guid: 642292548c8265b448022a15a54a66ca, type: 3}
       propertyPath: m_RootOrder
       value: 35
@@ -28831,11 +29357,6 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 4606009871562671823, guid: 642292548c8265b448022a15a54a66ca, type: 3}
   m_PrefabInstance: {fileID: 1755847883}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1756160127 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6327377195879873624, guid: 9a38b8ca5a8093a43b837c369d1745a2, type: 3}
-  m_PrefabInstance: {fileID: 353969887}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1759902527 stripped
 Transform:
@@ -28914,6 +29435,10 @@ PrefabInstance:
     - target: {fileID: 3792036656683408501, guid: 642292548c8265b448022a15a54a66ca, type: 3}
       propertyPath: m_Name
       value: ChandelierGreen (15)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3792036656683408501, guid: 642292548c8265b448022a15a54a66ca, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4606009871562671823, guid: 642292548c8265b448022a15a54a66ca, type: 3}
       propertyPath: m_RootOrder
@@ -29113,6 +29638,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mushroom_Moustache_straight (17)
       objectReference: {fileID: 0}
+    - target: {fileID: 3685851633156723787, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4065930385474309873, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
       propertyPath: m_RootOrder
       value: 64
@@ -29261,6 +29790,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mushroom_Moustache (15)
       objectReference: {fileID: 0}
+    - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 6836917502841092284, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_RootOrder
       value: 61
@@ -29322,6 +29855,10 @@ PrefabInstance:
     - target: {fileID: 6975388299097921690, guid: 767ef1bb8a1342e46889366c55e9b7cc, type: 3}
       propertyPath: m_Name
       value: RibbonMushroom (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6975388299097921690, guid: 767ef1bb8a1342e46889366c55e9b7cc, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7747983700210844192, guid: 767ef1bb8a1342e46889366c55e9b7cc, type: 3}
       propertyPath: m_RootOrder
@@ -29446,6 +29983,10 @@ PrefabInstance:
     - target: {fileID: 6975388299097921690, guid: 767ef1bb8a1342e46889366c55e9b7cc, type: 3}
       propertyPath: m_Name
       value: RibbonMushroom (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6975388299097921690, guid: 767ef1bb8a1342e46889366c55e9b7cc, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7747983700210844192, guid: 767ef1bb8a1342e46889366c55e9b7cc, type: 3}
       propertyPath: m_RootOrder
@@ -29801,6 +30342,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mushroom_Moustache_straight (14)
       objectReference: {fileID: 0}
+    - target: {fileID: 3685851633156723787, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4065930385474309873, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
       propertyPath: m_RootOrder
       value: 59
@@ -29925,6 +30470,77 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e12476e3f2080e843bda792c74d9fce2, type: 3}
+--- !u!1001 &1822691979
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4395087335389833743, guid: 5373fbe9666392e4ba2c2a6f64989a81, type: 3}
+      propertyPath: sceneId
+      value: 1887518006
+      objectReference: {fileID: 0}
+    - target: {fileID: 4876909850899097128, guid: 5373fbe9666392e4ba2c2a6f64989a81, type: 3}
+      propertyPath: m_Name
+      value: Player_green
+      objectReference: {fileID: 0}
+    - target: {fileID: 4876909850899097130, guid: 5373fbe9666392e4ba2c2a6f64989a81, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4876909850899097130, guid: 5373fbe9666392e4ba2c2a6f64989a81, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 4876909850899097130, guid: 5373fbe9666392e4ba2c2a6f64989a81, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.491
+      objectReference: {fileID: 0}
+    - target: {fileID: 4876909850899097130, guid: 5373fbe9666392e4ba2c2a6f64989a81, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 63.26
+      objectReference: {fileID: 0}
+    - target: {fileID: 4876909850899097130, guid: 5373fbe9666392e4ba2c2a6f64989a81, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4876909850899097130, guid: 5373fbe9666392e4ba2c2a6f64989a81, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4876909850899097130, guid: 5373fbe9666392e4ba2c2a6f64989a81, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4876909850899097130, guid: 5373fbe9666392e4ba2c2a6f64989a81, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4876909850899097130, guid: 5373fbe9666392e4ba2c2a6f64989a81, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4876909850899097130, guid: 5373fbe9666392e4ba2c2a6f64989a81, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4876909850899097130, guid: 5373fbe9666392e4ba2c2a6f64989a81, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5373fbe9666392e4ba2c2a6f64989a81, type: 3}
+--- !u!4 &1822691980 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4876909851351632789, guid: 5373fbe9666392e4ba2c2a6f64989a81, type: 3}
+  m_PrefabInstance: {fileID: 1822691979}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1822691981 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4876909852043179909, guid: 5373fbe9666392e4ba2c2a6f64989a81, type: 3}
+  m_PrefabInstance: {fileID: 1822691979}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1825838577
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30257,6 +30873,10 @@ PrefabInstance:
     - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_Name
       value: Mushroom_Moustache (18)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6836917502841092284, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_RootOrder
@@ -30644,6 +31264,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Underground_Mushroom_Chandelier_orange (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 3600652608427632745, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4229943093133701843, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
       propertyPath: m_RootOrder
       value: 20
@@ -30705,6 +31329,10 @@ PrefabInstance:
     - target: {fileID: 3600652608427632745, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
       propertyPath: m_Name
       value: Underground_Mushroom_Chandelier_orange (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3600652608427632745, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4229943093133701843, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
       propertyPath: m_RootOrder
@@ -30842,6 +31470,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mushroom_Moustache_straight (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 3685851633156723787, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4065930385474309873, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
       propertyPath: m_RootOrder
       value: 40
@@ -30915,6 +31547,10 @@ PrefabInstance:
     - target: {fileID: 3600652608427632745, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
       propertyPath: m_Name
       value: Underground_Mushroom_Chandelier_orange (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3600652608427632745, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4229943093133701843, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
       propertyPath: m_RootOrder
@@ -31052,6 +31688,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WitchMushroom (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 4843782011205764614, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5220589785351494844, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -31107,6 +31747,10 @@ PrefabInstance:
     - target: {fileID: 5220589785351494844, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7256319930703232330, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
@@ -31417,6 +32061,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mushroom_Moustache_straight (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 3685851633156723787, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4065930385474309873, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
       propertyPath: m_RootOrder
       value: 50
@@ -31547,6 +32195,10 @@ PrefabInstance:
     - target: {fileID: 3792036656683408501, guid: 642292548c8265b448022a15a54a66ca, type: 3}
       propertyPath: m_Name
       value: ChandelierGreen (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3792036656683408501, guid: 642292548c8265b448022a15a54a66ca, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4606009871562671823, guid: 642292548c8265b448022a15a54a66ca, type: 3}
       propertyPath: m_RootOrder
@@ -31893,6 +32545,10 @@ PrefabInstance:
     - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_Name
       value: Mushroom_Moustache (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6836917502841092284, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_RootOrder
@@ -32445,6 +33101,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PointyRock_01 (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 4765875782868009629, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5289506807126710311, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
       propertyPath: m_RootOrder
       value: 9
@@ -32629,6 +33289,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mushroom_Moustache_straight (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 3685851633156723787, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4065930385474309873, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
       propertyPath: m_RootOrder
       value: 44
@@ -32707,6 +33371,10 @@ PrefabInstance:
     - target: {fileID: 6975388299097921690, guid: 767ef1bb8a1342e46889366c55e9b7cc, type: 3}
       propertyPath: m_Name
       value: RibbonMushroom (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6975388299097921690, guid: 767ef1bb8a1342e46889366c55e9b7cc, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7747983700210844192, guid: 767ef1bb8a1342e46889366c55e9b7cc, type: 3}
       propertyPath: m_RootOrder
@@ -32838,6 +33506,10 @@ PrefabInstance:
     - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_Name
       value: Mushroom_Moustache (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6836917502841092284, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_RootOrder
@@ -33084,6 +33756,10 @@ PrefabInstance:
     - target: {fileID: 3600652608427632745, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
       propertyPath: m_Name
       value: Underground_Mushroom_Chandelier_orange (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3600652608427632745, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4229943093133701843, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
       propertyPath: m_RootOrder
@@ -33381,6 +34057,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Underground_Mushroom_Chandelier_orange (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 3600652608427632745, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4229943093133701843, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
       propertyPath: m_RootOrder
       value: 26
@@ -33630,9 +34310,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1733346636}
     m_Modifications:
+    - target: {fileID: 1532644324696602026, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2295475331043400787, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 3911721844609051707, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
       propertyPath: m_Name
       value: TripleBulbs (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911721844609051707, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5395062840491690190, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8312000530781316379, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
       propertyPath: m_RootOrder
@@ -33696,6 +34392,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WitchMushroom (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 4843782011205764614, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5220589785351494844, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -33751,6 +34451,10 @@ PrefabInstance:
     - target: {fileID: 5220589785351494844, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7256319930703232330, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
@@ -33918,6 +34622,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PointyRock_01 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4765875782868009629, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5289506807126710311, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -33979,6 +34687,10 @@ PrefabInstance:
     - target: {fileID: 6975388299097921690, guid: 767ef1bb8a1342e46889366c55e9b7cc, type: 3}
       propertyPath: m_Name
       value: RibbonMushroom (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6975388299097921690, guid: 767ef1bb8a1342e46889366c55e9b7cc, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7747983700210844192, guid: 767ef1bb8a1342e46889366c55e9b7cc, type: 3}
       propertyPath: m_RootOrder
@@ -34294,6 +35006,10 @@ PrefabInstance:
     - target: {fileID: 7897524532161244997, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
       propertyPath: m_Name
       value: Underground_Mushroom_Enoki (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7897524532161244997, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
@@ -34641,6 +35357,10 @@ PrefabInstance:
     - target: {fileID: 3600652608427632745, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
       propertyPath: m_Name
       value: Underground_Mushroom_Chandelier_orange (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3600652608427632745, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4229943093133701843, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
       propertyPath: m_RootOrder
@@ -35060,6 +35780,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mushroom_Moustache (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 6836917502841092284, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_RootOrder
       value: 52
@@ -35195,6 +35919,10 @@ PrefabInstance:
     - target: {fileID: 6975388299097921690, guid: 767ef1bb8a1342e46889366c55e9b7cc, type: 3}
       propertyPath: m_Name
       value: RibbonMushroom (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6975388299097921690, guid: 767ef1bb8a1342e46889366c55e9b7cc, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7747983700210844192, guid: 767ef1bb8a1342e46889366c55e9b7cc, type: 3}
       propertyPath: m_RootOrder
@@ -35462,6 +36190,10 @@ PrefabInstance:
     - target: {fileID: 3792036656683408501, guid: 642292548c8265b448022a15a54a66ca, type: 3}
       propertyPath: m_Name
       value: ChandelierGreen (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3792036656683408501, guid: 642292548c8265b448022a15a54a66ca, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4606009871562671823, guid: 642292548c8265b448022a15a54a66ca, type: 3}
       propertyPath: m_RootOrder
@@ -36073,9 +36805,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1733346636}
     m_Modifications:
+    - target: {fileID: 1532644324696602026, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2295475331043400787, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 3911721844609051707, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
       propertyPath: m_Name
       value: TripleBulbs
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911721844609051707, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5395062840491690190, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8312000530781316379, guid: 4acf42f51e5b25f4ba266ba704d233f0, type: 3}
       propertyPath: m_RootOrder
@@ -36139,6 +36887,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WitchMushroom
       objectReference: {fileID: 0}
+    - target: {fileID: 4843782011205764614, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5220589785351494844, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -36183,6 +36935,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7256319930703232330, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76a42f2ebc4db6c4287f7d06efb33486, type: 3}
 --- !u!4 &3379379440437079430 stripped
@@ -36210,6 +36966,10 @@ PrefabInstance:
     - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_Name
       value: Mushroom_Moustache
+      objectReference: {fileID: 0}
+    - target: {fileID: 6172830430586085894, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6836917502841092284, guid: ec839049ce253f7489c6d98184f8c690, type: 3}
       propertyPath: m_RootOrder
@@ -36329,6 +37089,10 @@ PrefabInstance:
     - target: {fileID: 3600652608427632745, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
       propertyPath: m_Name
       value: Underground_Mushroom_Chandelier_orange
+      objectReference: {fileID: 0}
+    - target: {fileID: 3600652608427632745, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4229943093133701843, guid: 3f16455af1dc1884fb50beb18b93816e, type: 3}
       propertyPath: m_RootOrder
@@ -36461,6 +37225,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mushroom_Moustache_straight
       objectReference: {fileID: 0}
+    - target: {fileID: 3685851633156723787, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4065930385474309873, guid: 46763cdb6ef22e744b9b15c319603097, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -36582,6 +37350,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PointyRock_03
       objectReference: {fileID: 0}
+    - target: {fileID: 8693444045776838695, guid: da69787fd84aab3498d200f43445cff6, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da69787fd84aab3498d200f43445cff6, type: 3}
 --- !u!4 &4883335514066952870 stripped
@@ -36656,6 +37428,10 @@ PrefabInstance:
     - target: {fileID: 6975388299097921690, guid: 767ef1bb8a1342e46889366c55e9b7cc, type: 3}
       propertyPath: m_Name
       value: RibbonMushroom
+      objectReference: {fileID: 0}
+    - target: {fileID: 6975388299097921690, guid: 767ef1bb8a1342e46889366c55e9b7cc, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7747983700210844192, guid: 767ef1bb8a1342e46889366c55e9b7cc, type: 3}
       propertyPath: m_RootOrder
@@ -36835,6 +37611,10 @@ PrefabInstance:
     - target: {fileID: 7897524532161244997, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
       propertyPath: m_Name
       value: Underground_Mushroom_Enoki
+      objectReference: {fileID: 0}
+    - target: {fileID: 7897524532161244997, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a565b1db8069ae34089130cb81c1a721, type: 3}
@@ -37107,6 +37887,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PointyRock_01
       objectReference: {fileID: 0}
+    - target: {fileID: 4765875782868009629, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5289506807126710311, guid: a8a29353b4db2dc47bad8be0e406f73c, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -37277,6 +38061,10 @@ PrefabInstance:
     - target: {fileID: 3792036656683408501, guid: 642292548c8265b448022a15a54a66ca, type: 3}
       propertyPath: m_Name
       value: ChandelierGreen
+      objectReference: {fileID: 0}
+    - target: {fileID: 3792036656683408501, guid: 642292548c8265b448022a15a54a66ca, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4606009871562671823, guid: 642292548c8265b448022a15a54a66ca, type: 3}
       propertyPath: m_RootOrder
@@ -37512,6 +38300,10 @@ PrefabInstance:
     - target: {fileID: 9102055437823783715, guid: 40c767207bc21d84785f5c0eea850606, type: 3}
       propertyPath: m_Name
       value: PointyRock_02
+      objectReference: {fileID: 0}
+    - target: {fileID: 9102055437823783715, guid: 40c767207bc21d84785f5c0eea850606, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 40c767207bc21d84785f5c0eea850606, type: 3}
