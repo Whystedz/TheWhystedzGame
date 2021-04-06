@@ -30,7 +30,7 @@ public class NetworkCrystal : NetworkCollectable
 
     private void ExplodingUpdate()
     {
-        var distanceFromUndergroundPlane = Mathf.Abs(this.transform.position.y - crystalManager.underground.transform.position.y);
+        var distanceFromUndergroundPlane = Mathf.Abs(this.transform.position.y - crystalManager.Underground.transform.position.y);
         if (distanceFromUndergroundPlane < this.crystalManager.GetHeightOffset())
             FinishExplosion();
     }
@@ -39,7 +39,7 @@ public class NetworkCrystal : NetworkCollectable
     {
         this.crystalManager.OnDroppedCrystal(this);
         this.IsExploding = false;
-        Vector3 newRestPostion = new Vector3(this.transform.position.x, this.crystalManager.underground.transform.position.y + this.crystalManager.GetHeightOffset(), this.transform.position.z);
+        Vector3 newRestPostion = new Vector3(this.transform.position.x, this.crystalManager.Underground.transform.position.y + this.crystalManager.GetHeightOffset(), this.transform.position.z);
         this.UpdateRestPosition(newRestPostion);
         rb.useGravity = false;
         rb.isKinematic = true;

@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 2557866240405640813}
   - component: {fileID: -6552894668593422055}
   - component: {fileID: -8059229077817295977}
+  - component: {fileID: -1961992628970917028}
   m_Layer: 9
   m_Name: Crystal (Network)
   m_TagString: Collectable
@@ -169,6 +170,28 @@ MonoBehaviour:
   rotationSpeed: 1
   verticalAnimationAmplitude: 0.5
   extraForceIfLandedWrong: 3
+--- !u!114 &-1961992628970917028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7863378476046910972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83392ae5c1b731446909f252fd494ae4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  target: {fileID: 4265854697885692305}
+  clientAuthority: 0
+  syncVelocity: 1
+  clearVelocity: 0
+  velocitySensitivity: 0.1
+  syncAngularVelocity: 1
+  clearAngularVelocity: 0
+  angularVelocitySensitivity: 0.1
 --- !u!1001 &6431324597948560046
 PrefabInstance:
   m_ObjectHideFlags: 0

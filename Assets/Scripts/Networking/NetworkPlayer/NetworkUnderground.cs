@@ -12,6 +12,8 @@ public class NetworkUnderground : MonoBehaviour
     private GameObject underground;
     [SerializeField] private float undergroundOffset;
 
+    private NetworkLoseCrystals loseCrystals;
+
     void Start()
     {
         this.timer = 0;
@@ -19,6 +21,7 @@ public class NetworkUnderground : MonoBehaviour
 
         this.underground = GameObject.FindGameObjectWithTag("Underground");
         this.respawnPoint = GameObject.FindGameObjectWithTag("RespawnPoint").transform;
+        this.loseCrystals = this.GetComponent<NetworkLoseCrystals>();
     }
 
     void Update()
@@ -28,17 +31,24 @@ public class NetworkUnderground : MonoBehaviour
 
         if (this.transform.position.y <= this.underground.transform.position.y + undergroundOffset)
         {
-            timer += Time.deltaTime;
-            if (timer >= timeToDie)
+            this.timer += Time.deltaTime;
+            if (this.timer >= this.timeToDie)
                 Die();
 
         } else
-            timer = 0;
+            this.timer = 0;
 
     }
 
     void Die()
     {
+        this.loseCrystals.LoseCrystal();
         this.transform.position = respawnPoint.position;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Underground"))
+            this.loseCrystals.LoseCrystal();
     }
 }

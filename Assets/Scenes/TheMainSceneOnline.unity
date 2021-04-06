@@ -35369,6 +35369,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 464025355}
     m_Modifications:
+    - target: {fileID: 8993126948693620389, guid: 5a549ebdab5e9d14b9fbeabdd89ea7b6, type: 3}
+      propertyPath: crystalPrefab
+      value: 
+      objectReference: {fileID: 7863378476046910972, guid: ee6f14bef7faace41b94a5b851381954, type: 3}
+    - target: {fileID: 8993126948693620389, guid: 5a549ebdab5e9d14b9fbeabdd89ea7b6, type: 3}
+      propertyPath: radiusOfSpawnCircle
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8993126948693620390, guid: 5a549ebdab5e9d14b9fbeabdd89ea7b6, type: 3}
       propertyPath: m_RootOrder
       value: 3

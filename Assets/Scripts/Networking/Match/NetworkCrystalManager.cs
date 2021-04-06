@@ -4,7 +4,7 @@ using Mirror;
 
 public class NetworkCrystalManager : MonoBehaviour
 {
-    [SerializeField] private GameObject CrystalPrefab;
+    [SerializeField] private GameObject crystalPrefab;
 
     [SerializeField] private int maxCrystalsSurface = 200;
     [SerializeField] private int maxCrystalsGame = 500;
@@ -16,8 +16,10 @@ public class NetworkCrystalManager : MonoBehaviour
     
     [SerializeField] private float spawningCollisionPaddingRadius = 1f;
 
+    [SerializeField] private float radiusOfSpawnCircle = .05f;
+
     private PlaneBounds surface;
-    public PlaneBounds underground { get; private set; }
+    public PlaneBounds Underground { get; private set; }
 
     private int totalCrystalsInstantiated;
     private int currentCrystalsSurface;
@@ -27,7 +29,7 @@ public class NetworkCrystalManager : MonoBehaviour
     {
         this.surface = GameObject.FindGameObjectWithTag("Surface")
             .GetComponent<PlaneBounds>();
-        this.underground = GameObject.FindGameObjectWithTag("Underground")
+        Underground = GameObject.FindGameObjectWithTag("Underground")
             .GetComponent<PlaneBounds>();
     }
 
@@ -67,7 +69,7 @@ public class NetworkCrystalManager : MonoBehaviour
         }
 
 
-        var crystal = Instantiate(this.CrystalPrefab, this.transform);
+        var crystal = Instantiate(this.crystalPrefab, this.transform);
 
         crystal.transform.position = chosenPosition;
         crystal.GetComponent<NetworkCollectable>().UpdateRestPosition(chosenPosition);
@@ -113,7 +115,7 @@ public class NetworkCrystalManager : MonoBehaviour
     public void OnCollectedCrystal(NetworkCrystal crystal)
     {
         var distanceToSurface = crystal.transform.position.y - this.surface.transform.position.y;
-        var distanceToUnderground = crystal.transform.position.y - this.underground.transform.position.y;
+        var distanceToUnderground = crystal.transform.position.y - Underground.transform.position.y;
 
         if (distanceToSurface < distanceToUnderground)
             this.currentCrystalsSurface -= 1;
@@ -125,7 +127,7 @@ public class NetworkCrystalManager : MonoBehaviour
     public void OnDroppedCrystal(NetworkCrystal crystal)
     {
         var distanceToSurface = crystal.transform.position.y - this.surface.transform.position.y;
-        var distanceToUnderground = crystal.transform.position.y - this.underground.transform.position.y;
+        var distanceToUnderground = crystal.transform.position.y - Underground.transform.position.y;
 
         if (distanceToSurface < distanceToUnderground)
             this.currentCrystalsSurface += 1;
@@ -134,4 +136,21 @@ public class NetworkCrystalManager : MonoBehaviour
     }
 
     public float GetHeightOffset() => crystalVerticalOffsetHeight;
+
+    public void DropCrystals(Transform player, int amount)
+    {
+        for (int i = 0; i < amount; i++)
+        {
+            var randomizedPos = UnityEngine.Random.insideUnitCircle * radiusOfSpawnCircle;
+            var spawnPos = player.transform.position + new Vector3(randomizedPos.x, crystalVerticalOffsetHeight, randomizedPos.y);
+            var crystal = Instantiate(this.crystalPrefab, spawnPos, Quaternion.identity);
+            crystal.transform.parent = this.transform;
+            crystal.GetComponent<NetworkCrystal>().IsExploding = true;
+            crystal.GetComponent<CapsuleCollider>().isTrigger = false;
+            NetworkServer.Spawn(crystal);
+
+            OnDroppedCrystal(crystal.GetComponent<NetworkCrystal>());
+            Debug.Log($"Spawned {i}");
+        }
+    }
 }
