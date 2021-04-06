@@ -42,12 +42,10 @@ public class NetworkComboPlayer : NetworkBehaviour
     {
         networkDigging = this.GetComponent<NetworkDigging>();
 
-        RefreshTeammates();
-
         this.comboManager = FindObjectOfType<NetworkComboManager>();
+        CmdRegisterToComboManager();
 
         this.cooldownProgress = this.cooldownMax;
-        CmdRegisterToComboManager();
         comboManager.localComboPlayer = this;
     }
 

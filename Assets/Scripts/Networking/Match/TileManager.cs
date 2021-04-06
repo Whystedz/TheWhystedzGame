@@ -30,7 +30,7 @@ public class TileManager : NetworkBehaviour
 
     private void Awake() => MaintainSingleInstance();
 
-    void Start()
+    public override void OnStartClient()
     {
         syncTileList.Callback += OnTileUpdated;
         SpawnMap();

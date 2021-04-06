@@ -273,7 +273,6 @@ GameObject:
   - component: {fileID: 6327377196063707623}
   - component: {fileID: 6327377196063707620}
   - component: {fileID: 2927167167306915266}
-  - component: {fileID: -6651294746768266907}
   - component: {fileID: 3752298209473233816}
   - component: {fileID: -4131916122285525065}
   - component: {fileID: 537063209812637493}
@@ -285,6 +284,7 @@ GameObject:
   - component: {fileID: 7979723595582026154}
   - component: {fileID: 6774835018087594508}
   - component: {fileID: 6711196309490094973}
+  - component: {fileID: 2701644943808477435}
   m_Layer: 0
   m_Name: NetworkPlayer
   m_TagString: Player
@@ -346,19 +346,6 @@ MonoBehaviour:
   serverOnly: 0
   m_AssetId: 
   hasSpawned: 0
---- !u!114 &-6651294746768266907
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6327377196063707621}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b2f80813e374b348949ead86709be77, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerScoreUI: {fileID: 0}
 --- !u!114 &3752298209473233816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -645,6 +632,19 @@ MonoBehaviour:
   ropeClip: {fileID: 8300000, guid: aa757c9ff3dbbd4499910c6920d12d7c, type: 3}
   playerGroup: {fileID: -5069830022980289509, guid: f110ec1ec75bf3046803ad950951e43d, type: 2}
   audioSource: {fileID: 6774835018087594508}
+--- !u!114 &2701644943808477435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6327377196063707621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c42619045b391fd4e95a74879e1e470c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerScoreUI: {fileID: 0}
 --- !u!1 &6327377197209976905
 GameObject:
   m_ObjectHideFlags: 0
