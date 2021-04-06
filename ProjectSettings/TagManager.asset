@@ -12,7 +12,7 @@ TagManager:
   - BlackoutImage
   - _Dynamic
   - RespawnPoint
-  - Obstacle
+  - NetworkManager
   layers:
   - Default
   - TransparentFX
@@ -23,7 +23,7 @@ TagManager:
   - BiomeRegion
   - TileRope
   - Underground
-  - Collectable
+  - 
   - 
   - 
   - 

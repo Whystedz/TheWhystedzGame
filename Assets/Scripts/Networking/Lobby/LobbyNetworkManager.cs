@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Mirror;
+using UnityEngine.SceneManagement;
 
 public class LobbyNetworkManager : NetworkManager
 {
@@ -22,6 +23,9 @@ public class LobbyNetworkManager : NetworkManager
     // Network Connections that have neither started nor joined a match yet
     internal static readonly List<NetworkConnection> waitingConnections = new List<NetworkConnection>();
 
+    // Match Controllers listen for this to terminate their match and clean up
+    public event Action<NetworkConnection> OnPlayerDisconnected;
+
     // ******** Client only data ********
     internal string localHostedMatchId = string.Empty;
     internal string localJoinedMatchId = string.Empty;
@@ -35,6 +39,8 @@ public class LobbyNetworkManager : NetworkManager
 
     [SerializeField] private CanvasController canvasController;
 
+    [SerializeField] private GameObject matchControllerPrefab;
+
     [Header("Room Settings")]
     [SerializeField] private LobbyPlayer lobbyPlayerPrefab;
 
@@ -46,6 +52,8 @@ public class LobbyNetworkManager : NetworkManager
     public override void Awake()
     {
         base.Awake();
+        // StartServer();
+        StartClient();
         InitializeData();
         this.canvasController.InitializeData();
     }
@@ -240,7 +248,6 @@ public class LobbyNetworkManager : NetworkManager
 
     public void OnServerCreatePublicMatch(NetworkConnection connection, string playerName)
     {
-        
         if (!NetworkServer.active || playerMatches.ContainsKey(connection)) return;
 
         Debug.Log("CreatePublicMatch message received");
@@ -332,7 +339,43 @@ public class LobbyNetworkManager : NetworkManager
     // TODO
     public void OnServerStartMatch(NetworkConnection connection)
     {
-        throw new NotImplementedException();
+        if (!NetworkServer.active || !playerMatches.ContainsKey(connection)) return;
+
+        string matchId;
+        if (playerMatches.TryGetValue(connection, out matchId))
+        {
+            // spawn a matchController
+            var matchControllerObject = Instantiate(this.matchControllerPrefab);
+            var matchIdGuid = new Guid(matchId);
+            matchControllerObject.GetComponent<NetworkMatchChecker>().matchId = matchIdGuid;
+            NetworkServer.Spawn(matchControllerObject);
+            var matchController = matchControllerObject.GetComponent<MatchController>();
+
+            foreach (var playerConn in matchConnections[matchId])
+            {
+                // send message to players
+                playerConn.Send(new ClientMatchMessage {ClientMatchOperation = ClientMatchOperation.Started});
+
+                // spawn a new player; add to matchController
+                var player = Instantiate(singleton.playerPrefab);
+                player.GetComponent<NetworkMatchChecker>().matchId = matchIdGuid;
+                NetworkServer.AddPlayerForConnection(playerConn, player);
+                
+                matchController.players.Add(playerConn.identity);
+
+                // Reset ready state for after the match. 
+                var playerInfo = playerInfos[playerConn];
+                playerInfo.IsReady = false;
+                playerInfos[playerConn] = playerInfo;
+            }
+
+            playerMatches.Remove(connection);
+            openMatches.Remove(matchId);
+            matchConnections.Remove(matchId);
+            SendMatchList();
+
+            OnPlayerDisconnected += matchController.OnPlayerDisconnected;
+        }
     }
 
     public void OnServerJoinMatch(NetworkConnection connection, string matchId, string playerName)
@@ -520,9 +563,16 @@ public class LobbyNetworkManager : NetworkManager
             {
                 this.canvasController.lobbyView.SetActive(false);
                 this.canvasController.roomView.SetActive(false);
+                OnClientStartMatch();
                 break;
             }
         }
+    }
+
+    private void OnClientStartMatch()
+    {
+        SceneManager.LoadScene(this.MainScene);
+        // NetworkClient.connection.Send(new ServerMatchMessage {ServerMatchOperation = ServerMatchOperation.SceneLoaded});
     }
 
     #endregion
@@ -531,7 +581,7 @@ public class LobbyNetworkManager : NetworkManager
     /// Sends updated match list to all waiting connections or just one if specified
     /// </summary>
     /// <param name="connection">the specified connection</param>
-    private static void SendMatchList(NetworkConnection connection = null)
+    internal static void SendMatchList(NetworkConnection connection = null)
     {
         if (!NetworkServer.active) return;
 

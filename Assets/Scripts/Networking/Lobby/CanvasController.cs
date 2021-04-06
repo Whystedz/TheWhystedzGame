@@ -715,4 +715,5 @@ if (playerMatches.TryGetValue(connection, out matchId))
         this.roomGUI.RefreshRoomPlayers(playerInfos);
         this.roomGUI.SetHost(isHost);
     }
+
 }

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.1802839, g: 0.22571377, b: 0.3069221, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -235,9 +235,10 @@ MonoBehaviour:
   spawnPrefabs: []
   lobbyCanvas: {fileID: 600161083}
   canvasController: {fileID: 1345557162}
+  matchControllerPrefab: {fileID: 0}
   lobbyPlayerPrefab: {fileID: 0}
-  LobbyScene: 
-  MainScene: 
+  LobbyScene: Assets/SceneSandbox/Yuguo/LobbyScene.unity
+  MainScene: Assets/SceneSandbox/Yuguo/MainSceneOnline.unity
 --- !u!4 &743036210
 Transform:
   m_ObjectHideFlags: 0

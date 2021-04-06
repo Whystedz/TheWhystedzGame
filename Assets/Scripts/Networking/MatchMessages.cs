@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using UnityEngine.SocialPlatforms.Impl;
 
 public struct ServerMatchMessage : NetworkMessage
 {
@@ -36,6 +37,14 @@ public struct PlayerInfo
     public bool IsReady;
     public bool IsHost;
     public Team Team;
+}
+
+[Serializable]
+public struct MatchPlayerData
+{
+    public string playerName;
+    public int currentScore;
+    public Team team;
 }
 
 [Serializable]
@@ -80,7 +89,8 @@ public enum ServerMatchOperation : byte
     Join,
     Leave,
     Search,
-    Ready
+    Ready,
+    SceneLoaded
 }
 
 public enum ClientMatchOperation : byte
