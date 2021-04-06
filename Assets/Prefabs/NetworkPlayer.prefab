@@ -155,6 +155,7 @@ GameObject:
   - component: {fileID: 4290560645816970910}
   - component: {fileID: 4056083355115853930}
   - component: {fileID: 1123734965358184480}
+  - component: {fileID: 3808291980328568116}
   m_Layer: 0
   m_Name: NetworkPlayer
   m_TagString: Player
@@ -362,6 +363,21 @@ MonoBehaviour:
   syncInterval: 0.1
   clientAuthority: 1
   animator: {fileID: 2532891005922201758}
+--- !u!114 &3808291980328568116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6327377196063707621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1020a74962faada4b807ac5dc053a4cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  currentMatchDebug: 
 --- !u!1 &6327377197209976905
 GameObject:
   m_ObjectHideFlags: 0
@@ -686,13 +702,13 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 7baabf1f91c0daf43885cf466c05bdc1, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2dd7f7fc55e390c4d9ab61bdc78deef1, type: 3}
---- !u!4 &8486626848996559588 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2dd7f7fc55e390c4d9ab61bdc78deef1, type: 3}
-  m_PrefabInstance: {fileID: 8236018681680162063}
-  m_PrefabAsset: {fileID: 0}
 --- !u!95 &2532891005922201758 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 2dd7f7fc55e390c4d9ab61bdc78deef1, type: 3}
+  m_PrefabInstance: {fileID: 8236018681680162063}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8486626848996559588 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2dd7f7fc55e390c4d9ab61bdc78deef1, type: 3}
   m_PrefabInstance: {fileID: 8236018681680162063}
   m_PrefabAsset: {fileID: 0}

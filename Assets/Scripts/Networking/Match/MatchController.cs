@@ -2,35 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using Mirror;
 using UnityEngine;
+using UnityEngine.Networking.Types;
 
 public class MatchController : NetworkBehaviour
 {
     internal readonly SyncDictionary<NetworkIdentity, MatchPlayerData> matchPlayerData = new SyncDictionary<NetworkIdentity, MatchPlayerData>();
-    // internal readonly Dictionary<CellValue, CellGUI> MatchCells = new Dictionary<CellValue, CellGUI>();
 
-    // CellValue boardScore = CellValue.None;
     bool playAgain = false;
 
-    // [Header("GUI References")]
-    // public CanvasGroup canvasGroup;
-
-    // public Text gameText;
-    // public Button exitButton;
-    // public Button playAgainButton;
-    // public Text winCountLocal;
-    // public Text winCountOpponent;
     private LobbyNetworkManager networkManager;
 
     [Header("Diagnostics - Do Not Modify")]
     public CanvasController canvasController;
 
-    public List<NetworkIdentity> players;
+    public NetworkIdentity tileManagerIdentity;
+    public List<NetworkIdentity> playerIdentities;
 
 
     void Awake()
     {
         this.canvasController = FindObjectOfType<CanvasController>();
         this.networkManager = GameObject.FindWithTag("NetworkManager").GetComponent<LobbyNetworkManager>();
+        DontDestroyOnLoad(this);
     }
 
     public override void OnStartServer()
@@ -44,7 +37,7 @@ public class MatchController : NetworkBehaviour
     {
         yield return null;
 
-        foreach (var playerIdentity in players)
+        foreach (var playerIdentity in this.playerIdentities)
         {
             this.matchPlayerData.Add(playerIdentity, new MatchPlayerData
                 {
@@ -92,7 +85,7 @@ public class MatchController : NetworkBehaviour
         // Check that the disconnecting client is a player in this match
         // stop the match if one player in match disconnected
         // TODO: is this what we want?
-        if (this.players.Contains(connection.identity))
+        if (this.playerIdentities.Contains(connection.identity))
         {
             StartCoroutine(ServerEndMatch(connection, true));
         }
@@ -119,7 +112,7 @@ public class MatchController : NetworkBehaviour
         if (!disconnected)
         {
             // send everyone to lobby 
-            foreach (var player in players)
+            foreach (var player in this.playerIdentities)
             {
                 NetworkServer.RemovePlayerForConnection(player.connectionToClient, true);
                 LobbyNetworkManager.waitingConnections.Add(player.connectionToClient);
@@ -128,9 +121,9 @@ public class MatchController : NetworkBehaviour
         else
         {
             // send everyone to lobby, except the one disconnected
-            var disconnectedPlayer = this.players.Find(x => x.connectionToClient == connection);
+            var disconnectedPlayer = this.playerIdentities.Find(x => x.connectionToClient == connection);
 
-            foreach (var player in players)
+            foreach (var player in this.playerIdentities)
             {
                 if (player == disconnectedPlayer) continue;
                 NetworkServer.RemovePlayerForConnection(player.connectionToClient, true);

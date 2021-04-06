@@ -7,19 +7,30 @@ using System.Text;
 
 public class MatchMaker : NetworkBehaviour
 {
-    public static MatchMaker Instance { get; set; }
-    [SerializeField] private byte maxPlayers = 8;
-    [SerializeField] private byte minPlayers = 2;
+    // private static MatchMaker instance;
+    // [SerializeField]
+    //
+    // public static MatchMaker Instance
+    // {
+    //     get
+    //     {
+    //
+    //         if (instance == null)
+    //         {
+    //             instance = 
+    //         }
+    //
+    //         return instance;
+    //     }
+    // }
 
-    public byte MaxPlayers
-    {
-        get
-        {
-            return this.maxPlayers;
-        }
-    }
+    private static byte maxPlayers = 8;
 
-    void Start() => Instance = this;
+    private static byte minPlayers = 2;
+
+    public static byte MaxPlayers => maxPlayers;
+
+    // void Start() => Instance = this;
 
     public static string GetRandomMatchID()
     {
@@ -28,10 +39,10 @@ public class MatchMaker : NetworkBehaviour
         for (int i = 0; i < 5; i++)
         {
             int random = UnityEngine.Random.Range(0, 36);
-            if (random < 26) 
+            if (random < 26)
             {
                 // Converts to capital letter
-                id += (char)(random + 65);
+                id += (char) (random + 65);
             }
             else
             {
@@ -43,7 +54,7 @@ public class MatchMaker : NetworkBehaviour
     }
 }
 
-public static class MatchExtensions 
+public static class MatchExtensions
 {
     public static System.Guid ToGuid(this string id)
     {

@@ -955,26 +955,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6327377196063707623, guid: 089b5bd4919889945b1369e9eeb5d0cd, type: 3}
   m_PrefabInstance: {fileID: 48937121}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &48937123 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6327377196063707621, guid: 089b5bd4919889945b1369e9eeb5d0cd, type: 3}
-  m_PrefabInstance: {fileID: 48937121}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &48937124
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 48937123}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1020a74962faada4b807ac5dc053a4cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  currentMatchDebug: 
 --- !u!1001 &49055902
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4147,7 +4127,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 839950661169388294, guid: be74c2ee1ea44b8428777a21009b0720, type: 3}
       propertyPath: far clip plane
-      value: 20
+      value: 5000
       objectReference: {fileID: 0}
     - target: {fileID: 839950661169388295, guid: be74c2ee1ea44b8428777a21009b0720, type: 3}
       propertyPath: m_RootOrder
@@ -6256,6 +6236,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TileManager (Network)
       objectReference: {fileID: 0}
+    - target: {fileID: 1514872325810132586, guid: 805356bf35e0adf49a29681cc49c3ad6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 805356bf35e0adf49a29681cc49c3ad6, type: 3}
 --- !u!4 &382972543 stripped
@@ -6562,6 +6546,10 @@ PrefabInstance:
     - target: {fileID: 7368095176666420730, guid: 207e2587c41fb5c4fa9574d9d81d8d1b, type: 3}
       propertyPath: m_Name
       value: RedTeamScoreManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 7368095176666420730, guid: 207e2587c41fb5c4fa9574d9d81d8d1b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 207e2587c41fb5c4fa9574d9d81d8d1b, type: 3}
@@ -8824,6 +8812,10 @@ PrefabInstance:
     - target: {fileID: 7368095176666420730, guid: 207e2587c41fb5c4fa9574d9d81d8d1b, type: 3}
       propertyPath: m_Name
       value: BlueTeamScoreManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 7368095176666420730, guid: 207e2587c41fb5c4fa9574d9d81d8d1b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 207e2587c41fb5c4fa9574d9d81d8d1b, type: 3}
@@ -14458,7 +14450,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &915252479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27860,6 +27852,10 @@ PrefabInstance:
     - target: {fileID: 8557534108105486560, guid: 508a0eead97bef247a3951d5361218cc, type: 3}
       propertyPath: m_Name
       value: CrystalSpawnManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 8557534108105486560, guid: 508a0eead97bef247a3951d5361218cc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8557534108105486563, guid: 508a0eead97bef247a3951d5361218cc, type: 3}
       propertyPath: m_RootOrder
