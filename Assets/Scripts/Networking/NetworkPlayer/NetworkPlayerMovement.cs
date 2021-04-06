@@ -36,6 +36,8 @@ public class NetworkPlayerMovement : NetworkBehaviour
     private GameObject surface;
     private GameObject underground;
 
+    private PlayerAudio playerAudio;
+
     public override void OnStartAuthority()
     {
         this.tileLayerMask = LayerMask.GetMask("Tile");
@@ -62,8 +64,9 @@ public class NetworkPlayerMovement : NetworkBehaviour
             this.blackoutImage = blackoutImageGO.GetComponent<Image>();
         else
             Debug.LogWarning("Please add a Blackout Image (a prefab) to the GUI canvas!");
-        
+
         this.inputManager = InputManager.GetInstance();
+        this.playerAudio = GetComponent<PlayerAudio>();
     }
 
     void Update()
@@ -150,6 +153,12 @@ public class NetworkPlayerMovement : NetworkBehaviour
     {
         var distanceToUnderground = transform.position.y - this.underground.transform.position.y;
         distanceToUnderground = Mathf.Abs(distanceToUnderground);
+
+        if(IsInUnderground && distanceToUnderground > this.undergroundCheckThreshold)
+            AudioManager.StopUndergroundFX();
+        else if(!IsInUnderground && distanceToUnderground <= this.undergroundCheckThreshold)
+            AudioManager.PlayUndergroundFX();
+
         this.IsInUnderground = distanceToUnderground <= this.undergroundCheckThreshold;
     }
 

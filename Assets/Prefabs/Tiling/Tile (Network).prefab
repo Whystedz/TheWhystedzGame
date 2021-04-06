@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 226970777013656545}
   - component: {fileID: 226970777013656544}
   m_Layer: 3
-  m_Name: HexTile (Network)
+  m_Name: Tile (Network)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -52,27 +52,12 @@ MonoBehaviour:
     XIndex: 0
     ZIndex: 0
     TileState: 0
-    TileHighlightState: 0
   normalMaterial: {fileID: 2100000, guid: fec6f71f310647c4c8b7467ef16e9544, type: 2}
   unstableMaterial: {fileID: 2100000, guid: b56a22789220f774480e6e124aa8bd3c, type: 2}
   destroyedMaterial: {fileID: 2100000, guid: 4e0f81e0ccf4fe2458d0fbddadda44c4, type: 2}
   highlightedMaterial: {fileID: 2100000, guid: 47b6b079f3dd20648b3b3611d3eb27cc, type: 2}
   comboHighlightedMaterial: {fileID: 2100000, guid: 0457aface7c99d74abad6e60cf40646b, type: 2}
   ropeMaterial: {fileID: 2100000, guid: e5d5dcde4aa19ad4aa848bd64a4f488f, type: 2}
---- !u!64 &226970777695015492
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1145943358077333264}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 2534964839176971238, guid: e12476e3f2080e843bda792c74d9fce2, type: 3}
 --- !u!64 &226970777613697409
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -256,11 +241,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e12476e3f2080e843bda792c74d9fce2, type: 3}
---- !u!1 &1145943358077333264 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e12476e3f2080e843bda792c74d9fce2, type: 3}
-  m_PrefabInstance: {fileID: 226970777695015489}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &336896707429840298 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e12476e3f2080e843bda792c74d9fce2, type: 3}

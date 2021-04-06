@@ -93,7 +93,7 @@ public class NetworkComboPlayer : NetworkBehaviour
             if (displayComboHintInfos)
                 HighlightComboHintInfos(this);
             if (displayCombos)
-                HighlightPlayersCombos(this);
+                HighlightCombos(Combos);
             
             if (this.canTriggerCombos
                 && inputManager.GetDigging()
@@ -149,9 +149,6 @@ public class NetworkComboPlayer : NetworkBehaviour
         networkDigging.CmdDigTile(targetTile);
     }
 
-    public void HighlightPlayersCombos(NetworkComboPlayer comboPlayer) =>
-        HighlightCombos(comboPlayer.Combos);
-
     internal void HighlightComboHintInfos(NetworkComboPlayer comboPlayer)
     {
         foreach (var ComboHintInfo in comboPlayer.ComboHintInfos)
@@ -191,7 +188,7 @@ public class NetworkComboPlayer : NetworkBehaviour
     {
         foreach (var player in combo.Players)
         {
-            if (player == combo.InitiatingPlayer)
+            if (player == this)
                 continue;
 
             foreach (var extendedCombo in player.Combos)
@@ -200,15 +197,10 @@ public class NetworkComboPlayer : NetworkBehaviour
                     && visitedExtendedCombos.Contains(extendedCombo))
                     return;
 
-                var updatedVisitedExtendedCombos = new List<ComboInfo>
-                {
-                    combo
-                };
-
                 if (visitedExtendedCombos != null)
-                    updatedVisitedExtendedCombos.AddRange(visitedExtendedCombos);
+                    visitedExtendedCombos.Add(combo);
 
-                HighlightCombo(extendedCombo, true, updatedVisitedExtendedCombos);
+                HighlightCombo(extendedCombo, true, visitedExtendedCombos);
             }
         }
     }

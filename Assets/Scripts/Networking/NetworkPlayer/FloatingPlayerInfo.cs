@@ -28,10 +28,6 @@ public class FloatingPlayerInfo : NetworkBehaviour
 
     void Update()
     {
-        if (!isLocalPlayer)
-        {
-            floatingInfo.transform.LookAt(Camera.main.transform);
-            return;
-        }
+        floatingInfo.transform.LookAt(floatingInfo.transform.position - Camera.main.transform.forward);
     }
 }
