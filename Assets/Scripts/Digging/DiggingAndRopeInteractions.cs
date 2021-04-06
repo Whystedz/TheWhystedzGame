@@ -16,6 +16,7 @@ public class DiggingAndRopeInteractions : MonoBehaviour
     [SerializeField] private bool enableDebugMode = true;
     [SerializeField] private float maxDistanceToRope = 1.5f;
     [SerializeField] private float speedTowardsRope = 6.0f;
+    public Tile tile { get; private set; }
     private void Awake()
     {
         this.tileLayerMask = LayerMask.GetMask("Tile");
@@ -45,7 +46,7 @@ public class DiggingAndRopeInteractions : MonoBehaviour
 
         var hitGameObject = closestCollider.transform.parent.gameObject;
 
-        var tile = hitGameObject.GetComponent<Tile>();
+        tile = hitGameObject.GetComponent<Tile>();
 
         if (playerMovement.IsFalling() && this.rope != null)
         {

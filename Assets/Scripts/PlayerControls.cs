@@ -15,10 +15,10 @@ public class PlayerControls : MonoBehaviour
             Debug.Log("Digging button pressed (space/X)");
 
         if (inputManager.GetInitiateCombo())
-            Debug.Log("InitiateCombo button pressed (C/square)");
+            Debug.Log("InitiateCombo button pressed (C/circle)");
 
         if (inputManager.GetMuteSelf())
-            Debug.Log("MuteSelf button pressed (M/circle)");
+            Debug.Log("MuteSelf button pressed (M/squre)");
 
         if (inputManager.GetRope())
             Debug.Log("Rope button pressed (R/triangle)");

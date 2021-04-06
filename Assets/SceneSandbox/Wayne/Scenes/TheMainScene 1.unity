@@ -2872,6 +2872,10 @@ PrefabInstance:
       propertyPath: gameTime
       value: 600
       objectReference: {fileID: 0}
+    - target: {fileID: 2762142245169553655, guid: 6c48835edd5a2a642a9f9e59df5443e4, type: 3}
+      propertyPath: m_FillAmount
+      value: 0.339
+      objectReference: {fileID: 0}
     - target: {fileID: 2895927402064603404, guid: 6c48835edd5a2a642a9f9e59df5443e4, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3027,6 +3031,22 @@ PrefabInstance:
     - target: {fileID: 5587332231345891061, guid: 6c48835edd5a2a642a9f9e59df5443e4, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5894974629691114884, guid: 6c48835edd5a2a642a9f9e59df5443e4, type: 3}
+      propertyPath: southButtonText
+      value: 
+      objectReference: {fileID: 1148593836}
+    - target: {fileID: 5894974629691114884, guid: 6c48835edd5a2a642a9f9e59df5443e4, type: 3}
+      propertyPath: southButtonText_Dig
+      value: Dig
+      objectReference: {fileID: 0}
+    - target: {fileID: 5894974629691114884, guid: 6c48835edd5a2a642a9f9e59df5443e4, type: 3}
+      propertyPath: southButtonText_Rope
+      value: Rope
+      objectReference: {fileID: 0}
+    - target: {fileID: 5894974629691114884, guid: 6c48835edd5a2a642a9f9e59df5443e4, type: 3}
+      propertyPath: southButtonText_Climb
+      value: Climb
       objectReference: {fileID: 0}
     - target: {fileID: 9056825302888472329, guid: 6c48835edd5a2a642a9f9e59df5443e4, type: 3}
       propertyPath: m_AnchorMax.y
@@ -18162,6 +18182,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 03e531215836d6c459a40b536d10a4da, type: 3}
+--- !u!114 &1148593836 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3095379934986293724, guid: 6c48835edd5a2a642a9f9e59df5443e4, type: 3}
+  m_PrefabInstance: {fileID: 156996461}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1157680819
 PrefabInstance:
   m_ObjectHideFlags: 0
