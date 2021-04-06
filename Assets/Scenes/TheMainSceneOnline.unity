@@ -27766,6 +27766,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 464025355}
     m_Modifications:
+    - target: {fileID: 475032083008374963, guid: 508a0eead97bef247a3951d5361218cc, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8557534108105486560, guid: 508a0eead97bef247a3951d5361218cc, type: 3}
       propertyPath: m_Name
       value: CrystalSpawnManager
