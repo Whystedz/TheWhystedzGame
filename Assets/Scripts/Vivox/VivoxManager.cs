@@ -7,33 +7,63 @@ namespace Vivox
 {
     public class VivoxManager : MonoBehaviour
     {
+        // TODO: only for sandbox; team should be set in team manager
+        public enum TeamColour
+        {
+            RED = 0,
+            BLUE = 1
+        }
+
         // Vivox server credentials
         private static readonly Uri serverUri = new Uri("https://mt1s.www.vivox.com/api2");
         private const string tokenDomain = "mt1s.vivox.com";
         private const string issuer = "hugozh5545-vi18-dev";
         private const string secretKey = "just055";
 
+        // max waiting time when making network connections
         private static readonly TimeSpan tokenExpiration = TimeSpan.FromSeconds(90);
 
-        // events/delegates
-        public delegate void ChannelTextMessageChangedHandler(string sender,
-            IChannelTextMessage channelTextMessage);
+        # region delegates/events
+
+        public delegate void ChannelTextMessageChangedHandler(string sender, IChannelTextMessage channelTextMessage);
 
         public event ChannelTextMessageChangedHandler OnTextMessageLogReceivedEvent;
+
+        public delegate void ParticipantStatusChangedHandler(string username, ChannelId channel, IParticipant participant);
+
+        public event ParticipantStatusChangedHandler OnParticipantAddedEvent;
+        public event ParticipantStatusChangedHandler OnParticipantRemovedEvent;
+
+        public delegate void OnSpeechDetectedHandler(string username, ChannelId channel, bool value);
+
+        public event OnSpeechDetectedHandler OnSpeechDetectedEvent;
+
+        public delegate void OnAudioEnergyUpdatedHandler(string username, ChannelId channel, double value);
+
+        public event OnAudioEnergyUpdatedHandler OnAudioEnergyUpdatedEvent;
+
+        #endregion
+
+
+        [Range(0, 1)] [SerializeField] private double audioThreshold;
 
         // vivox client data
         private Client client = new Client();
         private AccountId accountId;
+        public string Username { get; set; }
 
         private ILoginSession loginSession;
         public LoginState LoginState { get; private set; }
 
         // TODO: channelName only for prototyping; create unique channel name once teamManager is setup
-        private const string channelName = "sampleChannelName";
+        public string ChannelName { get; set; }
         private ChannelId channelId;
+        
+        public IAudioDevices AudioInputDevices => this.client.AudioInputDevices;
+        public IAudioDevices AudioOutputDevices => this.client.AudioOutputDevices;
 
         // maintain single instance
-        private static readonly object myLock = new object();
+        private static readonly object MyLock = new object();
         private static VivoxManager instance;
 
         /// <summary>
@@ -43,7 +73,7 @@ namespace Vivox
         {
             get
             {
-                lock (myLock)
+                lock (MyLock)
                 {
                     if (instance == null)
                     {
@@ -83,9 +113,7 @@ namespace Vivox
         /// </summary>
         public void LogIn()
         {
-            var uniqueId = Guid.NewGuid().ToString();
-            // TODO: for proto purposes only, need to get a real token from server eventually
-            this.accountId = new AccountId(issuer, uniqueId, tokenDomain);
+            this.accountId = new AccountId(issuer, Username, tokenDomain);
             this.loginSession = this.client.GetLoginSession(this.accountId);
             this.loginSession.PropertyChanged += OnLoginSessionPropertyChanged;
             this.loginSession.BeginLogin(serverUri,
@@ -114,6 +142,78 @@ namespace Vivox
         }
 
         // callback on login state changed
+
+        #endregion
+
+        #region Channel Methods
+
+        /// <summary>
+        /// Join a channel
+        /// </summary>
+        /// <param name="isConnectAudio">whether to connect audio</param>
+        /// <param name="isConnectText">whether to connect text</param>
+        /// <param name="channelType">the type of channel</param>
+        public void JoinChannel(bool isConnectAudio, bool isConnectText, ChannelType channelType)
+        {
+            if (LoginState == LoginState.LoggedIn)
+            {
+                this.channelId = new ChannelId(issuer, ChannelName, tokenDomain, channelType);
+                var channelSession = this.loginSession.GetChannelSession(this.channelId);
+                channelSession.PropertyChanged += OnChannelSessionPropertyChanged;
+                channelSession.Participants.AfterKeyAdded += OnParticipantAdded;
+                channelSession.Participants.BeforeKeyRemoved += OnParticipantRemoved;
+                channelSession.Participants.AfterValueUpdated += OnParticipantValueUpdated;
+                channelSession.MessageLog.AfterItemAdded += OnMessageLogReceived;
+                channelSession.BeginConnect(isConnectAudio, isConnectText, true,
+                    channelSession.GetConnectToken(secretKey, tokenExpiration),
+                    asyncResult =>
+                    {
+                        try
+                        {
+                            channelSession.EndConnect(asyncResult);
+                        }
+                        catch (Exception e)
+                        {
+                            channelSession.PropertyChanged -= OnChannelSessionPropertyChanged;
+                            Debug.LogError(e.Message);
+                        }
+                    });
+            }
+            else
+            {
+                Debug.LogError("[Vivox] Cannot join a channel when not logged in.");
+            }
+        }
+
+        public void LeaveChannel(IChannelSession channelSession) => channelSession.Disconnect();
+
+        #endregion
+
+        #region Callbacks
+
+        private void OnChannelSessionPropertyChanged(object sender,
+            PropertyChangedEventArgs propertyChangedEventArgs)
+        {
+            var session = (IChannelSession) sender;
+            switch (session.ChannelState)
+            {
+                case ConnectionState.Connecting:
+                    Debug.Log("Channel connecting...");
+                    break;
+                case ConnectionState.Connected:
+                    Debug.Log("Channel connected. ");
+                    break;
+                case ConnectionState.Disconnecting:
+                    Debug.Log("Channel disconnecting... ");
+                    break;
+                case ConnectionState.Disconnected:
+                    Debug.Log("Channel disconnected. ");
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
         private void OnLoginSessionPropertyChanged(object sender,
             PropertyChangedEventArgs propertyChangedEventArgs)
         {
@@ -139,67 +239,97 @@ namespace Vivox
             }
         }
 
-        #endregion
-
-        #region Channel Methods
-
-        /// <summary>
-        /// Join a channel
-        /// </summary>
-        /// <param name="isConnectAudio">whether to connect audio</param>
-        /// <param name="isConnectText">whether to connect text</param>
-        /// <param name="channelType">the type of channel</param>
-        public void JoinChannel(bool isConnectAudio, bool isConnectText, ChannelType channelType)
+        private void OnParticipantAdded(object sender, KeyEventArg<string> keyEventArg)
         {
-            if (LoginState == LoginState.LoggedIn)
+            // cast sender to a dictionary of participants
+            var source = (IReadOnlyDictionary<string, IParticipant>) sender;
+            var participant = source[keyEventArg.Key];
+            var username = participant.Account.Name;
+            var channelId = participant.ParentChannelSession.Key;
+
+            Debug.Log($"[Vivox] OnParticipantAddedEvent: {username} added in {channelId}");
+            OnParticipantAddedEvent?.Invoke(username, channelId, participant);
+        }
+
+        private void OnParticipantRemoved(object sender, KeyEventArg<string> keyEventArg)
+        {
+            // cast sender to a dictionary of participants
+            var source = (IReadOnlyDictionary<string, IParticipant>) sender;
+            // Look up the participant via the key.
+            var participant = source[keyEventArg.Key];
+            var username = participant.Account.Name;
+            var channel = participant.ParentChannelSession.Key;
+            var channelSession = participant.ParentChannelSession;
+
+            if (participant.IsSelf)
             {
-                this.channelId = new ChannelId(issuer, channelName, tokenDomain, channelType);
-                var channelSession = this.loginSession.GetChannelSession(this.channelId);
-                channelSession.PropertyChanged += OnChannelSessionPropertyChanged;
-                channelSession.MessageLog.AfterItemAdded += OnMessageLogReceived;
-                channelSession.BeginConnect(isConnectAudio, isConnectText, true,
-                    channelSession.GetConnectToken(secretKey, tokenExpiration),
-                    asyncResult =>
-                    {
-                        try
-                        {
-                            channelSession.EndConnect(asyncResult);
-                        }
-                        catch (Exception e)
-                        {
-                            channelSession.PropertyChanged -= OnChannelSessionPropertyChanged;
-                            Debug.LogError(e.Message);
-                        }
-                    });
-            }
-            else
-            {
-                Debug.LogError("[Vivox] Cannot join a channel when not logged in.");
+                Debug.Log($"Unsubscribing from: {channelSession.Key.Name}");
+                // Now that we are disconnected, unsubscribe.
+                channelSession.PropertyChanged -= OnChannelSessionPropertyChanged;
+                channelSession.Participants.AfterKeyAdded -= OnParticipantAdded;
+                channelSession.Participants.BeforeKeyRemoved -= OnParticipantRemoved;
+                channelSession.Participants.AfterValueUpdated -= OnParticipantValueUpdated;
+
+                // Remove session.
+                var user = this.client.GetLoginSession(this.accountId);
+                user.DeleteChannelSession(channelSession.Channel);
             }
         }
 
-        public void LeaveChannel(IChannelSession channelSession) => channelSession.Disconnect();
-
-        private void OnChannelSessionPropertyChanged(object sender,
-            PropertyChangedEventArgs propertyChangedEventArgs)
+        private void OnParticipantValueUpdated(object sender, ValueEventArg<string, IParticipant> valueEventArg)
         {
-            var session = (IChannelSession) sender;
-            switch (session.ChannelState)
+            var source = (IReadOnlyDictionary<string, IParticipant>) sender;
+            // Look up the participant via the key.
+            var participant = source[valueEventArg.Key];
+
+            var username = valueEventArg.Value.Account.Name;
+            var channelId = valueEventArg.Value.ParentChannelSession.Key;
+            var property = valueEventArg.PropertyName;
+
+            switch (property)
             {
-                case ConnectionState.Connecting:
-                    Debug.Log("Channel connecting...");
+                case "SpeechDetected":
+                {
+                    Debug.Log($"[Vivox] OnSpeechDetectedEvent: {username}; Speak: {valueEventArg.Value.SpeechDetected}.");
+                    OnSpeechDetectedEvent?.Invoke(username, channelId, valueEventArg.Value.SpeechDetected);
                     break;
-                case ConnectionState.Connected:
-                    Debug.Log("Channel connected. ");
+                }
+                case "AudioEnergy":
+                {
+                    Debug.Log($"[Vivox] AudioEnergy: {username} {valueEventArg.Value.AudioEnergy}.");
+                    OnAudioEnergyUpdatedEvent?.Invoke(username, channelId, valueEventArg.Value.AudioEnergy);
                     break;
-                case ConnectionState.Disconnecting:
-                    Debug.Log("Channel disconnecting... ");
-                    break;
-                case ConnectionState.Disconnected:
-                    Debug.Log("Channel disconnected. ");
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
+
+        private void PlayNoiseOnSpeechDetected(string username, ChannelId channelId, bool isSpeaking)
+        {
+            if (username == Username)
+            {
+                if (isSpeaking)
+                {
+                    this.loginSession.StartAudioInjection("Assets/Audio/White-Noise (1).wav");
+                }
+                else
+                {
+                    this.loginSession.StopAudioInjection();
+                }
+            }
+        }
+
+        private void PlayNoiseOnAudioEnergyAboveThreshold(string username, ChannelId channelId, double energy)
+        {
+            if (username == Username)
+            {
+                if (energy > this.audioThreshold)
+                {
+                    this.loginSession.StartAudioInjection("Assets/Audio/White-Noise (1).wav");
+                }
+                else
+                {
+                    this.loginSession.StopAudioInjection();
+                }
             }
         }
 
@@ -239,9 +369,24 @@ namespace Vivox
                 });
         }
 
-        // bind with UI Login Button
-        public void BtnLogin() => LogIn();
 
-        public void BtnJoinChannel() => JoinChannel(true, true, ChannelType.NonPositional);
+        public void AddPlayNoiseOnSpeechCallback() => OnSpeechDetectedEvent += PlayNoiseOnSpeechDetected;
+        public void AddPlayNoiseOnAudioEnergyAboveThresholdCallback() => OnAudioEnergyUpdatedEvent += PlayNoiseOnAudioEnergyAboveThreshold;
+
+        public void RemovePlayNoiseOnSpeechCallback()
+        {
+            OnSpeechDetectedEvent -= PlayNoiseOnSpeechDetected;
+
+            // immediately stop audio injection, not waiting until OnSpeechDetectedEvent is invoked 
+            this.loginSession.StopAudioInjection();
+        }
+
+        public void RemovePlayNoiseOnAudioEnergyAboveThresholdCallback()
+        {
+            OnAudioEnergyUpdatedEvent -= PlayNoiseOnAudioEnergyAboveThreshold;
+
+            // immediately stop audio injection, not waiting until OnAudioEnergyUpdatedEvent is invoked 
+            this.loginSession.StopAudioInjection();
+        }
     }
 }
