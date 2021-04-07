@@ -13,6 +13,8 @@ TagManager:
   - _Dynamic
   - RespawnPoint
   - NetworkManager
+  - Obstacle
+  - MainButtons
   layers:
   - Default
   - TransparentFX

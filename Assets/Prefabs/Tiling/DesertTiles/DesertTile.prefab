@@ -41,7 +41,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 18eef9ce9eab2814c9f44b105be39bbc, type: 2}
     - target: {fileID: 5884525987830691854, guid: 623b51e3a02a55f4ebcadfaf5b7c3890, type: 3}
       propertyPath: m_Name
-      value: DesertTile1
+      value: DesertTile
       objectReference: {fileID: 0}
     - target: {fileID: 7534003349226739454, guid: 623b51e3a02a55f4ebcadfaf5b7c3890, type: 3}
       propertyPath: normalMaterial

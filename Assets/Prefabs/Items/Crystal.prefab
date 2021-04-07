@@ -51,7 +51,6 @@ MonoBehaviour:
   pointsWorth: 1
   rotationSpeed: 1
   verticalAnimationAmplitude: 0.5
-  isExploding: 0
   extraForceIfLandedWrong: 3
 --- !u!33 &7142871710200567037
 MeshFilter:
@@ -80,7 +79,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 59f0f28b3d8fba44c853b85a05a8c391, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -183,6 +182,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: d15f0e323e2b087439dbc9fd2b578d40, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 59f0f28b3d8fba44c853b85a05a8c391, type: 2}
     - target: {fileID: 919132149155446097, guid: d15f0e323e2b087439dbc9fd2b578d40, type: 3}
       propertyPath: m_Name
       value: SingleCrystal_upright

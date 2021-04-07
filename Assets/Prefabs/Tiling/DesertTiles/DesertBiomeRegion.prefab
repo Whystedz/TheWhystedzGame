@@ -57,7 +57,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: c29da4dd9333d1345ae91e7de8153d28, type: 2}
     - target: {fileID: 5462147624284648152, guid: ffd465c18ee63ad49b2c5d3875a5393c, type: 3}
       propertyPath: tiles.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5462147624284648152, guid: ffd465c18ee63ad49b2c5d3875a5393c, type: 3}
       propertyPath: tiles.Array.data[0]
@@ -75,6 +75,14 @@ PrefabInstance:
       propertyPath: tiles.Array.data[3]
       value: 
       objectReference: {fileID: 6679041048194061596, guid: 800ebf44ad2494a4c84467e0d308da05, type: 3}
+    - target: {fileID: 5462147624284648152, guid: ffd465c18ee63ad49b2c5d3875a5393c, type: 3}
+      propertyPath: tiles.Array.data[4]
+      value: 
+      objectReference: {fileID: 3270535390841630362, guid: f9e3603fea37dc446bd3f20df02ee4d2, type: 3}
+    - target: {fileID: 5462147624284648152, guid: ffd465c18ee63ad49b2c5d3875a5393c, type: 3}
+      propertyPath: tiles.Array.data[5]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6031126035654540198, guid: ffd465c18ee63ad49b2c5d3875a5393c, type: 3}
       propertyPath: m_Name
       value: DesertBiomeRegion

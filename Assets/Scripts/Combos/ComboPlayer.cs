@@ -66,7 +66,7 @@ public class ComboPlayer : MonoBehaviour
             this.comboManager.HighlightPlayersCombos(this);
 
         if (this.canTriggerCombos
-            && inputManager.GetDigging()
+            && inputManager.GetInitiateCombo()
             && Combos.Count() > 0
             && !this.IsOnCooldown)
             TriggerCombos();
@@ -113,4 +113,7 @@ public class ComboPlayer : MonoBehaviour
 
         return tile;
     }
+
+    public float GetCooldownMax() => this.cooldownMax;
+    public float GetCooldownProgress() => this.cooldownProgress;
 }
