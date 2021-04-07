@@ -25,6 +25,7 @@ public class NetworkRope : MonoBehaviour
         if (this.inputManager.GetDigging() && networkDigging.RopeState != RopeState.InUse && this.inZone)
         {
             this.playerMovement.StartClimbing(this.gameObject, heightToClimb);
+            SetRopeState(RopeState.InUse);
         }
     }
 
@@ -36,7 +37,6 @@ public class NetworkRope : MonoBehaviour
             this.inZone = true;
             this.playerMovement = other.GetComponent<NetworkPlayerMovement>();
         }
-
     }
 
     private void OnTriggerExit(Collider other)

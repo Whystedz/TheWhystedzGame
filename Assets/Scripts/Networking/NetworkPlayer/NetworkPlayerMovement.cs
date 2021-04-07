@@ -196,7 +196,6 @@ public class NetworkPlayerMovement : NetworkBehaviour
 
     public IEnumerator ClimbRope(GameObject rope, float height)
     {
-        rope.GetComponent<NetworkRope>().SetRopeState(RopeState.InUse);
         IsMovementDisabled = true;
         var directionToRope = (rope.transform.position - this.transform.position).normalized;
         directionToRope = new Vector3(directionToRope.x, 0,directionToRope.z);
@@ -212,6 +211,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
 
         yield return StartCoroutine(TransitionToTop(height, rope.transform.position));
         rope.GetComponent<NetworkRope>().SetRopeState(RopeState.Saved);
+        // In reality this would be the animation delay
         yield return new WaitForSecondsRealtime(0.5f);
         IsMovementDisabled = false;
     }
