@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -204,7 +205,7 @@ public class LobbyNetworkManager : NetworkManager
             }
             case ServerMatchOperation.SceneLoaded:
             {
-                OnServerSceneLoaded(connection);
+                OnServerSceneLoaded(connection, message.MatchId);
                 break;
             }
             case ServerMatchOperation.Join:
@@ -341,55 +342,41 @@ public class LobbyNetworkManager : NetworkManager
         string matchId;
         if (playerMatches.TryGetValue(connection, out matchId))
         {
-            foreach (var playerConn in matchConnections[matchId])
-                playerConn.Send(new ClientMatchMessage {ClientMatchOperation = ClientMatchOperation.Started});
-                
+            GameObject matchControllerObject = Instantiate(matchControllerPrefab);
+            matchControllerObject.GetComponent<NetworkMatchChecker>().matchId = matchId.ToGuid();
+            NetworkServer.Spawn(matchControllerObject);
+            MatchController matchController = matchControllerObject.GetComponent<MatchController>();
+            matchControllers.Add(matchId, matchController);
+
+            foreach (NetworkConnection playerConn in matchConnections[matchId])
+            {
+                playerConn.Send(new ClientMatchMessage { ClientMatchOperation = ClientMatchOperation.Started, MatchId = matchId });
+
+                matchController.playerIdentities.Add(connection.identity);
+
+                // Reset ready state for after the match. 
+                var playerInfo = playerInfos[connection];
+                playerInfo.IsReady = false;
+                playerInfos[connection] = playerInfo;
+            }
+
             playerMatches.Remove(connection);
             openMatches.Remove(matchId);
             matchConnections.Remove(matchId);
             SendMatchList();
+
+            OnPlayerDisconnected += matchController.OnPlayerDisconnected;
         }
     }
 
-    // TODO: this will be invoked by a client message many times
-    // need test in multiple client cases
-    public void OnServerSceneLoaded(NetworkConnection connection)
+    public void OnServerSceneLoaded(NetworkConnection connection, string matchId)
     {
-        if (!NetworkServer.active || !playerMatches.ContainsKey(connection)) return;
+        if (!NetworkServer.active) return;
 
-        string matchId;
-        if (playerMatches.TryGetValue(connection, out matchId))
-        {
-            // spawn or get a matchController
-            MatchController matchController;
-            if (!matchControllers.ContainsKey(matchId))
-            {
-                GameObject matchControllerObject = Instantiate(this.matchControllerPrefab);
-                matchControllerObject.GetComponent<NetworkMatchChecker>().matchId = openMatches[matchId].MatchId.ToGuid();
-                NetworkServer.Spawn(matchControllerObject);
-                matchController = matchControllerObject.GetComponent<MatchController>();
-                matchControllers.Add(matchId, matchController);
-            }
-            else
-            {
-                matchController = matchControllers[matchId];
-            }
-
-            // spawn new prefabs; add to matchController
-            var prefabIndex = playerInfos[connection].Team == Team.RedTeam ? 0 : 1;
-            var player = Instantiate(playerPrefabs[prefabIndex]);
-            player.GetComponent<NetworkMatchChecker>().matchId = openMatches[matchId].MatchId.ToGuid();
-            NetworkServer.AddPlayerForConnection(connection, player);
-
-            matchController.playerIdentities.Add(connection.identity);
-
-            // Reset ready state back to false
-            var playerInfo = playerInfos[connection];
-            playerInfo.IsReady = false;
-            playerInfos[connection] = playerInfo;
-            
-            OnPlayerDisconnected += matchController.OnPlayerDisconnected;
-        }
+        int prefabIndex = playerInfos[connection].Team == Team.RedTeam ? 0 : 1;
+        var player = Instantiate(playerPrefabs[prefabIndex]);
+        player.GetComponent<NetworkMatchChecker>().matchId = matchId.ToGuid();
+        NetworkServer.AddPlayerForConnection(connection, player);
     }
 
     public void OnServerJoinMatch(NetworkConnection connection, string matchId, string playerName)
@@ -563,17 +550,27 @@ public class LobbyNetworkManager : NetworkManager
             {
                 this.canvasController.lobbyView.SetActive(false);
                 this.canvasController.roomView.SetActive(false);
-                OnClientStartMatch();
+                OnClientStartMatch(message.MatchId);
                 break;
             }
         }
     }
 
-    private void OnClientStartMatch()
+    private void OnClientStartMatch(string matchId)
     {
         Debug.Log($"ClientStartMatch received");
-        SceneManager.LoadScene(this.MainScene, LoadSceneMode.Additive);
-        NetworkClient.connection.Send(new ServerMatchMessage {ServerMatchOperation = ServerMatchOperation.SceneLoaded});
+        StartCoroutine(LoadGameScene(matchId));
+    }
+
+    IEnumerator LoadGameScene(string matchId)
+    {
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(this.MainScene, LoadSceneMode.Additive);
+
+        // Wait until the asynchronous scene fully loads
+        while (!asyncLoad.isDone)
+            yield return null;
+        
+        NetworkClient.connection.Send(new ServerMatchMessage { ServerMatchOperation = ServerMatchOperation.SceneLoaded, MatchId = matchId });
     }
 
     #endregion

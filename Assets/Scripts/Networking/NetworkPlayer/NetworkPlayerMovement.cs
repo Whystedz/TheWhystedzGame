@@ -7,7 +7,6 @@ using Mirror;
 public class NetworkPlayerMovement : NetworkBehaviour
 {
     private CharacterController characterController;
-    private InputManager inputManager;
 
     [Header("Movement")]
     [SerializeField] private Animator animator;
@@ -33,8 +32,8 @@ public class NetworkPlayerMovement : NetworkBehaviour
     [SerializeField] private float undergroundCheckThreshold = 1.5f;
     [SerializeField] private float heightOffset = 1.3f;
 
-    private GameObject surface;
-    private GameObject underground;
+    [SerializeField] private GameObject surface;
+    [SerializeField] private GameObject underground;
 
     private PlayerAudio playerAudio;
 
@@ -46,9 +45,6 @@ public class NetworkPlayerMovement : NetworkBehaviour
         this.characterController = GetComponent<CharacterController>();
 
         SetCamera();
-        
-        this.surface = GameObject.FindGameObjectWithTag("Surface");
-        this.underground = GameObject.FindGameObjectWithTag("Underground");
 
         var blackoutImageGO = GameObject.FindGameObjectWithTag("BlackoutImage");
         if (blackoutImageGO != null)
@@ -56,7 +52,6 @@ public class NetworkPlayerMovement : NetworkBehaviour
         else
             Debug.LogWarning("Please add a Blackout Image (a prefab) to the GUI canvas!");
 
-        this.inputManager = InputManager.GetInstance();
         this.playerAudio = GetComponent<PlayerAudio>();
     }
 
@@ -103,7 +98,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
         if (this.fallingCamera.activeSelf)
             this.fallingCamera.SetActive(false);
 
-        this.direction = new Vector3(this.inputManager.GetInputMovement().x, 0f, this.inputManager.GetInputMovement().y);
+        this.direction = new Vector3(InputManager.Instance.GetInputMovement().x, 0f, InputManager.Instance.GetInputMovement().y);
         this.characterController.Move(this.direction * Time.deltaTime * this.movementSpeed);
 
         this.isRunning = (Mathf.Abs(this.characterController.velocity.x) > 0 || Mathf.Abs(this.characterController.velocity.z) > 0) ? true : false;

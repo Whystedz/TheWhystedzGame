@@ -17,8 +17,6 @@ public class NetworkComboPlayer : NetworkBehaviour
     [SerializeField] private Color lineColor = Color.blue;
     [SerializeField] private Color triangleColor = Color.green;
 
-    private InputManager inputManager = InputManager.GetInstance();
-
     private float cooldownProgress;
 
     public bool IsOnCooldown { get; private set; }
@@ -94,7 +92,7 @@ public class NetworkComboPlayer : NetworkBehaviour
                 HighlightCombos(Combos);
             
             if (this.canTriggerCombos
-                && inputManager.GetDigging()
+                && InputManager.Instance.GetDigging()
                 && Combos.Count() > 0
                 && !this.IsOnCooldown)
                 TriggerCombos();

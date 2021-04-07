@@ -10,7 +10,6 @@ public class NetworkDigging : NetworkBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private float minDistanceToDiggableTile = 1.0f;
     [SerializeField] private float maxDistanceToDiggableTile = 1.0f;
-    private InputManager inputManager;
     private int tileLayerMask;
     private NetworkPlayerMovement playerMovement;
 
@@ -29,7 +28,6 @@ public class NetworkDigging : NetworkBehaviour
     {
         this.tileLayerMask = LayerMask.GetMask("Tile");
         this.playerMovement = this.GetComponent<NetworkPlayerMovement>();
-        this.inputManager = InputManager.GetInstance();
         this.tileManager = TileManager.GetInstance();
     }
 
@@ -79,7 +77,7 @@ public class NetworkDigging : NetworkBehaviour
                     break;
             }
 
-            if (inputManager.GetDigging())
+            if (InputManager.Instance.GetDigging())
                 InteractWithTile(tile);
 
             if (RopeState == RopeState.Saved)

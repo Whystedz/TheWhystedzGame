@@ -20,20 +20,12 @@ public class NetworkCrystalManager : MonoBehaviour
     [SerializeField] private float radiusOfForce = 10.0f;
     [SerializeField] private float power = 30.0f;
 
-    private PlaneBounds surface;
-    public PlaneBounds Underground { get; private set; }
+    [SerializeField] private PlaneBounds surface;
+    [SerializeField] public PlaneBounds Underground;
 
     private int totalCrystalsInstantiated;
     private int currentCrystalsSurface;
     private int currentCrystalsUnderground;
-
-    void Awake()
-    {
-        this.surface = GameObject.FindGameObjectWithTag("Surface")
-            .GetComponent<PlaneBounds>();
-        Underground = GameObject.FindGameObjectWithTag("Underground")
-            .GetComponent<PlaneBounds>();
-    }
 
     [ServerCallback]
     void Update()

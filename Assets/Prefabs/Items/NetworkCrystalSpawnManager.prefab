@@ -51,6 +51,7 @@ MonoBehaviour:
   crystalVerticalOffsetHeight: 2.25
   spawningCollisionPaddingRadius: 1
   radiusOfSpawnCircle: 0.5
-  crystalheightOffsetFromPlayer: 2.25
   radiusOfForce: 10
   power: 30
+  surface: {fileID: 1786932440784084075, guid: a32faa6f1d668164ea4a8ba35b89c09e, type: 3}
+  Underground: {fileID: 4490923608680112070, guid: 0582bd01cfabf3747bca36a295b0b2d4, type: 3}

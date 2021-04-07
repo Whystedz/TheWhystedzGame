@@ -305,7 +305,6 @@ GameObject:
   - component: {fileID: 6327377196063707620}
   - component: {fileID: 2927167167306915266}
   - component: {fileID: 3752298209473233816}
-  - component: {fileID: -4131916122285525065}
   - component: {fileID: 537063209812637493}
   - component: {fileID: 1242045881163087873}
   - component: {fileID: 7323093382678290502}
@@ -318,6 +317,7 @@ GameObject:
   - component: {fileID: 2701644943808477435}
   - component: {fileID: 2874412073343009255}
   - component: {fileID: 6568115476634628871}
+  - component: {fileID: 4097607492236994677}
   m_Layer: 0
   m_Name: NetworkPlayer (Purple)
   m_TagString: Player
@@ -392,18 +392,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team: 0
---- !u!114 &-4131916122285525065
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6327377196063707621}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa8ee0da422f18041a8b58dd3c9487d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &537063209812637493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -425,6 +413,8 @@ MonoBehaviour:
   timeToFadeIn: 2
   undergroundCheckThreshold: 2
   heightOffset: 1.05
+  surface: {fileID: 4692303708131121389, guid: a32faa6f1d668164ea4a8ba35b89c09e, type: 3}
+  underground: {fileID: 6474438845002051393, guid: 0582bd01cfabf3747bca36a295b0b2d4, type: 3}
 --- !u!114 &1242045881163087873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -462,6 +452,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeToDie: 30
   respawnPoint: {fileID: 0}
+  underground: {fileID: 6474438845002051393, guid: 0582bd01cfabf3747bca36a295b0b2d4, type: 3}
   undergroundOffset: 2
 --- !u!114 &4290560645816970910
 MonoBehaviour:
@@ -692,9 +683,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  crystalheightOffsetFromPlayer: 2.25
-  radiusOfForce: 10
-  power: 30
 --- !u!114 &6568115476634628871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -707,6 +695,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e33aed202b094024c857788e1797b97c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4097607492236994677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6327377196063707621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1020a74962faada4b807ac5dc053a4cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  currentMatchDebug: 
 --- !u!1 &6327377197209976905
 GameObject:
   m_ObjectHideFlags: 0

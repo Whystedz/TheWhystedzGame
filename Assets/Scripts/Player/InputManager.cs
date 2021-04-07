@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
 {
-    private static InputManager instance;
+    public static InputManager Instance;
 
     [SerializeField] private PlayerInput playerInput;
 
@@ -71,9 +71,9 @@ public class InputManager : MonoBehaviour
 
     private void MaintainSingleInstance()
     {
-        if (instance != null && instance != this)
+        if (Instance != null && Instance != this)
             Destroy(this);
         else
-            instance = this;
+            Instance = this;
     }
 }

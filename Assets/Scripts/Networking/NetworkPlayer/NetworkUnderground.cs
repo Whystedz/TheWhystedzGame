@@ -9,7 +9,7 @@ public class NetworkUnderground : MonoBehaviour
     private float timer;
     private NetworkPlayerMovement playerMovement;
 
-    private GameObject underground;
+    [SerializeField] private GameObject underground;
     [SerializeField] private float undergroundOffset;
 
     private NetworkLoseCrystals loseCrystals;
@@ -19,8 +19,7 @@ public class NetworkUnderground : MonoBehaviour
         this.timer = 0;
         this.playerMovement = this.GetComponent<NetworkPlayerMovement>();
 
-        this.underground = GameObject.FindGameObjectWithTag("Underground");
-        this.respawnPoint = GameObject.FindGameObjectWithTag("RespawnPoint").transform;
+        this.respawnPoint = this.transform;
         this.loseCrystals = this.GetComponent<NetworkLoseCrystals>();
     }
 
