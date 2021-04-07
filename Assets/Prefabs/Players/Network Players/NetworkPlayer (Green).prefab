@@ -460,7 +460,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c96760b34b9e345b3c318ba687fc43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToDie: 10
+  timeToDie: 30
   respawnPoint: {fileID: 0}
   undergroundOffset: 2
 --- !u!114 &4290560645816970910
@@ -550,7 +550,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.9
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -594,7 +594,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0

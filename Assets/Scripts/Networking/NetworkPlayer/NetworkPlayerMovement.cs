@@ -44,17 +44,8 @@ public class NetworkPlayerMovement : NetworkBehaviour
         this.groundLayerMask = LayerMask.GetMask("Tile") | LayerMask.GetMask("Underground");
         
         this.characterController = GetComponent<CharacterController>();
-        this.fallingCamera = FindObjectsOfType<CinemachineVirtualCamera>(true)[1].gameObject;
-        this.virtualCamera = FindObjectsOfType<CinemachineVirtualCamera>(true)[0].gameObject;
-        
-        this.virtualCamera.GetComponent<CinemachineVirtualCamera>().Follow = this.transform;
-        this.virtualCamera.GetComponent<CinemachineVirtualCamera>().LookAt = this.transform;
 
-        this.fallingCamera.GetComponent<CinemachineVirtualCamera>().Follow = this.transform;
-        this.fallingCamera.GetComponent<CinemachineVirtualCamera>().LookAt = this.transform;
-
-        this.virtualCamera.SetActive(true);
-        this.fallingCamera.SetActive(false);
+        SetCamera();
         
         this.surface = GameObject.FindGameObjectWithTag("Surface");
         this.underground = GameObject.FindGameObjectWithTag("Underground");
@@ -67,6 +58,21 @@ public class NetworkPlayerMovement : NetworkBehaviour
 
         this.inputManager = InputManager.GetInstance();
         this.playerAudio = GetComponent<PlayerAudio>();
+    }
+
+    public void SetCamera()
+    {
+        this.fallingCamera = FindObjectsOfType<CinemachineVirtualCamera>(true)[1].gameObject;
+        this.virtualCamera = FindObjectsOfType<CinemachineVirtualCamera>(true)[0].gameObject;
+        
+        this.virtualCamera.GetComponent<CinemachineVirtualCamera>().Follow = this.transform;
+        this.virtualCamera.GetComponent<CinemachineVirtualCamera>().LookAt = this.transform;
+
+        this.fallingCamera.GetComponent<CinemachineVirtualCamera>().Follow = this.transform;
+        this.fallingCamera.GetComponent<CinemachineVirtualCamera>().LookAt = this.transform;
+
+        this.virtualCamera.SetActive(true);
+        this.fallingCamera.SetActive(false);
     }
 
     void Update()
