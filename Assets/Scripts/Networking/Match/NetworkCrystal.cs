@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
 public class NetworkCrystal : NetworkCollectable
 {
@@ -16,6 +17,7 @@ public class NetworkCrystal : NetworkCollectable
         base.Awake();
     }
 
+    [ServerCallback]
     private new void Update()
     {
         if (this.IsExploding)

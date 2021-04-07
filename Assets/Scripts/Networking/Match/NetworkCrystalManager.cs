@@ -12,11 +12,13 @@ public class NetworkCrystalManager : MonoBehaviour
     [SerializeField] private float surfaceBoundsOffset = 5f;
     [SerializeField] private float undergroundBoundsOffset = 5f;
 
-    [SerializeField] private float crystalVerticalOffsetHeight = 2f;
-    
+    [SerializeField] private float crystalVerticalOffsetHeight = 2.25f;
+
     [SerializeField] private float spawningCollisionPaddingRadius = 1f;
 
     [SerializeField] private float radiusOfSpawnCircle = .05f;
+    [SerializeField] private float radiusOfForce = 10.0f;
+    [SerializeField] private float power = 30.0f;
 
     private PlaneBounds surface;
     public PlaneBounds Underground { get; private set; }
@@ -54,7 +56,7 @@ public class NetworkCrystalManager : MonoBehaviour
         var obstacleColliders = Physics.OverlapSphere(chosenPosition,
             this.spawningCollisionPaddingRadius,
             LayerMask.NameToLayer("Tile"));
-        
+
         if (obstacleColliders.Count() >= 1 || !HasSolidTileUnderneath(randomPositionOnSurface))
         {
             if (attempts > 10)
@@ -137,6 +139,7 @@ public class NetworkCrystalManager : MonoBehaviour
 
     public float GetHeightOffset() => crystalVerticalOffsetHeight;
 
+    [ServerCallback]
     public void DropCrystals(Transform player, int amount)
     {
         for (int i = 0; i < amount; i++)
@@ -147,10 +150,33 @@ public class NetworkCrystalManager : MonoBehaviour
             crystal.transform.parent = this.transform;
             crystal.GetComponent<NetworkCrystal>().IsExploding = true;
             crystal.GetComponent<CapsuleCollider>().isTrigger = false;
+
             NetworkServer.Spawn(crystal);
 
             OnDroppedCrystal(crystal.GetComponent<NetworkCrystal>());
-            Debug.Log($"Spawned {i}");
+        }
+
+        ExplodeCrystals(player);
+    }
+
+    private void ExplodeCrystals(Transform player)
+    {
+        Vector3 explosionPos = player.transform.position + Vector3.up * crystalVerticalOffsetHeight;
+        Collider[] colliders = Physics.OverlapSphere(explosionPos, radiusOfForce);
+        foreach (Collider hit in colliders)
+        {
+            var crystal = hit.GetComponent<NetworkCrystal>();
+            if (crystal is null)
+                continue;
+            
+            Rigidbody rb = crystal.GetComponent<Rigidbody>();
+
+            if (rb != null)
+            {
+                rb.useGravity = true;
+                rb.velocity = Vector3.zero;
+                rb.AddExplosionForce(power, explosionPos, radiusOfForce, 0.05f, ForceMode.Impulse);
+            }
         }
     }
 }
