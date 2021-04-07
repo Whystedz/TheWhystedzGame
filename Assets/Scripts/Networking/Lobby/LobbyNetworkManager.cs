@@ -256,7 +256,6 @@ public class LobbyNetworkManager : NetworkManager
 
         Debug.Log("CreatePublicMatch message received");
         var newMatchId = MatchMaker.GetRandomMatchID();
-        var newMatchIdGuid = new Guid();
         // create new match
         matchConnections.Add(newMatchId, new HashSet<NetworkConnection>());
         // add the player to the match
@@ -267,7 +266,6 @@ public class LobbyNetworkManager : NetworkManager
         openMatches.Add(newMatchId, new MatchInfo
         {
             MatchId = newMatchId,
-            MatchIdGuid = newMatchIdGuid,
             Players = 1,
             MaxPlayers = MatchMaker.MaxPlayers,
             InProgress = false,
@@ -295,7 +293,6 @@ public class LobbyNetworkManager : NetworkManager
         if (!NetworkServer.active || playerMatches.ContainsKey(connection)) return;
 
         var newMatchId = MatchMaker.GetRandomMatchID();
-        var newMatchIdGuid = new Guid();
         // create new match
         matchConnections.Add(newMatchId, new HashSet<NetworkConnection>());
         // add player to match
@@ -306,7 +303,6 @@ public class LobbyNetworkManager : NetworkManager
         openMatches.Add(newMatchId, new MatchInfo
         {
             MatchId = newMatchId,
-            MatchIdGuid = newMatchIdGuid,
             Players = 1,
             MaxPlayers = 8,
             InProgress = false,
@@ -380,6 +376,7 @@ public class LobbyNetworkManager : NetworkManager
     }
 
     // TODO: this will be invoked by a client message many times
+    // need test in multiple client cases
     public void OnServerSceneLoaded(NetworkConnection connection)
     {
         if (!NetworkServer.active || !playerMatches.ContainsKey(connection)) return;
@@ -392,7 +389,7 @@ public class LobbyNetworkManager : NetworkManager
             if (!matchControllers.ContainsKey(matchId))
             {
                 var matchControllerObject = Instantiate(this.matchControllerPrefab);
-                matchControllerObject.GetComponent<NetworkMatchChecker>().matchId = openMatches[matchId].MatchIdGuid;
+                matchControllerObject.GetComponent<NetworkMatchChecker>().matchId = openMatches[matchId].MatchId.ToGuid();
                 NetworkServer.Spawn(matchControllerObject);
                 matchController = matchControllerObject.GetComponent<MatchController>();
                 matchControllers.Add(matchId, matchController);
@@ -402,15 +399,12 @@ public class LobbyNetworkManager : NetworkManager
                 matchController = matchControllers[matchId];
             }
 
-            // spawn new spawnables; add to matchController
+            // spawn new prefabs; add to matchController
             var player = Instantiate(singleton.playerPrefab);
-            player.GetComponent<NetworkMatchChecker>().matchId = openMatches[matchId].MatchIdGuid;
-            // var tileManager = Instantiate(singleton.spawnPrefabs[0]);
-            // tileManager.GetComponent<NetworkMatchChecker>().matchId = matchIdGuid;
+            player.GetComponent<NetworkMatchChecker>().matchId = openMatches[matchId].MatchId.ToGuid();
             NetworkServer.AddPlayerForConnection(connection, player);
 
             matchController.playerIdentities.Add(connection.identity);
-            // matchController.tileManagerIdentity = tileManager.GetComponent<NetworkIdentity>();
 
             // Reset ready state for after the match. 
             var playerInfo = playerInfos[connection];
@@ -570,7 +564,6 @@ public class LobbyNetworkManager : NetworkManager
             case ClientMatchOperation.Created:
             {
                 this.localHostedMatchId = message.MatchId;
-                // LobbyPlayer.LocalPlayer.SetMatchIdGuid(message.MatchId);
                 this.canvasController.EnterRoom(message.MatchId, message.PlayerInfos, true);
                 break;
             }
@@ -583,7 +576,6 @@ public class LobbyNetworkManager : NetworkManager
             case ClientMatchOperation.Joined:
             {
                 this.localJoinedMatchId = message.MatchId;
-                // LobbyPlayer.LocalPlayer.SetMatchIdGuid(message.MatchId);
                 this.canvasController.EnterRoom(message.MatchId, message.PlayerInfos, false);
                 break;
             }

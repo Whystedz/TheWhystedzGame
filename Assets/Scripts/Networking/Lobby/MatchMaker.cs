@@ -1,29 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Mirror;
 using System.Security.Cryptography;
 using System.Text;
 
 public class MatchMaker : NetworkBehaviour
 {
-    // private static MatchMaker instance;
-    // [SerializeField]
-    //
-    // public static MatchMaker Instance
-    // {
-    //     get
-    //     {
-    //
-    //         if (instance == null)
-    //         {
-    //             instance = 
-    //         }
-    //
-    //         return instance;
-    //     }
-    // }
-
     private static byte maxPlayers = 8;
 
     private static byte minPlayers = 2;
