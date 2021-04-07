@@ -25,7 +25,4 @@ public class LobbyPlayer : NetworkBehaviour
 
         this.networkMatchChecker.matchId = matchId.ToGuid();
     }
-
-    
-    
 }

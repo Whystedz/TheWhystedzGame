@@ -21,8 +21,6 @@ public struct ClientMatchMessage : NetworkMessage
 [Serializable]
 public struct MatchInfo
 {
-    // match ID is a small string shown on lobby screen
-    // matchIdGuid is a unique (long) string for server identification
     public string MatchId;
     public byte Players;
     public byte MaxPlayers;

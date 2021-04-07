@@ -23,39 +23,25 @@ public class LobbyNetworkManager : NetworkManager
     internal static readonly Dictionary<NetworkConnection, PlayerInfo> playerInfos = new Dictionary<NetworkConnection, PlayerInfo>();
 
     // Network Connections that have neither started nor joined a match yet
-    internal static readonly List<NetworkConnection> waitingConnections = new List<NetworkConnection>();
+    internal static readonly HashSet<NetworkConnection> waitingConnections = new HashSet<NetworkConnection>();
 
     // Match Controllers listen for this to terminate their match and clean up
     public event Action<NetworkConnection> OnPlayerDisconnected;
 
-    // ******** Client only data ********
-    internal string localHostedMatchId = string.Empty;
-    internal string localJoinedMatchId = string.Empty;
-    internal string enteredMatchId = string.Empty;
-    internal string displayName = string.Empty;
-
-
     [Header("Lobby GUI")]
-    [SerializeField] private GameObject lobbyCanvas;
+    [SerializeField] private LobbyCanvasController canvasController;
 
-    [SerializeField] private CanvasController canvasController;
-
-    [SerializeField] private GameObject matchControllerPrefab;
-
-    [Header("Room Settings")]
-    // [SerializeField] private LobbyPlayer lobbyPlayerPrefab;
-    [Scene] public string LobbyScene;
-
+    [Header("Scenes")]
     [Scene] public string MainScene;
 
+    [Header("Prefabs")]
+    [SerializeField] private List<GameObject> playerPrefabs;
+    [SerializeField] private GameObject matchControllerPrefab;
 
     public override void Awake()
     {
         base.Awake();
-        // StartServer();
-        // StartClient();
         InitializeData();
-        this.canvasController.InitializeData();
     }
 
     public void InitializeData()
@@ -82,7 +68,6 @@ public class LobbyNetworkManager : NetworkManager
 
     public override void OnServerDisconnect(NetworkConnection connection)
     {
-        // canvasController.OnServerDisconnect(conn);
         if (!NetworkServer.active) return;
 
         // Invoke OnPlayerDisconnected on all instances of MatchController
@@ -104,9 +89,7 @@ public class LobbyNetworkManager : NetworkManager
 
         // remove player connection from every match
         foreach (var entry in matchConnections)
-        {
             entry.Value.Remove(connection);
-        }
 
         var playerInfo = playerInfos[connection];
         // update matchInfo and send to clients, if the player was in a match
@@ -123,12 +106,8 @@ public class LobbyNetworkManager : NetworkManager
                 var infos = connections.Select(playerConnection => playerInfos[playerConnection]).ToArray();
 
                 foreach (var playerConnection in matchConnections[playerInfo.MatchId])
-                {
                     if (playerConnection != connection)
-                    {
                         playerConnection.Send(new ClientMatchMessage {ClientMatchOperation = ClientMatchOperation.UpdateRoom, PlayerInfos = infos});
-                    }
-                }
             }
         }
 
@@ -140,7 +119,10 @@ public class LobbyNetworkManager : NetworkManager
     public override void OnClientConnect(NetworkConnection connection)
     {
         base.OnClientConnect(connection);
-        // canvasController.OnClientConnect(connection);
+        this.canvasController = FindObjectOfType<LobbyCanvasController>();
+        this.canvasController.InitializeData();
+        this.canvasController.ShowLobbyView();
+
         playerInfos.Add(connection, new PlayerInfo {IsReady = false, IsHost = false});
     }
 
@@ -157,10 +139,10 @@ public class LobbyNetworkManager : NetworkManager
         if (!NetworkServer.active) return;
 
         if (mode == NetworkManagerMode.ServerOnly)
-            this.lobbyCanvas.SetActive(true);
+            //this.lobbyCanvas.SetActive(true);
 
         InitializeData();
-        this.canvasController.InitializeData();
+        //this.canvasController.InitializeData();
 
         NetworkServer.RegisterHandler<ServerMatchMessage>(OnServerMatchMessage);
     }
@@ -170,21 +152,19 @@ public class LobbyNetworkManager : NetworkManager
         if (!NetworkClient.active) return;
 
         InitializeData();
-        this.canvasController.InitializeData();
-        this.lobbyCanvas.SetActive(true);
-        this.canvasController.ShowLobbyView();
         NetworkClient.RegisterHandler<ClientMatchMessage>(OnClientMatchMessage);
     }
 
     public override void OnStopServer()
     {
         this.canvasController.ResetCanvas();
-        this.lobbyCanvas.SetActive(false);
+        //this.lobbyCanvas.SetActive(false);
     }
 
     public override void OnStopClient()
     {
         this.canvasController.ResetCanvas();
+        // TODO: Add a check, if in match, remove from combo manager list
     }
 
     #endregion
@@ -362,16 +342,12 @@ public class LobbyNetworkManager : NetworkManager
         if (playerMatches.TryGetValue(connection, out matchId))
         {
             foreach (var playerConn in matchConnections[matchId])
-            {
-                // send message to players
                 playerConn.Send(new ClientMatchMessage {ClientMatchOperation = ClientMatchOperation.Started});
-            }
-
+                
             playerMatches.Remove(connection);
             openMatches.Remove(matchId);
             matchConnections.Remove(matchId);
             SendMatchList();
-
         }
     }
 
@@ -388,7 +364,7 @@ public class LobbyNetworkManager : NetworkManager
             MatchController matchController;
             if (!matchControllers.ContainsKey(matchId))
             {
-                var matchControllerObject = Instantiate(this.matchControllerPrefab);
+                GameObject matchControllerObject = Instantiate(this.matchControllerPrefab);
                 matchControllerObject.GetComponent<NetworkMatchChecker>().matchId = openMatches[matchId].MatchId.ToGuid();
                 NetworkServer.Spawn(matchControllerObject);
                 matchController = matchControllerObject.GetComponent<MatchController>();
@@ -400,13 +376,14 @@ public class LobbyNetworkManager : NetworkManager
             }
 
             // spawn new prefabs; add to matchController
-            var player = Instantiate(singleton.playerPrefab);
+            var prefabIndex = playerInfos[connection].Team == Team.RedTeam ? 0 : 1;
+            var player = Instantiate(playerPrefabs[prefabIndex]);
             player.GetComponent<NetworkMatchChecker>().matchId = openMatches[matchId].MatchId.ToGuid();
             NetworkServer.AddPlayerForConnection(connection, player);
 
             matchController.playerIdentities.Add(connection.identity);
 
-            // Reset ready state for after the match. 
+            // Reset ready state back to false
             var playerInfo = playerInfos[connection];
             playerInfo.IsReady = false;
             playerInfos[connection] = playerInfo;
@@ -426,6 +403,7 @@ public class LobbyNetworkManager : NetworkManager
             openMatches.Remove(matchId);
         else
             openMatches[matchId] = matchInfo;
+
         // add player connection to the match
         matchConnections[matchId].Add(connection);
 
@@ -435,8 +413,8 @@ public class LobbyNetworkManager : NetworkManager
         playerInfo.IsReady = false;
         playerInfo.IsHost = false;
         playerInfo.MatchId = matchId;
-        // set player team: red by default; if red is full, then blue
-        playerInfo.Team = matchInfo.Players <= MatchMaker.MaxPlayers ? Team.RedTeam : Team.BlueTeam;
+        // set player team: odd is red, even is blue
+        playerInfo.Team = matchInfo.Players % 2 == 1 ? Team.RedTeam : Team.BlueTeam;
         playerInfos[connection] = playerInfo;
 
         SendMatchList();
@@ -447,9 +425,7 @@ public class LobbyNetworkManager : NetworkManager
 
         // send new playerInfo to everyone in the match
         foreach (NetworkConnection playerConnection in matchConnections[matchId])
-        {
             playerConnection.Send(new ClientMatchMessage {ClientMatchOperation = ClientMatchOperation.UpdateRoom, PlayerInfos = infos});
-        }
     }
 
     public void OnServerLeaveMatch(NetworkConnection connection, string matchId)
@@ -476,9 +452,7 @@ public class LobbyNetworkManager : NetworkManager
 
         // remove player from all matches
         foreach (var entry in matchConnections)
-        {
             entry.Value.Remove(connection);
-        }
 
         var connections = matchConnections[matchId];
 
@@ -489,9 +463,7 @@ public class LobbyNetworkManager : NetworkManager
         // get info of every player and send back 
         var infos = connections.Select(playerConnection => playerInfos[playerConnection]).ToArray();
         foreach (var playerConnection in matchConnections[matchId])
-        {
             playerConnection.Send(new ClientMatchMessage {ClientMatchOperation = ClientMatchOperation.UpdateRoom, PlayerInfos = infos});
-        }
 
         // tell the player to depart
         connection.Send(new ClientMatchMessage {ClientMatchOperation = ClientMatchOperation.Departed});
@@ -530,9 +502,7 @@ public class LobbyNetworkManager : NetworkManager
         var infos = connections.Select(playerConnection => playerInfos[playerConnection]).ToArray();
 
         foreach (var playerConnection in matchConnections[matchId])
-        {
             playerConnection.Send(new ClientMatchMessage {ClientMatchOperation = ClientMatchOperation.UpdateRoom, PlayerInfos = infos});
-        }
     }
 
     #endregion
@@ -555,33 +525,27 @@ public class LobbyNetworkManager : NetworkManager
                 // refresh matchInfos
                 openMatches.Clear();
                 foreach (var matchInfo in message.MatchInfos)
-                {
                     openMatches.Add(matchInfo.MatchId, matchInfo);
-                }
 
                 break;
             }
             case ClientMatchOperation.Created:
             {
-                this.localHostedMatchId = message.MatchId;
                 this.canvasController.EnterRoom(message.MatchId, message.PlayerInfos, true);
                 break;
             }
             case ClientMatchOperation.Cancelled:
             {
-                ResetLocalMatchInfo();
                 this.canvasController.ShowLobbyView();
                 break;
             }
             case ClientMatchOperation.Joined:
             {
-                this.localJoinedMatchId = message.MatchId;
                 this.canvasController.EnterRoom(message.MatchId, message.PlayerInfos, false);
                 break;
             }
             case ClientMatchOperation.Departed:
             {
-                ResetLocalMatchInfo();
                 this.canvasController.ShowLobbyView();
                 break;
             }
@@ -608,39 +572,24 @@ public class LobbyNetworkManager : NetworkManager
     private void OnClientStartMatch()
     {
         Debug.Log($"ClientStartMatch received");
-        SceneManager.LoadScene(this.MainScene);
+        SceneManager.LoadScene(this.MainScene, LoadSceneMode.Additive);
         NetworkClient.connection.Send(new ServerMatchMessage {ServerMatchOperation = ServerMatchOperation.SceneLoaded});
     }
 
     #endregion
 
-    /// <summary>
-    /// Sends updated match list to all waiting connections or just one if specified
-    /// </summary>
-    /// <param name="connection">the specified connection</param>
+    // Sends updated match list to all waiting connections or just one if specified
     internal static void SendMatchList(NetworkConnection connection = null)
     {
         if (!NetworkServer.active) return;
 
         if (connection != null)
-        {
             connection.Send(new ClientMatchMessage {ClientMatchOperation = ClientMatchOperation.RefreshList, MatchInfos = openMatches.Values.ToArray()});
-        }
         else
-        {
             foreach (var waiter in waitingConnections)
-            {
                 waiter.Send(new ClientMatchMessage {ClientMatchOperation = ClientMatchOperation.RefreshList, MatchInfos = openMatches.Values.ToArray()});
-            }
-        }
     }
 
-
-    /// <summary>
-    /// Initialize a playerInfo
-    /// </summary>
-    /// <param name="playerInfo">The playerInfo to be initialized</param>
-    /// <returns></returns>
     private static PlayerInfo ResetPlayerInfo(PlayerInfo playerInfo)
     {
         var newInfo = playerInfo;
@@ -653,25 +602,11 @@ public class LobbyNetworkManager : NetworkManager
         return newInfo;
     }
 
-    /// <summary>
-    /// Set the player of the connection as the new host of a match
-    /// </summary>
-    /// <param name="connection">the player connection</param>
     private static void SetNewHost(NetworkConnection connection)
     {
         var newHostInfo = playerInfos[connection];
         newHostInfo.IsHost = true;
         playerInfos[connection] = newHostInfo;
         connection.Send(new ClientMatchMessage {ClientMatchOperation = ClientMatchOperation.UpdateHost});
-    }
-
-    /// <summary>
-    /// Initialize local matchInfo, called when client quit/cancel.
-    /// </summary>
-    private void ResetLocalMatchInfo()
-    {
-        this.localHostedMatchId = string.Empty;
-        this.localJoinedMatchId = string.Empty;
-        this.enteredMatchId = string.Empty;
     }
 }

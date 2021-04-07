@@ -5,9 +5,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using Mirror;
 
-public class CanvasController : MonoBehaviour
+public class LobbyCanvasController : MonoBehaviour
 {
-    public static CanvasController Instance { get; set; }
+    public static LobbyCanvasController Instance { get; set; }
     public event Action<NetworkConnection> OnPlayerDisconnected;
 
     internal string localHostedMatchId = string.Empty;
@@ -15,18 +15,12 @@ public class CanvasController : MonoBehaviour
     internal string enteredMatchId = string.Empty;
     internal string displayName = string.Empty;
 
-
     [Header("GUI References")]
     [SerializeField] public GameObject lobbyView;
-
     [SerializeField] public GameObject roomView;
     [SerializeField] public RoomGUI roomGUI;
 
-    void Start()
-    {
-        Instance = this;
-    }
-
+    void Start() => Instance = this;
 
     #region UI Functions
 
@@ -53,10 +47,7 @@ public class CanvasController : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void SetDisplayName(string newName)
-    {
-        this.displayName = newName;
-    }
+    public void SetDisplayName(string newName) => this.displayName = newName;
 
     #endregion
 
@@ -146,29 +137,18 @@ public class CanvasController : MonoBehaviour
         NetworkClient.connection.Send(new ServerMatchMessage {ServerMatchOperation = ServerMatchOperation.Start});
     }
 
-    // TODO: Modify this
     public void OnMatchEnded()
     {
         if (!NetworkClient.active) return;
-
-        this.localHostedMatchId = string.Empty;
-        this.localJoinedMatchId = string.Empty;
-        this.enteredMatchId = string.Empty;
-        ShowLobbyView();
+        ShowRoomView();
     }
 
-    public void SetEnteredMatchId(string code)
-    {
-        this.enteredMatchId = code;
-    }
+    public void SetEnteredMatchId(string code) => this.enteredMatchId = code;
 
     #endregion
 
 
-    internal void OnStopClient()
-    {
-        ResetCanvas();
-    }
+    internal void OnStopClient() => ResetCanvas();
 
     #region Client Match Message Handler
 

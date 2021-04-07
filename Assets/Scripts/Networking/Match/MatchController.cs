@@ -13,15 +13,15 @@ public class MatchController : NetworkBehaviour
     private LobbyNetworkManager networkManager;
 
     [Header("Diagnostics - Do Not Modify")]
-    public CanvasController canvasController;
+    public LobbyCanvasController canvasController;
 
-    public NetworkIdentity tileManagerIdentity;
+    // public NetworkIdentity tileManagerIdentity; Not needed, will put everything in the match controller prefab
     public List<NetworkIdentity> playerIdentities;
-
+    
 
     void Awake()
     {
-        this.canvasController = FindObjectOfType<CanvasController>();
+        this.canvasController = FindObjectOfType<LobbyCanvasController>();
         this.networkManager = GameObject.FindWithTag("NetworkManager").GetComponent<LobbyNetworkManager>();
         DontDestroyOnLoad(this);
     }

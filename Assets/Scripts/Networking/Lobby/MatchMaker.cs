@@ -5,12 +5,8 @@ using System.Text;
 public class MatchMaker : NetworkBehaviour
 {
     private static byte maxPlayers = 8;
-
     private static byte minPlayers = 2;
-
     public static byte MaxPlayers => maxPlayers;
-
-    // void Start() => Instance = this;
 
     public static string GetRandomMatchID()
     {
