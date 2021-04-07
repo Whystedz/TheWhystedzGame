@@ -35,7 +35,7 @@ public class AudioManager : MonoBehaviour
             Destroy(gameObject);
 
         current = this;
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject); TODO
         
         // Generate the Audio source channels.
         this.ambientSource = gameObject.AddComponent<AudioSource>() as AudioSource;

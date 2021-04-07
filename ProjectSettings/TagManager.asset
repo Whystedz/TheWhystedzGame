@@ -15,6 +15,7 @@ TagManager:
   - NetworkManager
   - Obstacle
   - MainButtons
+  - Tile
   layers:
   - Default
   - TransparentFX

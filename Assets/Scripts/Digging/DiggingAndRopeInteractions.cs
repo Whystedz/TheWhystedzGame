@@ -1,8 +1,5 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class DiggingAndRopeInteractions : MonoBehaviour
 {
@@ -16,17 +13,29 @@ public class DiggingAndRopeInteractions : MonoBehaviour
     [SerializeField] private bool enableDebugMode = true;
     [SerializeField] private float maxDistanceToRope = 1.5f;
     [SerializeField] private float speedTowardsRope = 6.0f;
-    public Tile tile { get; private set; }
+    public Tile Tile { get; private set; }
+
+    private Tile lastTileHighlighted;
+
+    [SerializeField] private bool isClientPlayer;
+
+    private Tile tileCurrentlyOn;
+
     private void Awake()
     {
         this.tileLayerMask = LayerMask.GetMask("Tile");
         this.playerMovement = this.GetComponent<PlayerMovement>();
         this.playerAudio = this.GetComponent<PlayerAudio>();
     }
+
     void Start() => inputManager = InputManager.GetInstance();
 
     void Update()
     {
+        this.tileCurrentlyOn = Tile.FindTileAtPosition(transform.position);
+
+        if (!this.isClientPlayer) return;
+
         if (this.playerMovement.IsInUnderground)
             return;
 
@@ -41,45 +50,54 @@ public class DiggingAndRopeInteractions : MonoBehaviour
 
         var closestCollider = GetClosestCollider(hits);
 
-        if (closestCollider == null)
+        if (closestCollider is null)
+        {
+            if (this.lastTileHighlighted != null)
+                this.lastTileHighlighted.ResetHighlighting();
             return;
+        }
 
         var hitGameObject = closestCollider.transform.parent.gameObject;
 
-        tile = hitGameObject.GetComponent<Tile>();
+        Tile = hitGameObject.GetComponent<Tile>();
 
         if (playerMovement.IsFalling() && this.rope != null)
         {
             this.rope.gameObject.SetActive(false);
-            tile.tileState = TileState.Respawning;
+            Tile.tileState = TileState.Respawning;
             return;
         }
 
-        switch (tile.tileState)
+        switch (Tile.tileState)
         {
             case TileState.Normal:
-                StartCoroutine(tile.HighlightTileSimpleDigPreview());
+                Tile.HighlightTileSimpleDigPreview();
+
+                if (this.lastTileHighlighted != null
+                    && this.lastTileHighlighted != Tile)
+                    this.lastTileHighlighted.ResetHighlighting();
+
+                this.lastTileHighlighted = Tile;
                 break;
             case TileState.Unstable:
                 break;
             case TileState.Respawning:
-                StartCoroutine(tile.HighlightTileRopePreview());
+                Tile.HighlightTileRopePreview();
                 break;
             case TileState.Rope:
                 break;
         }
 
         if (inputManager.GetDigging())
-            InteractWithTile(tile);
+            InteractWithTile(Tile);
 
         if (this.rope != null && this.rope.ropeState == RopeState.Saved)
         {
-            tile.tileState = TileState.Respawning;
-            tile.Respawn();
+            Tile.tileState = TileState.Respawning;
+            Tile.Respawn();
             this.rope.CleanUpAfterSave();
         }
     }
-
 
     private void OnDrawGizmos()
     {
@@ -166,6 +184,6 @@ public class DiggingAndRopeInteractions : MonoBehaviour
             }
         }
     }
-}
 
-    
+    public Tile TileCurrentlyOn() => this.tileCurrentlyOn;
+}

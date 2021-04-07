@@ -68,7 +68,6 @@ public class CrystalManager : MonoBehaviour
         var crystal = Instantiate(this.CrystalPrefab, this.transform);
 
         crystal.transform.position = chosenPosition;
-        crystal.GetComponent<Collectable>().UpdateRestPosition(chosenPosition);
 
         this.currentCrystalsSurface += 1;
         this.totalCrystalsInstantiated += 1;

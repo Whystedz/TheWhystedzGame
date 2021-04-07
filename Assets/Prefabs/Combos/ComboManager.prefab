@@ -43,14 +43,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54a667d5fd838f441a6ea0688231d8dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highlightTolerance: 5
-  hintColor: {r: 1, g: 1, b: 1, a: 1}
-  showExtendedTeamCombos: 1
-  triggerExtendedTeamCombos: 1
-  lineDistance: 10
-  lineThickness: 2
-  maxTilesInLineCombo: 20
-  lineColor: {r: 0, g: 0.035513878, b: 1, a: 1}
-  triangleDistance: 15
-  maxTilesInTriangleCombo: 64
-  triangleColor: {r: 0, g: 1, b: 0.05633402, a: 1}
+  HighlightTolerance: 5
+  ShowExtendedTeamCombos: 1
+  TriggerExtendedTeamCombos: 1
+  LineDistance: 10
+  LineThickness: 2
+  MaxTilesInLineCombo: 20
+  TriangleDistance: 15
+  MaxTilesInTriangleCombo: 64

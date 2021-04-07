@@ -7,12 +7,11 @@ public enum ComboType
     Triangle
 }
 
-public class Combo
+public struct Combo
 {
     public List<Tile> Tiles { get; set; }
     public List<ComboPlayer> Players { get; set; }
     public Vector3 Center { get; set; }
     public ComboType ComboType { get; set; }
-    public ComboPlayer InitiatingPlayer { get; set; }
     public bool IsTriggered { get; set; }
 }
