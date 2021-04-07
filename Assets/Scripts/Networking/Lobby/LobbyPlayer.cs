@@ -6,6 +6,8 @@ public class LobbyPlayer : NetworkBehaviour
 {
     public static LobbyPlayer LocalPlayer { get; set; }
     private NetworkMatchChecker networkMatchChecker;
+    
+    public string PlayerName { get; private set; }
 
     void Awake()
     {
@@ -23,4 +25,7 @@ public class LobbyPlayer : NetworkBehaviour
 
         this.networkMatchChecker.matchId = matchId.ToGuid();
     }
+
+    
+    
 }

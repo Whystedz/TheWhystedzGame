@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ public class RoomGUI : MonoBehaviour
 {
     [Header("GUI References")]
     [SerializeField] private TMP_Text matchIDText;
+
     [SerializeField] private GameObject startGameButton;
     [SerializeField] private TMP_Text[] playerNameTexts;
     [SerializeField] private TMP_Text[] playerReadyTexts;
@@ -26,12 +28,13 @@ public class RoomGUI : MonoBehaviour
             playerReadyTexts[i].text = string.Empty;
         }
 
+        // check if everyone is ready; if so, activate startButton
         bool isEveryoneReady = true;
 
         for (int i = 0; i < playerInfos.Length; i++)
         {
             playerNameTexts[i].text = playerInfos[i].DisplayName;
-            playerReadyTexts[i].text = playerInfos[i].IsReady ? 
+            playerReadyTexts[i].text = playerInfos[i].IsReady ?
                 "<color=green>Ready</color>" :
                 "<color=red>Not Ready</color>";
             if (!playerInfos[i].IsReady)

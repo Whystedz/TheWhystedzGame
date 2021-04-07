@@ -12,6 +12,7 @@ TagManager:
   - BlackoutImage
   - _Dynamic
   - RespawnPoint
+  - NetworkManager
   - Obstacle
   - MainButtons
   layers:
@@ -24,7 +25,7 @@ TagManager:
   - BiomeRegion
   - TileRope
   - Underground
-  - Collectable
+  - 
   - 
   - 
   - 
