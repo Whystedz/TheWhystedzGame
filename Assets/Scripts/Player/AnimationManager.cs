@@ -41,7 +41,7 @@ public class AnimationManager : MonoBehaviour
         else if (!this.playerMovement.IsFalling())
             this.fallingTrigger = false;
 
-
+        this.animator.SetBool("isFalling", this.playerMovement.IsFalling());
         this.animator.SetBool("isClimbing", this.playerMovement.IsClimbing);
 
 

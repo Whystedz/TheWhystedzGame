@@ -16,7 +16,6 @@ public class PlayerMovement : MonoBehaviour
 
     // Camera vars
     private GameObject virtualCamera;
-    private GameObject fallingCamera;
     
     private int tileLayerMask;
     private int groundLayerMask;
@@ -29,11 +28,11 @@ public class PlayerMovement : MonoBehaviour
 
     public bool IsClimbing { get; private set; }
     public bool IsInUnderground { get; private set; }
-    [SerializeField] private float undergroundCheckThreshold = 1.5f;
-    [SerializeField] private float heightOffset = 1.3f;
-
+    [SerializeField] private float undergroundCheckThreshold = 2f;
+    [SerializeField] private float heightOffset = 1.4f;
     private GameObject surface;
     private GameObject underground;
+    private bool isInFallingProcess;
 
     void Awake()
     {
@@ -41,11 +40,9 @@ public class PlayerMovement : MonoBehaviour
         this.groundLayerMask = LayerMask.GetMask("Tile") | LayerMask.GetMask("Underground");
         
         this.characterController = GetComponent<CharacterController>();
-        this.fallingCamera = FindObjectsOfType<CinemachineVirtualCamera>(true)[1].gameObject;
         this.virtualCamera = FindObjectsOfType<CinemachineVirtualCamera>(true)[0].gameObject;
 
         this.virtualCamera.SetActive(true);
-        this.fallingCamera.SetActive(false);
 
         this.surface = GameObject.FindGameObjectWithTag("Surface");
         this.underground = GameObject.FindGameObjectWithTag("Underground");
@@ -69,7 +66,7 @@ public class PlayerMovement : MonoBehaviour
 
         CheckIfFalling();
 
-        if (this.isFalling)
+        if (this.isFalling || this.isInFallingProcess)
             FallingMovementUpdate();
         else
             RegularMovement();
@@ -82,15 +79,12 @@ public class PlayerMovement : MonoBehaviour
 
 
         // movement update, based on player input! 
-
         PlayerMovementUpdate();
     }
 
    
     private void RegularMovement()
     {
-        if (this.fallingCamera.activeSelf)
-            this.fallingCamera.SetActive(false);
 
         this.direction = new Vector3(this.inputManager.GetInputMovement().x, 0f, this.inputManager.GetInputMovement().y);
         this.characterController.Move(this.direction * Time.deltaTime * this.movementSpeed);
@@ -101,11 +95,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void FallingMovementUpdate()
     {
-        if (!this.fallingCamera.activeSelf)
-            this.fallingCamera.SetActive(true);
-
-        var fallingVelocity = Vector3.down * Time.deltaTime * this.fallingSpeed;
-        this.characterController.Move(fallingVelocity);
+        if (!isInFallingProcess)
+            StartCoroutine(FallDown());
     }
 
     private void CheckIfFalling()
@@ -146,9 +137,9 @@ public class PlayerMovement : MonoBehaviour
         
         if(IsInUnderground && distanceToUnderground > this.undergroundCheckThreshold)
             AudioManager.StopUndergroundFX();
-        else if(!IsInUnderground && distanceToUnderground <= this.undergroundCheckThreshold)
+        else if(!IsInUnderground && distanceToUnderground < this.undergroundCheckThreshold)
             AudioManager.PlayUndergroundFX();
-        
+       
         IsInUnderground = distanceToUnderground <= this.undergroundCheckThreshold;
     }
 
@@ -208,6 +199,20 @@ public class PlayerMovement : MonoBehaviour
             this.blackoutImage.color = new Color(0, 0, 0, opacity);
             yield return null;
         }
+    }
+
+    public IEnumerator FallDown()
+    {
+        isInFallingProcess = true;
+
+        yield return StartCoroutine(FadeIn());
+        this.transform.position +=  Vector3.up * (this.undergroundCheckThreshold + this.underground.transform.position.y - transform.position.y - 1f);
+        this.virtualCamera.SetActive(false);
+        this.virtualCamera.SetActive(true);
+        yield return StartCoroutine(FadeOut());
+        
+        isInFallingProcess = false;
+        
     }
 
 }

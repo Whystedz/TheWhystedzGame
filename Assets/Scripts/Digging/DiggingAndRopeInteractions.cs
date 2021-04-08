@@ -11,7 +11,7 @@ public class DiggingAndRopeInteractions : MonoBehaviour
     private PlayerAudio playerAudio;
     [SerializeField] private Rope rope;
     [SerializeField] private bool enableDebugMode = true;
-    [SerializeField] private float maxDistanceToRope = 1.5f;
+    [SerializeField] private float maxDistanceToRope = 1.8f;
     [SerializeField] private float speedTowardsRope = 6.0f;
     public Tile Tile { get; private set; }
 
@@ -119,30 +119,34 @@ public class DiggingAndRopeInteractions : MonoBehaviour
 
     private Collider GetClosestCollider(RaycastHit[] hits)
     {
-        var closestDistnace = Mathf.Infinity;
+        var closestDistance = Mathf.Infinity;
         Collider closestCollider = null;
 
         int hitsLength = hits.Length;
         for (int i = 0; i < hitsLength; i++)
         {
             var distance = Vector3.Distance(transform.position, hits[i].collider.transform.position);
-            if (distance < this.minDistanceToDiggableTile)
+            var tile = hits[i].collider.transform.parent.gameObject.GetComponent<Tile>();
+            if (distance < this.minDistanceToDiggableTile 
+                && tile.tileState != TileState.Rope)
                 continue; // ignore tiles that are too close
             
-            if (distance < closestDistnace)
+            if (distance < closestDistance)
             {
                 closestCollider = hits[i].collider;
-                closestDistnace = distance;
+                closestDistance = distance;
             }
         }
 
         return closestCollider;
     }
 
-    public IEnumerator ThrowRope(GameObject ropeObject, Tile tile)
+    public IEnumerator ThrowRope(Rope rope, Tile tile)
     {
+        var ropeObject = rope.gameObject;
         playerAudio.PlayRopeAudio();
         Vector3 tileSurfacePosition = new Vector3(tile.transform.position.x, this.transform.position.y, tile.transform.position.z);
+        this.transform.LookAt(tileSurfacePosition);
         while (Vector3.Distance(this.transform.position, tileSurfacePosition) > maxDistanceToRope)
         {
             playerMovement.MoveTowards(ropeObject.transform.forward, speedTowardsRope);
@@ -151,6 +155,9 @@ public class DiggingAndRopeInteractions : MonoBehaviour
         playerMovement.MoveTowards(Vector3.zero, 0);
         ropeObject.transform.position = new Vector3(tile.transform.position.x, ropeObject.transform.position.y, tile.transform.position.z);
         ropeObject.SetActive(true);
+        rope.GetUpperLadder().transform.forward = Vector3.back;
+        rope.GetLowerLadder().transform.forward = Vector3.back;
+        rope.GetHighlightedLadder().transform.forward = Vector3.back;
         yield return null;
     }
 
@@ -174,7 +181,7 @@ public class DiggingAndRopeInteractions : MonoBehaviour
                 tile.tileState = TileState.Rope;
 
             if (tile.tileState == TileState.Rope)
-                StartCoroutine(ThrowRope(this.rope.gameObject, tile));
+                StartCoroutine(ThrowRope(this.rope, tile));
             else
             {
                 playerAudio.PlayRopeAudio();
