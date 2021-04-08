@@ -11,10 +11,8 @@ GameObject:
   - component: {fileID: 7570850440909537781}
   - component: {fileID: 6827118146806795856}
   - component: {fileID: 8744368153491552922}
-  - component: {fileID: 6435363610448757223}
-  - component: {fileID: 3478150730571603369}
-  - component: {fileID: 591226205267631371}
   - component: {fileID: 2086150294680074253}
+  - component: {fileID: 9223234101979270616}
   m_Layer: 0
   m_Name: Big_BrokenWood
   m_TagString: Obstacle
@@ -85,45 +83,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &6435363610448757223
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7087189107905239887}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.1403142, y: 0.5459496, z: 0.63594246}
-  m_Center: {x: -0.24663645, y: 0.239281, z: -0.8788934}
---- !u!65 &3478150730571603369
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7087189107905239887}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.0619663, y: 0.5459496, z: 0.86640024}
-  m_Center: {x: -0.062446, y: 0.239281, z: -0.15474428}
---- !u!65 &591226205267631371
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7087189107905239887}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.9163475, y: 0.5459496, z: 0.9286777}
-  m_Center: {x: 0.34936333, y: 0.239281, z: 0.72224206}
 --- !u!54 &2086150294680074253
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -140,3 +99,17 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!64 &9223234101979270616
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7087189107905239887}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 7862483135859735771, guid: e21a72465e6371c49927f968bf0d4e50, type: 3}

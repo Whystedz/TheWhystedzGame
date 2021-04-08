@@ -11,8 +11,7 @@ GameObject:
   - component: {fileID: 4770962673921227433}
   - component: {fileID: 8474093154066756876}
   - component: {fileID: 5944454204514304454}
-  - component: {fileID: 5394036805824159330}
-  - component: {fileID: 4152516627075244457}
+  - component: {fileID: 1194104057685363795}
   m_Layer: 0
   m_Name: DonutMushroom
   m_TagString: Obstacle
@@ -84,8 +83,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &5394036805824159330
-BoxCollider:
+--- !u!64 &1194104057685363795
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -94,19 +93,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.2725122, y: 10.728822, z: 1.0722411}
-  m_Center: {x: 0.039896637, y: 5.3571973, z: -0.04220271}
---- !u!65 &4152516627075244457
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5295685513410813971}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 6.1313143, y: 1.6881218, z: 3.2977457}
-  m_Center: {x: -0.053014755, y: 10.84161, z: -0.21417546}
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 2125864033218267652, guid: 2e9782189a0638842a33b10a02f688bb, type: 3}

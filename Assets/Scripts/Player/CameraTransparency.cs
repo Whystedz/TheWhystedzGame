@@ -71,6 +71,7 @@ public class CameraTransparency : MonoBehaviour
         mat.SetFloat("_SrcBlend", 5.0f);
         mat.SetFloat("_Surface", 1.0f);
         mat.SetFloat("_ZWrite", 0.0f);
+        mat.SetFloat("_Cull", 0.0f);
     }
 
     private void SetFloatsSolid(Material mat, Material materialSolidState)
@@ -83,6 +84,7 @@ public class CameraTransparency : MonoBehaviour
         mat.SetFloat("_SrcBlend", materialSolidState.GetFloat("_SrcBlend"));
         mat.SetFloat("_Surface", materialSolidState.GetFloat("_Surface"));
         mat.SetFloat("_ZWrite", materialSolidState.GetFloat("_ZWrite"));
+        mat.SetFloat("_Cull", materialSolidState.GetFloat("_Cull"));
     }
 
     private Material[] DeepCopy(Material[] originalMaterials)

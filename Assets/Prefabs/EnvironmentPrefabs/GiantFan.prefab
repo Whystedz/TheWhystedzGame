@@ -11,8 +11,7 @@ GameObject:
   - component: {fileID: 7478665668709614698}
   - component: {fileID: 5793411807495818191}
   - component: {fileID: 8611623635633274629}
-  - component: {fileID: 1929910823307392837}
-  - component: {fileID: 1541864431955007783}
+  - component: {fileID: 7207617009722528931}
   m_Layer: 0
   m_Name: GiantFan
   m_TagString: Obstacle
@@ -85,8 +84,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &1929910823307392837
-BoxCollider:
+--- !u!64 &7207617009722528931
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -95,19 +94,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2.2243361, y: 10.018191, z: 2.6291308}
-  m_Center: {x: -0.105652735, y: 5.007767, z: 0.23618577}
---- !u!65 &1541864431955007783
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7818915677194477264}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 10.72321, y: 2.5640254, z: 11.000857}
-  m_Center: {x: -0.012568366, y: 8.734847, z: 0.020436311}
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -20375104906952707, guid: 773f20813c312a64897fdd7e328704fe, type: 3}
