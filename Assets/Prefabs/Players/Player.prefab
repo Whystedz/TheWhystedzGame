@@ -46,7 +46,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.83, y: 1, z: 6.04}
+  m_Size: {x: 1.83, y: 2, z: 6.04}
   m_Center: {x: 0, y: -70.5, z: 0}
 --- !u!114 &2108375272
 MonoBehaviour:
@@ -211,7 +211,7 @@ MonoBehaviour:
   timeToFadeIn: 0.25
   timeToFadeOut: 3
   undergroundCheckThreshold: 2
-  heightOffset: 1.4
+  heightOffset: 1
 --- !u!114 &6327377196063707617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -930,7 +930,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: c9bbdb6f6a3c8514ea29a52c4b691ee1, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}
       propertyPath: m_Name
       value: RopeLadderDown

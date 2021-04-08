@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2108375271, guid: 9a38b8ca5a8093a43b837c369d1745a2, type: 3}
+      propertyPath: m_Size.y
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2927167167306915266, guid: 9a38b8ca5a8093a43b837c369d1745a2, type: 3}
       propertyPath: m_AssetId
       value: 
@@ -83,5 +87,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8322653849392901787, guid: 9a38b8ca5a8093a43b837c369d1745a2, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 654298969271749226, guid: 6ecf2eb679aa8dd458efefd6c4444346, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a38b8ca5a8093a43b837c369d1745a2, type: 3}

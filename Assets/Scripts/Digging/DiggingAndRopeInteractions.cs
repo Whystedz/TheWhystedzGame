@@ -105,8 +105,8 @@ public class DiggingAndRopeInteractions : MonoBehaviour
 
         if (this.rope != null && this.rope.ropeState == RopeState.Saved)
         {
-            Tile.tileState = TileState.Respawning;
             Tile.Respawn();
+            Tile.ResetHighlighting();
             this.rope.CleanUpAfterSave();
         }
     }
