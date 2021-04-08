@@ -62,12 +62,12 @@ public class NetworkDigging : NetworkBehaviour
             switch (tile.TileInfo.TileState)
             {
                 case TileState.Normal:
-                    StartCoroutine(tile.HighlightTileSimpleDigPreview());
+                    tile.HighlightTileSimpleDigPreview();
                     break;
                 case TileState.Unstable:
                     break;
                 case TileState.Respawning:
-                    StartCoroutine(tile.HighlightTileRopePreview());
+                    tile.HighlightTileRopePreview();
                     break;
                 case TileState.Rope:
                     break;

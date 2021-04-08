@@ -88,10 +88,10 @@ public class NetworkTile : MonoBehaviour
         TileInfo.TileState = TileState.Normal;
     }
 
-    public IEnumerator HighlightTileSimpleDigPreview()
+    public void HighlightTileSimpleDigPreview()
     {
         if (TileInfo.TileState != TileState.Normal)
-            yield break;
+            return;
 
         TileInfo.TileHighlightState = TileHighlightState.SimpleHighlight;
     }
@@ -104,10 +104,10 @@ public class NetworkTile : MonoBehaviour
         TileInfo.TileHighlightState = TileHighlightState.ComboHighlight;
     }
 
-    public IEnumerator HighlightTileRopePreview()
+    public void HighlightTileRopePreview()
     {
         if (TileInfo.TileState != TileState.Respawning)
-            yield break;
+            return;
 
         TileInfo.TileHighlightState = TileHighlightState.RopeHighlight;
     }

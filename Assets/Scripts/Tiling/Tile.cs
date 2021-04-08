@@ -21,7 +21,7 @@ public enum TileHighlightState
     RopeHighlight
 }
 
-public class Tile : MonoBehaviour, IPointerClickHandler
+public class Tile : MonoBehaviour
 {
     [Header("General")]
     [SerializeField] private float obstacleCheckRadius = 1f;
@@ -29,7 +29,6 @@ public class Tile : MonoBehaviour, IPointerClickHandler
     [Header("Animations")]
     [SerializeField] private float timeToBreak = 3f;
     [SerializeField] private float timeToRespawn = 5f;
-    [SerializeField] private float timeOfBreakingAnimation = 5f;
     private float progress;
 
     [Header("Materials")]
@@ -41,102 +40,65 @@ public class Tile : MonoBehaviour, IPointerClickHandler
     [SerializeField] private Material ropeMaterial;
     [SerializeField] private Material unbreakableMaterial;
 
-    [Header("Debug")]
-    [SerializeField] private bool isClickToDigEnabled;
-
     private MeshRenderer meshRenderer;
 
     internal TileState tileState;
     internal TileHighlightState tileHighlightState;
+
+    private static GameObject surface;
+    private static GameObject underground;
 
     protected virtual void Start()
     {
         this.meshRenderer = GetComponentInChildren<MeshRenderer>();
         this.meshRenderer.material = this.normalMaterial;
 
+        if (surface is null)
+            surface = GameObject.FindGameObjectWithTag("Surface");
+        if (underground is null)
+            underground = GameObject.FindGameObjectWithTag("Underground");
+
         CheckObstacles();
     }
 
-    void Update()
-    {
-        ChangeMaterialAccordingToCurrentState();
-
-        switch (this.tileState)
-        {
-            case TileState.Normal:
-                break;
-            case TileState.Unstable:
-                this.UnstableUpdate();
-                break;
-            case TileState.Respawning:
-                RespawningUpdate();
-                break;
-            case TileState.Rope:
-                break;
-            case TileState.Unbreakable:
-                break;
-        }
+    public void DigTile() {
+        if (this.tileState != TileState.Normal) return;
+        StartCoroutine(WaitUntilBroken());
     }
 
-    // Should be called by the agent wishing to dig the tile
-    public void DigTile()
+    private IEnumerator WaitUntilBroken()
     {
-        this.progress = this.timeToBreak;
-        this.meshRenderer.material = unstableMaterial;
+        //this.meshRenderer.material = unstableMaterial;
         this.tileState = TileState.Unstable;
-    }
 
+        this.progress = this.timeToBreak; 
+        while (this.progress > 0)
+        {
+            this.progress -= Time.deltaTime;
+            yield return new WaitForFixedUpdate();
+        }
 
-    // For debug purposes, dig a tile up upon clicking on it
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        if (!this.isClickToDigEnabled)
-            return;
-
-        this.DigTile();
-    }
-
-    private void UnstableUpdate()
-    {
-        progress -= Time.deltaTime;
-
-        if (progress <= 0)
-            Break();
+        Break();
     }
 
     private void Break()
     {
-        StartCoroutine(PlayBreakingAnimation());
-
         this.tileState = TileState.Respawning;
         this.meshRenderer.material = destroyedMaterial;
+        StartCoroutine(WaitUntilRespawn());
+    }
+
+    private IEnumerator WaitUntilRespawn()
+    {
         this.progress = this.timeToRespawn;
-    }
 
-    private IEnumerator PlayBreakingAnimation()
-    {
-        var breakingAnimationProgress = this.timeOfBreakingAnimation;
-        var breakingAnimationSpeed = 10f / this.timeOfBreakingAnimation;
-
-        while (breakingAnimationProgress > 0)
+        while (this.progress > 0)
         {
-            if (this.tileState == TileState.Normal)
-                yield break;
-
-            //this.transform.position += breakingAnimationSpeed * Time.deltaTime * Vector3.down;
-            // TODO change to a simple opacity change
-            // TODO TODO eventually get a nicer animation 
-            breakingAnimationProgress -= Time.deltaTime;
-            yield return new WaitForEndOfFrame();
+            this.progress -= Time.deltaTime;
+            yield return new WaitForFixedUpdate();
         }
-    }
 
-    private void RespawningUpdate()
-    {
-        this.progress -= Time.deltaTime;
-
-        if (progress <= 0)
-            Respawn();
+        Respawn();
     }
      
     public void Respawn()
@@ -146,30 +108,50 @@ public class Tile : MonoBehaviour, IPointerClickHandler
         this.tileState = TileState.Normal;
     }
 
-    public IEnumerator HighlightTileSimpleDigPreview()
+    public void ResetHighlighting()
+    {
+        this.tileHighlightState = TileHighlightState.NoHighlight;
+
+        ChangeMaterialAccordingToCurrentState();
+    }
+
+    public void ResetComboHighlighting()
+    {
+        if (this.tileHighlightState == TileHighlightState.ComboHighlight)
+            ResetHighlighting();
+    }
+
+    public void HighlightTileSimpleDigPreview()
     {
         if (this.tileState != TileState.Normal)
-            yield break;
+            return;
 
         this.tileHighlightState = TileHighlightState.SimpleHighlight;
+
+        ChangeMaterialAccordingToCurrentState();
     }
 
-    public IEnumerator HighlightTileComboDigPreview()
+    public void HighlightTileComboDigPreview()
     {
         if (this.tileState != TileState.Normal)
-            yield break;
+            return;
 
-        // maybe some logic if it is already a simple combo highlight? 
+        if (this.tileHighlightState == TileHighlightState.SimpleHighlight)
+            return;
 
         this.tileHighlightState = TileHighlightState.ComboHighlight;
+
+        ChangeMaterialAccordingToCurrentState();
     }
 
-    public IEnumerator HighlightTileRopePreview()
+    public void HighlightTileRopePreview()
     {
         if (this.tileState != TileState.Respawning)
-            yield break;
+            return;
 
         this.tileHighlightState = TileHighlightState.RopeHighlight;
+
+        ChangeMaterialAccordingToCurrentState();
     }
 
     private void ChangeMaterialAccordingToCurrentState()
@@ -189,8 +171,6 @@ public class Tile : MonoBehaviour, IPointerClickHandler
                 ChangeMaterialForRopePreviewHighlight();
                 break;
         }
-
-        this.tileHighlightState = TileHighlightState.NoHighlight;
     }
 
     private void ChangeMaterialForRopePreviewHighlight() => this.meshRenderer.material = ropeMaterial;
@@ -221,20 +201,24 @@ public class Tile : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    // TODO let's use this static method call for all the other similar 
-    // calls we have been doing lately in seperate classes! 
     public static Tile FindTileAtPosition(Vector3 position)
     {
-        var colliders = Physics.OverlapSphere(position, 0.1f);
-        if (colliders.Count() == 0) return null;
+        var distanceToSurface = Mathf.Abs(position.y - surface.transform.position.y);
+        var distanceToUnderground = Mathf.Abs(position.y - underground.transform.position.y);
 
-        var tile = colliders
-            .Where(collider => collider.GetComponentInParent<Tile>() != null)
-            .Select(collider => collider.GetComponentInParent<Tile>())
-            .OrderBy(tile => Vector3.Distance(position, tile.transform.position))
-            .First();
+        if (distanceToUnderground < distanceToSurface)
+            return null;
 
-        return tile;
+        var hasHitTile = Physics.Raycast(position + Vector3.down * 5f,
+            Vector3.up,
+            out RaycastHit hitTile,
+            10f,
+            1 << LayerMask.NameToLayer("Tile"));
+
+        if (!hasHitTile)
+            return null;
+
+        return hitTile.collider.transform.parent.GetComponent<Tile>();
     }
 
     private void CheckObstacles()

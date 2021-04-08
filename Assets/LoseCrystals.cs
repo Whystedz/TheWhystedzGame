@@ -50,9 +50,12 @@ public class LoseCrystals : MonoBehaviour
         {
             var randomizedPos = UnityEngine.Random.insideUnitCircle * radiusOfSpawnCircle;
             var spawnPos = transform.position + new Vector3(randomizedPos.x, crystalheightOffsetFromPlayer, randomizedPos.y);
+            
             var crystal = Instantiate(crystalPrefab, spawnPos, Quaternion.identity);
+            
             crystal.transform.parent = this.crystalManager.transform;
-            crystal.GetComponent<Crystal>().IsExploding = true;
+                        
+            crystal.GetComponent<Crystal>().Explode();
             crystal.GetComponent<CapsuleCollider>().isTrigger = false;
         }
 

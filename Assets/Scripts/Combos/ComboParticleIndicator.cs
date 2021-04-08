@@ -5,7 +5,7 @@ using UnityEngine;
 public class ComboParticleIndicator : MonoBehaviour
 {
     private ComboPlayer targetPlayer;
-    private ComboPlayer initializingPlayer;
+    private ComboPlayer originPlayer;
 
     [SerializeField] private float particleHintSizeFrom;
     [SerializeField] private float particleHintSizeTo;
@@ -20,60 +20,94 @@ public class ComboParticleIndicator : MonoBehaviour
     [SerializeField] private Gradient colorGradientTriangleCombo1;
     [SerializeField] private Gradient colorGradientTriangleCombo2;
 
-    private ParticleSystem particleSystem;
+    private ParticleSystem hintParticleSystem;
     private bool showParticles;
 
-    private void Awake() => this.particleSystem = GetComponent<ParticleSystem>();
+    private void Awake() => this.hintParticleSystem = GetComponent<ParticleSystem>();
+
+    private void Start()
+    {
+        this.hintParticleSystem.Stop();
+    }
 
     public void SetPlayers(ComboPlayer initializingPlayer, ComboPlayer targetPlayer)
     {
-        this.initializingPlayer = initializingPlayer;
+        this.originPlayer = initializingPlayer;
         this.targetPlayer = targetPlayer;
     }
 
-    public void UpdateParticles(List<Combo> Combos, List<ComboHint> ComboHints)
+    public void UpdateParticles(IEnumerable<Combo> combos, IEnumerable<ComboHint> comboHints)
     {
-        this.showParticles = false;
+        this.showParticles = false; // Assume false until we find one
 
-        var particleSystemMain = this.particleSystem.main;
-        particleSystemMain.startSpeed = Vector3.Distance(this.initializingPlayer.transform.position, this.targetPlayer.transform.position);
+        var particleSystemMain = this.hintParticleSystem.main;
+        particleSystemMain.startSpeed = Vector3.Distance(this.originPlayer.transform.position, this.targetPlayer.transform.position);
 
-        for (int i = 0; i < ComboHints.Count; i++)
+        foreach (var comboHint in comboHints)
         {
-            if (ComboHints[i].OriginPlayer == this.initializingPlayer
-                && ComboHints[i].TargetPlayer == this.targetPlayer)
+            if (comboHint.OriginPlayer == this.originPlayer
+                && comboHint.TargetPlayer == this.targetPlayer)
             {
-                this.showParticles = true;
-                particleSystemMain.startColor = new ParticleSystem.MinMaxGradient(this.colorGradientHint1, this.colorGradientHint2);
-                particleSystemMain.startSize = new ParticleSystem.MinMaxCurve(this.particleHintSizeFrom, this.particleHintSizeTo);
+                particleSystemMain = IndicateHint(particleSystemMain);
                 break;
             }
         }
 
-        for (int i = 0; i < Combos.Count; i++)
+        foreach (var combo in combos)
         {
-            if (Combos[i].InitiatingPlayer == this.initializingPlayer
-                && Combos[i].Players.Contains(this.targetPlayer))
+            if (combo.Players.Contains(this.targetPlayer))
             {
-                this.showParticles = true;
-                if (Combos[i].ComboType == ComboType.Line)
-                    particleSystemMain.startColor = new ParticleSystem.MinMaxGradient(this.colorGradientLineCombo1, this.colorGradientLineCombo2);
-                else
-                    particleSystemMain.startColor = new ParticleSystem.MinMaxGradient(this.colorGradientTriangleCombo1, this.colorGradientTriangleCombo2);
-                
-                particleSystemMain.startSize = new ParticleSystem.MinMaxCurve(this.particleComboSizeFrom, this.particleComboSizeTo);
-                
+                IndicateTriggerableCombo(particleSystemMain, combo);
                 break;
             }
         }
 
-        if (this.showParticles && !this.particleSystem.isPlaying)
-            this.particleSystem.Play();
+        UpdatePlayback();
+
+        UpdateTransform();
+    }
+
+    private void IndicateTriggerableCombo(ParticleSystem.MainModule particleSystemMain, Combo combo)
+    {
+        this.showParticles = true;
+        if (combo.ComboType == ComboType.Line)
+            particleSystemMain.startColor = new ParticleSystem.MinMaxGradient(this.colorGradientLineCombo1, this.colorGradientLineCombo2);
+        else
+            particleSystemMain.startColor = new ParticleSystem.MinMaxGradient(this.colorGradientTriangleCombo1, this.colorGradientTriangleCombo2);
+
+        particleSystemMain.startSize = new ParticleSystem.MinMaxCurve(this.particleComboSizeFrom, this.particleComboSizeTo);
+    }
+
+    private ParticleSystem.MainModule IndicateHint(ParticleSystem.MainModule particleSystemMain)
+    {
+        this.showParticles = true;
+        particleSystemMain.startColor = new ParticleSystem.MinMaxGradient(this.colorGradientHint1, this.colorGradientHint2);
+        particleSystemMain.startSize = new ParticleSystem.MinMaxCurve(this.particleHintSizeFrom, this.particleHintSizeTo);
+        return particleSystemMain;
+    }
+
+    private void UpdatePlayback()
+    {
+        if (this.showParticles && !this.hintParticleSystem.isPlaying)
+            this.hintParticleSystem.Play();
+
+        if (!this.showParticles && this.hintParticleSystem.isPlaying)
+            this.hintParticleSystem.Stop();
+    }
+
+    private void UpdateTransform()
+    {
+        transform.position = this.originPlayer.transform.position;
+        transform.rotation = GetRotation();
+    }
+
+    private Quaternion GetRotation()
+    {
+        var eulerVector = new Vector3(
+            0f, 
+            Mathf.Atan2(this.targetPlayer.transform.position.x - this.originPlayer.transform.position.x, this.targetPlayer.transform.position.z - this.originPlayer.transform.position.z) * Mathf.Rad2Deg, 
+            0f);
         
-        if(!this.showParticles && this.particleSystem.isPlaying)
-            this.particleSystem.Stop();
-        
-        transform.position = this.initializingPlayer.transform.position;
-        transform.rotation = Quaternion.Euler(new Vector3(0f, Mathf.Atan2(this.targetPlayer.transform.position.x - this.initializingPlayer.transform.position.x, this.targetPlayer.transform.position.z - this.initializingPlayer.transform.position.z) * Mathf.Rad2Deg, 0f));
+        return Quaternion.Euler(eulerVector);
     }
 }

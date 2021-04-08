@@ -1,5 +1,5 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Crystal : Collectable
@@ -9,38 +9,30 @@ public class Crystal : Collectable
     [SerializeField] private float extraForceIfLandedWrong = 3f;
     private Rigidbody rb;
 
-    new protected void Awake()
+    void Awake()
     {
         this.crystalManager = FindObjectOfType<CrystalManager>();
         rb = this.GetComponent<Rigidbody>();
-        base.Awake();
     }
 
-    private new void Update()
-    {
-        if (this.IsExploding)
-        {
-            ExplodingUpdate();
-            return;
-        }
-
-        base.Update();
-        
-    }
-
-    private void ExplodingUpdate()
+    private IEnumerator ExplosionUpdate()
     {
         var distanceFromUndergroundPlane = Mathf.Abs(this.transform.position.y - crystalManager.underground.transform.position.y);
-        if (distanceFromUndergroundPlane < this.crystalManager.GetHeightOffset())
-            FinishExplosion();
+
+        while (distanceFromUndergroundPlane > this.crystalManager.GetHeightOffset())
+        {
+            yield return new WaitForFixedUpdate();
+            distanceFromUndergroundPlane = Mathf.Abs(this.transform.position.y - crystalManager.underground.transform.position.y);
+        }
+
+        FinishExplosion();
     }
 
     private void FinishExplosion()
     {
         this.crystalManager.OnDroppedCrystal(this);
         this.IsExploding = false;
-        Vector3 newRestPostion = new Vector3(this.transform.position.x, this.crystalManager.underground.transform.position.y + this.crystalManager.GetHeightOffset(), this.transform.position.z);
-        this.UpdateRestPosition(newRestPostion);
+        
         rb.useGravity = false;
         rb.isKinematic = true;
         this.GetComponent<CapsuleCollider>().isTrigger = true;
@@ -65,9 +57,11 @@ public class Crystal : Collectable
             if (downwardTileHit.collider != null 
                 && !downwardTileHit.collider.gameObject.CompareTag("Player"))
             {
-                Vector3 force = new Vector3(Random.Range(-1, 1), Random.Range(0, 1), Random.Range(-1, 1)) * this.extraForceIfLandedWrong;
+                Vector3 force = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(0, 1), UnityEngine.Random.Range(-1, 1)) * this.extraForceIfLandedWrong;
                 rb.AddForce(force, ForceMode.Impulse);
             }
         }
     }
+
+    internal void Explode() => StartCoroutine(ExplosionUpdate());
 }
