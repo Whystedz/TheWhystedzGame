@@ -60,7 +60,7 @@ public class Underground : MonoBehaviour
 
         this.playerMovement.IsInUnderground = false;
 
-        this.diggingAndRopeInteractions.RefreshTileCurrentlyOn();
+        this.playerMovement.RefreshTileCurrentlyOn();
     }
 
 }

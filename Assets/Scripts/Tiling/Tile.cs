@@ -230,6 +230,9 @@ public class Tile : MonoBehaviour
             .OrderBy(collider => Vector3.Distance(position, collider.transform.position))
             .FirstOrDefault();
 
+        if (closestCollider is null)
+            return null;
+
         return closestCollider.GetComponentInParent<Tile>();
     }
 
