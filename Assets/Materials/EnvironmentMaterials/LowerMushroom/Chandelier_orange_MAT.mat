@@ -50,7 +50,7 @@ Material:
     - _FlatRimLightAlign: 0
     - _FlatRimSize: 0.5
     - _FlatSpecularEdgeSmoothness: 1
-    - _FlatSpecularSize: 0.7
+    - _FlatSpecularSize: 0.6
     - _Flatness: 1
     - _FlatnessExtra: 1
     - _GradientAngle: 0
@@ -67,7 +67,7 @@ Material:
     - _RimEnabled: 0
     - _SelfShadingSize: 0.5
     - _SelfShadingSizeExtra: 0.6
-    - _ShadowEdgeSize: 0.05
+    - _ShadowEdgeSize: 0.5
     - _ShadowEdgeSizeExtra: 0.05
     - _SpecularEnabled: 1
     - _SrcBlend: 1
