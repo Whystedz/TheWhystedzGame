@@ -20,15 +20,12 @@ public class NetworkComboParticleIndicator : MonoBehaviour
     [SerializeField] private Gradient colorGradientTriangleCombo1;
     [SerializeField] private Gradient colorGradientTriangleCombo2;
 
-    private ParticleSystem hintParticleSystem;
+    public ParticleSystem hintParticleSystem;
     private bool showParticles;
 
-    private void Awake() => this.hintParticleSystem = GetComponent<ParticleSystem>();
+    public void Awake() => this.hintParticleSystem = GetComponent<ParticleSystem>();
 
-    private void Start()
-    {
-        this.hintParticleSystem.Stop();
-    }
+    private void Start() => this.hintParticleSystem.Stop();
 
     public void SetPlayers(NetworkComboPlayer initializingPlayer, NetworkComboPlayer targetPlayer)
     {
@@ -40,7 +37,9 @@ public class NetworkComboParticleIndicator : MonoBehaviour
     {
         this.showParticles = false; // Assume false until we find one
 
-        var particleSystemMain = this.hintParticleSystem.main;
+        ParticleSystem particleSystem = GetComponent<ParticleSystem>();
+
+        var particleSystemMain = particleSystem.main;
         particleSystemMain.startSpeed = Vector3.Distance(this.originPlayer.transform.position, this.targetPlayer.transform.position);
 
         foreach (var comboHint in comboHints)

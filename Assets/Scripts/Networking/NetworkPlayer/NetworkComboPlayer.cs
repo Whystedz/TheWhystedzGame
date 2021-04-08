@@ -37,8 +37,9 @@ public class NetworkComboPlayer : NetworkBehaviour
     public bool IsClientPlayer = false;
     public bool isOnClientPlayerTeam;
 
+    [SerializeField] private NetworkComboParticleGenerator networkComboParticleGenerator;
     private List<NetworkComboParticleIndicator> comboParticleIndicators;
-
+    
     private void Start()
     {
         networkDigging = this.GetComponent<NetworkDigging>();
@@ -48,6 +49,7 @@ public class NetworkComboPlayer : NetworkBehaviour
 
         queuedTriggerCombosPlayer = new List<NetworkComboPlayer>();
         currentlyHighlightedTiles = new List<NetworkTile>();
+        comboParticleIndicators = new List<NetworkComboParticleIndicator>();
 
         this.cooldownProgress = this.cooldownMax;
 
@@ -71,10 +73,11 @@ public class NetworkComboPlayer : NetworkBehaviour
 
     public void InitializeComboParticleIndicators()
     {
-        comboParticleIndicators = new List<NetworkComboParticleIndicator>();
         foreach (Transform comboParticleGeneratorTransform in this.comboParticleGenerator)
         {
             var comboParticleIndicator = comboParticleGeneratorTransform.GetComponent<NetworkComboParticleIndicator>();
+            if (comboParticleIndicators.Contains(comboParticleIndicator))
+                continue;
             comboParticleIndicators.Add(comboParticleIndicator);
             comboParticleIndicator.UpdateParticles(Combos, ComboHintInfos);
         }
@@ -105,14 +108,13 @@ public class NetworkComboPlayer : NetworkBehaviour
         if (base.hasAuthority)
         {
             CooldownUpdate();
-            
+
             if (this.displayCombos) 
                 HighlightCombosForPlayer(this);
-            
+
             if (this.displayComboHintInfos)
                 foreach (var comboParticleIndicator in comboParticleIndicators)
                     comboParticleIndicator.UpdateParticles(Combos, ComboHintInfos);
-
             
             if (this.canTriggerCombos
                 && InputManager.Instance.GetDigging()
@@ -166,6 +168,8 @@ public class NetworkComboPlayer : NetworkBehaviour
             .Where(teammate => teammate.Team == team && teammate.gameObject != this.gameObject)
             .Select(teammate => teammate.GetComponent<NetworkComboPlayer>())
             .ToArray();
+
+        networkComboParticleGenerator.GenerateComboParticleindicators();
     }
 
     public List<NetworkComboPlayer> Teammates(bool includeSelf)

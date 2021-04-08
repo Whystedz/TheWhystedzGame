@@ -6,7 +6,7 @@ public class NetworkComboParticleGenerator : MonoBehaviour
 {
     [SerializeField] private GameObject particleConnectionPrefab;
 
-    private void Start()
+    public void GenerateComboParticleindicators()
     {
         var comboPlayer = transform.parent.GetComponent<NetworkComboPlayer>();
 
