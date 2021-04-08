@@ -30,22 +30,6 @@
                     "interactions": ""
                 },
                 {
-                    "name": "DropRope",
-                    "type": "Button",
-                    "id": "d45e5497-923a-4726-83a8-d1b359123056",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": ""
-                },
-                {
-                    "name": "MuteSelf",
-                    "type": "Button",
-                    "id": "3d6349d7-198f-489f-a82b-bc52c4471b2e",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": ""
-                },
-                {
                     "name": "InitiateCombo",
                     "type": "Button",
                     "id": "767a5bd7-2b5f-463b-a8c3-679bd7233bb9",
@@ -209,55 +193,11 @@
                 {
                     "name": "",
                     "id": "3175f016-2e22-489d-a7c5-2a6a0a6516fc",
-                    "path": "<Keyboard>/space",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Digging",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "1d39b373-832e-4b1d-9ef7-24409be3d479",
-                    "path": "<Gamepad>/buttonNorth",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "DropRope",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "47b810ee-9ef4-4e11-b150-0a19eb4214ad",
-                    "path": "<Keyboard>/r",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "DropRope",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "69832e5e-0d35-49d9-bd2a-89d2b0e9437b",
-                    "path": "<Gamepad>/buttonWest",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "MuteSelf",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "ce80a824-3be4-4ea0-a8b5-81b8a6f331f5",
-                    "path": "<Keyboard>/m",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "MuteSelf",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -275,7 +215,7 @@
                 {
                     "name": "",
                     "id": "9722928c-cf48-4a78-8c6d-bc89c981a17d",
-                    "path": "<Keyboard>/c",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
