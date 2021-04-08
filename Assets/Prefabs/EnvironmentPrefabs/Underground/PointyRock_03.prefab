@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8353757158528203421}
   - component: {fileID: 4918311728300438840}
   - component: {fileID: 7180335656435761650}
-  - component: {fileID: 5315864931141362642}
+  - component: {fileID: 8560013225325435711}
   m_Layer: 0
   m_Name: PointyRock_03
   m_TagString: Obstacle
@@ -82,8 +82,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &5315864931141362642
-BoxCollider:
+--- !u!64 &8560013225325435711
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -92,6 +92,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2.7166967, y: 9.404766, z: 3.213808}
-  m_Center: {x: -0.15379763, y: 4.5214024, z: -0.026208341}
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 8440724070954462346, guid: 15bf0e999aeba6f4dbe0f507fc4b7110, type: 3}

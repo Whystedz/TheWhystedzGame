@@ -11,8 +11,7 @@ GameObject:
   - component: {fileID: 5943816889069289394}
   - component: {fileID: 7337338429731909655}
   - component: {fileID: 4771424324641801437}
-  - component: {fileID: 2127323871524802537}
-  - component: {fileID: 7456985323236043806}
+  - component: {fileID: 5945933052400610610}
   m_Layer: 0
   m_Name: DoubleReef_01
   m_TagString: Obstacle
@@ -84,8 +83,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2127323871524802537
-BoxCollider:
+--- !u!64 &5945933052400610610
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -94,19 +93,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2.6698642, y: 9.409776, z: 1.8468342}
-  m_Center: {x: -0.06152004, y: 4.699236, z: -0.02345395}
---- !u!65 &7456985323236043806
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6428744795245602056}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 11.29655, y: 5.5486045, z: 12.009199}
-  m_Center: {x: -0.20724916, y: 6.6298094, z: -0.0609169}
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 7660024971690627312, guid: 7db5e642d70b3fc418c514cc737d3c6c, type: 3}

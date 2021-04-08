@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5220589785351494844}
   - component: {fileID: 9213407346580493081}
   - component: {fileID: 6356952246956550099}
-  - component: {fileID: 7553789784098214373}
+  - component: {fileID: 2275522108744956036}
   m_Layer: 0
   m_Name: WitchMushroom
   m_TagString: Obstacle
@@ -85,8 +85,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &7553789784098214373
-BoxCollider:
+--- !u!64 &2275522108744956036
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -95,9 +95,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2.3698301, y: 5.859017, z: 2.0413907}
-  m_Center: {x: -0.000618875, y: 2.910979, z: -0.18150139}
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 1437116874345133365, guid: 33e272ddd1c78ca4dbcbbfbd81079a0f, type: 3}
 --- !u!1 &7256319930703232330
 GameObject:
   m_ObjectHideFlags: 0
