@@ -47,12 +47,6 @@ public class NetworkHUDMainButtons : MonoBehaviour
     private void Update()
     {
         this.eastButtonCooldown.CurrentAmount = this.comboPlayer.GetCooldownProgress();
-
-        if (InputManager.Instance.GetMuteSelf())
-        {
-            muteToggle = !muteToggle;
-            westButtonText.text = muteToggle ? westButtonText_ToggleTrue : westButtonText_ToggleFalse;
-        }
         
         if (this.playerMovement.IsInUnderground)
             this.southButtonText.text = this.southButtonText_Climb;

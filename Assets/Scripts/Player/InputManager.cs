@@ -8,7 +8,7 @@ public class InputManager : MonoBehaviour
     [SerializeField] private PlayerInput playerInput;
 
     private HUDMainButtons HUDMainButtons;
-    public static InputManager GetInstance() => instance;
+    public static InputManager GetInstance() => Instance;
     public Vector2 GetInputMovement() => this.playerInput.PlayerControls.Movement.ReadValue<Vector2>();
     public bool GetDigging() => this.playerInput.PlayerControls.Digging.triggered;
     public bool GetInitiateCombo() => this.playerInput.PlayerControls.InitiateCombo.triggered;
