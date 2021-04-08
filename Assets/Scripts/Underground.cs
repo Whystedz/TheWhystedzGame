@@ -7,18 +7,25 @@ public class Underground : MonoBehaviour
     private float timer;
     private PlayerMovement playerMovement;
     private LoseCrystals loseCrystals;
+
+    private GameObject surface;
     private GameObject underground;
+
+    private CharacterController characterController;
+    private DiggingAndRopeInteractions diggingAndRopeInteractions;
+
     [SerializeField] private float undergroundOffset;
 
-    void Start()
+    private void Awake()
     {
-        this.timer = 0;
         this.playerMovement = this.GetComponent<PlayerMovement>();
         this.loseCrystals = this.GetComponent<LoseCrystals>();
         this.underground = GameObject.FindGameObjectWithTag("Underground");
+        this.surface = GameObject.FindGameObjectWithTag("Surface");
+        this.characterController = this.GetComponent<CharacterController>();
+        this.diggingAndRopeInteractions = GetComponent<DiggingAndRopeInteractions>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (this.playerMovement.IsMovementDisabled)
@@ -37,12 +44,23 @@ public class Underground : MonoBehaviour
 
     void Die()
     {
+        var initialPosition = this.transform.position;
+
         this.loseCrystals.LoseCrystal();
-        this.transform.position = respawnPoint.position;
+
+        var offset = initialPosition.y - this.underground.transform.position.y;
+        var revivedPosition = new Vector3(
+            respawnPoint.position.x,
+            this.surface.transform.position.y + offset,
+            respawnPoint.position.z);
+
+        this.characterController.enabled = false;
+        this.transform.position = revivedPosition;
+        this.characterController.enabled = true;
+
+        this.playerMovement.IsInUnderground = false;
+
+        this.diggingAndRopeInteractions.RefreshTileCurrentlyOn();
     }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Underground"))
-            this.loseCrystals.LoseCrystal();
-    }
+
 }

@@ -94,7 +94,8 @@ public class Tile : MonoBehaviour
 
         while (this.progress > 0)
         {
-            this.progress -= Time.deltaTime;
+            if (this.tileState == TileState.Respawning)
+                this.progress -= Time.deltaTime;
             yield return new WaitForFixedUpdate();
         }
 
@@ -216,9 +217,20 @@ public class Tile : MonoBehaviour
             1 << LayerMask.NameToLayer("Tile"));
 
         if (!hasHitTile)
-            return null;
+            return GetClosestTileWithSphereCheck(position);
 
         return hitTile.collider.transform.parent.GetComponent<Tile>();
+    }
+
+    private static Tile GetClosestTileWithSphereCheck(Vector3 position)
+    {
+        var colliders = Physics.OverlapSphere(position, 1f, 1 << LayerMask.NameToLayer("Tile"));
+
+        var closestCollider = colliders
+            .OrderBy(collider => Vector3.Distance(position, collider.transform.position))
+            .FirstOrDefault();
+
+        return closestCollider.GetComponentInParent<Tile>();
     }
 
     private void CheckObstacles()

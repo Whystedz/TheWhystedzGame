@@ -47,7 +47,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.83, y: 1, z: 6.04}
-  m_Center: {x: 0, y: -70, z: 0}
+  m_Center: {x: 0, y: -70.5, z: 0}
 --- !u!114 &2108375272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61,6 +61,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightedLadder: {fileID: 5262643398048106678}
+  upperLadder: {fileID: 6561240911794246098}
+  lowerLadder: {fileID: 7530297735328976718}
   heightToClimb: 8
 --- !u!95 &267689403713163280
 Animator:
@@ -206,9 +208,10 @@ MonoBehaviour:
   movementSpeed: 8
   IsMovementDisabled: 0
   fallingSpeed: 50
-  timeToFadeIn: 2
+  timeToFadeIn: 0.25
+  timeToFadeOut: 3
   undergroundCheckThreshold: 2
-  heightOffset: 1.3
+  heightOffset: 1.4
 --- !u!114 &6327377196063707617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,11 +225,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minDistanceToDiggableTile: 2
-  maxDistanceToDiggableTile: 1.5
+  maxDistanceToDiggableTile: 1.7
   rope: {fileID: 2108375272}
   enableDebugMode: 1
   maxDistanceToRope: 1.5
   speedTowardsRope: 6
+  isClientPlayer: 0
 --- !u!114 &5185924481443453287
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -244,6 +248,8 @@ MonoBehaviour:
   displayComboHints: 0
   canTriggerCombos: 0
   comboParticleGenerator: {fileID: 962479110066056910}
+  IsClientPlayer: 0
+  isOnClientPlayerTeam: 0
 --- !u!114 &2927167167306915266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -310,7 +316,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6c747124b41703429ac7f2bd1caacef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToDie: 20
+  timeToDie: 60
   respawnPoint: {fileID: 0}
   undergroundOffset: 2
 --- !u!114 &352302799
@@ -856,6 +862,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}
+--- !u!1 &6561240911794246098 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}
+  m_PrefabInstance: {fileID: 6327377196500167811}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5784281583677721448 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}

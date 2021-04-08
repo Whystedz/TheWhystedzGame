@@ -8,6 +8,8 @@ public class BootstrapPlayers : MonoBehaviour
     private bool hasBootstrapped;
 
     [SerializeField] private Transform playersFolder;
+    [SerializeField] private GameObject mainPlayer;
+    [SerializeField] private bool onlyEnableMainPlayer;
 
     void Update()
     {
@@ -26,10 +28,25 @@ public class BootstrapPlayers : MonoBehaviour
 
     private void BootstrapPlayersInFolder()
     {
+        if (this.onlyEnableMainPlayer)
+            EnableOnlyMainPlayer();
+        else
+            EnablePlayers();
+
+        hasBootstrapped = true;
+    }
+
+    private void EnablePlayers()
+    {
         if (this.playersFolder != null)
             foreach (Transform player in this.playersFolder)
                 player.gameObject.SetActive(true);
+    }
 
-        hasBootstrapped = true;
+    private void EnableOnlyMainPlayer()
+    {
+        foreach (Transform player in this.playersFolder)
+            player.gameObject.SetActive(false);
+        mainPlayer.SetActive(true);
     }
 }

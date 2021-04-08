@@ -11,6 +11,8 @@ public enum RopeState
 public class Rope : MonoBehaviour
 {
     [SerializeField] private GameObject highlightedLadder;
+    [SerializeField] private GameObject upperLadder;
+    [SerializeField] private GameObject lowerLadder;
     private InputManager inputManager;
     private bool inZone;
     //public bool InUse;
@@ -84,4 +86,8 @@ public class Rope : MonoBehaviour
         yield return StartCoroutine(this.playerMovement.ClimbRope(heightToClimb, this.transform.position));
         ropeState = RopeState.Saved;
     }
+
+    public GameObject GetUpperLadder() => this.upperLadder;
+    public GameObject GetLowerLadder() => this.lowerLadder;
+    public GameObject GetHighlightedLadder() => this.highlightedLadder;
 }

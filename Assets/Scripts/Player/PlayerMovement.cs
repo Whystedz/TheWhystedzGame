@@ -16,46 +16,44 @@ public class PlayerMovement : MonoBehaviour
 
     // Camera vars
     private GameObject virtualCamera;
-    private GameObject fallingCamera;
-    
-    private int tileLayerMask;
-    private int groundLayerMask;
     
     [Header("Falling")]
     [SerializeField] private float fallingSpeed = 10f;
     private bool isFalling;
     private Image blackoutImage;
-    [SerializeField] private float timeToFadeIn = 2f;
+    [SerializeField] private float timeToFadeIn = 0.25f;
+    [SerializeField] private float timeToFadeOut = 2f;
 
     public bool IsClimbing { get; private set; }
-    public bool IsInUnderground { get; private set; }
-    [SerializeField] private float undergroundCheckThreshold = 1.5f;
-    [SerializeField] private float heightOffset = 1.3f;
-
+    public bool IsInUnderground { get; set; }
+    [SerializeField] private float undergroundCheckThreshold = 2f;
+    [SerializeField] private float heightOffset = 1.4f;
     private GameObject surface;
     private GameObject underground;
 
+    private DiggingAndRopeInteractions diggingAndRopeInteractions;
+    private LoseCrystals loseCrystals;
+
     void Awake()
-    {
-        this.tileLayerMask = LayerMask.GetMask("Tile");
-        this.groundLayerMask = LayerMask.GetMask("Tile") | LayerMask.GetMask("Underground");
-        
+    {        
         this.characterController = GetComponent<CharacterController>();
-        this.fallingCamera = FindObjectsOfType<CinemachineVirtualCamera>(true)[1].gameObject;
         this.virtualCamera = FindObjectsOfType<CinemachineVirtualCamera>(true)[0].gameObject;
 
         this.virtualCamera.SetActive(true);
-        this.fallingCamera.SetActive(false);
 
         this.surface = GameObject.FindGameObjectWithTag("Surface");
         this.underground = GameObject.FindGameObjectWithTag("Underground");
+
+        this.diggingAndRopeInteractions = GetComponent<DiggingAndRopeInteractions>();
+        this.loseCrystals = GetComponent<LoseCrystals>();
 
         var blackoutImageGO = GameObject.FindGameObjectWithTag("BlackoutImage");
         if (blackoutImageGO != null)
             this.blackoutImage = blackoutImageGO.GetComponent<Image>();
         else
             Debug.LogWarning("Please add a Blackout Image (a prefab) to the GUI canvas!");
-        
+
+        IsInUnderground = false;
     }
 
     private void Start()
@@ -65,13 +63,11 @@ public class PlayerMovement : MonoBehaviour
 
     void PlayerMovementUpdate()
     {
-        CheckIfUnderground();
+        UpdateUndergroundSoundFX();
 
         CheckIfFalling();
 
-        if (this.isFalling)
-            FallingMovementUpdate();
-        else
+        if (!this.isFalling)
             RegularMovement();
     }
 
@@ -80,18 +76,12 @@ public class PlayerMovement : MonoBehaviour
         if (IsMovementDisabled)
             return;
 
-
-        // movement update, based on player input! 
-
         PlayerMovementUpdate();
     }
 
    
     private void RegularMovement()
     {
-        if (this.fallingCamera.activeSelf)
-            this.fallingCamera.SetActive(false);
-
         this.direction = new Vector3(this.inputManager.GetInputMovement().x, 0f, this.inputManager.GetInputMovement().y);
         this.characterController.Move(this.direction * Time.deltaTime * this.movementSpeed);
 
@@ -99,75 +89,32 @@ public class PlayerMovement : MonoBehaviour
             transform.forward = this.direction;
     }
 
-    private void FallingMovementUpdate()
-    {
-        if (!this.fallingCamera.activeSelf)
-            this.fallingCamera.SetActive(true);
-
-        var fallingVelocity = Vector3.down * Time.deltaTime * this.fallingSpeed;
-        this.characterController.Move(fallingVelocity);
-    }
-
     private void CheckIfFalling()
     {
-        if (IsInUnderground)
-        {
-            this.isFalling = false;
+        if (IsInUnderground || this.isFalling)
             return;
-        }
 
-        var tileColliders = Physics.OverlapSphere(transform.position, 0.01f, tileLayerMask);
-        Collider closestTileCollider = null;
+        var tileCurrentlyOn = this.diggingAndRopeInteractions.TileCurrentlyOn();
 
-        if (tileColliders.Length == 0)
-        {
-            this.isFalling = true;
-            return;
-        }
-        else if (tileColliders.Length == 1)
-        {
-            closestTileCollider = tileColliders[0];
+        this.isFalling = tileCurrentlyOn is null
+            || tileCurrentlyOn.tileState == TileState.Respawning
+            || tileCurrentlyOn.tileState == TileState.Rope;
 
-        }
-        else if (tileColliders.Length > 1)
-        {
-            closestTileCollider = GetClosestCollider(tileColliders);
-        }
-
-        var tile = closestTileCollider.transform.parent.gameObject.GetComponent<Tile>();
-        this.isFalling = tile.tileState == TileState.Respawning
-            || tile.tileState == TileState.Rope;
+        if (this.isFalling)
+            StartFalling();
     }
 
-    private void CheckIfUnderground()
+    private void StartFalling()
     {
-        var distanceToUnderground = transform.position.y - this.underground.transform.position.y;
-        distanceToUnderground = Mathf.Abs(distanceToUnderground);
-        
-        if(IsInUnderground && distanceToUnderground > this.undergroundCheckThreshold)
-            AudioManager.StopUndergroundFX();
-        else if(!IsInUnderground && distanceToUnderground <= this.undergroundCheckThreshold)
+        StartCoroutine(Fall());
+    }
+
+    private void UpdateUndergroundSoundFX()
+    {       
+        if(IsInUnderground)
             AudioManager.PlayUndergroundFX();
-        
-        IsInUnderground = distanceToUnderground <= this.undergroundCheckThreshold;
-    }
-
-    private Collider GetClosestCollider(Collider[] hitColliders)
-    {
-        var minimumDistance = Mathf.Infinity;
-        Collider closestCollider = null;
-
-        foreach (var collider in hitColliders)
-        {
-            var distance = Vector3.Distance(transform.position, collider.transform.position);
-            if (distance < minimumDistance)
-            {
-                closestCollider = collider;
-                minimumDistance = distance;
-            }
-        }
-
-        return closestCollider;
+        else
+            AudioManager.StopUndergroundFX();
     }
 
     public bool IsFalling() => this.isFalling;
@@ -177,7 +124,7 @@ public class PlayerMovement : MonoBehaviour
     {
         IsClimbing = true;
 
-        StartCoroutine(FadeIn());
+        StartCoroutine(FadeOut());
         while (this.transform.position.y < underground.transform.position.y + height)
         {
             this.characterController.Move(Vector3.up * Time.deltaTime * this.movementSpeed);
@@ -185,29 +132,56 @@ public class PlayerMovement : MonoBehaviour
         }
         yield return new WaitForSeconds(0.2f);
         this.transform.position = surfacePosition + Vector3.up * this.heightOffset;
-        yield return StartCoroutine(FadeOut());
+        yield return StartCoroutine(FadeIn());
 
         IsClimbing = false;
-    }
-
-    public IEnumerator FadeIn()
-    {
-        for (float opacity = 0; opacity <= timeToFadeIn; opacity += Time.deltaTime)
-        {
-            // set color with i as alpha
-            this.blackoutImage.color = new Color(0, 0, 0, opacity);
-            yield return null;
-        }
+        this.IsMovementDisabled = false;
+        IsInUnderground = false;
     }
 
     public IEnumerator FadeOut()
     {
-        for (float opacity = timeToFadeIn; opacity >= 0; opacity -= Time.deltaTime)
+        for (float opacity = 0; opacity <= this.timeToFadeOut; opacity += Time.deltaTime)
         {
-            // set color with i as alpha
             this.blackoutImage.color = new Color(0, 0, 0, opacity);
             yield return null;
         }
+        this.blackoutImage.color = new Color(0, 0, 0, 1);
     }
 
+    public IEnumerator FadeIn()
+    {
+        for (float opacity = this.timeToFadeIn; opacity >= 0; opacity -= Time.deltaTime)
+        {
+            this.blackoutImage.color = new Color(0, 0, 0, opacity);
+            yield return null;
+        }
+        this.blackoutImage.color = new Color(0, 0, 0, 0);
+    }
+
+    public IEnumerator Fall()
+    {
+        var initialPosition = this.transform.position;
+
+        yield return StartCoroutine(FadeOut());
+
+        var offset = initialPosition.y - this.surface.transform.position.y;
+        var fallenPosition = new Vector3(
+            initialPosition.x,
+            this.underground.transform.position.y + offset,
+            initialPosition.z);
+
+        this.characterController.enabled = false;
+        this.transform.position = fallenPosition;
+        this.characterController.enabled = true;
+
+        this.isFalling = false;
+        IsInUnderground = true;
+
+        this.virtualCamera.SetActive(false);
+        this.virtualCamera.SetActive(true);
+
+        this.loseCrystals.LoseCrystal();
+        yield return StartCoroutine(FadeIn());
+    }
 }
