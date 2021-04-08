@@ -6166,14 +6166,6 @@ PrefabInstance:
       propertyPath: m_AssetId
       value: 805356bf35e0adf49a29681cc49c3ad6
       objectReference: {fileID: 0}
-    - target: {fileID: 1514872325810132585, guid: 805356bf35e0adf49a29681cc49c3ad6, type: 3}
-      propertyPath: syncInterval
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1514872325810132585, guid: 805356bf35e0adf49a29681cc49c3ad6, type: 3}
-      propertyPath: timeToRespawn
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 1514872325810132586, guid: 805356bf35e0adf49a29681cc49c3ad6, type: 3}
       propertyPath: m_Name
       value: TileManager (Network)
@@ -7422,6 +7414,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SurfacePlane
       objectReference: {fileID: 0}
+    - target: {fileID: 4692303708131121389, guid: a32faa6f1d668164ea4a8ba35b89c09e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4692303708131121393, guid: a32faa6f1d668164ea4a8ba35b89c09e, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -7468,6 +7464,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a32faa6f1d668164ea4a8ba35b89c09e, type: 3}
+--- !u!1 &452868523 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4692303708131121389, guid: a32faa6f1d668164ea4a8ba35b89c09e, type: 3}
+  m_PrefabInstance: {fileID: 452868522}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &459151832 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4606009871562671823, guid: 642292548c8265b448022a15a54a66ca, type: 3}
@@ -20722,6 +20723,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UndergroundPlane
       objectReference: {fileID: 0}
+    - target: {fileID: 6474438845002051393, guid: 0582bd01cfabf3747bca36a295b0b2d4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6474438845002051421, guid: 0582bd01cfabf3747bca36a295b0b2d4, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -20768,6 +20773,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0582bd01cfabf3747bca36a295b0b2d4, type: 3}
+--- !u!1 &1289464162 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6474438845002051393, guid: 0582bd01cfabf3747bca36a295b0b2d4, type: 3}
+  m_PrefabInstance: {fileID: 1289464161}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1290937443 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8342663070043319196, guid: bde254494c05e0f48b8d81a3eb55464a, type: 3}
@@ -35322,7 +35332,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 596773596714331827, guid: 3476ff742f97a8840a6c91fc91e9ac44, type: 3}
       propertyPath: sceneId
-      value: 1579511818
+      value: 4062684429
       objectReference: {fileID: 0}
     - target: {fileID: 6332428031633548185, guid: 3476ff742f97a8840a6c91fc91e9ac44, type: 3}
       propertyPath: m_RootOrder
@@ -35381,6 +35391,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 464025355}
     m_Modifications:
+    - target: {fileID: 4239681722407972031, guid: 5a549ebdab5e9d14b9fbeabdd89ea7b6, type: 3}
+      propertyPath: sceneId
+      value: 119296571
+      objectReference: {fileID: 0}
+    - target: {fileID: 8993126948693620389, guid: 5a549ebdab5e9d14b9fbeabdd89ea7b6, type: 3}
+      propertyPath: surfacePlane
+      value: 
+      objectReference: {fileID: 452868523}
+    - target: {fileID: 8993126948693620389, guid: 5a549ebdab5e9d14b9fbeabdd89ea7b6, type: 3}
+      propertyPath: undergroundPlane
+      value: 
+      objectReference: {fileID: 1289464162}
     - target: {fileID: 8993126948693620390, guid: 5a549ebdab5e9d14b9fbeabdd89ea7b6, type: 3}
       propertyPath: m_RootOrder
       value: 3

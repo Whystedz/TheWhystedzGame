@@ -32,8 +32,8 @@ public class NetworkPlayerMovement : NetworkBehaviour
     [SerializeField] private float undergroundCheckThreshold = 1.5f;
     [SerializeField] private float heightOffset = 1.3f;
 
-    [SerializeField] private GameObject surface;
-    [SerializeField] private GameObject underground;
+    private GameObject surface;
+    private GameObject underground;
 
     private PlayerAudio playerAudio;
 
@@ -45,6 +45,9 @@ public class NetworkPlayerMovement : NetworkBehaviour
         this.characterController = GetComponent<CharacterController>();
 
         SetCamera();
+
+        this.surface = GameObject.FindGameObjectWithTag("Surface");
+        this.underground = GameObject.FindGameObjectWithTag("Underground");
 
         var blackoutImageGO = GameObject.FindGameObjectWithTag("BlackoutImage");
         if (blackoutImageGO != null)

@@ -2,7 +2,7 @@ using System.Linq;
 using UnityEngine;
 using Mirror;
 
-public class NetworkCrystalManager : MonoBehaviour
+public class NetworkCrystalManager : NetworkBehaviour
 {
     [SerializeField] private GameObject crystalPrefab;
 
@@ -20,12 +20,29 @@ public class NetworkCrystalManager : MonoBehaviour
     [SerializeField] private float radiusOfForce = 10.0f;
     [SerializeField] private float power = 30.0f;
 
-    [SerializeField] private PlaneBounds surface;
-    [SerializeField] public PlaneBounds Underground;
+    [SerializeField] private GameObject surfacePlane;
+    [SerializeField] private GameObject undergroundPlane;
+
+    private PlaneBounds surface;
+    public PlaneBounds Underground;
 
     private int totalCrystalsInstantiated;
     private int currentCrystalsSurface;
     private int currentCrystalsUnderground;
+
+    public override void OnStartServer()
+    {
+        Instantiate(surfacePlane);
+        Instantiate(undergroundPlane);
+    }
+
+    void Start()
+    {
+        this.surface = GameObject.FindGameObjectWithTag("Surface")
+            .GetComponent<PlaneBounds>();
+        Underground = GameObject.FindGameObjectWithTag("Underground")
+            .GetComponent<PlaneBounds>();
+    }
 
     [ServerCallback]
     void Update()
@@ -66,7 +83,6 @@ public class NetworkCrystalManager : MonoBehaviour
         var crystal = Instantiate(this.crystalPrefab, this.transform);
 
         crystal.transform.position = chosenPosition;
-        crystal.GetComponent<NetworkCollectable>().UpdateRestPosition(chosenPosition);
 
         NetworkServer.Spawn(crystal);
 
@@ -140,7 +156,7 @@ public class NetworkCrystalManager : MonoBehaviour
             var spawnPos = player.transform.position + new Vector3(randomizedPos.x, crystalVerticalOffsetHeight, randomizedPos.y);
             var crystal = Instantiate(this.crystalPrefab, spawnPos, Quaternion.identity);
             crystal.transform.parent = this.transform;
-            crystal.GetComponent<NetworkCrystal>().IsExploding = true;
+            crystal.GetComponent<NetworkCrystal>().Explode();
             crystal.GetComponent<CapsuleCollider>().isTrigger = false;
 
             NetworkServer.Spawn(crystal);

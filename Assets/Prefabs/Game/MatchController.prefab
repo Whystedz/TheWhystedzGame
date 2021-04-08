@@ -125,7 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d63edc9f9ece4b64ea796310589d93ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crystalPrefab: {fileID: 7863378476046910972, guid: fb5c99fa93736c340bbec4746c4a408e, type: 3}
+  crystalPrefab: {fileID: 7863378476046910972, guid: 2c779e48395786f4486a47292e6e4c6e, type: 3}
   maxCrystalsSurface: 100
   maxCrystalsGame: 500
   surfaceBoundsOffset: 5

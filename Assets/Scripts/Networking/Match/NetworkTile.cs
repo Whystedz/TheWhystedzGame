@@ -23,73 +23,56 @@ public class NetworkTile : MonoBehaviour
     internal TileHighlightState tileHighlightState;
 
     TileManager tileManager = TileManager.GetInstance();
+    private static GameObject surface;
+    private static GameObject underground;
 
     private void Start()
     {
         this.meshRenderer = GetComponentInChildren<MeshRenderer>();
         this.meshRenderer.material = this.normalMaterial;
 
+        if (surface is null)
+            surface = GameObject.FindGameObjectWithTag("Surface");
+        if (underground is null)
+            underground = GameObject.FindGameObjectWithTag("Underground");
+
         CheckObstacles();
     }
 
-    void Update()
-    {
-        ChangeMaterialAccordingToCurrentState();
+    public void DigTile() => StartCoroutine(WaitUntilBroken());
 
-        switch (TileInfo.TileState)
+    private IEnumerator WaitUntilBroken()
+    {
+        //this.meshRenderer.material = unstableMaterial;
+
+        TileInfo.Progress = TileInfo.TimeToBreak; 
+        while (TileInfo.Progress > 0)
         {
-            case TileState.Normal:
-                break;
-            case TileState.Unstable:
-                UnstableUpdate();
-                break;
-            case TileState.Respawning:
-                RespawningUpdate();
-                break;
-            case TileState.Rope:
-                break;
-            case TileState.Unbreakable:
-                break;
+            TileInfo.Progress -= Time.deltaTime;
+            yield return new WaitForFixedUpdate();
         }
-    }
 
-    private void UnstableUpdate()
-    {
-        TileInfo.Progress -= Time.deltaTime;
-
-        if (TileInfo.Progress <= 0)
-            Break();
+        Break();
     }
 
     private void Break()
     {
-        StartCoroutine(PlayBreakingAnimation());
-
-        this.meshRenderer.material = destroyedMaterial;
         this.tileManager.SetTileState(TileInfo, TileState.Respawning, TileInfo.TimeToRespawn);
+        this.meshRenderer.material = destroyedMaterial;
+        StartCoroutine(WaitUntilRespawn());
     }
 
-    private IEnumerator PlayBreakingAnimation()
+     private IEnumerator WaitUntilRespawn()
     {
-        var breakingAnimationProgress = TileInfo.TimeOfBreakingAnimation;
-        var breakingAnimationSpeed = 10f / TileInfo.TimeOfBreakingAnimation;
+        TileInfo.Progress = TileInfo.TimeToRespawn;
 
-        while (breakingAnimationProgress > 0)
+        while (TileInfo.Progress > 0)
         {
-            if (TileInfo.TileState == TileState.Normal)
-                yield break;
-
-            breakingAnimationProgress -= Time.deltaTime;
-            yield return new WaitForEndOfFrame();
+            TileInfo.Progress -= Time.deltaTime;
+            yield return new WaitForFixedUpdate();
         }
-    }
 
-    private void RespawningUpdate()
-    {
-        TileInfo.Progress -= Time.deltaTime;
-
-        if (TileInfo.Progress <= 0)
-            Respawn();
+        Respawn();
     }
 
     public void Respawn()
@@ -99,12 +82,27 @@ public class NetworkTile : MonoBehaviour
         this.tileManager.ResetTile(TileInfo);
     }
 
+    public void ResetHighlighting()
+    {
+        this.tileHighlightState = TileHighlightState.NoHighlight;
+
+        ChangeMaterialAccordingToCurrentState();
+    }
+
+    public void ResetComboHighlighting()
+    {
+        if (this.tileHighlightState == TileHighlightState.ComboHighlight)
+            ResetHighlighting();
+    }
+
     public void HighlightTileSimpleDigPreview()
     {
         if (TileInfo.TileState != TileState.Normal)
             return;
 
         this.tileHighlightState = TileHighlightState.SimpleHighlight;
+
+        ChangeMaterialAccordingToCurrentState();
     }
 
     public void HighlightTileComboDigPreview()
@@ -112,7 +110,12 @@ public class NetworkTile : MonoBehaviour
         if (TileInfo.TileState != TileState.Normal)
             return;
 
+        if (this.tileHighlightState == TileHighlightState.SimpleHighlight)
+            return;
+
         this.tileHighlightState = TileHighlightState.ComboHighlight;
+
+        ChangeMaterialAccordingToCurrentState();
     }
 
     public void HighlightTileRopePreview()
@@ -121,6 +124,8 @@ public class NetworkTile : MonoBehaviour
             return;
 
         this.tileHighlightState = TileHighlightState.RopeHighlight;
+
+        ChangeMaterialAccordingToCurrentState();
     }
 
     private void ChangeMaterialAccordingToCurrentState()
@@ -140,8 +145,6 @@ public class NetworkTile : MonoBehaviour
                 ChangeMaterialForRopePreviewHighlight();
                 break;
         }
-
-        this.tileHighlightState = TileHighlightState.NoHighlight;
     }
 
     private void ChangeMaterialForRopePreviewHighlight() => this.meshRenderer.material = ropeMaterial;
@@ -172,20 +175,24 @@ public class NetworkTile : MonoBehaviour
         }
     }
 
-    // TODO let's use this static method call for all the other similar 
-    // calls we have been doing lately in seperate classes! 
     public static NetworkTile FindTileAtPosition(Vector3 position)
     {
-        var colliders = Physics.OverlapSphere(position, 0.1f);
-        if (colliders.Count() == 0) return null;
+        var distanceToSurface = Mathf.Abs(position.y - surface.transform.position.y);
+        var distanceToUnderground = Mathf.Abs(position.y - underground.transform.position.y);
 
-        var tile = colliders
-            .Where(collider => collider.GetComponentInParent<NetworkTile>() != null)
-            .Select(collider => collider.GetComponentInParent<NetworkTile>())
-            .OrderBy(tile => Vector3.Distance(position, tile.transform.position))
-            .First();
+        if (distanceToUnderground < distanceToSurface)
+            return null;
 
-        return tile;
+        var hasHitTile = Physics.Raycast(position + Vector3.down * 5f,
+            Vector3.up,
+            out RaycastHit hitTile,
+            10f,
+            1 << LayerMask.NameToLayer("Tile"));
+
+        if (!hasHitTile)
+            return null;
+
+        return hitTile.collider.transform.parent.GetComponent<NetworkTile>();
     }
 
     private void CheckObstacles()
@@ -204,12 +211,12 @@ public class NetworkTile : MonoBehaviour
 
     protected void SetUnbreakable()
     {
-        if (this.TileInfo.TileState == TileState.Unbreakable)
+        if (TileInfo.TileState == TileState.Unbreakable)
             return;
 
-        this.TileInfo.TileState = TileState.Unbreakable;
+        TileInfo.TileState = TileState.Unbreakable;
         this.meshRenderer.material = this.unbreakableMaterial;
     }
 
-    internal bool IsDiggable() => this.TileInfo.TileState == TileState.Normal;
+    internal bool IsDiggable() => TileInfo.TileState == TileState.Normal;
 }

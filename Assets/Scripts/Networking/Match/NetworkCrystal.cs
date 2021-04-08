@@ -10,39 +10,30 @@ public class NetworkCrystal : NetworkCollectable
     [SerializeField] private float extraForceIfLandedWrong = 3f;
     private Rigidbody rb;
 
-    new protected void Awake()
+    void Awake()
     {
         this.crystalManager = FindObjectOfType<NetworkCrystalManager>();
         rb = this.GetComponent<Rigidbody>();
-        base.Awake();
     }
 
-    [ServerCallback]
-    private new void Update()
-    {
-        if (this.IsExploding)
-        {
-            ExplodingUpdate();
-            return;
-        }
-
-        base.Update();
-        
-    }
-
-    private void ExplodingUpdate()
+    private IEnumerator ExplosionUpdate()
     {
         var distanceFromUndergroundPlane = Mathf.Abs(this.transform.position.y - crystalManager.Underground.transform.position.y);
-        if (distanceFromUndergroundPlane < this.crystalManager.GetHeightOffset())
-            FinishExplosion();
+
+        while (distanceFromUndergroundPlane > this.crystalManager.GetHeightOffset())
+        {
+            yield return new WaitForFixedUpdate();
+            distanceFromUndergroundPlane = Mathf.Abs(this.transform.position.y - crystalManager.Underground.transform.position.y);
+        }
+
+        FinishExplosion();
     }
 
     private void FinishExplosion()
     {
         this.crystalManager.OnDroppedCrystal(this);
         this.IsExploding = false;
-        Vector3 newRestPostion = new Vector3(this.transform.position.x, this.crystalManager.Underground.transform.position.y + this.crystalManager.GetHeightOffset(), this.transform.position.z);
-        this.UpdateRestPosition(newRestPostion);
+        
         rb.useGravity = false;
         rb.isKinematic = true;
         this.GetComponent<CapsuleCollider>().isTrigger = true;
@@ -72,4 +63,7 @@ public class NetworkCrystal : NetworkCollectable
             }
         }
     }
+
+    [ServerCallback]
+    internal void Explode() => StartCoroutine(ExplosionUpdate());
 }

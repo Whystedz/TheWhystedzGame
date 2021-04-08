@@ -20,7 +20,6 @@ public class TileManager : NetworkBehaviour
 
     [SerializeField] private float timeToBreak = 3f;
     [SerializeField] private float timeToRespawn = 5f;
-    [SerializeField] private float timeOfBreakingAnimation = 5f;
 
     private PlayerMovement playerMovement;
 
@@ -50,7 +49,7 @@ public class TileManager : NetworkBehaviour
                 TileInfo tile = new TileInfo
                 {
                     TimeToRespawn = this.timeToRespawn,
-                    TimeOfBreakingAnimation = this.timeOfBreakingAnimation,
+                    TimeToBreak = this.timeToBreak,
                     Progress = 0f,
                     XIndex = xIndex,
                     ZIndex = zIndex,
@@ -181,7 +180,10 @@ public class TileManager : NetworkBehaviour
         switch (op)
         {
             case SyncList<TileInfo>.Operation.OP_SET:
-                this.transform.GetChild(index).GetComponent<NetworkTile>().TileInfo = newTile;
+                var tile = this.transform.GetChild(index).GetComponent<NetworkTile>();
+                tile.TileInfo = newTile;
+                if(newTile.TileState == TileState.Unstable)
+                    tile.DigTile();
                 break;
         }
     }

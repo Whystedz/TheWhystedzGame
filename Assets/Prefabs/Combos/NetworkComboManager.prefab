@@ -45,10 +45,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  highlightTolerance: 5
-  triggerExtendedTeamCombos: 1
-  lineDistance: 10
-  lineThickness: 2
-  maxTilesInLineCombo: 20
-  triangleDistance: 15
-  maxTilesInTriangleCombo: 64
+  HighlightTolerance: 5
+  ShowExtendedTeamCombos: 1
+  TriggerExtendedTeamCombos: 1
+  LineDistance: 10
+  LineThickness: 2
+  MaxTilesInLineCombo: 20
+  TriangleDistance: 15
+  MaxTilesInTriangleCombo: 64

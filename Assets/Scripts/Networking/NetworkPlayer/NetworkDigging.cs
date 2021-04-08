@@ -8,8 +8,11 @@ using Mirror;
 public class NetworkDigging : NetworkBehaviour
 {
     [SerializeField] private Animator animator;
+    private PlayerAudio playerAudio;
+
     [SerializeField] private float minDistanceToDiggableTile = 1.0f;
     [SerializeField] private float maxDistanceToDiggableTile = 1.0f;
+
     private int tileLayerMask;
     private NetworkPlayerMovement playerMovement;
 
@@ -18,9 +21,16 @@ public class NetworkDigging : NetworkBehaviour
     [SerializeField] private NetworkRope rope;
     [SyncVar]
     public RopeState RopeState = RopeState.Normal;
+
     [SerializeField] private bool enableDebugMode = true;
     [SerializeField] private float maxDistanceToRope = 1.5f;
     [SerializeField] private float speedTowardsRope = 6.0f;
+
+    [SerializeField] private bool isClientPlayer;
+
+    public NetworkTile Tile { get; private set; }
+    private NetworkTile lastTileHighlighted;
+    private NetworkTile tileCurrentlyOn;
 
     private TileManager tileManager;
 
@@ -29,12 +39,17 @@ public class NetworkDigging : NetworkBehaviour
         this.tileLayerMask = LayerMask.GetMask("Tile");
         this.playerMovement = this.GetComponent<NetworkPlayerMovement>();
         this.tileManager = TileManager.GetInstance();
+
+        if (base.hasAuthority)
+            isClientPlayer = true;
     }
 
     void Update()
     {
         if (base.hasAuthority)
         {
+            this.tileCurrentlyOn = NetworkTile.FindTileAtPosition(transform.position);
+            
             if (this.playerMovement.IsInUnderground)
                 return;
 
@@ -49,40 +64,50 @@ public class NetworkDigging : NetworkBehaviour
 
             var closestCollider = GetClosestCollider(hits);
 
-            if (closestCollider == null)
-                return;
-
-            var hitGameObject = closestCollider.transform.parent.gameObject;
-
-            var tile = hitGameObject.GetComponent<NetworkTile>();
-
-            if (this.playerMovement.IsFalling())
+            if (closestCollider is null)
             {
-                CmdUseRope(false);
-                CmdSetTileState(tile.TileInfo, TileState.Respawning, tile.TileInfo.Progress);
+                if (this.lastTileHighlighted != null)
+                    this.lastTileHighlighted.ResetHighlighting();
                 return;
             }
 
-            switch (tile.TileInfo.TileState)
+            var hitGameObject = closestCollider.transform.parent.gameObject;
+
+            Tile = hitGameObject.GetComponent<NetworkTile>();
+
+            if (this.playerMovement.IsFalling() && this.rope != null)
+            {
+                CmdUseRope(false);
+                CmdSetTileState(Tile.TileInfo, TileState.Respawning, Tile.TileInfo.Progress);
+                return;
+            }
+
+            switch (Tile.TileInfo.TileState)
             {
                 case TileState.Normal:
-                    tile.HighlightTileSimpleDigPreview();
+                    Tile.HighlightTileSimpleDigPreview();
+
+                    if (this.lastTileHighlighted != null
+                        && this.lastTileHighlighted != Tile)
+                        this.lastTileHighlighted.ResetHighlighting();
+
+                    this.lastTileHighlighted = Tile;
                     break;
                 case TileState.Unstable:
                     break;
                 case TileState.Respawning:
-                    tile.HighlightTileRopePreview();
+                    Tile.HighlightTileRopePreview();
                     break;
                 case TileState.Rope:
                     break;
             }
 
             if (InputManager.Instance.GetDigging())
-                InteractWithTile(tile);
+                InteractWithTile(Tile);
 
-            if (RopeState == RopeState.Saved)
+            if (this.rope != null && RopeState == RopeState.Saved)
             {
-                CmdSetTileState(tile.TileInfo, TileState.Respawning, 0f);
+                CmdSetTileState(Tile.TileInfo, TileState.Respawning, 0f);
                 StartCoroutine(RemoveRope());
             }
         }
@@ -208,4 +233,6 @@ public class NetworkDigging : NetworkBehaviour
         CmdUseRope(true);
         yield return null;
     }
+
+    public NetworkTile TileCurrentlyOn() => this.tileCurrentlyOn;
 }

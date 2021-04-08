@@ -43,7 +43,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d63edc9f9ece4b64ea796310589d93ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crystalPrefab: {fileID: 7863378476046910972, guid: fb5c99fa93736c340bbec4746c4a408e, type: 3}
+  syncMode: 0
+  syncInterval: 0.1
+  crystalPrefab: {fileID: 7863378476046910972, guid: 2c779e48395786f4486a47292e6e4c6e, type: 3}
   maxCrystalsSurface: 100
   maxCrystalsGame: 500
   surfaceBoundsOffset: 5
@@ -53,5 +55,6 @@ MonoBehaviour:
   radiusOfSpawnCircle: 0.5
   radiusOfForce: 10
   power: 30
-  surface: {fileID: 1786932440784084075, guid: a32faa6f1d668164ea4a8ba35b89c09e, type: 3}
-  Underground: {fileID: 4490923608680112070, guid: 0582bd01cfabf3747bca36a295b0b2d4, type: 3}
+  surfacePlane: {fileID: 4692303708131121389, guid: a32faa6f1d668164ea4a8ba35b89c09e, type: 3}
+  undergroundPlane: {fileID: 6474438845002051393, guid: 0582bd01cfabf3747bca36a295b0b2d4, type: 3}
+  Underground: {fileID: 0}

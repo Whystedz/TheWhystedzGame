@@ -50,7 +50,7 @@ public struct MatchPlayerData
 public struct TileInfo
 {
     public float TimeToRespawn;
-    public float TimeOfBreakingAnimation;
+    public float TimeToBreak;
     public float Progress;
     public int XIndex;
     public int ZIndex;
@@ -58,7 +58,7 @@ public struct TileInfo
 }
 
 [Serializable]
-public struct ComboHintInfo
+public class ComboHintInfo
 {
     public NetworkComboPlayer OriginPlayer;
     public NetworkComboPlayer TargetPlayer;
@@ -73,7 +73,6 @@ public struct ComboInfo
     public List<NetworkComboPlayer> Players;
     public Vector3 Center;
     public ComboType ComboType;
-    public NetworkComboPlayer InitiatingPlayer;
     public bool IsTriggered;
 }
 
