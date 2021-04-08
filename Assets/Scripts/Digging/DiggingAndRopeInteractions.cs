@@ -28,7 +28,14 @@ public class DiggingAndRopeInteractions : MonoBehaviour
         this.playerAudio = this.GetComponent<PlayerAudio>();
     }
 
-    void Start() => inputManager = InputManager.GetInstance();
+    void Start()
+    {
+        RefreshTileCurrentlyOn();
+        inputManager = InputManager.GetInstance();
+    }
+
+    public void RefreshTileCurrentlyOn() =>
+        this.tileCurrentlyOn = Tile.FindTileAtPosition(transform.position);
 
     void Update()
     {

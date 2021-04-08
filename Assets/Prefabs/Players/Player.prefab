@@ -208,7 +208,8 @@ MonoBehaviour:
   movementSpeed: 8
   IsMovementDisabled: 0
   fallingSpeed: 50
-  timeToFadeIn: 2
+  timeToFadeIn: 0.25
+  timeToFadeOut: 3
   undergroundCheckThreshold: 2
   heightOffset: 1.4
 --- !u!114 &6327377196063707617
@@ -315,7 +316,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6c747124b41703429ac7f2bd1caacef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToDie: 20
+  timeToDie: 60
   respawnPoint: {fileID: 0}
   undergroundOffset: 2
 --- !u!114 &352302799
