@@ -203,7 +203,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ce0b76c51c4c234794c20f12366aced, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 8
+  movementSpeed: 0.5
+  rotationSpeed: 3
   IsMovementDisabled: 0
   fallingSpeed: 50
   timeToFadeIn: 2
@@ -227,6 +228,7 @@ MonoBehaviour:
   enableDebugMode: 1
   maxDistanceToRope: 1.5
   speedTowardsRope: 6
+  isClientPlayer: 0
 --- !u!114 &5185924481443453287
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -244,6 +246,8 @@ MonoBehaviour:
   displayComboHints: 0
   canTriggerCombos: 0
   comboParticleGenerator: {fileID: 962479110066056910}
+  IsClientPlayer: 0
+  isOnClientPlayerTeam: 0
 --- !u!114 &2927167167306915266
 MonoBehaviour:
   m_ObjectHideFlags: 0

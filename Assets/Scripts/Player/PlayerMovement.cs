@@ -9,9 +9,10 @@ public class PlayerMovement : MonoBehaviour
     private InputManager inputManager;
 
     [Header("Movement")]
-    [SerializeField]
-    private float movementSpeed = 3f;
+    [SerializeField] private float movementSpeed = 0.5f;
+    [SerializeField] private float rotationSpeed = 3f;
     private Vector3 direction;
+    private Vector3 rotationDirection;
     public bool IsMovementDisabled;
 
     // Camera vars
@@ -93,10 +94,12 @@ public class PlayerMovement : MonoBehaviour
             this.fallingCamera.SetActive(false);
 
         this.direction = new Vector3(this.inputManager.GetInputMovement().x, 0f, this.inputManager.GetInputMovement().y);
-        this.characterController.Move(this.direction * Time.deltaTime * this.movementSpeed);
+        this.rotationDirection = Vector3.RotateTowards(transform.forward, this.direction, this.rotationSpeed * Time.deltaTime, 0.0f);
+        
+        if(this.direction != Vector3.zero)
+            transform.rotation = Quaternion.LookRotation(this.rotationDirection);
 
-        if (this.direction != Vector3.zero)
-            transform.forward = this.direction;
+        this.characterController.Move(transform.forward * this.direction.magnitude * this.movementSpeed);
     }
 
     private void FallingMovementUpdate()
