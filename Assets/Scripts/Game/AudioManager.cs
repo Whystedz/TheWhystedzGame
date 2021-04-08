@@ -49,7 +49,7 @@ public class AudioManager : MonoBehaviour
 
         this.mainMixer.GetFloat("musicCutoff", out initialCutoff);
         
-        StartGameAudio();
+        // StartGameAudio(); TODO: Play different audio for different scenes.
     }
 
     private static void StartGameAudio()
