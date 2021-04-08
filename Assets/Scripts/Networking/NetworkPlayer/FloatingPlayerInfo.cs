@@ -18,7 +18,8 @@ public class FloatingPlayerInfo : NetworkBehaviour
 
     public override void OnStartLocalPlayer()
     {
-        string name = "Player" + Random.Range(100, 999);
+        //string name = "Player" + Random.Range(100, 999);
+        string name = LobbyCanvasController.Instance.displayName;
         CmdSetupPlayer(name);
     }
 
