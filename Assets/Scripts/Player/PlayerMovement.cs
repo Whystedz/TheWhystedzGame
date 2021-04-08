@@ -135,7 +135,7 @@ public class PlayerMovement : MonoBehaviour
         yield return StartCoroutine(FadeIn());
 
         IsClimbing = false;
-
+        this.IsMovementDisabled = false;
         IsInUnderground = false;
     }
 
@@ -146,6 +146,7 @@ public class PlayerMovement : MonoBehaviour
             this.blackoutImage.color = new Color(0, 0, 0, opacity);
             yield return null;
         }
+        this.blackoutImage.color = new Color(0, 0, 0, 1);
     }
 
     public IEnumerator FadeIn()
@@ -155,6 +156,7 @@ public class PlayerMovement : MonoBehaviour
             this.blackoutImage.color = new Color(0, 0, 0, opacity);
             yield return null;
         }
+        this.blackoutImage.color = new Color(0, 0, 0, 0);
     }
 
     public IEnumerator Fall()

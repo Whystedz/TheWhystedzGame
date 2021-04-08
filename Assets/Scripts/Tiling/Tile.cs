@@ -94,7 +94,8 @@ public class Tile : MonoBehaviour
 
         while (this.progress > 0)
         {
-            this.progress -= Time.deltaTime;
+            if (this.tileState == TileState.Respawning)
+                this.progress -= Time.deltaTime;
             yield return new WaitForFixedUpdate();
         }
 

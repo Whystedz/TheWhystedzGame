@@ -90,6 +90,11 @@ public class DiggingAndRopeInteractions : MonoBehaviour
                 break;
             case TileState.Respawning:
                 Tile.HighlightTileRopePreview();
+                if (this.lastTileHighlighted != null
+                    && this.lastTileHighlighted != Tile)
+                    this.lastTileHighlighted.ResetHighlighting();
+
+                this.lastTileHighlighted = Tile;
                 break;
             case TileState.Rope:
                 break;
@@ -150,6 +155,7 @@ public class DiggingAndRopeInteractions : MonoBehaviour
 
     public IEnumerator ThrowRope(Rope rope, Tile tile)
     {
+        tile.ResetHighlighting();
         var ropeObject = rope.gameObject;
         playerAudio.PlayRopeAudio();
         Vector3 tileSurfacePosition = new Vector3(tile.transform.position.x, this.transform.position.y, tile.transform.position.z);
