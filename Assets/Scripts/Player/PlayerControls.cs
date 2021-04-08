@@ -17,12 +17,6 @@ public class PlayerControls : MonoBehaviour
         if (inputManager.GetInitiateCombo())
             Debug.Log("InitiateCombo button pressed (C/circle)");
 
-        if (inputManager.GetMuteSelf())
-            Debug.Log("MuteSelf button pressed (M/squre)");
-
-        if (inputManager.GetRope())
-            Debug.Log("Rope button pressed (R/triangle)");
-
         if (inputManager.GetMainMenu())
             Debug.Log("MainMenu button pressed (X/start/option)");
     }

@@ -26,11 +26,6 @@ public class HUDMainButtons : MonoBehaviour
     [SerializeField] private string southButtonText_RemoveRope;
     [SerializeField] private string southButtonText_Climb;
 
-    [SerializeField] private TMP_Text westButtonText;
-    [SerializeField] private string westButtonText_ToggleTrue;
-    [SerializeField] private string westButtonText_ToggleFalse;
-    private bool muteToggle;
-
     public Color CanUseButtonColor;
     public Color CanNotUseButtonColor;
 
@@ -50,12 +45,6 @@ public class HUDMainButtons : MonoBehaviour
     private void Update()
     {
         this.eastButtonCooldown.CurrentAmount = this.comboPlayer.GetCooldownProgress();
-
-        if (inputManager.GetMuteSelf())
-        {
-            muteToggle = !muteToggle;
-            westButtonText.text = muteToggle ? westButtonText_ToggleTrue : westButtonText_ToggleFalse;
-        }
         
         if (this.playerMovement.IsInUnderground)
             this.southButtonText.text = this.southButtonText_Climb;
