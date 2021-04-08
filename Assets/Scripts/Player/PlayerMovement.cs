@@ -27,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
     public bool IsClimbing { get; private set; }
     public bool IsInUnderground { get; set; }
     [SerializeField] private float undergroundCheckThreshold = 2f;
-    [SerializeField] private float heightOffset = 1.4f;
+    [SerializeField] private float heightOffset = 1f;
     private GameObject surface;
     private GameObject underground;
 
@@ -91,7 +91,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void CheckIfFalling()
     {
-        if (IsInUnderground || this.isFalling)
+        if (this.IsInUnderground || this.isFalling)
             return;
 
         var tileCurrentlyOn = this.diggingAndRopeInteractions.TileCurrentlyOn();
@@ -124,7 +124,7 @@ public class PlayerMovement : MonoBehaviour
     {
         IsClimbing = true;
 
-        StartCoroutine(FadeOut());
+        StartCoroutine(FadeOut(2f));
         while (this.transform.position.y < underground.transform.position.y + height)
         {
             this.characterController.Move(Vector3.up * Time.deltaTime * this.movementSpeed);
@@ -132,16 +132,17 @@ public class PlayerMovement : MonoBehaviour
         }
         yield return new WaitForSeconds(0.2f);
         this.transform.position = surfacePosition + Vector3.up * this.heightOffset;
-        yield return StartCoroutine(FadeIn());
-
+        yield return StartCoroutine(FadeIn(2f));
+        var tileCurrentlyOn = this.diggingAndRopeInteractions.TileCurrentlyOn();
+        tileCurrentlyOn.tileState = TileState.Normal;
         IsClimbing = false;
         this.IsMovementDisabled = false;
-        IsInUnderground = false;
+        this.IsInUnderground = false;
     }
 
-    public IEnumerator FadeOut()
+    public IEnumerator FadeOut(float timeToFadeOut)
     {
-        for (float opacity = 0; opacity <= this.timeToFadeOut; opacity += Time.deltaTime)
+        for (float opacity = 0; opacity <= timeToFadeOut; opacity += Time.deltaTime)
         {
             this.blackoutImage.color = new Color(0, 0, 0, opacity);
             yield return null;
@@ -149,9 +150,9 @@ public class PlayerMovement : MonoBehaviour
         this.blackoutImage.color = new Color(0, 0, 0, 1);
     }
 
-    public IEnumerator FadeIn()
+    public IEnumerator FadeIn(float timeToFadeIn)
     {
-        for (float opacity = this.timeToFadeIn; opacity >= 0; opacity -= Time.deltaTime)
+        for (float opacity = timeToFadeIn; opacity >= 0; opacity -= Time.deltaTime)
         {
             this.blackoutImage.color = new Color(0, 0, 0, opacity);
             yield return null;
@@ -163,7 +164,7 @@ public class PlayerMovement : MonoBehaviour
     {
         var initialPosition = this.transform.position;
 
-        yield return StartCoroutine(FadeOut());
+        yield return StartCoroutine(FadeOut(this.timeToFadeOut));
 
         var offset = initialPosition.y - this.surface.transform.position.y;
         var fallenPosition = new Vector3(
@@ -182,6 +183,6 @@ public class PlayerMovement : MonoBehaviour
         this.virtualCamera.SetActive(true);
 
         this.loseCrystals.LoseCrystal();
-        yield return StartCoroutine(FadeIn());
+        yield return StartCoroutine(FadeIn(this.timeToFadeIn));
     }
 }
