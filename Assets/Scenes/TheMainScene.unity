@@ -7305,6 +7305,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 915252480}
     m_Modifications:
     - target: {fileID: 1468489737557104270, guid: 5373fbe9666392e4ba2c2a6f64989a81, type: 3}
+      propertyPath: timeToDie
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1468489737557104270, guid: 5373fbe9666392e4ba2c2a6f64989a81, type: 3}
       propertyPath: respawnPoint
       value: 
       objectReference: {fileID: 2087774788}
