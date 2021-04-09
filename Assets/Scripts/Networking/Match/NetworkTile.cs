@@ -32,7 +32,7 @@ public class NetworkTile : MonoBehaviour
     [SerializeField] private GameObject ropePrefab;
     private GameObject rope;
 
-    private void Start()
+    protected virtual void Start()
     {
         this.meshRenderer = GetComponentInChildren<MeshRenderer>();
         this.meshRenderer.material = this.normalMaterial;
