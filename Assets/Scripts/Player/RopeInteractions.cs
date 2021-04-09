@@ -1,13 +1,14 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RopeInteractions : MonoBehaviour
 {
     private InputManager inputManager;
     private PlayerMovement playerMovement;
     private AnimationManager animationManager;
+    private HUDMainButtons hUDMainButtons;
     [SerializeField] private float heightToClimb = 8f;
     private Teammate team;
     internal RopeState ropeState;
@@ -32,15 +33,56 @@ public class RopeInteractions : MonoBehaviour
 
     [SerializeField] private bool isClientPlayer;
 
+    [SerializeField] private GameObject ropeCanvas;
+    private Image Keyimage;
+    private Image XBoximage;
+    private Image PSimage;
+    private Image image;
+    private Transform mainCameraTransform;
+
     void Awake()
     {
         this.tileLayerMask = LayerMask.GetMask("Tile");
         this.playerAudio = this.GetComponent<PlayerAudio>();
         this.playerMovement = this.GetComponent<PlayerMovement>();
+        this.hUDMainButtons = FindObjectOfType<HUDMainButtons>();
         this.animationManager = this.GetComponentInChildren<AnimationManager>();
 
         ropeState = RopeState.Normal;
         this.team = this.transform.parent.GetComponent<Teammate>();
+
+        this.mainCameraTransform = Camera.main.transform;
+        this.ropeCanvas.SetActive(false);
+        this.Keyimage = this.ropeCanvas.transform.GetChild(0).GetComponent<Image>();
+        this.XBoximage = this.ropeCanvas.transform.GetChild(1).GetComponent<Image>();
+        this.PSimage = this.ropeCanvas.transform.GetChild(2).GetComponent<Image>();
+
+        this.image = this.XBoximage; // default
+
+        UpdateControllerScheme();
+    }
+
+    private void UpdateControllerScheme()
+    {
+        if (this.hUDMainButtons is null)
+            return;
+
+        if (this.image != null)
+            this.image.gameObject.SetActive(false);
+
+        switch (this.hUDMainButtons.ControllerSchemeInUse)
+        {
+            case ControllerSchemeInUse.PC:
+                this.image = this.Keyimage;
+                break;
+            case ControllerSchemeInUse.XBox:
+                this.image = this.XBoximage;
+                break;
+            case ControllerSchemeInUse.PlayStation:
+                this.image = this.PSimage;
+                break;
+        }
+        this.image.gameObject.SetActive(true);
     }
 
     void Start() => inputManager = InputManager.GetInstance();
@@ -49,6 +91,8 @@ public class RopeInteractions : MonoBehaviour
     {
         if (!isClientPlayer)
             return;
+
+        UpdateRopeHint();
 
         ResetRopePreviewHighlighting();
 
@@ -67,7 +111,8 @@ public class RopeInteractions : MonoBehaviour
         DetermineRopeTile();
 
         if (RopeTile != null 
-            && !inputManager.GetLadder())
+            && !inputManager.GetLadder()
+            && !this.IsHoldingRope)
         {
             PreviewRope();
             return;
@@ -79,6 +124,16 @@ public class RopeInteractions : MonoBehaviour
 
     private void PreviewRope()
     {
+        if (!this.ropeCanvas.activeSelf)
+        {
+            UpdateControllerScheme();
+            this.ropeCanvas.SetActive(true);
+            this.image.color = new Color(this.image.color.r,
+                this.image.color.g,
+                this.image.color.b,
+                1f);
+        }
+
         RopeTile.HighlightTileRopePreview();
         lastTileHighlighted = RopeTile;
         return;
@@ -86,6 +141,9 @@ public class RopeInteractions : MonoBehaviour
 
     private void ResetRopePreviewHighlighting()
     {
+        if (this.ropeCanvas.activeSelf && !this.IsHoldingRope)
+            this.ropeCanvas.SetActive(false);
+
         if (this.lastTileHighlighted != null)
             this.lastTileHighlighted.ResetHighlighting();
 
@@ -165,6 +223,13 @@ public class RopeInteractions : MonoBehaviour
 
             this.animationManager.TriggerPutLadder();
 
+            UpdateControllerScheme();
+            this.ropeCanvas.SetActive(true);
+            this.image.color = new Color(this.image.color.r, 
+                this.image.color.g,
+                this.image.color.b,
+                0.5f); 
+                
             StartCoroutine(ThrowRope(this.rope, RopeTile));
         }
     }
@@ -210,5 +275,21 @@ public class RopeInteractions : MonoBehaviour
         rope.GetHighlightedLadder().transform.forward = Vector3.back;
 
         yield return null;
+    }
+
+    private void UpdateRopeHint()
+    {
+        if (!this.ropeCanvas.activeSelf)
+            return;
+
+        this.ropeCanvas.transform.LookAt(this.mainCameraTransform);
+
+        if (RopeTile != null)
+        {
+            this.ropeCanvas.transform.position = new Vector3(
+                RopeTile.transform.position.x,
+                this.ropeCanvas.transform.position.y,
+                RopeTile.transform.position.z);
+        }
     }
 }

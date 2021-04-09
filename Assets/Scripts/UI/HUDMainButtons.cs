@@ -4,6 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+public enum ControllerSchemeInUse
+{
+    PC,
+    XBox,
+    PlayStation,
+}
+
 public class HUDMainButtons : MonoBehaviour
 {
     private InputManager inputManager;
@@ -51,6 +58,8 @@ public class HUDMainButtons : MonoBehaviour
     [SerializeField] private Sprite xboxCombo;
     [SerializeField] private Sprite xboxComboBackground;
 
+    public ControllerSchemeInUse ControllerSchemeInUse { get; private set; }
+
     private void Start()
     {
         this.inputManager = InputManager.GetInstance();
@@ -77,6 +86,8 @@ public class HUDMainButtons : MonoBehaviour
 
     public void DisplayPlayStationControls()
     {
+        ControllerSchemeInUse = ControllerSchemeInUse.PlayStation;
+
         digImage.gameObject.SetActive(true);
         digImageCooldown.gameObject.SetActive(true);
 
@@ -97,6 +108,8 @@ public class HUDMainButtons : MonoBehaviour
 
     public void DisplayXBOXControls()
     {
+        ControllerSchemeInUse = ControllerSchemeInUse.XBox;
+
         digImage.gameObject.SetActive(true);
         digImageCooldown.gameObject.SetActive(true);
 
@@ -117,6 +130,8 @@ public class HUDMainButtons : MonoBehaviour
 
     public void DisplayKeyboardControls()
     {
+        ControllerSchemeInUse = ControllerSchemeInUse.PC;
+
         digImage.gameObject.SetActive(false);
         digImageCooldown.gameObject.SetActive(false);
 
