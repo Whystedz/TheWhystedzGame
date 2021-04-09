@@ -16,6 +16,7 @@ TagManager:
   - Obstacle
   - MainButtons
   - Tile
+  - EndScreen
   layers:
   - Default
   - TransparentFX

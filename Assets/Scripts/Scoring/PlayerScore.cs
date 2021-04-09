@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -7,7 +8,7 @@ public class PlayerScore : MonoBehaviour
     
     private Team team;
     private TeamScore teamScore;
-    [SerializeField] private PlayerScoreUI playerScoreUI;
+    [SerializeField] private List<PlayerScoreUI> playerScoreUIs;
 
     private PlayerAudio playerAudio;
 
@@ -27,6 +28,8 @@ public class PlayerScore : MonoBehaviour
     {
         CurrentScore += amountToAdd;
 
+        foreach (var playerScoreUI in playerScoreUIs)
+            playerScoreUI.UpdateScore(CurrentScore);
         this.teamScore.Add(amountToAdd);
     }
 
@@ -38,7 +41,8 @@ public class PlayerScore : MonoBehaviour
             CurrentScore = 0;
 
         this.teamScore.Substract(amountToSubstract);
-        this.playerScoreUI.UpdateScore(CurrentScore);
+        foreach (var playerScoreUI in playerScoreUIs)
+            playerScoreUI.UpdateScore(CurrentScore);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -51,8 +55,6 @@ public class PlayerScore : MonoBehaviour
     {
         playerAudio.PlayCollectAudio();
         Add(collectable.PointsWorth);
-
-        this.playerScoreUI.UpdateScore(CurrentScore);
 
         collectable.Collect();
     }

@@ -23,7 +23,6 @@ public class PlayerScoreUI : MonoBehaviour
         PlayerName = newName;
         this.playerNameText.text = newName;
     }
-
-
-public void UpdateScore(int score) => this.playerScoreText.text = score.ToString();
+    
+    public void UpdateScore(int score) => this.playerScoreText.text = score.ToString();
 }
