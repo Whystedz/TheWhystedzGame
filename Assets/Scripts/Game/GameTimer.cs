@@ -44,7 +44,7 @@ public class GameTimer : MonoBehaviour
     private IEnumerator DoHalfTimeEvent(float time)
     {
         yield return new WaitForSeconds(time);
-        AudioManager.PlayTenseMusic();
+        AudioManager.PlayTenseMusic(1.1f);
     }
 
     private void DisplayTimer(float time)

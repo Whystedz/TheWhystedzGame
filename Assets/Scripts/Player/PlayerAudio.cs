@@ -12,6 +12,8 @@ public class PlayerAudio : MonoBehaviour
     [SerializeField] private AudioClip[] laserClips;
     [SerializeField] private AudioClip[] collectClips;
     [SerializeField] private AudioClip ropeClip;
+    [SerializeField] private AudioClip fallingClip;
+    [SerializeField] private AudioClip landClip;
     
     [Header("Mixer Groups")]
     [SerializeField] private AudioMixerGroup playerGroup;
@@ -49,4 +51,10 @@ public class PlayerAudio : MonoBehaviour
     
     // [ClientRpc]
     public void PlayRopeAudio() => audioSource.PlayOneShot(ropeClip);
+    
+    // [ClientRpc]
+    public void PlayFallingAudio() => audioSource.PlayOneShot(fallingClip);
+    
+    // [ClientRpc]
+    public void PlayLandAudio() => audioSource.PlayOneShot(landClip);
 }
