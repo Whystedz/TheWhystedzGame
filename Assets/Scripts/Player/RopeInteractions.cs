@@ -7,6 +7,7 @@ public class RopeInteractions : MonoBehaviour
 {
     private InputManager inputManager;
     private PlayerMovement playerMovement;
+    private AnimationManager animationManager;
     [SerializeField] private float heightToClimb = 8f;
     private Teammate team;
     internal RopeState ropeState;
@@ -36,6 +37,7 @@ public class RopeInteractions : MonoBehaviour
         this.tileLayerMask = LayerMask.GetMask("Tile");
         this.playerAudio = this.GetComponent<PlayerAudio>();
         this.playerMovement = this.GetComponent<PlayerMovement>();
+        this.animationManager = this.GetComponentInChildren<AnimationManager>();
 
         ropeState = RopeState.Normal;
         this.team = this.transform.parent.GetComponent<Teammate>();
@@ -161,6 +163,8 @@ public class RopeInteractions : MonoBehaviour
 
             this.IsHoldingRope = true;
 
+            this.animationManager.TriggerPutLadder();
+
             StartCoroutine(ThrowRope(this.rope, RopeTile));
         }
     }
@@ -168,6 +172,8 @@ public class RopeInteractions : MonoBehaviour
     private void HaulUpRope()
     {
         playerAudio.PlayRopeAudio();
+        this.animationManager.TriggerRemoveLadder();
+
 
         rope.ropeState = RopeState.Normal;
 

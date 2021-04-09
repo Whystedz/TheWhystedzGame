@@ -45,7 +45,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CrystalPrefab: {fileID: 7863378476046910972, guid: 81f156ceeb8f64946b8fd7b503cc028d, type: 3}
   maxCrystalsSurface: 100
+  maxCrystalsGame: 500
   surfaceBoundsOffset: 5
   undergroundBoundsOffset: 5
-  crystalVerticalOffsetHeight: 3
+  crystalVerticalOffsetHeight: 1.5
   spawningCollisionPaddingRadius: 1

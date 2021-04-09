@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,7 @@ public class Underground : MonoBehaviour
     private float timer;
     private PlayerMovement playerMovement;
     private LoseCrystals loseCrystals;
+    private AnimationManager animationManager;
 
     private GameObject surface;
     private GameObject underground;
@@ -29,6 +31,7 @@ public class Underground : MonoBehaviour
     {
         this.playerMovement = this.GetComponent<PlayerMovement>();
         this.loseCrystals = this.GetComponent<LoseCrystals>();
+        this.animationManager = this.GetComponentInChildren<AnimationManager>();
         this.underground = GameObject.FindGameObjectWithTag("Underground");
         this.surface = GameObject.FindGameObjectWithTag("Surface");
         this.characterController = this.GetComponent<CharacterController>();
@@ -50,17 +53,23 @@ public class Underground : MonoBehaviour
         {
             this.timer += Time.deltaTime;
             if (this.timer >= this.timeToDie)
-                Die();
-
+                StartCoroutine(Die());
         } else
             this.timer = 0;
     }
 
-    void Die()
+    private IEnumerator Die()
     {
         var initialPosition = this.transform.position;
 
         this.loseCrystals.LoseCrystal();
+
+        this.characterController.enabled = false;
+        this.playerMovement.DisableMovement();
+        this.animationManager.TriggerDeath(); // TODO
+        yield return new WaitForSeconds(2.5f);
+        this.playerMovement.EnableMovement();
+        this.characterController.enabled = true;
 
         var offset = initialPosition.y - this.underground.transform.position.y;
         var revivedPosition = new Vector3(
