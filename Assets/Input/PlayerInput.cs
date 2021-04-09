@@ -27,17 +27,17 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Camera"",
-                    ""type"": ""Value"",
-                    ""id"": ""34899ac1-5df0-43ab-94e6-8efa3d6bd928"",
-                    ""expectedControlType"": ""Vector2"",
+                    ""name"": ""Digging"",
+                    ""type"": ""Button"",
+                    ""id"": ""2b7555a4-280b-4dd6-84cd-129ab948669d"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Digging"",
+                    ""name"": ""Ladder"",
                     ""type"": ""Button"",
-                    ""id"": ""2b7555a4-280b-4dd6-84cd-129ab948669d"",
+                    ""id"": ""d88471cc-4b05-4062-9f53-d4df26d368e1"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -77,7 +77,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -88,7 +88,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -99,7 +99,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -110,15 +110,15 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""Gamepad/Left Stick"",
-                    ""id"": ""815d8046-7e46-4e10-bafa-89da8ec1c590"",
-                    ""path"": ""2DVector(mode=2)"",
+                    ""name"": ""Arrows"",
+                    ""id"": ""22c37ebf-04ac-4ade-9f97-94a196345520"",
+                    ""path"": ""2DVector"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -128,77 +128,242 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": ""up"",
-                    ""id"": ""ee89e70d-bf99-467d-be8f-ddd3678f7321"",
-                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""id"": ""05765477-455d-4f9d-a17e-f0d486f8b4f4"",
+                    ""path"": ""<Keyboard>/upArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""down"",
-                    ""id"": ""adf26a65-a83f-463b-8e1f-69244e81d557"",
-                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""id"": ""2897d0de-b7b8-4862-816b-246ec7cc23b5"",
+                    ""path"": ""<Keyboard>/downArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""left"",
-                    ""id"": ""86b7aa3e-ed1f-41c2-b1bf-ef12522352f7"",
-                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""id"": ""790f7965-b03b-4b9b-b05c-1528ccccfc55"",
+                    ""path"": ""<Keyboard>/leftArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""right"",
-                    ""id"": ""58df7d72-cea3-4cbe-a0df-5b84cee31e8a"",
-                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""id"": ""89828878-17a8-449e-8133-1f1710eb0bec"",
+                    ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""XBOX/Left Stick"",
+                    ""id"": ""70a475d6-59ec-4c2e-b099-ef7a8456b792"",
+                    ""path"": ""2DVector(mode=2)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""XBOX"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""daa6f432-d127-4415-aa68-0e00424d27d3"",
+                    ""path"": ""<XInputController>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""XBOX"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""8a16d85e-a17e-4aa7-bd4d-9e5648797ab5"",
+                    ""path"": ""<XInputController>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""XBOX"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""42d7c9e3-052b-4cf4-ae67-62f3f1b51748"",
+                    ""path"": ""<XInputController>/leftStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""XBOX"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""9a13ff1c-93e1-484d-95d4-2b491d4deff6"",
+                    ""path"": ""<XInputController>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""XBOX"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""PS4/Left Stick"",
+                    ""id"": ""52ea39c5-4947-4aa6-b7b5-499450e6c4e4"",
+                    ""path"": ""2DVector(mode=2)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PS"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""be351e46-75ac-4140-bd1c-5cb8d2714394"",
+                    ""path"": ""<DualShockGamepad>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PS"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""1b012d68-dd8b-410b-b13a-5c7451990347"",
+                    ""path"": ""<DualShockGamepad>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PS"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""a2f8d3df-c904-4e20-8e64-489a10825ce3"",
+                    ""path"": ""<DualShockGamepad>/leftStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PS"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""5905cd56-039a-4e2e-a079-ff60f6792e69"",
+                    ""path"": ""<DualShockGamepad>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PS"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Switch/Left Stick"",
+                    ""id"": ""674692f0-46ba-48a3-a9f3-a4d4d4fdcd01"",
+                    ""path"": ""2DVector(mode=2)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PS"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""58448f14-27c3-4c61-9cb2-702576cda95f"",
+                    ""path"": ""<SwitchProControllerHID>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""SwitchPro"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""b952f692-781c-49b6-a95d-41bd62836aef"",
+                    ""path"": ""<SwitchProControllerHID>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""SwitchPro"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""6445dc86-c71e-4094-928a-d83ee37db2e9"",
+                    ""path"": ""<SwitchProControllerHID>/leftStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""SwitchPro"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""dc047984-c199-47a1-b33e-f9984b99cc43"",
+                    ""path"": ""<SwitchProControllerHID>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""SwitchPro"",
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": """",
-                    ""id"": ""fce320fa-3672-4721-aedc-baa91d541d42"",
-                    ""path"": ""<Mouse>/delta"",
+                    ""id"": ""872414e9-51e5-4a1b-81c8-ae279d790f67"",
+                    ""path"": ""<XInputController>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Camera"",
+                    ""groups"": ""XBOX"",
+                    ""action"": ""Digging"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""db6a15c9-6d1c-4012-8b81-2be6384cceab"",
-                    ""path"": ""<Gamepad>/rightStick"",
+                    ""id"": ""79e956cd-44f3-442f-b95c-963351e907a6"",
+                    ""path"": ""<SwitchProControllerHID>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Camera"",
+                    ""groups"": ""SwitchPro"",
+                    ""action"": ""Digging"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""7e8237c2-858b-4a05-9f62-0dbb49942189"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""id"": ""5108078e-308f-4050-9a15-a7ed691d0201"",
+                    ""path"": ""<DualShockGamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""PS"",
                     ""action"": ""Digging"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -209,18 +374,51 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""Digging"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""a0cd5632-2eb9-4213-bf71-5e5650b7b818"",
-                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""id"": ""cd7b4d60-55e1-4a41-9640-14251c87520a"",
+                    ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Digging"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ce51182c-c4e7-47d2-8481-e879a3a1abd2"",
+                    ""path"": ""<XInputController>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""XBOX"",
+                    ""action"": ""InitiateCombo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""91d1eb19-a899-4797-8a5a-7131686b7f0a"",
+                    ""path"": ""<SwitchProControllerHID>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""SwitchPro"",
+                    ""action"": ""InitiateCombo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""07766331-e802-4e0a-873c-0030b22774d8"",
+                    ""path"": ""<DualShockGamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PS"",
                     ""action"": ""InitiateCombo"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -231,7 +429,29 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""InitiateCombo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""97e796c9-2995-423e-b669-d6965a0b67fc"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""InitiateCombo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5fc85a4a-3fc2-4646-93b9-6d810a12041f"",
+                    ""path"": ""<Keyboard>/rightShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""InitiateCombo"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -249,25 +469,147 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""a173e90a-01b0-424c-b5dc-939d0f4af2cf"",
-                    ""path"": ""<Keyboard>/x"",
+                    ""id"": ""9e228217-7d38-471d-a8a9-311092bec48e"",
+                    ""path"": ""<XInputController>/start"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""XBOX"",
                     ""action"": ""MainMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2686d7ed-0dc9-4c2c-8289-5682838bc0a3"",
+                    ""path"": ""<SwitchProControllerHID>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""SwitchPro"",
+                    ""action"": ""MainMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""96715acd-51fb-4cfa-b196-b941f3482a36"",
+                    ""path"": ""<DualShockGamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PS"",
+                    ""action"": ""MainMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a173e90a-01b0-424c-b5dc-939d0f4af2cf"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""MainMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9e7a8288-e716-4bba-818e-34a60eefa49f"",
+                    ""path"": ""<XInputController>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""XBOX"",
+                    ""action"": ""Ladder"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a16395b8-4ead-4f8a-a5c1-eeafcaf980db"",
+                    ""path"": ""<SwitchProControllerHID>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""SwitchPro"",
+                    ""action"": ""Ladder"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a4112c78-2bea-40a4-8ec7-96886996378d"",
+                    ""path"": ""<DualShockGamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PS"",
+                    ""action"": ""Ladder"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""84f2c750-a8c4-4fbc-9766-90827f94c2f1"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Ladder"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
             ]
         }
     ],
-    ""controlSchemes"": []
+    ""controlSchemes"": [
+        {
+            ""name"": ""Keyboard"",
+            ""bindingGroup"": ""Keyboard"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Keyboard>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""PS"",
+            ""bindingGroup"": ""PS"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<DualShockGamepad>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""XBOX"",
+            ""bindingGroup"": ""XBOX"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<XInputController>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""SwitchPro"",
+            ""bindingGroup"": ""SwitchPro"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<SwitchProControllerHID>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
+        }
+    ]
 }");
         // PlayerControls
         m_PlayerControls = asset.FindActionMap("PlayerControls", throwIfNotFound: true);
         m_PlayerControls_Movement = m_PlayerControls.FindAction("Movement", throwIfNotFound: true);
-        m_PlayerControls_Camera = m_PlayerControls.FindAction("Camera", throwIfNotFound: true);
         m_PlayerControls_Digging = m_PlayerControls.FindAction("Digging", throwIfNotFound: true);
+        m_PlayerControls_Ladder = m_PlayerControls.FindAction("Ladder", throwIfNotFound: true);
         m_PlayerControls_InitiateCombo = m_PlayerControls.FindAction("InitiateCombo", throwIfNotFound: true);
         m_PlayerControls_MainMenu = m_PlayerControls.FindAction("MainMenu", throwIfNotFound: true);
     }
@@ -320,8 +662,8 @@ public class @PlayerInput : IInputActionCollection, IDisposable
     private readonly InputActionMap m_PlayerControls;
     private IPlayerControlsActions m_PlayerControlsActionsCallbackInterface;
     private readonly InputAction m_PlayerControls_Movement;
-    private readonly InputAction m_PlayerControls_Camera;
     private readonly InputAction m_PlayerControls_Digging;
+    private readonly InputAction m_PlayerControls_Ladder;
     private readonly InputAction m_PlayerControls_InitiateCombo;
     private readonly InputAction m_PlayerControls_MainMenu;
     public struct PlayerControlsActions
@@ -329,8 +671,8 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         private @PlayerInput m_Wrapper;
         public PlayerControlsActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_PlayerControls_Movement;
-        public InputAction @Camera => m_Wrapper.m_PlayerControls_Camera;
         public InputAction @Digging => m_Wrapper.m_PlayerControls_Digging;
+        public InputAction @Ladder => m_Wrapper.m_PlayerControls_Ladder;
         public InputAction @InitiateCombo => m_Wrapper.m_PlayerControls_InitiateCombo;
         public InputAction @MainMenu => m_Wrapper.m_PlayerControls_MainMenu;
         public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
@@ -345,12 +687,12 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @Movement.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnMovement;
                 @Movement.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnMovement;
                 @Movement.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnMovement;
-                @Camera.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnCamera;
-                @Camera.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnCamera;
-                @Camera.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnCamera;
                 @Digging.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDigging;
                 @Digging.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDigging;
                 @Digging.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDigging;
+                @Ladder.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnLadder;
+                @Ladder.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnLadder;
+                @Ladder.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnLadder;
                 @InitiateCombo.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnInitiateCombo;
                 @InitiateCombo.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnInitiateCombo;
                 @InitiateCombo.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnInitiateCombo;
@@ -364,12 +706,12 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @Movement.started += instance.OnMovement;
                 @Movement.performed += instance.OnMovement;
                 @Movement.canceled += instance.OnMovement;
-                @Camera.started += instance.OnCamera;
-                @Camera.performed += instance.OnCamera;
-                @Camera.canceled += instance.OnCamera;
                 @Digging.started += instance.OnDigging;
                 @Digging.performed += instance.OnDigging;
                 @Digging.canceled += instance.OnDigging;
+                @Ladder.started += instance.OnLadder;
+                @Ladder.performed += instance.OnLadder;
+                @Ladder.canceled += instance.OnLadder;
                 @InitiateCombo.started += instance.OnInitiateCombo;
                 @InitiateCombo.performed += instance.OnInitiateCombo;
                 @InitiateCombo.canceled += instance.OnInitiateCombo;
@@ -380,11 +722,47 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         }
     }
     public PlayerControlsActions @PlayerControls => new PlayerControlsActions(this);
+    private int m_KeyboardSchemeIndex = -1;
+    public InputControlScheme KeyboardScheme
+    {
+        get
+        {
+            if (m_KeyboardSchemeIndex == -1) m_KeyboardSchemeIndex = asset.FindControlSchemeIndex("Keyboard");
+            return asset.controlSchemes[m_KeyboardSchemeIndex];
+        }
+    }
+    private int m_PSSchemeIndex = -1;
+    public InputControlScheme PSScheme
+    {
+        get
+        {
+            if (m_PSSchemeIndex == -1) m_PSSchemeIndex = asset.FindControlSchemeIndex("PS");
+            return asset.controlSchemes[m_PSSchemeIndex];
+        }
+    }
+    private int m_XBOXSchemeIndex = -1;
+    public InputControlScheme XBOXScheme
+    {
+        get
+        {
+            if (m_XBOXSchemeIndex == -1) m_XBOXSchemeIndex = asset.FindControlSchemeIndex("XBOX");
+            return asset.controlSchemes[m_XBOXSchemeIndex];
+        }
+    }
+    private int m_SwitchProSchemeIndex = -1;
+    public InputControlScheme SwitchProScheme
+    {
+        get
+        {
+            if (m_SwitchProSchemeIndex == -1) m_SwitchProSchemeIndex = asset.FindControlSchemeIndex("SwitchPro");
+            return asset.controlSchemes[m_SwitchProSchemeIndex];
+        }
+    }
     public interface IPlayerControlsActions
     {
         void OnMovement(InputAction.CallbackContext context);
-        void OnCamera(InputAction.CallbackContext context);
         void OnDigging(InputAction.CallbackContext context);
+        void OnLadder(InputAction.CallbackContext context);
         void OnInitiateCombo(InputAction.CallbackContext context);
         void OnMainMenu(InputAction.CallbackContext context);
     }

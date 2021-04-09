@@ -12,12 +12,12 @@ public class PlayerControls : MonoBehaviour
     void Update()
     {
         if (inputManager.GetDigging())
-            Debug.Log("Digging button pressed (space/X)");
+            Debug.Log("Digging button pressed (space/E/X/A)");
 
         if (inputManager.GetInitiateCombo())
-            Debug.Log("InitiateCombo button pressed (C/circle)");
+            Debug.Log("InitiateCombo button pressed (shift/Q/O/B)");
 
-        if (inputManager.GetMainMenu())
-            Debug.Log("MainMenu button pressed (X/start/option)");
+        if (inputManager.GetLadder())
+            Debug.Log("Ladder button pressed (R/square/X)");
     }
 }
