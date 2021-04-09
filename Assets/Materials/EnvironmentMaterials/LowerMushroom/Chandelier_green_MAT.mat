@@ -87,7 +87,7 @@ Material:
     - _ColorDimSteps: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
     - _ColorGradient: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
     - _FlatRimColor: {r: 0.11932943, g: 0.24528301, b: 0, a: 1}
-    - _FlatSpecularColor: {r: 0.80888677, g: 1, b: 0.11698107, a: 1}
+    - _FlatSpecularColor: {r: 3.2313726, g: 4, b: 0.47058824, a: 1}
     - _LightmapDirection: {r: 0, g: 1, b: 0, a: 0}
     - _UnityShadowColor: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
   m_BuildTextureStacks: []
