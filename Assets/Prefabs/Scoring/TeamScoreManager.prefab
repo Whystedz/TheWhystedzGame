@@ -43,4 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 672a18e403db27e47b41e491ae163f57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teamScoreUIs: []
   team: 0
+  goalScore: 50

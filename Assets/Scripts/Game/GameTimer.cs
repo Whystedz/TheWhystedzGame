@@ -11,6 +11,10 @@ public class GameTimer : MonoBehaviour
     
     [SerializeField] private TextMeshProUGUI timerText;
 
+    private EndScreenUI endScreen;
+
+    private void Awake() => this.endScreen = GameObject.FindWithTag("EndScreen").GetComponent<EndScreenUI>();
+
     private void Start()
     {
         this.gameEnded = false;
@@ -32,6 +36,7 @@ public class GameTimer : MonoBehaviour
                 this.gameTime = 0;
                 DisplayTimer(this.gameTime);
                 this.gameEnded = true;
+                this.endScreen.EndGame();
             }
         }
     }
