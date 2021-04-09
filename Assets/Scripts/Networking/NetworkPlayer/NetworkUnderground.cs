@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class NetworkUnderground : MonoBehaviour
@@ -8,19 +6,23 @@ public class NetworkUnderground : MonoBehaviour
     [SerializeField] private Transform respawnPoint;
     private float timer;
     private NetworkPlayerMovement playerMovement;
+    private NetworkLoseCrystals loseCrystals;
 
+    private GameObject surface;
     private GameObject underground;
     [SerializeField] private float undergroundOffset;
 
-    private NetworkLoseCrystals loseCrystals;
+    private CharacterController characterController;
 
     void Start()
     {
         this.timer = 0;
         this.playerMovement = this.GetComponent<NetworkPlayerMovement>();
+        this.loseCrystals = this.GetComponent<NetworkLoseCrystals>();
 
         this.respawnPoint = this.transform;
-        this.loseCrystals = this.GetComponent<NetworkLoseCrystals>();
+        this.surface = GameObject.FindGameObjectWithTag("Surface");
+        this.characterController = this.GetComponent<CharacterController>();
         this.underground = GameObject.FindGameObjectWithTag("Underground");
     }
 
@@ -42,13 +44,22 @@ public class NetworkUnderground : MonoBehaviour
 
     void Die()
     {
-        this.loseCrystals.LoseCrystal();
-        this.transform.position = respawnPoint.position;
-    }
+        var initialPosition = this.transform.position;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Underground"))
-            this.loseCrystals.LoseCrystal();
+        this.loseCrystals.LoseCrystal();
+
+        var offset = initialPosition.y - this.underground.transform.position.y;
+        var revivedPosition = new Vector3(
+            respawnPoint.position.x,
+            this.surface.transform.position.y + offset,
+            respawnPoint.position.z);
+
+        this.characterController.enabled = false;
+        this.transform.position = revivedPosition;
+        this.characterController.enabled = true;
+
+        this.playerMovement.IsInUnderground = false;
+
+        this.playerMovement.RefreshTileCurrentlyOn();
     }
 }

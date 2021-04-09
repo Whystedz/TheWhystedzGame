@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using Cinemachine;
+using System.Linq;
 using UnityEngine.UI;
 using Mirror;
 
@@ -13,41 +14,48 @@ public class NetworkPlayerMovement : NetworkBehaviour
     [SerializeField] private float movementSpeed = 3f;
     private Vector3 direction;
     public bool IsMovementDisabled;
-    private bool isRunning = false;
+    private bool isRunning;
 
     // Camera vars
     private GameObject virtualCamera;
-    private GameObject fallingCamera;
-    
-    private int tileLayerMask;
-    private int groundLayerMask;
     
     [Header("Falling")]
     [SerializeField] private float fallingSpeed = 10f;
     private bool isFalling;
     private Image blackoutImage;
-    [SerializeField] private float timeToFadeIn = 2f;
+    [SerializeField] private float timeToFadeIn = 0.25f;
+    [SerializeField] private float timeToFadeOut = 2f;
 
-    public bool IsInUnderground { get; private set; }
-    [SerializeField] private float undergroundCheckThreshold = 1.5f;
-    [SerializeField] private float heightOffset = 1.3f;
+    public bool IsClimbing { get; private set; }
+    public bool IsInUnderground { get; set; }
+    [SerializeField] private float undergroundCheckThreshold = 2f;
+    [SerializeField] private float heightOffset = 1f;
 
     private GameObject surface;
     private GameObject underground;
+
+    [SerializeField] private float spawningCollisionRadiusToCheck = 1.2f;
+    private NetworkLoseCrystals loseCrystals;
+
+    private float disabledMovementCooldown;
+
+    private NetworkTile tileCurrentlyOn;
+    private bool tileCurrentlyOnUpdatedThisFrame;
 
     private PlayerAudio playerAudio;
 
     public override void OnStartAuthority()
     {
-        this.tileLayerMask = LayerMask.GetMask("Tile");
-        this.groundLayerMask = LayerMask.GetMask("Tile") | LayerMask.GetMask("Underground");
-        
         this.characterController = GetComponent<CharacterController>();
 
         SetCamera();
 
         this.surface = GameObject.FindGameObjectWithTag("Surface");
         this.underground = GameObject.FindGameObjectWithTag("Underground");
+
+        IsInUnderground = false;
+
+        this.loseCrystals = GetComponent<NetworkLoseCrystals>();
 
         var blackoutImageGO = GameObject.FindGameObjectWithTag("BlackoutImage");
         if (blackoutImageGO != null)
@@ -60,47 +68,52 @@ public class NetworkPlayerMovement : NetworkBehaviour
 
     public void SetCamera()
     {
-        this.fallingCamera = FindObjectsOfType<CinemachineVirtualCamera>(true)[1].gameObject;
         this.virtualCamera = FindObjectsOfType<CinemachineVirtualCamera>(true)[0].gameObject;
         
         this.virtualCamera.GetComponent<CinemachineVirtualCamera>().Follow = this.transform;
         this.virtualCamera.GetComponent<CinemachineVirtualCamera>().LookAt = this.transform;
 
-        this.fallingCamera.GetComponent<CinemachineVirtualCamera>().Follow = this.transform;
-        this.fallingCamera.GetComponent<CinemachineVirtualCamera>().LookAt = this.transform;
-
         this.virtualCamera.SetActive(true);
-        this.fallingCamera.SetActive(false);
     }
+
+    private void Start() => RefreshTileCurrentlyOn();
 
     void Update()
     {
         if (base.hasAuthority)
         {
+            RefreshTileCurrentlyOn();
+
             if (IsMovementDisabled)
+            {
+                if (this.disabledMovementCooldown == -1) return; // infinite cooldown
+
+                this.disabledMovementCooldown -= Time.deltaTime;
+
+                if (disabledMovementCooldown <= 0)
+                    EnableMovement();
+
                 return;
+            }
 
             PlayerMovementUpdate();
+
+            this.tileCurrentlyOnUpdatedThisFrame = false;
         }
     }
 
     void PlayerMovementUpdate()
     {
-        CheckIfUnderground();
+        UpdateUndergroundSoundFX();
 
         CheckIfFalling();
 
         if (this.isFalling)
-            FallingMovementUpdate();
-        else
             RegularMovement();
     }
 
     private void RegularMovement()
     {
-        if (this.fallingCamera.activeSelf)
-            this.fallingCamera.SetActive(false);
-
         this.direction = new Vector3(InputManager.Instance.GetInputMovement().x, 0f, InputManager.Instance.GetInputMovement().y);
         this.characterController.Move(this.direction * Time.deltaTime * this.movementSpeed);
 
@@ -111,60 +124,31 @@ public class NetworkPlayerMovement : NetworkBehaviour
             transform.forward = this.direction;
     }
 
-    private void FallingMovementUpdate()
-    {
-        this.animator.SetTrigger("Fall");
-
-        if (!this.fallingCamera.activeSelf)
-            this.fallingCamera.SetActive(true);
-
-        var fallingVelocity = Vector3.down * Time.deltaTime * this.fallingSpeed;
-        this.characterController.Move(fallingVelocity);
-    }
-
     private void CheckIfFalling()
     {
-        if (this.IsInUnderground)
-        {
-            this.isFalling = false;
+        if (this.IsInUnderground || this.isFalling)
             return;
-        }
 
-        var tileColliders = Physics.OverlapSphere(transform.position, 0.01f, tileLayerMask);
-        Collider closestTileCollider = null;
+        this.isFalling = tileCurrentlyOn is null
+            || tileCurrentlyOn.TileInfo.TileState == TileState.Respawning
+            || tileCurrentlyOn.TileInfo.TileState == TileState.Rope;
 
-        if (tileColliders.Length == 0)
-        {
-            this.isFalling = true;
-            return;
-        }
-        else if (tileColliders.Length == 1)
-        {
-            closestTileCollider = tileColliders[0];
-
-        }
-        else if (tileColliders.Length > 1)
-        {
-            closestTileCollider = GetClosestCollider(tileColliders);
-        }
-
-        var tile = closestTileCollider.transform.parent.gameObject.GetComponent<NetworkTile>();
-        this.isFalling = tile.TileInfo.TileState == TileState.Respawning
-            || tile.TileInfo.TileState == TileState.Rope;
+        if (this.isFalling)
+            StartFalling();
     }
 
-    private void CheckIfUnderground()
+    private void StartFalling() => StartCoroutine(Fall());
+
+    private void UpdateUndergroundSoundFX()
     {
-        var distanceToUnderground = transform.position.y - this.underground.transform.position.y;
-        distanceToUnderground = Mathf.Abs(distanceToUnderground);
-
-        if(IsInUnderground && distanceToUnderground > this.undergroundCheckThreshold)
-            AudioManager.StopUndergroundFX();
-        else if(!IsInUnderground && distanceToUnderground <= this.undergroundCheckThreshold)
+        if(IsInUnderground)
             AudioManager.PlayUndergroundFX();
-
-        this.IsInUnderground = distanceToUnderground <= this.undergroundCheckThreshold;
+        else
+            AudioManager.StopUndergroundFX();
     }
+
+    public bool IsFalling() => this.isFalling;
+    public void MoveTowards(Vector3 direction, float speed) => this.characterController.Move(direction * Time.deltaTime * speed);
 
     private Collider GetClosestCollider(Collider[] hitColliders)
     {
@@ -184,8 +168,6 @@ public class NetworkPlayerMovement : NetworkBehaviour
         return closestCollider;
     }
 
-    public bool IsFalling() => this.isFalling;
-    public void MoveTowards(Vector3 direction, float speed) => this.characterController.Move(direction * Time.deltaTime * speed);
 
     public void StartClimbing(GameObject rope, float height)
     {
@@ -195,6 +177,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
     public IEnumerator ClimbRope(GameObject rope, float height)
     {
         IsMovementDisabled = true;
+        IsClimbing = true;
         var directionToRope = (rope.transform.position - this.transform.position).normalized;
         directionToRope = new Vector3(directionToRope.x, 0,directionToRope.z);
         var ropePositionWithoutY = new Vector3(rope.transform.position.x, this.transform.position.y, rope.transform.position.z);
@@ -211,13 +194,17 @@ public class NetworkPlayerMovement : NetworkBehaviour
         rope.GetComponent<NetworkRope>().SetRopeState(RopeState.Saved);
         // In reality this would be the animation delay
         yield return new WaitForSecondsRealtime(0.5f);
+
+        IsClimbing = false;
         IsMovementDisabled = false;
+        IsInUnderground = false;
     }
+
 
     public IEnumerator TransitionToTop(float height, Vector3 surfacePosition)
     {
         this.animator.SetBool("isClimbing", true);
-        StartCoroutine(FadeIn());
+        StartCoroutine(FadeOut(2f));
         while (this.transform.position.y < underground.transform.position.y + height)
         {
             this.characterController.Move(Vector3.up * Time.deltaTime * this.movementSpeed);
@@ -226,27 +213,137 @@ public class NetworkPlayerMovement : NetworkBehaviour
         yield return new WaitForSeconds(0.2f);
         this.transform.position = surfacePosition + Vector3.up * this.heightOffset;
         this.animator.SetBool("isClimbing", false);
-        yield return StartCoroutine(FadeOut());
+        yield return StartCoroutine(FadeIn(2f));
         this.animator.SetTrigger("Reset");
     }
 
-    public IEnumerator FadeIn()
-    {
-        for (float opacity = 0; opacity <= timeToFadeIn; opacity += Time.deltaTime)
-        {
-            // set color with i as alpha
-            this.blackoutImage.color = new Color(0, 0, 0, opacity);
-            yield return null;
-        }
-    }
-
-    public IEnumerator FadeOut()
+    public IEnumerator FadeIn(float timeToFadeOut)
     {
         for (float opacity = timeToFadeIn; opacity >= 0; opacity -= Time.deltaTime)
         {
-            // set color with i as alpha
             this.blackoutImage.color = new Color(0, 0, 0, opacity);
             yield return null;
         }
+        this.blackoutImage.color = new Color(0, 0, 0, 0);
+    }
+
+    public IEnumerator FadeOut(float timeToFadeIn)
+    {
+        for (float opacity = 0; opacity <= timeToFadeOut; opacity += Time.deltaTime)
+        {
+            this.blackoutImage.color = new Color(0, 0, 0, opacity);
+            yield return null;
+        }
+        this.blackoutImage.color = new Color(0, 0, 0, 1);
+    }
+
+    public IEnumerator Fall()
+    {
+        var initialPosition = this.transform.position;
+
+        yield return StartCoroutine(FadeOut(this.timeToFadeOut));
+
+        var offset = initialPosition.y - this.surface.transform.position.y;
+        var fallenPosition = FindAFallingPosition(initialPosition, offset);
+        
+        this.characterController.enabled = false;
+        this.transform.position = fallenPosition;
+        this.characterController.enabled = true;
+
+        this.isFalling = false;
+        IsInUnderground = true;
+
+        this.virtualCamera.SetActive(false);
+        this.virtualCamera.SetActive(true);
+
+        this.loseCrystals.LoseCrystal();
+        yield return StartCoroutine(FadeIn(this.timeToFadeIn));
+    }
+
+    internal void DisableMovementFor(float seconds)
+    {
+        DisableMovement();
+        this.disabledMovementCooldown = seconds;
+    }
+
+    internal void EnableMovement()
+    {
+        this.disabledMovementCooldown = -1; // set to infinite
+        IsMovementDisabled = false;
+    }
+
+    internal void DisableMovement()
+    {
+        this.disabledMovementCooldown = -1; // set to infinite
+        IsMovementDisabled = true;
+    }
+
+    [Command(ignoreAuthority = true)]
+    public void CmdDisableMovement()
+    {
+        this.disabledMovementCooldown = -1; // set to infinite
+        IsMovementDisabled = true;
+    }
+
+    public void RefreshTileCurrentlyOn()
+    {
+        this.tileCurrentlyOn = NetworkTile.FindTileAtPosition(transform.position);
+        this.tileCurrentlyOnUpdatedThisFrame = true;
+    }
+
+    public NetworkTile TileCurrentlyOn() 
+    {
+        if (!this.tileCurrentlyOnUpdatedThisFrame)
+            RefreshTileCurrentlyOn();
+
+        return this.tileCurrentlyOn;
+    }
+
+    private Vector3 FindAFallingPosition(Vector3 initialPosition, float offset)
+    {
+        int attempts = 0;
+        var fallenPosition = new Vector3(
+                    initialPosition.x,
+                    this.underground.transform.position.y + offset,
+                    initialPosition.z);
+
+        var obstacleColliders = new Collider[50];
+        int numColliders = GetNumberOfColliders(fallenPosition, obstacleColliders);
+
+        if (numColliders > 0)
+            //Debug.LogWarning($"Fell, but path was obstructed. Will try to find a new position to land at. Initial Position was {initialPosition}");
+
+        while (numColliders >= 1 && attempts++ < 10)
+            TryAnotherPosition(initialPosition, offset, out fallenPosition, obstacleColliders, out numColliders);
+
+        if (attempts >= 10)
+        {
+            //Debug.LogWarning($"Was unable to find a solid position to land at. Initial Position was {initialPosition}");
+            fallenPosition = new Vector3(0, this.underground.transform.position.y + offset, 0);
+        }
+
+        return fallenPosition;
+    }
+
+    private void TryAnotherPosition(Vector3 initialPosition, float offset, out Vector3 fallenPosition, Collider[] obstacleColliders, out int numColliders)
+    {
+        float zOffset = UnityEngine.Random.Range(1, 6);
+        float xOffset = UnityEngine.Random.Range(1, 6);
+
+        fallenPosition = new Vector3(
+            initialPosition.x + xOffset,
+            this.underground.transform.position.y + offset,
+            initialPosition.z + zOffset);
+
+        numColliders = GetNumberOfColliders(fallenPosition, obstacleColliders);
+    }
+
+    private int GetNumberOfColliders(Vector3 fallenPosition, Collider[] obstacleColliders)
+    {
+        return Physics.OverlapSphereNonAlloc(
+            fallenPosition,
+            this.spawningCollisionRadiusToCheck,
+            obstacleColliders,
+            1 << LayerMask.NameToLayer("Default"));
     }
 }

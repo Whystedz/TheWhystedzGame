@@ -1,17 +1,31 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class NetworkRope : MonoBehaviour
 {
-    [SerializeField] private GameObject highlightedLadder;
-    private InputManager inputManager;
-    private bool inZone;
-    private NetworkPlayerMovement playerMovement;
+    [Header("Rope Parameters")]
+    [SerializeField] private Rope rope;
     [SerializeField] private float heightToClimb = 8f;
+    [SerializeField] private bool enableDebugMode = true;
+    [SerializeField] private float maxDistanceToRope = 1.8f;
+    [SerializeField] private float speedTowardsRope = 6.0f;
+    [SerializeField] private float minDistanceToRopeTile = 1.0f;
+    [SerializeField] private float maxDistanceToRopeTile = 3.0f;
+    [SerializeField] private float afterRopePause = 0.5f;
+
+    [Header("Ladder Parts")]
+    [SerializeField] private GameObject highlightedLadder;
+    [SerializeField] private GameObject upperLadder;
+    [SerializeField] private GameObject lowerLadder;
+
+    private InputManager inputManager;
+    private bool isAnotherPlayerInZone;
+
+    private NetworkPlayerMovement playerMovement;
     private Teammate team;
 
     [SerializeField] private NetworkDigging networkDigging;
+    [SerializeField] private NetworkRopeInteraction networkRopeInteraction;
     
     void Awake()
     {
@@ -22,7 +36,9 @@ public class NetworkRope : MonoBehaviour
 
     void Update()
     {
-        if (this.inputManager.GetDigging() && networkDigging.RopeState != RopeState.InUse && this.inZone)
+        if (this.inputManager.GetLadder() || this.inputManager.GetDigging() // TODO allow both until we decide
+            && networkRopeInteraction.RopeState != RopeState.InUse 
+            && this.isAnotherPlayerInZone)
         {
             this.playerMovement.StartClimbing(this.gameObject, heightToClimb);
             SetRopeState(RopeState.InUse);
@@ -34,7 +50,7 @@ public class NetworkRope : MonoBehaviour
         if (other.CompareTag("Player") && this.team.Team == other.transform.GetComponent<Teammate>().Team)
         {
             this.highlightedLadder.SetActive(true);
-            this.inZone = true;
+            this.isAnotherPlayerInZone = true;
             this.playerMovement = other.GetComponent<NetworkPlayerMovement>();
         }
     }
@@ -44,12 +60,16 @@ public class NetworkRope : MonoBehaviour
         if (other.CompareTag("Player") && this.team.Team == other.transform.GetComponent<Teammate>().Team)
         {
             this.highlightedLadder.SetActive(false);
-            this.inZone = false;
+            this.isAnotherPlayerInZone = false;
         }
     }
 
     public void SetRopeState(RopeState newState)
     {
-        this.networkDigging.CmdSetRopeState(newState);
+        this.networkRopeInteraction.CmdSetRopeState(newState);
     }
+
+    public GameObject GetUpperLadder() => this.upperLadder;
+    public GameObject GetLowerLadder() => this.lowerLadder;
+    public GameObject GetHighlightedLadder() => this.highlightedLadder;
 }

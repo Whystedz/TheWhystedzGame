@@ -9,53 +9,120 @@ public class NetworkHUDMainButtons : MonoBehaviour
     private GameObject player;
     private NetworkPlayerMovement playerMovement;
     private NetworkComboPlayer comboPlayer;
-    private NetworkDigging diggingAndRopeInteractions;
 
-    public GameObject northButton;
-    public GameObject southButton;
-    public GameObject eastButton;
-    public GameObject westButton;
+    [SerializeField] private Image digImage;
+    [SerializeField] private Image digImageCooldown;
+    [SerializeField] private Image digBackground;
+    [SerializeField] private Image comboImage;
+    [SerializeField] private Image comboImageCooldown;
+    [SerializeField] private Image comboBackground;
 
-    private HUDButtonCooldown eastButtonCooldown;
+    private HUDButtonCooldown digButtonCooldown;
+    private HUDButtonCooldown comboButtonCooldown;
 
-    [SerializeField] private TMP_Text southButtonText;
-    [SerializeField] private string southButtonText_Dig;
-    [SerializeField] private string southButtonText_Rope;
-    [SerializeField] private string southButtonText_RemoveRope;
-    [SerializeField] private string southButtonText_Climb;
-
-    [SerializeField] private TMP_Text westButtonText;
-    [SerializeField] private string westButtonText_ToggleTrue;
-    [SerializeField] private string westButtonText_ToggleFalse;
-    private bool muteToggle;
+    [SerializeField] private TMP_Text digTMP_Text;
+    [SerializeField] private string textDig;
+    [SerializeField] private string textClimb;
 
     public Color CanUseButtonColor;
     public Color CanNotUseButtonColor;
+
+    public Color CanUseTextColor;
+    public Color CanNotUseTextColor;
+
+    [Header("Keyboard Images")]
+    [SerializeField] private GameObject keyboardDig;
+    [SerializeField] private Sprite keyboardDigBackground;
+    [SerializeField] private GameObject keyboardCombo;
+    [SerializeField] private Sprite keyboardComboBackground;
+
+    [Header("PS Images")]
+    [SerializeField] private Sprite psDig;
+    [SerializeField] private Sprite psDigBackground;
+    [SerializeField] private Sprite psCombo;
+    [SerializeField] private Sprite psComboBackground;
+
+    [Header("XBOX Images")]
+    [SerializeField] private Sprite xboxDig;
+    [SerializeField] private Sprite xboxDigBackground;
+    [SerializeField] private Sprite xboxCombo;
+    [SerializeField] private Sprite xboxComboBackground;
 
     private void Awake()
     {
         this.playerMovement = this.player.GetComponent<NetworkPlayerMovement>();
         this.comboPlayer = this.player.GetComponent<NetworkComboPlayer>();
-        this.diggingAndRopeInteractions = this.player.GetComponent<NetworkDigging>();
-
-        this.eastButtonCooldown = this.eastButton.GetComponentInChildren<HUDButtonCooldown>();
-        this.eastButtonCooldown.MaxAmount = this.comboPlayer.GetCooldownMax();
     }
 
     public void SetPlayer(GameObject player) => this.player = player;
 
     private void Update()
     {
-        this.eastButtonCooldown.CurrentAmount = this.comboPlayer.GetCooldownProgress();
+        this.comboButtonCooldown = InputManager.Instance.IsUsingKeyboard ? 
+            this.keyboardCombo.GetComponentInChildren<HUDButtonCooldown>() : 
+            this.comboImage.GetComponentInChildren<HUDButtonCooldown>();
+
+        this.comboButtonCooldown.MaxAmount = this.comboPlayer.GetCooldownMax();
+        this.comboButtonCooldown.CurrentAmount = this.comboPlayer.GetCooldownProgress();
         
         if (this.playerMovement.IsInUnderground)
-            this.southButtonText.text = this.southButtonText_Climb;
-        else if (this.diggingAndRopeInteractions.Tile != null && this.diggingAndRopeInteractions.Tile.TileInfo.TileState == TileState.Respawning)
-            this.southButtonText.text = this.southButtonText_Rope;
-        else if (this.diggingAndRopeInteractions.Tile != null && this.diggingAndRopeInteractions.Tile.TileInfo.TileState == TileState.Rope)
-            this.southButtonText.text = this.southButtonText_RemoveRope;
+            this.digTMP_Text.text = this.textClimb;
         else
-            this.southButtonText.text = this.southButtonText_Dig;
+            this.digTMP_Text.text = this.textDig;
     }
 
+    public void DisplayPlayStationControls()
+    {
+        digImage.gameObject.SetActive(true);
+        digImageCooldown.gameObject.SetActive(true);
+
+        comboImage.gameObject.SetActive(true);
+        comboImageCooldown.gameObject.SetActive(true);
+
+        keyboardDig.SetActive(false);
+        keyboardCombo.SetActive(false);
+
+        this.digImage.sprite = psDig;
+        this.digImageCooldown.sprite = psDig;
+        this.digBackground.sprite = psDigBackground;
+
+        this.comboImage.sprite = psCombo;
+        this.comboImageCooldown.sprite = psCombo;
+        this.comboBackground.sprite = psComboBackground;
+    }
+
+    public void DisplayXBOXControls()
+    {
+        digImage.gameObject.SetActive(true);
+        digImageCooldown.gameObject.SetActive(true);
+
+        comboImage.gameObject.SetActive(true);
+        comboImageCooldown.gameObject.SetActive(true);
+
+        keyboardDig.SetActive(false);
+        keyboardCombo.SetActive(false);
+
+        this.digImage.sprite = xboxDig;
+        this.digImageCooldown.sprite = xboxDig;
+        this.digBackground.sprite = xboxDigBackground;
+
+        this.comboImage.sprite = xboxCombo;
+        this.comboImageCooldown.sprite = xboxCombo;
+        this.comboBackground.sprite = xboxComboBackground;
+    }
+
+    public void DisplayKeyboardControls()
+    {
+        digImage.gameObject.SetActive(false);
+        digImageCooldown.gameObject.SetActive(false);
+
+        comboImage.gameObject.SetActive(false);
+        comboImageCooldown.gameObject.SetActive(false);
+
+        keyboardDig.SetActive(true);
+        keyboardCombo.SetActive(true);
+
+        this.digBackground.sprite = keyboardDigBackground;
+        this.comboBackground.sprite = keyboardComboBackground;
+    }
 }

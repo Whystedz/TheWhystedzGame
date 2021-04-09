@@ -12,16 +12,20 @@ public class NetworkComboPlayer : NetworkBehaviour
     [SerializeField] private bool displayComboHintInfos;
     [SerializeField] private bool canTriggerCombos;
 
+    [SerializeField] private float afterComboPause = 0.5f;
+
     private float cooldownProgress;
 
     public bool IsOnCooldown { get; private set; }
 
     private NetworkComboPlayer[] teammates;
+    private NetworkComboPlayer[] teammatesAndSelf;
 
     public HashSet<ComboInfo> Combos = new HashSet<ComboInfo>();
     public HashSet<ComboHintInfo> ComboHintInfos = new HashSet<ComboHintInfo>();
 
     private NetworkComboManager comboManager;
+    private NetworkPlayerMovement playerMovement;
 
     [SerializeField] private Transform comboParticleGenerator;
 
@@ -44,6 +48,7 @@ public class NetworkComboPlayer : NetworkBehaviour
     {
         networkDigging = this.GetComponent<NetworkDigging>();
         this.comboManager = FindObjectOfType<NetworkComboManager>();
+        this.playerMovement = this.GetComponent<NetworkPlayerMovement>();
 
         nInstances += 1;
 
@@ -157,7 +162,15 @@ public class NetworkComboPlayer : NetworkBehaviour
     private void TriggerAllQueuedCombos()
     {
         foreach (var player in queuedTriggerCombosPlayer)
+        {
+            var playerPlayerMovement = player.GetComponent<NetworkPlayerMovement>();
+
+            playerPlayerMovement.DisableMovement();
+
             TriggerCombosForPlayer(player);
+
+            playerPlayerMovement.DisableMovementFor(this.afterComboPause);
+        }
     }
 
     public void GetTeammates()
@@ -166,6 +179,11 @@ public class NetworkComboPlayer : NetworkBehaviour
 
         this.teammates = FindObjectsOfType<Teammate>()
             .Where(teammate => teammate.Team == team && teammate.gameObject != this.gameObject)
+            .Select(teammate => teammate.GetComponent<NetworkComboPlayer>())
+            .ToArray();
+        
+        this.teammatesAndSelf = FindObjectsOfType<Teammate>()
+            .Where(teammate => teammate.Team == team)
             .Select(teammate => teammate.GetComponent<NetworkComboPlayer>())
             .ToArray();
 
@@ -345,10 +363,8 @@ public class NetworkComboPlayer : NetworkBehaviour
         var distanceBToCenter = Vector3.Distance(b.transform.position, combo.Center);
         var shortestDistanceToCenter = distanceAToCenter < distanceBToCenter ? distanceAToCenter : distanceBToCenter;
 
-        var teammates = a.Teammates(true);
-
-        var tilesOccupiedByTeam = teammates
-            .Select(teammate => teammate.TileCurrentlyOn());
+        var tilesOccupiedByTeam = this.teammatesAndSelf
+            .Select(teammate => NetworkTile.FindTileAtPosition(teammate.transform.position));
 
         var colliders = Physics.OverlapSphere(combo.Center, shortestDistanceToCenter);
         List<NetworkTile> tilesGameObjects = colliders
@@ -377,7 +393,8 @@ public class NetworkComboPlayer : NetworkBehaviour
 
     private void CheckTriangleCombosForPlayer(NetworkComboPlayer player)
     {
-        var teammates = player.Teammates(false);
+        var teammates = this.teammates
+            .Where(teammate => teammate != this);
 
         var teammatesE = teammates
             .Where(teammate => !teammate.IsOnCooldown && teammate.gameObject.activeSelf);
@@ -466,18 +483,17 @@ public class NetworkComboPlayer : NetworkBehaviour
         var shortestDistanceToCenter = distanceAToCenter < distanceBToCenter ? distanceAToCenter : distanceBToCenter;
         shortestDistanceToCenter = shortestDistanceToCenter < distanceCToCenter ? shortestDistanceToCenter : distanceCToCenter;
 
-        var teammates = a.Teammates(true); //TODO cache
+        var teammates = this.teammates;
 
-        var tilesOccupiedByTeam = teammates
-            .Where(player => player.TileCurrentlyOn() != null)
-            .Select(player => player.TileCurrentlyOn());
+         var tilesOccupiedByTeam = this.teammatesAndSelf
+            .Select(teammate => NetworkTile.FindTileAtPosition(teammate.transform.position));
 
-        var colliders = Physics.OverlapSphere(combo.Center, shortestDistanceToCenter); // TODO yikes
+        var colliders = Physics.OverlapSphere(combo.Center, shortestDistanceToCenter);
         var tilesGameObjects = colliders
             .Where(collider => collider.GetComponentInParent<NetworkTile>() != null)
             .Select(collider => collider.GetComponentInParent<NetworkTile>())
             .Distinct()
-            .Where(tile => !tilesOccupiedByTeam.Contains(tile) // TODO if hash, this becomes fast
+            .Where(tile => !tilesOccupiedByTeam.Contains(tile)
                 && IsWithinTriangle(tile.transform.position,
                     a.transform.position,
                     b.transform.position,
@@ -529,7 +545,7 @@ public class NetworkComboPlayer : NetworkBehaviour
     public float MaxHighlightingDistance() => this.comboManager.TriangleDistance + this.comboManager.HighlightTolerance;
     public float GetCooldownMax() => this.cooldownMax;
     public float GetCooldownProgress() => this.cooldownProgress;
-    private NetworkTile TileCurrentlyOn() => this.networkDigging.TileCurrentlyOn();
+    private NetworkTile TileCurrentlyOn() => this.playerMovement.TileCurrentlyOn();
 
     // Credits to https://www.youtube.com/watch?v=WaYS1gEXEFE
     // Check that video for a great explanation of how we can manage this via math!

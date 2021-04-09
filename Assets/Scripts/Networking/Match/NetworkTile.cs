@@ -195,6 +195,20 @@ public class NetworkTile : MonoBehaviour
         return hitTile.collider.transform.parent.GetComponent<NetworkTile>();
     }
 
+    private static NetworkTile GetClosestTileWithSphereCheck(Vector3 position)
+    {
+        var colliders = Physics.OverlapSphere(position, 1f, 1 << LayerMask.NameToLayer("Tile"));
+
+        var closestCollider = colliders
+            .OrderBy(collider => Vector3.Distance(position, collider.transform.position))
+            .FirstOrDefault();
+
+        if (closestCollider is null)
+            return null;
+
+        return closestCollider.GetComponentInParent<NetworkTile>();
+    }
+
     private void CheckObstacles()
     {
         var colliders = Physics.OverlapSphere(transform.position, this.obstacleCheckRadius);
