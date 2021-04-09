@@ -4,6 +4,7 @@ using Cinemachine;
 using UnityEngine.UI;
 using System;
 
+using System.Linq;
 public class PlayerMovement : MonoBehaviour
 {
     private CharacterController characterController;
@@ -32,6 +33,7 @@ public class PlayerMovement : MonoBehaviour
     private GameObject surface;
     private GameObject underground;
 
+    [SerializeField] private float spawningCollisionRadiusToCheck = 1.2f;
     private LoseCrystals loseCrystals;
 
     private float disabledMovementCooldown;
@@ -182,11 +184,8 @@ public class PlayerMovement : MonoBehaviour
         yield return StartCoroutine(FadeOut(this.timeToFadeOut));
 
         var offset = initialPosition.y - this.surface.transform.position.y;
-        var fallenPosition = new Vector3(
-            initialPosition.x,
-            this.underground.transform.position.y + offset,
-            initialPosition.z);
-
+        var fallenPosition = FindAFallingPosition(initialPosition, offset);
+        
         this.characterController.enabled = false;
         this.transform.position = fallenPosition;
         this.characterController.enabled = true;
@@ -231,5 +230,53 @@ public class PlayerMovement : MonoBehaviour
             RefreshTileCurrentlyOn();
 
         return this.tileCurrentlyOn;
+    }
+
+    private Vector3 FindAFallingPosition(Vector3 initialPosition, float offset)
+    {
+        int attempts = 0;
+        var fallenPosition = new Vector3(
+                    initialPosition.x,
+                    this.underground.transform.position.y + offset,
+                    initialPosition.z);
+
+        var obstacleColliders = new Collider[50];
+        int numColliders = GetNumberOfColliders(fallenPosition, obstacleColliders);
+
+        if (numColliders > 0)
+            Debug.LogWarning($"Fell, but path was obstructed. Will try to find a new position to land at. Initial Position was {initialPosition}");
+
+        while (numColliders >= 1 && attempts++ < 10)
+            TryAnotherPosition(initialPosition, offset, out fallenPosition, obstacleColliders, out numColliders);
+
+        if (attempts >= 10)
+        {
+            Debug.LogWarning($"Was unable to find a solid position to land at. Initial Position was {initialPosition}");
+            fallenPosition = new Vector3(0, this.underground.transform.position.y + offset, 0);
+        }
+
+        return fallenPosition;
+    }
+
+    private void TryAnotherPosition(Vector3 initialPosition, float offset, out Vector3 fallenPosition, Collider[] obstacleColliders, out int numColliders)
+    {
+        float zOffset = UnityEngine.Random.Range(1, 6);
+        float xOffset = UnityEngine.Random.Range(1, 6);
+
+        fallenPosition = new Vector3(
+            initialPosition.x + xOffset,
+            this.underground.transform.position.y + offset,
+            initialPosition.z + zOffset);
+
+        numColliders = GetNumberOfColliders(fallenPosition, obstacleColliders);
+    }
+
+    private int GetNumberOfColliders(Vector3 fallenPosition, Collider[] obstacleColliders)
+    {
+        return Physics.OverlapSphereNonAlloc(
+            fallenPosition,
+            this.spawningCollisionRadiusToCheck,
+            obstacleColliders,
+            1 << LayerMask.NameToLayer("Default"));
     }
 }

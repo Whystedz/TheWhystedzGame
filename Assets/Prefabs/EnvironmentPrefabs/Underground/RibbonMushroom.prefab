@@ -383,8 +383,8 @@ GameObject:
   - component: {fileID: 7747983700210844192}
   - component: {fileID: 6640985956350070149}
   - component: {fileID: 8920912620287588687}
-  - component: {fileID: 4866895338422562665}
-  m_Layer: 8
+  - component: {fileID: 537546059569147813}
+  m_Layer: 0
   m_Name: RibbonMushroom
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
