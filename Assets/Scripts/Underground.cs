@@ -67,21 +67,25 @@ public class Underground : MonoBehaviour
         this.characterController.enabled = false;
         this.playerMovement.DisableMovement();
         this.animationManager.TriggerDeath(); // TODO
-        yield return new WaitForSeconds(2.5f);
-        this.playerMovement.EnableMovement();
+        
+        yield return new WaitForSeconds(1.5f);
+        yield return StartCoroutine(this.playerMovement.FadeOut(2f));
+        yield return new WaitForSeconds(0.5f);
+       
         this.characterController.enabled = true;
-
         var offset = initialPosition.y - this.underground.transform.position.y;
         var revivedPosition = new Vector3(
             respawnPoint.position.x,
             this.surface.transform.position.y + offset,
             respawnPoint.position.z);
-
         this.characterController.enabled = false;
         this.transform.position = revivedPosition;
         this.characterController.enabled = true;
-
         this.playerMovement.IsInUnderground = false;
+        StartCoroutine(this.playerMovement.FadeIn(1f));
+        yield return new WaitForSeconds(0.1f);
+        this.playerMovement.EnableMovement();
+        
 
         this.playerMovement.RefreshTileCurrentlyOn();
     }
