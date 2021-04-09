@@ -55,4 +55,9 @@ public class AnimationManager : MonoBehaviour
     }
 
     public void PlayFootstepAudio() => this.playerAudio.PlayFootstepAudio();
+
+    public void TriggerPutLadder() => this.animator.SetTrigger("PutLadder");
+    public void TriggerRemoveLadder() => this.animator.SetTrigger("RemoveLadder");
+    public void TriggerDeath() => this.animator.SetTrigger("Dies");
+    
 }

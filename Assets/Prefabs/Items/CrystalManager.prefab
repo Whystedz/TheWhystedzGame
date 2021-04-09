@@ -48,5 +48,5 @@ MonoBehaviour:
   maxCrystalsGame: 500
   surfaceBoundsOffset: 5
   undergroundBoundsOffset: 5
-  crystalVerticalOffsetHeight: 3
+  crystalVerticalOffsetHeight: 1.5
   spawningCollisionPaddingRadius: 1
