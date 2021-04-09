@@ -21,8 +21,6 @@ public struct ClientMatchMessage : NetworkMessage
 [Serializable]
 public struct MatchInfo
 {
-    // match ID is a small string shown on lobby screen
-    // matchIdGuid is a unique (long) string for server identification
     public string MatchId;
     public byte Players;
     public byte MaxPlayers;
@@ -52,16 +50,15 @@ public struct MatchPlayerData
 public struct TileInfo
 {
     public float TimeToRespawn;
-    public float TimeOfBreakingAnimation;
+    public float TimeToBreak;
     public float Progress;
     public int XIndex;
     public int ZIndex;
     public TileState TileState;
-    public TileHighlightState TileHighlightState;
 }
 
 [Serializable]
-public struct ComboHintInfo
+public class ComboHintInfo
 {
     public NetworkComboPlayer OriginPlayer;
     public NetworkComboPlayer TargetPlayer;
@@ -72,11 +69,10 @@ public struct ComboHintInfo
 [Serializable]
 public struct ComboInfo
 {
-    public List<NetworkTile> Tiles;
+    public List<TileInfo> Tiles;
     public List<NetworkComboPlayer> Players;
     public Vector3 Center;
     public ComboType ComboType;
-    public NetworkComboPlayer InitiatingPlayer;
     public bool IsTriggered;
 }
 
@@ -107,9 +103,7 @@ public enum ClientMatchOperation : byte
     Started
 }
 
-public enum ServerTileOperation : byte
+public enum Dummy : byte
 {
-    None,
-    Generate,
-    UpdateState
+    IgnoreThis
 }

@@ -8,22 +8,22 @@ public class MatchController : NetworkBehaviour
 {
     internal readonly SyncDictionary<NetworkIdentity, MatchPlayerData> matchPlayerData = new SyncDictionary<NetworkIdentity, MatchPlayerData>();
 
-    bool playAgain = false;
-
     private LobbyNetworkManager networkManager;
-
-    [Header("Diagnostics - Do Not Modify")]
-    public CanvasController canvasController;
-
-    public NetworkIdentity tileManagerIdentity;
+    private LobbyCanvasController canvasController;
+    // public NetworkIdentity tileManagerIdentity; Not needed, will put everything in the match controller prefab
     public List<NetworkIdentity> playerIdentities;
-
+    private TileManager tileManager;
+    private NetworkComboManager comboManager;
+    private NetworkCrystalManager crystalManager;
 
     void Awake()
     {
-        this.canvasController = FindObjectOfType<CanvasController>();
+        this.canvasController = FindObjectOfType<LobbyCanvasController>();
         this.networkManager = GameObject.FindWithTag("NetworkManager").GetComponent<LobbyNetworkManager>();
-        DontDestroyOnLoad(this);
+        this.tileManager = GetComponent<TileManager>();
+        this.comboManager = GetComponent<NetworkComboManager>();
+        this.crystalManager = GetComponent<NetworkCrystalManager>();
+        //DontDestroyOnLoad(this);
     }
 
     public override void OnStartServer()
@@ -36,7 +36,7 @@ public class MatchController : NetworkBehaviour
     private IEnumerator AddPlayersToMatchController()
     {
         yield return null;
-
+    /*
         foreach (var playerIdentity in this.playerIdentities)
         {
             this.matchPlayerData.Add(playerIdentity, new MatchPlayerData
@@ -47,6 +47,7 @@ public class MatchController : NetworkBehaviour
                 }
             );
         }
+    */
     }
 
     public override void OnStartClient()

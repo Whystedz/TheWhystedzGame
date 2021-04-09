@@ -3,12 +3,12 @@ using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
 {
-    private static InputManager instance;
+    public static InputManager Instance;
 
     [SerializeField] private PlayerInput playerInput;
 
     private HUDMainButtons HUDMainButtons;
-    public static InputManager GetInstance() => instance;
+    public static InputManager GetInstance() => Instance;
     public Vector2 GetInputMovement() => this.playerInput.PlayerControls.Movement.ReadValue<Vector2>();
     public bool GetDigging() => this.playerInput.PlayerControls.Digging.triggered;
     public bool GetInitiateCombo() => this.playerInput.PlayerControls.InitiateCombo.triggered;
@@ -71,9 +71,9 @@ public class InputManager : MonoBehaviour
 
     private void MaintainSingleInstance()
     {
-        if (instance != null && instance != this)
+        if (Instance != null && Instance != this)
             Destroy(this);
         else
-            instance = this;
+            Instance = this;
     }
 }

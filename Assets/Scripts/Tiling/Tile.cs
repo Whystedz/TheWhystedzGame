@@ -10,7 +10,7 @@ public enum TileState
     Unstable, 
     Respawning,
     Rope,
-    Unbreakable,
+    Unbreakable
 }
 
 public enum TileHighlightState

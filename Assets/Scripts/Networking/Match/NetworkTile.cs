@@ -1,91 +1,94 @@
 using System.Collections;
 using System.Threading;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class NetworkTile : MonoBehaviour
 {
+    [Header("General")]
+    [SerializeField] private float obstacleCheckRadius = 1f;
     public TileInfo TileInfo;
 
+    [Header("Materials")]
     [SerializeField] private Material normalMaterial;
     [SerializeField] private Material unstableMaterial;
     [SerializeField] private Material destroyedMaterial;
     [SerializeField] private Material highlightedMaterial;
     [SerializeField] private Material comboHighlightedMaterial;
     [SerializeField] private Material ropeMaterial;
+    [SerializeField] private Material unbreakableMaterial;
 
-    private MeshRenderer meshRenderer;
+    internal MeshRenderer meshRenderer;
+    internal TileHighlightState tileHighlightState;
+
+    TileManager tileManager = TileManager.GetInstance();
+    private static GameObject surface;
+    private static GameObject underground;
 
     private void Start()
     {
         this.meshRenderer = GetComponentInChildren<MeshRenderer>();
         this.meshRenderer.material = this.normalMaterial;
+
+        if (surface is null)
+            surface = GameObject.FindGameObjectWithTag("Surface");
+        if (underground is null)
+            underground = GameObject.FindGameObjectWithTag("Underground");
+
+        CheckObstacles();
     }
 
-    void Update()
-    {
-        ChangeMaterialAccordingToCurrentState();
+    public void DigTile() => StartCoroutine(WaitUntilBroken());
+    public void StartRespawning() => StartCoroutine(WaitUntilRespawn());
+    public void PauseState() => StopAllCoroutines();
 
-        switch (TileInfo.TileState)
+    private IEnumerator WaitUntilBroken()
+    {
+        while (TileInfo.Progress > 0)
         {
-            case TileState.Normal:
-                break;
-            case TileState.Unstable:
-                this.UnstableUpdate();
-                break;
-            case TileState.Respawning:
-                RespawningUpdate();
-                break;
-            case TileState.Rope:
-                break;
+            TileInfo.Progress -= Time.deltaTime;
+            yield return new WaitForFixedUpdate();
         }
-    }
 
-    private void UnstableUpdate()
-    {
-        TileInfo.Progress -= Time.deltaTime;
-
-        if (TileInfo.Progress <= 0)
-            Break();
+        Break();
     }
 
     private void Break()
     {
-        StartCoroutine(PlayBreakingAnimation());
-
-        TileInfo.TileState = TileState.Respawning;
+        this.tileManager.SetTileState(TileInfo, TileState.Respawning, TileInfo.TimeToRespawn);
         this.meshRenderer.material = destroyedMaterial;
-        TileInfo.Progress = TileInfo.TimeToRespawn;
     }
 
-    private IEnumerator PlayBreakingAnimation()
+    private IEnumerator WaitUntilRespawn()
     {
-        var breakingAnimationProgress = TileInfo.TimeOfBreakingAnimation;
-        var breakingAnimationSpeed = 10f / TileInfo.TimeOfBreakingAnimation;
-
-        while (breakingAnimationProgress > 0)
+        while (TileInfo.Progress > 0)
         {
-            if (TileInfo.TileState == TileState.Normal)
-                yield break;
-
-            breakingAnimationProgress -= Time.deltaTime;
-            yield return new WaitForEndOfFrame();
+            TileInfo.Progress -= Time.deltaTime;
+            yield return new WaitForFixedUpdate();
         }
-    }
 
-    private void RespawningUpdate()
-    {
-        TileInfo.Progress -= Time.deltaTime;
-
-        if (TileInfo.Progress <= 0)
-            Respawn();
+        Respawn();
     }
 
     public void Respawn()
     {
         transform.position = new Vector3(transform.position.x, 0, transform.position.z);
         this.meshRenderer.material = normalMaterial;
-        TileInfo.TileState = TileState.Normal;
+        this.tileManager.ResetTile(TileInfo);
+    }
+
+    public void ResetHighlighting()
+    {
+        this.tileHighlightState = TileHighlightState.NoHighlight;
+
+        ChangeMaterialAccordingToCurrentState();
+    }
+
+    public void ResetComboHighlighting()
+    {
+        if (this.tileHighlightState == TileHighlightState.ComboHighlight)
+            ResetHighlighting();
     }
 
     public void HighlightTileSimpleDigPreview()
@@ -93,15 +96,22 @@ public class NetworkTile : MonoBehaviour
         if (TileInfo.TileState != TileState.Normal)
             return;
 
-        TileInfo.TileHighlightState = TileHighlightState.SimpleHighlight;
+        this.tileHighlightState = TileHighlightState.SimpleHighlight;
+
+        ChangeMaterialAccordingToCurrentState();
     }
 
-    public IEnumerator HighlightTileComboDigPreview()
+    public void HighlightTileComboDigPreview()
     {
         if (TileInfo.TileState != TileState.Normal)
-            yield break;
+            return;
 
-        TileInfo.TileHighlightState = TileHighlightState.ComboHighlight;
+        if (this.tileHighlightState == TileHighlightState.SimpleHighlight)
+            return;
+
+        this.tileHighlightState = TileHighlightState.ComboHighlight;
+
+        ChangeMaterialAccordingToCurrentState();
     }
 
     public void HighlightTileRopePreview()
@@ -109,12 +119,14 @@ public class NetworkTile : MonoBehaviour
         if (TileInfo.TileState != TileState.Respawning)
             return;
 
-        TileInfo.TileHighlightState = TileHighlightState.RopeHighlight;
+        this.tileHighlightState = TileHighlightState.RopeHighlight;
+
+        ChangeMaterialAccordingToCurrentState();
     }
 
     private void ChangeMaterialAccordingToCurrentState()
     {       
-        switch (TileInfo.TileHighlightState)
+        switch (this.tileHighlightState)
         {
             case TileHighlightState.NoHighlight:
                 ChangeMaterialAccordingToCurrentStateNoHighlight();
@@ -129,8 +141,6 @@ public class NetworkTile : MonoBehaviour
                 ChangeMaterialForRopePreviewHighlight();
                 break;
         }
-
-        TileInfo.TileHighlightState = TileHighlightState.NoHighlight;
     }
 
     private void ChangeMaterialForRopePreviewHighlight() => this.meshRenderer.material = ropeMaterial;
@@ -155,6 +165,68 @@ public class NetworkTile : MonoBehaviour
             case TileState.Rope:
                 this.meshRenderer.material = destroyedMaterial;
                 break;
+            case TileState.Unbreakable:
+                this.meshRenderer.material = this.unbreakableMaterial;
+                break;
         }
     }
+
+    public static NetworkTile FindTileAtPosition(Vector3 position)
+    {
+        var distanceToSurface = Mathf.Abs(position.y - surface.transform.position.y);
+        var distanceToUnderground = Mathf.Abs(position.y - underground.transform.position.y);
+
+        if (distanceToUnderground < distanceToSurface)
+            return null;
+
+        var hasHitTile = Physics.Raycast(position + Vector3.down * 5f,
+            Vector3.up,
+            out RaycastHit hitTile,
+            10f,
+            1 << LayerMask.NameToLayer("Tile"));
+
+        if (!hasHitTile)
+            return GetClosestTileWithSphereCheck(position);
+
+        return hitTile.collider.transform.parent.GetComponent<NetworkTile>();
+    }
+
+    private static NetworkTile GetClosestTileWithSphereCheck(Vector3 position)
+    {
+        var colliders = Physics.OverlapSphere(position, 1f, 1 << LayerMask.NameToLayer("Tile"));
+
+        var closestCollider = colliders
+            .OrderBy(collider => Vector3.Distance(position, collider.transform.position))
+            .FirstOrDefault();
+
+        if (closestCollider is null)
+            return null;
+
+        return closestCollider.GetComponentInParent<NetworkTile>();
+    }
+
+    private void CheckObstacles()
+    {
+        var colliders = Physics.OverlapSphere(transform.position, this.obstacleCheckRadius);
+        if (colliders.Count() == 0) return;
+
+        var obstacles = colliders
+            .Where(collider => collider.gameObject.CompareTag("Obstacle"));
+
+        if (obstacles.Count() == 0)
+            return;
+
+        SetUnbreakable();
+    }
+
+    protected void SetUnbreakable()
+    {
+        if (TileInfo.TileState == TileState.Unbreakable)
+            return;
+
+        TileInfo.TileState = TileState.Unbreakable;
+        this.meshRenderer.material = this.unbreakableMaterial;
+    }
+
+    internal bool IsDiggable() => TileInfo.TileState == TileState.Normal;
 }

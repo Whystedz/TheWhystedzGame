@@ -25,27 +25,18 @@ public class LobbyGUI : MonoBehaviour
         nameInputField.text = defaultName;
     }
 
-    public void SetPlayerName(string name)
-    {
-        lobbySelectables.ForEach(x => x.interactable = !string.IsNullOrEmpty(name));
-    }
+    public void SetPlayerName(string name) => lobbySelectables.ForEach(x => x.interactable = !string.IsNullOrEmpty(name));
 
     public void SavePlayerName()
     {
-        CanvasController.Instance.SetDisplayName(nameInputField.text);
+        LobbyCanvasController.Instance.SetDisplayName(nameInputField.text);
         if (!string.IsNullOrEmpty(nameInputField.text))
             PlayerPrefs.SetString(PlayerPrefsNameKey, nameInputField.text);
     }
 
-    public void SearchGame()
-    {
-        StartCoroutine(SearchingForGame());
-    }
+    public void SearchGame() => StartCoroutine(SearchingForGame());
 
-    public void SearchCancel()
-    {
-        searching = false;
-    }
+    public void SearchCancel() => searching = false;
 
     IEnumerator SearchingForGame()
     {
@@ -64,7 +55,7 @@ public class LobbyGUI : MonoBehaviour
             else
             {
                 currentTime = searchInterval;
-                CanvasController.Instance.RequestSearchMatch();
+                LobbyCanvasController.Instance.RequestSearchMatch();
             }
             yield return null;
         }
@@ -72,8 +63,5 @@ public class LobbyGUI : MonoBehaviour
         EnableSearchCanvas(false);
     }
 
-    public void EnableSearchCanvas(bool isEnabled)
-    {
-        this.searchCanvas.enabled = isEnabled;
-    }
+    public void EnableSearchCanvas(bool isEnabled) => this.searchCanvas.enabled = isEnabled;
 }

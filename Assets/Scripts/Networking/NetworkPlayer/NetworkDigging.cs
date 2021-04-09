@@ -1,21 +1,27 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Mirror;
 
 public class NetworkDigging : NetworkBehaviour
 {
+    [SerializeField] private Animator animator;
+    private PlayerAudio playerAudio;
+
+    [Header("Digging")]
     [SerializeField] private float minDistanceToDiggableTile = 1.0f;
     [SerializeField] private float maxDistanceToDiggableTile = 1.0f;
-    private InputManager inputManager;
+    [SerializeField] private float afterDiggingPause = 0.5f;
+
     private int tileLayerMask;
     private NetworkPlayerMovement playerMovement;
-    [SerializeField] private Rope rope;
-    [SerializeField] private bool enableDebugMode = true;
-    [SerializeField] private float maxDistanceToRope = 1.5f;
-    [SerializeField] private float speedTowardsRope = 6.0f;
+    private NetworkRopeInteraction ropeInteractions;
+
+    public NetworkTile TileToDig { get; private set; }
+    private NetworkTile lastTileHighlighted;
 
     private TileManager tileManager;
 
@@ -23,7 +29,8 @@ public class NetworkDigging : NetworkBehaviour
     {
         this.tileLayerMask = LayerMask.GetMask("Tile");
         this.playerMovement = this.GetComponent<NetworkPlayerMovement>();
-        this.inputManager = InputManager.GetInstance();
+        this.playerAudio = this.GetComponent<PlayerAudio>();
+        this.ropeInteractions = this.GetComponent<NetworkRopeInteraction>();
         this.tileManager = TileManager.GetInstance();
     }
 
@@ -31,144 +38,92 @@ public class NetworkDigging : NetworkBehaviour
     {
         if (base.hasAuthority)
         {
-            if (this.playerMovement.isInUnderground)
-            return;
+            ResetDiggingPreviewHighlighting();
+            
+            if (this.playerMovement.IsInUnderground
+                || this.playerMovement.IsFalling()
+                || this.ropeInteractions.IsHoldingRope)
+                return;
+            
+            DetermineTileToDig();
 
-            var hits = Physics.RaycastAll(transform.position,
-                transform.TransformDirection(Vector3.forward),
-                this.maxDistanceToDiggableTile,
-                this.tileLayerMask
-                );
-
-            if (hits.Length == 0)
+            if (TileToDig is null
+                || TileToDig.TileInfo.TileState != TileState.Normal)
                 return;
 
-            var closestCollider = GetClosestCollider(hits);
+            UpdateHighlighting();
 
-            if (closestCollider == null)
-                return;
-
-            var hitGameObject = closestCollider.transform.parent.gameObject;
-
-            var tile = hitGameObject.GetComponent<NetworkTile>();
-
-            if (playerMovement.IsFalling())
+            if (NetworkInputManager.Instance.GetDigging())
             {
-                rope.gameObject.SetActive(false);
-                tile.TileInfo.TileState = TileState.Respawning;
-                return;
-            }
-
-            switch (tile.TileInfo.TileState)
-            {
-                case TileState.Normal:
-                    tile.HighlightTileSimpleDigPreview();
-                    break;
-                case TileState.Unstable:
-                    break;
-                case TileState.Respawning:
-                    tile.HighlightTileRopePreview();
-                    break;
-                case TileState.Rope:
-                    break;
-            }
-
-            if (inputManager.GetDigging())
-                InteractWithTile(tile);
-
-            if (rope.ropeState == RopeState.Saved)
-            {
-                tile.TileInfo.TileState = TileState.Respawning;
-                tile.Respawn();
-                rope.CleanUpAfterSave();
+                Dig(TileToDig.TileInfo);
             }
         }
     }
 
-    [Command]
-    public void CmdDigTile(TileInfo targetTile)
+    private void ResetDiggingPreviewHighlighting()
     {
-        this.tileManager.DigTile(targetTile);
+        if (this.lastTileHighlighted != null)
+            this.lastTileHighlighted.ResetHighlighting();
+
+        this.lastTileHighlighted = null;
     }
 
-    private void OnDrawGizmos()
+    private void UpdateHighlighting()
     {
-        if (enableDebugMode)
+        TileToDig.HighlightTileSimpleDigPreview();
+
+        this.lastTileHighlighted = TileToDig;
+    }
+
+    private void DetermineTileToDig()
+    {
+        var hits = Physics.RaycastAll(transform.position,
+            transform.TransformDirection(Vector3.forward),
+            this.maxDistanceToDiggableTile,
+            tileLayerMask
+            );
+
+        if (hits.Length == 0)
         {
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(
-                Vector3.right * 0.1f + transform.position,
-                Vector3.right * 0.1f + transform.position + transform.forward * this.minDistanceToDiggableTile
-            );
-
-            Gizmos.color = Color.blue;
-            Gizmos.DrawLine(
-                transform.position,
-                transform.position + transform.forward * this.maxDistanceToDiggableTile
-            );
+            TileToDig = null;
+            return;
         }
+
+        var closestCollider = GetClosestCollider(hits);
+
+        if (closestCollider is null)
+        {
+            if (this.lastTileHighlighted != null)
+                this.lastTileHighlighted.ResetHighlighting();
+            return;
+        }
+
+        var hitGameObject = closestCollider.transform.parent.gameObject;
+
+        TileToDig = hitGameObject.GetComponent<NetworkTile>();
     }
 
     private Collider GetClosestCollider(RaycastHit[] hits)
     {
-        var closestDistnace = Mathf.Infinity;
-        Collider closestCollider = null;
+        var closestHit = hits
+            .Where(hit => Vector3.Distance(transform.position, hit.transform.position) > this.minDistanceToDiggableTile)
+            .OrderBy(hit => Vector3.Distance(transform.position, hit.transform.position))
+            .FirstOrDefault();
 
-        int hitsLength = hits.Length;
-        for (int i = 0; i < hitsLength; i++)
-        {
-            var distance = Vector3.Distance(transform.position, hits[i].collider.transform.position);
-            if (distance < this.minDistanceToDiggableTile)
-                continue; // ignore tiles that are too close
-
-            if (distance < closestDistnace)
-            {
-                closestCollider = hits[i].collider;
-                closestDistnace = distance;
-            }
-        }
-
-        return closestCollider;
+        return closestHit.collider;
     }
 
-    public void InteractWithTile(NetworkTile tile)
+    public void Dig(TileInfo targetTile)
     {
-        
-        if (tile.TileInfo.TileState == TileState.Normal)
-            CmdDigTile(tile.TileInfo);
-        else if (rope.ropeState == RopeState.Normal && 
-            ((this.rope.gameObject.activeSelf && tile.TileInfo.TileState == TileState.Rope) 
-            || (!this.rope.gameObject.activeSelf && tile.TileInfo.TileState == TileState.Respawning)))
-        {
-            playerMovement.IsMovementDisabled = !playerMovement.IsMovementDisabled;
-
-            if (tile.TileInfo.TileState == TileState.Rope)
-                tile.TileInfo.TileState = TileState.Respawning;
-            else
-                tile.TileInfo.TileState = TileState.Rope;
-
-            if (tile.TileInfo.TileState == TileState.Rope)
-                StartCoroutine(ThrowRope(this.rope.gameObject, tile));
-            else
-            {
-                rope.ropeState = RopeState.Normal;
-                tile.TileInfo.TileState = TileState.Respawning;
-                this.rope.gameObject.SetActive(false);
-            }
-        }
+        CmdDigTile(targetTile);
+        this.playerAudio.PlayLaserAudio();
+        this.animator.SetTrigger("Shoot");
+        playerMovement.DisableMovementFor(this.afterDiggingPause);
     }
 
-    public IEnumerator ThrowRope(GameObject ropeObject, NetworkTile tile)
+    [Command(ignoreAuthority = true)]
+    public void CmdDigTile(TileInfo targetTile)
     {
-        Vector3 tileSurfacePosition = new Vector3(tile.transform.position.x, this.transform.position.y, tile.transform.position.z);
-        while (Vector3.Distance(this.transform.position, tileSurfacePosition) > maxDistanceToRope)
-        {
-            playerMovement.MoveTowards(ropeObject.transform.forward, speedTowardsRope);
-            yield return null;
-        }
-        playerMovement.MoveTowards(Vector3.zero, 0);
-        ropeObject.transform.position = new Vector3(tile.transform.position.x, ropeObject.transform.position.y, tile.transform.position.z);
-        ropeObject.SetActive(true);
-        yield return null;
+        this.tileManager.DigTile(targetTile);
     }
 }

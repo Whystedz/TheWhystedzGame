@@ -20,7 +20,6 @@ public class TileManager : NetworkBehaviour
 
     [SerializeField] private float timeToBreak = 3f;
     [SerializeField] private float timeToRespawn = 5f;
-    [SerializeField] private float timeOfBreakingAnimation = 5f;
 
     private PlayerMovement playerMovement;
 
@@ -30,7 +29,7 @@ public class TileManager : NetworkBehaviour
 
     private void Awake() => MaintainSingleInstance();
 
-    void Start()
+    private void Start()
     {
         syncTileList.Callback += OnTileUpdated;
         SpawnMap();
@@ -50,7 +49,7 @@ public class TileManager : NetworkBehaviour
                 TileInfo tile = new TileInfo
                 {
                     TimeToRespawn = this.timeToRespawn,
-                    TimeOfBreakingAnimation = this.timeOfBreakingAnimation,
+                    TimeToBreak = this.timeToBreak,
                     Progress = 0f,
                     XIndex = xIndex,
                     ZIndex = zIndex,
@@ -123,8 +122,10 @@ public class TileManager : NetworkBehaviour
 
         var biomeRegion = colliders[0].GetComponent<BiomeRegion>();
 
-        //return biomeRegion.GetRandomBiomeThemedTile();
-        return this.basicTilePrefab;
+        if (isServer)
+            return this.basicTilePrefab;
+
+        return biomeRegion.GetRandomBiomeThemedTile();
     }
 
     public void DigTile(TileInfo targetTile)
@@ -145,6 +146,29 @@ public class TileManager : NetworkBehaviour
         }
     }
 
+    public void SetTileState(TileInfo targetTile, TileState newState, float newProgress)
+    {
+        if(isServer)
+        {
+            int index = syncTileList.FindIndex(x => x.XIndex == targetTile.XIndex && x.ZIndex == targetTile.ZIndex);
+            UpdateTile(index, newProgress, newState);
+        }
+    }
+
+    private void UpdateTile(int listIndex, float newProgress, TileState newState)
+    {
+        TileInfo tempTile = syncTileList[listIndex];
+        tempTile.Progress = newProgress;
+        tempTile.TileState = newState;
+        syncTileList[listIndex] = tempTile;
+    }
+
+    public NetworkTile GetTileScript(TileInfo tileInfo)
+    {
+        int index = syncTileList.FindIndex(x => x.XIndex == tileInfo.XIndex && x.ZIndex == tileInfo.ZIndex);
+        return this.transform.GetChild(index).GetComponent<NetworkTile>();
+    }
+
     private void MaintainSingleInstance()
     {
         if (instance != null && instance != this)
@@ -153,36 +177,26 @@ public class TileManager : NetworkBehaviour
             instance = this;
     }
 
-    public void UpdateTile(int listIndex, float newProgress, TileState newState)
-    {
-        TileInfo tempTile = syncTileList[listIndex];
-        tempTile.Progress = newProgress;
-        tempTile.TileState = newState;
-        syncTileList[listIndex] = tempTile;
-    }
-
     void OnTileUpdated(SyncList<TileInfo>.Operation op, int index, TileInfo oldTile, TileInfo newTile)
     {
         switch (op)
         {
             case SyncList<TileInfo>.Operation.OP_SET:
-                //Debug.Log("Set");
-                StartCoroutine(UpdateMap(index, newTile));
+                var tile = this.transform.GetChild(index).GetComponent<NetworkTile>();
+                tile.TileInfo = newTile;
+                switch (newTile.TileState)
+                {
+                    case TileState.Unstable:
+                        tile.DigTile();
+                        break;
+                    case TileState.Respawning:
+                        tile.StartRespawning();
+                        break;
+                    case TileState.Rope:
+                        tile.PauseState();
+                        break;
+                }
                 break;
         }
-    }
-
-    IEnumerator UpdateMap(int index, TileInfo newTile)
-    {
-        //Debug.Log("Update Map");
-        this.transform.GetChild(index).GetComponent<NetworkTile>().TileInfo = newTile;
-
-        if(newTile.TileState == TileState.Normal)
-            yield break;
-            
-        while(this.transform.GetChild(index).GetComponent<NetworkTile>().TileInfo.TileState != TileState.Normal)
-            yield return new WaitForEndOfFrame();
-        
-        ResetTile(this.transform.GetChild(index).GetComponent<NetworkTile>().TileInfo);
     }
 }

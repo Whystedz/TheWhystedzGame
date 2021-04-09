@@ -5,13 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/SceneSandbox/Yuguo/LobbyScene.unity
-    guid: 421e26af247d14438bbe6c2c2bd38f41
-  - enabled: 0
-    path: Assets/SceneSandbox/Yuguo/MainSceneOnline.unity
-    guid: 37e009ac9de93433c90e74dd27a2962d
   - enabled: 1
-    path: Assets/Scenes/TheMainScene.unity
-    guid: 240ab921b28b6124a8f31f4b52435443
+    path: Assets/Scenes/Offline.unity
+    guid: 657602a3dc621be40a9785f3cc914b48
+  - enabled: 1
+    path: Assets/Scenes/TheMainSceneOnline.unity
+    guid: 05a7e6c5397e52a41af475b76e19a69c
   m_configObjects: {}

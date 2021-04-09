@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Mirror;
 
-public class CameraTransparency : MonoBehaviour
+public class CameraTransparency : NetworkBehaviour
 {
     private List<Renderer> allRenderers = new List<Renderer>();
     private List<Material[]> materialSolidStates = new List<Material[]>();
@@ -13,51 +14,54 @@ public class CameraTransparency : MonoBehaviour
     private Vector3 raycastDirection;
     private Camera mainCamera;
 
-    private void Start() => this.mainCamera = Camera.main;
+    public override void OnStartAuthority() => this.mainCamera = Camera.main;
 
     private void Update()
     {
-        this.currentRenderers.Clear();
-        this.removeRenderers.Clear();
-
-        RaycastHit[] hits;
-        this.raycastDirection = mainCamera.transform.position - transform.position;
-        hits = Physics.RaycastAll(transform.position, this.raycastDirection, Vector3.Distance(transform.position, this.mainCamera.transform.position));
-        
-        for (int i = 0; i < hits.Length; i++)
+        if (base.hasAuthority)
         {
-            RaycastHit hit = hits[i];
-            if (hit.transform.tag == "Obstacle" && hit.transform.GetComponent<Renderer>())
+            this.currentRenderers.Clear();
+            this.removeRenderers.Clear();
+
+            RaycastHit[] hits;
+            this.raycastDirection = mainCamera.transform.position - transform.position;
+            hits = Physics.RaycastAll(transform.position, this.raycastDirection, Vector3.Distance(transform.position, this.mainCamera.transform.position));
+            
+            for (int i = 0; i < hits.Length; i++)
             {
-                Renderer rend = hit.transform.GetComponent<Renderer>();
+                RaycastHit hit = hits[i];
+                if (hit.transform.tag == "Obstacle" && hit.transform.GetComponent<Renderer>())
+                {
+                    Renderer rend = hit.transform.GetComponent<Renderer>();
+                    Material[] mats = rend.materials;
+
+                    if (!this.allRenderers.Contains(rend))
+                    {
+                        this.allRenderers.Add(rend);
+                        Material[] clone = DeepCopy(rend.materials);
+                        this.materialSolidStates.Add(clone);
+
+                        for (int j = 0; j < mats.Length; j++)
+                            SetFloatsTransparent(mats[j]);
+                    }
+
+                    if (!this.currentRenderers.Contains(rend))
+                        this.currentRenderers.Add(rend);
+                }
+            }
+
+            this.removeRenderers = this.allRenderers.Except(this.currentRenderers).ToList();
+            for (int i = 0; i < this.removeRenderers.Count; i++)
+            {
+                Renderer rend = this.removeRenderers[i];
                 Material[] mats = rend.materials;
 
-                if (!this.allRenderers.Contains(rend))
-                {
-                    this.allRenderers.Add(rend);
-                    Material[] clone = DeepCopy(rend.materials);
-                    this.materialSolidStates.Add(clone);
+                for (int j = 0; j < mats.Length; j++)
+                    SetFloatsSolid(mats[j], this.materialSolidStates[allRenderers.IndexOf(rend)][j]);
 
-                    for (int j = 0; j < mats.Length; j++)
-                        SetFloatsTransparent(mats[j]);
-                }
-
-                if (!this.currentRenderers.Contains(rend))
-                    this.currentRenderers.Add(rend);
+                this.materialSolidStates.RemoveAt(this.allRenderers.IndexOf(rend));
+                this.allRenderers.Remove(rend);
             }
-        }
-
-        this.removeRenderers = this.allRenderers.Except(this.currentRenderers).ToList();
-        for (int i = 0; i < this.removeRenderers.Count; i++)
-        {
-            Renderer rend = this.removeRenderers[i];
-            Material[] mats = rend.materials;
-
-            for (int j = 0; j < mats.Length; j++)
-                SetFloatsSolid(mats[j], this.materialSolidStates[allRenderers.IndexOf(rend)][j]);
-
-            this.materialSolidStates.RemoveAt(this.allRenderers.IndexOf(rend));
-            this.allRenderers.Remove(rend);
         }
     }
 

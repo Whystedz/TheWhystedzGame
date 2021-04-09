@@ -24,8 +24,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6332428031633548186}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10, y: 8.300194, z: -1.6635844}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -43,15 +43,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5caf05da19b276a4a8873c1aeefb711c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highlightTolerance: 5
-  hintColor: {r: 1, g: 1, b: 1, a: 1}
-  showExtendedTeamCombos: 1
-  triggerExtendedTeamCombos: 1
-  lineDistance: 10
-  lineThickness: 2
-  maxTilesInLineCombo: 20
-  lineColor: {r: 0, g: 0, b: 1, a: 1}
-  triangleDistance: 15
-  maxTilesInTriangleCombo: 64
-  triangleColor: {r: 0, g: 1, b: 0.05490196, a: 1}
-  CombosAvailable: []
+  syncMode: 0
+  syncInterval: 0.1
+  HighlightTolerance: 5
+  ShowExtendedTeamCombos: 1
+  TriggerExtendedTeamCombos: 1
+  LineDistance: 10
+  LineThickness: 2
+  MaxTilesInLineCombo: 20
+  TriangleDistance: 15
+  MaxTilesInTriangleCombo: 64
