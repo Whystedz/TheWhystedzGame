@@ -45,7 +45,7 @@ public class NetworkRopeInteraction : NetworkBehaviour
         this.playerMovement = this.GetComponent<NetworkPlayerMovement>();
         this.tileManager = TileManager.GetInstance();
 
-        this.team = this.transform.parent.GetComponent<Teammate>();
+        this.team = GetComponent<Teammate>();
 
         if (base.hasAuthority)
             isClientPlayer = true;
@@ -73,13 +73,13 @@ public class NetworkRopeInteraction : NetworkBehaviour
         DetermineRopeTile();
 
         if (RopeTile != null 
-            && !InputManager.Instance.GetLadder())
+            && !NetworkInputManager.Instance.GetLadder())
         {
             PreviewRope();
             return;
         }
 
-        if (InputManager.Instance.GetLadder())
+        if (NetworkInputManager.Instance.GetLadder())
             DetermineRopeAction();
     }
 

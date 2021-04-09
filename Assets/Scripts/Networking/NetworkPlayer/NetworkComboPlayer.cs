@@ -122,7 +122,7 @@ public class NetworkComboPlayer : NetworkBehaviour
                     comboParticleIndicator.UpdateParticles(Combos, ComboHintInfos);
             
             if (this.canTriggerCombos
-                && InputManager.Instance.GetDigging()
+                && NetworkInputManager.Instance.GetDigging()
                 && Combos.Count() > 0
                 && !this.IsOnCooldown)
                 QueuePlayerForTriggerCombos(this);

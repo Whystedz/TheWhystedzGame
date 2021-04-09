@@ -54,19 +54,11 @@ public class NetworkDigging : NetworkBehaviour
 
             UpdateHighlighting();
 
-            if (InputManager.Instance.GetDigging())
+            if (NetworkInputManager.Instance.GetDigging())
             {
                 this.animator.SetTrigger("Shoot");
                 CmdDigTile(TileToDig.TileInfo);
             }
-
-            /*
-            if (this.rope != null && RopeState == RopeState.Saved)
-            {
-                CmdSetTileState(Tile.TileInfo, TileState.Respawning, 0f);
-                StartCoroutine(RemoveRope());
-            }
-            */
         }
     }
 

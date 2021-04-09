@@ -17,8 +17,7 @@ public class NetworkPlayerScore : MonoBehaviour
         
         this.team = this.GetComponent<Teammate>().Team;
 
-        teamScore = FindObjectsOfType<TeamScore>()
-            .SingleOrDefault(teamscore => teamscore.Team == this.team);
+        //teamScore = FindObjectsOfType<TeamScore>().SingleOrDefault(teamscore => teamscore.Team == this.team);
 
         this.playerAudio = GetComponentInParent<PlayerAudio>();
     }
@@ -27,7 +26,7 @@ public class NetworkPlayerScore : MonoBehaviour
     {
         CurrentScore += amountToAdd;
 
-        this.teamScore.Add(amountToAdd);
+        //this.teamScore.Add(amountToAdd);
     }
 
     public void Substract(int amountToSubstract)
@@ -37,7 +36,7 @@ public class NetworkPlayerScore : MonoBehaviour
         if (CurrentScore < 0)
             CurrentScore = 0;
 
-        this.teamScore.Substract(amountToSubstract);
+        //this.teamScore.Substract(amountToSubstract);
         //this.playerScoreUI.UpdateScore(CurrentScore);
     }
 

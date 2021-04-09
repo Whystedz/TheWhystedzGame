@@ -36,8 +36,8 @@ public class NetworkUnderground : MonoBehaviour
             this.timer += Time.deltaTime;
             if (this.timer >= this.timeToDie)
                 Die();
-
-        } else
+        } 
+        else
             this.timer = 0;
 
     }

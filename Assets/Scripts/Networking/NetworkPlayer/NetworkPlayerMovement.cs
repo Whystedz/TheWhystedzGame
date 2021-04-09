@@ -108,13 +108,13 @@ public class NetworkPlayerMovement : NetworkBehaviour
 
         CheckIfFalling();
 
-        if (this.isFalling)
+        if (!this.isFalling)
             RegularMovement();
     }
 
     private void RegularMovement()
     {
-        this.direction = new Vector3(InputManager.Instance.GetInputMovement().x, 0f, InputManager.Instance.GetInputMovement().y);
+        this.direction = new Vector3(NetworkInputManager.Instance.GetInputMovement().x, 0f, NetworkInputManager.Instance.GetInputMovement().y);
         this.characterController.Move(this.direction * Time.deltaTime * this.movementSpeed);
 
         this.isRunning = (Mathf.Abs(this.characterController.velocity.x) > 0 || Mathf.Abs(this.characterController.velocity.z) > 0) ? true : false;
@@ -129,7 +129,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
         if (this.IsInUnderground || this.isFalling)
             return;
 
-        this.isFalling = tileCurrentlyOn is null
+        this.isFalling = tileCurrentlyOn is null 
             || tileCurrentlyOn.TileInfo.TileState == TileState.Respawning
             || tileCurrentlyOn.TileInfo.TileState == TileState.Rope;
 
@@ -287,7 +287,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
 
     public void RefreshTileCurrentlyOn()
     {
-        this.tileCurrentlyOn = NetworkTile.FindTileAtPosition(transform.position);
+        this.tileCurrentlyOn = NetworkTile.FindTileAtPosition(this.transform.position);
         this.tileCurrentlyOnUpdatedThisFrame = true;
     }
 

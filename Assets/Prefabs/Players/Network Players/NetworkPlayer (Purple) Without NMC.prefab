@@ -60,9 +60,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ad4148ae17e60b43971db28a2ce4010, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highlightedLadder: {fileID: 5262643398048106678}
+  rope: {fileID: 0}
   heightToClimb: 8
+  enableDebugMode: 1
+  maxDistanceToRope: 1.8
+  speedTowardsRope: 6
+  minDistanceToRopeTile: 1
+  maxDistanceToRopeTile: 3
+  afterRopePause: 0.5
+  highlightedLadder: {fileID: 5262643398048106678}
+  upperLadder: {fileID: 0}
+  lowerLadder: {fileID: 0}
   networkDigging: {fileID: 1242045881163087873}
+  networkRopeInteraction: {fileID: 0}
 --- !u!1 &184774017852020719
 GameObject:
   m_ObjectHideFlags: 0
@@ -317,6 +327,8 @@ GameObject:
   - component: {fileID: 2701644943808477435}
   - component: {fileID: 2874412073343009255}
   - component: {fileID: 6568115476634628871}
+  - component: {fileID: 2242912918130279263}
+  - component: {fileID: -983529712627211037}
   m_Layer: 0
   m_Name: NetworkPlayer (Purple) Without NMC
   m_TagString: Player
@@ -411,8 +423,10 @@ MonoBehaviour:
   IsMovementDisabled: 0
   fallingSpeed: 50
   timeToFadeIn: 2
+  timeToFadeOut: 2
   undergroundCheckThreshold: 2
   heightOffset: 1.05
+  spawningCollisionRadiusToCheck: 1.2
 --- !u!114 &1242045881163087873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -428,15 +442,9 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   animator: {fileID: 7159375747530250558}
-  minDistanceToDiggableTile: 1
-  maxDistanceToDiggableTile: 1
-  IsRopeInUse: 0
-  rope: {fileID: 125947723050293931}
-  RopeState: 0
-  enableDebugMode: 1
-  maxDistanceToRope: 1.5
-  speedTowardsRope: 6
-  isClientPlayer: 0
+  minDistanceToDiggableTile: 6
+  maxDistanceToDiggableTile: 6
+  afterDiggingPause: 0.5
 --- !u!114 &7323093382678290502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -470,6 +478,7 @@ MonoBehaviour:
   displayCombos: 1
   displayComboHintInfos: 1
   canTriggerCombos: 1
+  afterComboPause: 0.5
   comboParticleGenerator: {fileID: 2258299643209344252}
   IsClientPlayer: 0
   isOnClientPlayerTeam: 0
@@ -691,6 +700,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e33aed202b094024c857788e1797b97c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2242912918130279263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6327377196063707621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b819bf5e3f6ab64a8ce96cac91e4501, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-983529712627211037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6327377196063707621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26ace38df3688fc48a6b2ae31ca514f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  rope: {fileID: 125947723050293931}
+  IsRopeInUse: 0
+  RopeState: 0
+  heightToClimb: 8
+  enableDebugMode: 1
+  speedTowardsRope: 6
+  maxDistanceToRopeTile: 2
+  afterRopePause: 0.5
+  isClientPlayer: 0
 --- !u!1 &6327377197209976905
 GameObject:
   m_ObjectHideFlags: 0
@@ -1003,14 +1047,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}
---- !u!4 &4774795154622386700 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}
-  m_PrefabInstance: {fileID: 5028765517951497703}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5262643398048106678 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}
+  m_PrefabInstance: {fileID: 5028765517951497703}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4774795154622386700 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}
   m_PrefabInstance: {fileID: 5028765517951497703}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6327377196500167811
@@ -1132,13 +1176,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}
---- !u!4 &7190891017380697588 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}
-  m_PrefabInstance: {fileID: 7224218234700657183}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7530297735328976718 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}
+  m_PrefabInstance: {fileID: 7224218234700657183}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7190891017380697588 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}
   m_PrefabInstance: {fileID: 7224218234700657183}
   m_PrefabAsset: {fileID: 0}

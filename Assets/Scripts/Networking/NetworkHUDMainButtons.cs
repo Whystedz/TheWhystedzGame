@@ -17,8 +17,8 @@ public class NetworkHUDMainButtons : MonoBehaviour
     [SerializeField] private Image comboImageCooldown;
     [SerializeField] private Image comboBackground;
 
-    private HUDButtonCooldown digButtonCooldown;
-    private HUDButtonCooldown comboButtonCooldown;
+    private NetworkHUDButtonCooldown digButtonCooldown;
+    private NetworkHUDButtonCooldown comboButtonCooldown;
 
     [SerializeField] private TMP_Text digTMP_Text;
     [SerializeField] private string textDig;
@@ -48,19 +48,21 @@ public class NetworkHUDMainButtons : MonoBehaviour
     [SerializeField] private Sprite xboxCombo;
     [SerializeField] private Sprite xboxComboBackground;
 
-    private void Awake()
+    public void SetPlayer(GameObject player)
     {
+        this.player = player;
         this.playerMovement = this.player.GetComponent<NetworkPlayerMovement>();
         this.comboPlayer = this.player.GetComponent<NetworkComboPlayer>();
     }
 
-    public void SetPlayer(GameObject player) => this.player = player;
-
     private void Update()
     {
-        this.comboButtonCooldown = InputManager.Instance.IsUsingKeyboard ? 
-            this.keyboardCombo.GetComponentInChildren<HUDButtonCooldown>() : 
-            this.comboImage.GetComponentInChildren<HUDButtonCooldown>();
+        if (this.player is null)
+            return;
+        
+        this.comboButtonCooldown = NetworkInputManager.Instance.IsUsingKeyboard ? 
+            this.keyboardCombo.GetComponentInChildren<NetworkHUDButtonCooldown>() : 
+            this.comboImage.GetComponentInChildren<NetworkHUDButtonCooldown>();
 
         this.comboButtonCooldown.MaxAmount = this.comboPlayer.GetCooldownMax();
         this.comboButtonCooldown.CurrentAmount = this.comboPlayer.GetCooldownProgress();

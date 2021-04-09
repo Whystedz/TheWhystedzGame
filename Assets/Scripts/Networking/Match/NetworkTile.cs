@@ -190,7 +190,7 @@ public class NetworkTile : MonoBehaviour
             1 << LayerMask.NameToLayer("Tile"));
 
         if (!hasHitTile)
-            return null;
+            return GetClosestTileWithSphereCheck(position);
 
         return hitTile.collider.transform.parent.GetComponent<NetworkTile>();
     }

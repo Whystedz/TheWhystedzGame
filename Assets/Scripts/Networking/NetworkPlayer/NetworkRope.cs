@@ -18,9 +18,7 @@ public class NetworkRope : MonoBehaviour
     [SerializeField] private GameObject upperLadder;
     [SerializeField] private GameObject lowerLadder;
 
-    private InputManager inputManager;
     private bool isAnotherPlayerInZone;
-
     private NetworkPlayerMovement playerMovement;
     private Teammate team;
 
@@ -31,12 +29,11 @@ public class NetworkRope : MonoBehaviour
     {
         this.highlightedLadder.SetActive(false);
         this.team = this.transform.parent.GetComponent<Teammate>();
-        inputManager = InputManager.GetInstance();
     }
 
     void Update()
     {
-        if (this.inputManager.GetLadder() || this.inputManager.GetDigging() // TODO allow both until we decide
+        if (NetworkInputManager.Instance.GetLadder() || NetworkInputManager.Instance.GetDigging() // TODO allow both until we decide
             && networkRopeInteraction.RopeState != RopeState.InUse 
             && this.isAnotherPlayerInZone)
         {
