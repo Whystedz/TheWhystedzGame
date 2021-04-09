@@ -588,7 +588,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6c747124b41703429ac7f2bd1caacef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToDie: 60
+  timeToDie: 90
   respawnPoint: {fileID: 0}
   undergroundOffset: 2
   undergroundCanvas: {fileID: 2500255384583912188}
