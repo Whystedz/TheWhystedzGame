@@ -55,8 +55,7 @@ public class NetworkDigging : NetworkBehaviour
 
             if (NetworkInputManager.Instance.GetDigging())
             {
-                CmdDigTile(TileToDig.TileInfo);
-                this.animator.SetTrigger("Shoot");
+                Dig(TileToDig.TileInfo);
             }
         }
     }
@@ -114,7 +113,15 @@ public class NetworkDigging : NetworkBehaviour
         return closestHit.collider;
     }
 
-    [Command]
+    public void Dig(TileInfo targetTile)
+    {
+        CmdDigTile(targetTile);
+        this.playerAudio.PlayLaserAudio();
+        this.animator.SetTrigger("Shoot");
+        playerMovement.DisableMovementFor(this.afterDiggingPause);
+    }
+
+    [Command(ignoreAuthority = true)]
     public void CmdDigTile(TileInfo targetTile)
     {
         this.tileManager.DigTile(targetTile);

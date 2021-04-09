@@ -15,8 +15,7 @@ public class NetworkRopeInteraction : NetworkBehaviour
     private NetworkPlayerMovement playerMovement;
     [SerializeField] private float heightToClimb = 8f;
     private Teammate team;
-
-    [SerializeField] private bool enableDebugMode = true;
+    
     [SerializeField] private float speedTowardsRope = 6.0f;
 
     [Header("Ropping")]
