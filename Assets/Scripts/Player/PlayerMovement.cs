@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using Cinemachine;
 using UnityEngine.UI;
+using System;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -31,8 +32,12 @@ public class PlayerMovement : MonoBehaviour
     private GameObject surface;
     private GameObject underground;
 
-    private DiggingAndRopeInteractions diggingAndRopeInteractions;
     private LoseCrystals loseCrystals;
+
+    private float disabledMovementCooldown;
+
+    private Tile tileCurrentlyOn;
+    private bool tileCurrentlyOnUpdatedThisFrame;
 
     void Awake()
     {        
@@ -44,7 +49,6 @@ public class PlayerMovement : MonoBehaviour
         this.surface = GameObject.FindGameObjectWithTag("Surface");
         this.underground = GameObject.FindGameObjectWithTag("Underground");
 
-        this.diggingAndRopeInteractions = GetComponent<DiggingAndRopeInteractions>();
         this.loseCrystals = GetComponent<LoseCrystals>();
 
         var blackoutImageGO = GameObject.FindGameObjectWithTag("BlackoutImage");
@@ -59,6 +63,37 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         this.inputManager = InputManager.GetInstance();
+        RefreshTileCurrentlyOn();
+    }
+
+    void Update()
+    {
+        RefreshTileCurrentlyOn();
+
+        if (IsMovementDisabled)
+        {
+            if (this.disabledMovementCooldown == -1) return; // infinite cooldown
+
+            this.disabledMovementCooldown -= Time.deltaTime;
+
+            if (disabledMovementCooldown <= 0)
+                EnableMovement();
+
+            return;
+        }
+
+        PlayerMovementUpdate();
+
+        this.tileCurrentlyOnUpdatedThisFrame = false;
+    }
+
+    private void RegularMovement()
+    {
+        this.direction = new Vector3(this.inputManager.GetInputMovement().x, 0f, this.inputManager.GetInputMovement().y);
+        this.characterController.Move(this.direction * Time.deltaTime * this.movementSpeed);
+
+        if (this.direction != Vector3.zero)
+            transform.forward = this.direction;
     }
 
     void PlayerMovementUpdate()
@@ -71,30 +106,10 @@ public class PlayerMovement : MonoBehaviour
             RegularMovement();
     }
 
-    void Update()
-    {
-        if (IsMovementDisabled)
-            return;
-
-        PlayerMovementUpdate();
-    }
-
-   
-    private void RegularMovement()
-    {
-        this.direction = new Vector3(this.inputManager.GetInputMovement().x, 0f, this.inputManager.GetInputMovement().y);
-        this.characterController.Move(this.direction * Time.deltaTime * this.movementSpeed);
-
-        if (this.direction != Vector3.zero)
-            transform.forward = this.direction;
-    }
-
     private void CheckIfFalling()
     {
         if (this.IsInUnderground || this.isFalling)
             return;
-
-        var tileCurrentlyOn = this.diggingAndRopeInteractions.TileCurrentlyOn();
 
         this.isFalling = tileCurrentlyOn is null
             || tileCurrentlyOn.tileState == TileState.Respawning
@@ -110,7 +125,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void UpdateUndergroundSoundFX()
-    {       
+    {
         if(IsInUnderground)
             AudioManager.PlayUndergroundFX();
         else
@@ -133,8 +148,8 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         this.transform.position = surfacePosition + Vector3.up * this.heightOffset;
         yield return StartCoroutine(FadeIn(2f));
-        var tileCurrentlyOn = this.diggingAndRopeInteractions.TileCurrentlyOn();
-        tileCurrentlyOn.tileState = TileState.Normal;
+
+        this.tileCurrentlyOn.tileState = TileState.Normal;
         IsClimbing = false;
         this.IsMovementDisabled = false;
         this.IsInUnderground = false;
@@ -184,5 +199,37 @@ public class PlayerMovement : MonoBehaviour
 
         this.loseCrystals.LoseCrystal();
         yield return StartCoroutine(FadeIn(this.timeToFadeIn));
+    }
+
+    public void DisableMovementFor(float seconds)
+    {
+        DisableMovement();
+        this.disabledMovementCooldown = seconds;
+    }
+
+    internal void EnableMovement()
+    {
+        this.disabledMovementCooldown = -1; // set to infinite
+        IsMovementDisabled = false;
+    }
+
+    internal void DisableMovement()
+    {
+        this.disabledMovementCooldown = -1; // set to infinite
+        IsMovementDisabled = true;
+    }
+
+    public void RefreshTileCurrentlyOn()
+    {
+        this.tileCurrentlyOn = Tile.FindTileAtPosition(transform.position);
+
+        this.tileCurrentlyOnUpdatedThisFrame = true;
+    }
+
+    public Tile TileCurrentlyOn() {
+        if (!this.tileCurrentlyOnUpdatedThisFrame)
+            RefreshTileCurrentlyOn();
+
+        return this.tileCurrentlyOn;
     }
 }

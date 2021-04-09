@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public enum RopeState
@@ -10,19 +9,28 @@ public enum RopeState
 }
 public class Rope : MonoBehaviour
 {
+    [Header("Rope Parameters")]
+    [SerializeField] private Rope rope;
+    [SerializeField] private float heightToClimb = 8f;
+    [SerializeField] private bool enableDebugMode = true;
+    [SerializeField] private float maxDistanceToRope = 1.8f;
+    [SerializeField] private float speedTowardsRope = 6.0f;
+    [SerializeField] private float minDistanceToRopeTile = 1.0f;
+    [SerializeField] private float maxDistanceToRopeTile = 3.0f;
+    [SerializeField] private float afterRopePause = 0.5f;
+
+    [Header("Ladder Parts")]
     [SerializeField] private GameObject highlightedLadder;
     [SerializeField] private GameObject upperLadder;
     [SerializeField] private GameObject lowerLadder;
+
     private InputManager inputManager;
-    private bool inZone;
-    //public bool InUse;
-    //public bool Saved;
+    private bool isAnotherPlayerInZone;
+
     private PlayerMovement playerMovement;
-    [SerializeField] private float heightToClimb = 8f;
     private Teammate team;
     internal RopeState ropeState;
-    
-    // Start is called before the first frame update
+
     void Awake()
     {
         ropeState = RopeState.Normal;
@@ -32,13 +40,10 @@ public class Rope : MonoBehaviour
 
     void Start() => inputManager = InputManager.GetInstance();
 
-    // Update is called once per frame
     void Update()
     {
-        if (this.inputManager.GetDigging() && ropeState != RopeState.InUse && this.inZone)
-        {
+        if (this.inputManager.GetInitiateCombo() && ropeState != RopeState.InUse && this.isAnotherPlayerInZone) // Make sure rope works!!
             StartCoroutine(ClimbRope());
-        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -46,7 +51,7 @@ public class Rope : MonoBehaviour
         if (other.CompareTag("Player") && this.team.Team == other.transform.GetComponent<Teammate>().Team)
         {
             this.highlightedLadder.SetActive(true);
-            this.inZone = true;
+            this.isAnotherPlayerInZone = true;
             this.playerMovement = other.GetComponent<PlayerMovement>();
         }
 
@@ -57,7 +62,7 @@ public class Rope : MonoBehaviour
         if (other.CompareTag("Player") && this.team.Team == other.transform.GetComponent<Teammate>().Team)
         {
             this.highlightedLadder.SetActive(false);
-            this.inZone = false;
+            this.isAnotherPlayerInZone = false;
         }
     }
 
@@ -65,13 +70,16 @@ public class Rope : MonoBehaviour
     {
         ropeState = RopeState.Normal;
         this.gameObject.SetActive(false);
-        this.playerMovement.IsMovementDisabled = false;
+
+        this.playerMovement.EnableMovement();
     }
 
     public IEnumerator ClimbRope()
     {
         ropeState = RopeState.InUse;
-        this.playerMovement.IsMovementDisabled = true;
+
+        this.playerMovement.DisableMovement();
+
         var directionToRope = (this.transform.position - this.playerMovement.transform.position).normalized;
         directionToRope = new Vector3(directionToRope.x, 0,directionToRope.z);
         var ropePositionWithoutY = new Vector3(this.transform.position.x, this.playerMovement.transform.position.y, this.transform.position.z);
@@ -90,4 +98,5 @@ public class Rope : MonoBehaviour
     public GameObject GetUpperLadder() => this.upperLadder;
     public GameObject GetLowerLadder() => this.lowerLadder;
     public GameObject GetHighlightedLadder() => this.highlightedLadder;
+
 }

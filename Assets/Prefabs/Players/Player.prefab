@@ -64,6 +64,13 @@ MonoBehaviour:
   upperLadder: {fileID: 6561240911794246098}
   lowerLadder: {fileID: 7530297735328976718}
   heightToClimb: 8
+  rope: {fileID: 0}
+  enableDebugMode: 1
+  maxDistanceToRope: 1.8
+  speedTowardsRope: 6
+  minDistanceToRopeTile: 1
+  maxDistanceToRopeTile: 3
+  afterRopePause: 0.5
 --- !u!95 &267689403713163280
 Animator:
   serializedVersion: 3
@@ -138,6 +145,7 @@ GameObject:
   - component: {fileID: 6327377196063707620}
   - component: {fileID: 6327377196063707622}
   - component: {fileID: 6327377196063707617}
+  - component: {fileID: 806024371454104093}
   - component: {fileID: 5185924481443453287}
   - component: {fileID: 2927167167306915266}
   - component: {fileID: -6651294746768266907}
@@ -149,6 +157,7 @@ GameObject:
   - component: {fileID: 4710921769880512116}
   - component: {fileID: 1492355354404956750}
   - component: {fileID: 3352054291688187532}
+  - component: {fileID: 7598103367169743933}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -224,13 +233,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9ec00a9dbda0f74c96009be72bc6a02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minDistanceToDiggableTile: 2
-  maxDistanceToDiggableTile: 1.7
-  rope: {fileID: 2108375272}
-  enableDebugMode: 1
-  maxDistanceToRope: 1.5
-  speedTowardsRope: 6
+--- !u!114 &806024371454104093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6327377196063707621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4db76f7635c8f64b9a6055a64cce421, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   isClientPlayer: 0
+  minDistanceToDiggableTile: 6
+  maxDistanceToDiggableTile: 6
+  afterDiggingPause: 0.5
 --- !u!114 &5185924481443453287
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -487,6 +505,24 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &7598103367169743933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6327377196063707621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 722683c498c9646489feaa426a33ba9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  heightToClimb: 8
+  rope: {fileID: 2108375272}
+  enableDebugMode: 1
+  speedTowardsRope: 6
+  maxDistanceToRopeTile: 2
+  afterRopePause: 0.5
 --- !u!1 &6327377197209976905
 GameObject:
   m_ObjectHideFlags: 0

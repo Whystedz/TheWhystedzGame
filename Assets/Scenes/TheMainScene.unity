@@ -2880,6 +2880,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4464176565539678119, guid: 6c48835edd5a2a642a9f9e59df5443e4, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 49.30005
+      objectReference: {fileID: 0}
     - target: {fileID: 5587332231345891061, guid: 6c48835edd5a2a642a9f9e59df5443e4, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -7238,6 +7242,10 @@ PrefabInstance:
       propertyPath: respawnPoint
       value: 
       objectReference: {fileID: 2087774788}
+    - target: {fileID: 2255895802258728400, guid: 5373fbe9666392e4ba2c2a6f64989a81, type: 3}
+      propertyPath: isClientPlayer
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4021931107158974120, guid: 5373fbe9666392e4ba2c2a6f64989a81, type: 3}
       propertyPath: playerScoreUI
       value: 
@@ -7307,6 +7315,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6023851974091943594, guid: 5373fbe9666392e4ba2c2a6f64989a81, type: 3}
+      propertyPath: IsClientPlayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6023851974091943594, guid: 5373fbe9666392e4ba2c2a6f64989a81, type: 3}
       propertyPath: isClientPlayer
       value: 1
       objectReference: {fileID: 0}
@@ -7316,6 +7328,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6023851974091943594, guid: 5373fbe9666392e4ba2c2a6f64989a81, type: 3}
       propertyPath: displayComboHints
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9011981456379177968, guid: 5373fbe9666392e4ba2c2a6f64989a81, type: 3}
+      propertyPath: isClientPlayer
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -18708,7 +18724,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 839950661169388294, guid: be74c2ee1ea44b8428777a21009b0720, type: 3}
       propertyPath: field of view
-      value: 25
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 839950661169388294, guid: be74c2ee1ea44b8428777a21009b0720, type: 3}
       propertyPath: far clip plane
@@ -36288,7 +36304,7 @@ PrefabInstance:
       objectReference: {fileID: 915252480}
     - target: {fileID: 5181379460342976264, guid: 4fe12c3d5b6e84e4090aac17bdff8606, type: 3}
       propertyPath: onlyEnableMainPlayer
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5181379460342976265, guid: 4fe12c3d5b6e84e4090aac17bdff8606, type: 3}
       propertyPath: m_RootOrder

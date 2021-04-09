@@ -10,27 +10,28 @@ public class ComboPlayer : MonoBehaviour
     [SerializeField] private bool displayCombos;
     [SerializeField] private bool displayComboHints;
     [SerializeField] private bool canTriggerCombos;
+    
+    [SerializeField] private float afterComboPause = 0.5f;
 
     private InputManager inputManager;
 
-    void Start() => inputManager = InputManager.GetInstance();
 
     private float cooldownProgress;
 
     public bool IsOnCooldown { get; private set; }
 
     private ComboPlayer[] teammates;
+    private ComboPlayer[] teammatesAndSelf;
 
     public HashSet<Combo> Combos;
     public HashSet<ComboHint> ComboHints;
 
     private ComboManager comboManager;
+    private PlayerMovement playerMovement;
 
     [SerializeField] private Transform comboParticleGenerator;
 
     public bool IsClientPlayer;
-
-    private DiggingAndRopeInteractions diggingAndRopeInteractions;
 
     private static int nInstances;
     private static int nInstancesThatHaveUpdated;
@@ -47,9 +48,9 @@ public class ComboPlayer : MonoBehaviour
         GetTeammates();
 
         this.comboManager = FindObjectOfType<ComboManager>();
+        this.playerMovement = FindObjectOfType<PlayerMovement>();
         this.Combos = new HashSet<Combo>();
         this.ComboHints = new HashSet<ComboHint>();
-        this.diggingAndRopeInteractions = GetComponent<DiggingAndRopeInteractions>();
 
         this.cooldownProgress = this.cooldownMax;
 
@@ -58,18 +59,20 @@ public class ComboPlayer : MonoBehaviour
         queuedTriggerCombosPlayer = new List<ComboPlayer>();
         currentlyHighlightedTiles = new List<Tile>();
 
-        if (this.IsClientPlayer)
-        {
-            clientPlayerTeam = this.GetComponent<Teammate>().Team;
-            isOnClientPlayerTeam = true;
-        }
-        else
-        {
-            isOnClientPlayerTeam = this.GetComponent<Teammate>().Team == clientPlayerTeam;
-        }
+
+        clientPlayerTeam = this.GetComponent<Teammate>().Team;
+        isOnClientPlayerTeam = true;
 
         InitializeComboParticleIndicators();
     }
+
+    void Start()
+    {
+        inputManager = InputManager.GetInstance();
+
+        isOnClientPlayerTeam = this.GetComponent<Teammate>().Team == clientPlayerTeam;
+    }
+
 
     public void InitializeComboParticleIndicators()
     {
@@ -147,7 +150,15 @@ public class ComboPlayer : MonoBehaviour
     private void TriggerAllQueuedCombos()
     {
         foreach (var player in queuedTriggerCombosPlayer)
+        {
+            var playerPlayerMovement = player.GetComponent<PlayerMovement>();
+
+            playerPlayerMovement.DisableMovement();
+
             TriggerCombosForPlayer(player);
+
+            playerPlayerMovement.DisableMovementFor(this.afterComboPause);
+        }
     }
 
     private void GetTeammates()
@@ -156,6 +167,11 @@ public class ComboPlayer : MonoBehaviour
 
         this.teammates = FindObjectsOfType<Teammate>()
             .Where(teammate => teammate.Team == team && teammate.gameObject != this.gameObject)
+            .Select(teammate => teammate.GetComponent<ComboPlayer>())
+            .ToArray();
+
+        this.teammatesAndSelf = FindObjectsOfType<Teammate>()
+            .Where(teammate => teammate.Team == team)
             .Select(teammate => teammate.GetComponent<ComboPlayer>())
             .ToArray();
     }
@@ -329,10 +345,8 @@ public class ComboPlayer : MonoBehaviour
         var distanceBToCenter = Vector3.Distance(b.transform.position, combo.Center);
         var shortestDistanceToCenter = distanceAToCenter < distanceBToCenter ? distanceAToCenter : distanceBToCenter;
 
-        var teammates = a.Teammates(true);
-
-        var tilesOccupiedByTeam = teammates
-            .Select(teammate => teammate.TileCurrentlyOn());
+        var tilesOccupiedByTeam = this.teammatesAndSelf
+            .Select(teammate => Tile.FindTileAtPosition(teammate.transform.position));
 
         var colliders = Physics.OverlapSphere(combo.Center, shortestDistanceToCenter);
         combo.Tiles = colliders
@@ -362,7 +376,8 @@ public class ComboPlayer : MonoBehaviour
 
     private void CheckTriangleCombosForPlayer(ComboPlayer player)
     {
-        var teammates = player.Teammates(false);
+        var teammates = this.teammates
+            .Where(teammate => teammate != this);
 
         var teammatesE = teammates
             .Where(teammate => !teammate.IsOnCooldown && teammate.gameObject.activeSelf);
@@ -451,18 +466,17 @@ public class ComboPlayer : MonoBehaviour
         var shortestDistanceToCenter = distanceAToCenter < distanceBToCenter ? distanceAToCenter : distanceBToCenter;
         shortestDistanceToCenter = shortestDistanceToCenter < distanceCToCenter ? shortestDistanceToCenter : distanceCToCenter;
 
-        var teammates = a.Teammates(true); //TODO cache
+        var teammates = this.teammates;
 
-        var tilesOccupiedByTeam = teammates
-            .Where(player => player.TileCurrentlyOn() != null)
-            .Select(player => player.TileCurrentlyOn());
+        var tilesOccupiedByTeam = this.teammatesAndSelf
+            .Select(teammate => Tile.FindTileAtPosition(teammate.transform.position));
 
-        var colliders = Physics.OverlapSphere(combo.Center, shortestDistanceToCenter); // TODO yikes
+        var colliders = Physics.OverlapSphere(combo.Center, shortestDistanceToCenter);
         var enumerableTiles = colliders
             .Where(collider => collider.GetComponentInParent<Tile>() != null)
             .Select(collider => collider.GetComponentInParent<Tile>())
             .Distinct()
-            .Where(tile => !tilesOccupiedByTeam.Contains(tile) // TODO if hash, this becomes fast
+            .Where(tile => !tilesOccupiedByTeam.Contains(tile)
                 && IsWithinTriangle(tile.transform.position,
                     a.transform.position,
                     b.transform.position,
@@ -563,5 +577,5 @@ public class ComboPlayer : MonoBehaviour
             || IsWithinTriangle(point, H2, H3, H4);
     }
 
-    private Tile TileCurrentlyOn() => this.diggingAndRopeInteractions.TileCurrentlyOn();
+    private Tile TileCurrentlyOn() => this.playerMovement.TileCurrentlyOn();
 }
