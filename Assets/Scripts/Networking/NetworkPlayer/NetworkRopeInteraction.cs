@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 using Mirror;
 
 public class NetworkRopeInteraction : NetworkBehaviour
@@ -13,6 +14,8 @@ public class NetworkRopeInteraction : NetworkBehaviour
     public bool IsRopeInUse = false;
     [SyncVar]
     public RopeState RopeState = RopeState.Normal;
+
+    private NetworkHUDMainButtons hUDMainButtons;
 
     private NetworkPlayerMovement playerMovement;
     [SerializeField] private float heightToClimb = 8f;
@@ -37,20 +40,40 @@ public class NetworkRopeInteraction : NetworkBehaviour
 
     private void OnRopeUsed(bool oldValue, bool newValue) => this.rope.SetActive(newValue);
 
+    [SerializeField] private GameObject ropeCanvas;
+    private Image Keyimage;
+    private Image XBoximage;
+    private Image PSimage;
+    private Image image;
+    private Transform mainCameraTransform;
+
     void Start()
     {
         this.tileLayerMask = LayerMask.GetMask("Tile");
         this.playerAudio = this.GetComponent<PlayerAudio>();
         this.playerMovement = this.GetComponent<NetworkPlayerMovement>();
+        this.hUDMainButtons = FindObjectOfType<NetworkHUDMainButtons>();
         this.tileManager = TileManager.GetInstance();
 
         this.team = GetComponent<Teammate>();
+
+        this.mainCameraTransform = Camera.main.transform;
+        this.ropeCanvas.SetActive(false);
+        this.Keyimage = this.ropeCanvas.transform.GetChild(0).GetComponent<Image>();
+        this.XBoximage = this.ropeCanvas.transform.GetChild(1).GetComponent<Image>();
+        this.PSimage = this.ropeCanvas.transform.GetChild(2).GetComponent<Image>();
+
+        this.image = this.XBoximage; // default
+
+        UpdateControllerScheme();
     }
 
     void Update()
     {
         if (base.hasAuthority)
         {   
+            UpdateRopeHint();
+
             if (RopeState == RopeState.Saved)
             {
                 CmdResetTile(RopeTile.TileInfo);
@@ -74,7 +97,8 @@ public class NetworkRopeInteraction : NetworkBehaviour
             DetermineRopeTile();
 
             if (RopeTile != null 
-                && !NetworkInputManager.Instance.GetLadder())
+                && !NetworkInputManager.Instance.GetLadder()
+                && !this.IsHoldingRope)
             {
                 PreviewRope();
                 return;
@@ -83,6 +107,29 @@ public class NetworkRopeInteraction : NetworkBehaviour
             if (RopeTile != null && NetworkInputManager.Instance.GetLadder())
                 DetermineRopeAction();
         }
+    }
+
+    private void UpdateControllerScheme()
+    {
+        if (this.hUDMainButtons is null)
+            return;
+
+        if (this.image != null)
+            this.image.gameObject.SetActive(false);
+
+        switch (this.hUDMainButtons.ControllerSchemeInUse)
+        {
+            case ControllerSchemeInUse.PC:
+                this.image = this.Keyimage;
+                break;
+            case ControllerSchemeInUse.XBox:
+                this.image = this.XBoximage;
+                break;
+            case ControllerSchemeInUse.PlayStation:
+                this.image = this.PSimage;
+                break;
+        }
+        this.image.gameObject.SetActive(true);
     }
 
     [Command]
@@ -111,6 +158,16 @@ public class NetworkRopeInteraction : NetworkBehaviour
 
     private void PreviewRope()
     {
+        if (!this.ropeCanvas.activeSelf)
+        {
+            UpdateControllerScheme();
+            this.ropeCanvas.SetActive(true);
+            this.image.color = new Color(this.image.color.r,
+                this.image.color.g,
+                this.image.color.b,
+                1f);
+        }
+
         RopeTile.HighlightTileRopePreview();
         lastTileHighlighted = RopeTile;
         return;
@@ -118,6 +175,9 @@ public class NetworkRopeInteraction : NetworkBehaviour
 
     private void ResetRopePreviewHighlighting()
     {
+        if (this.ropeCanvas.activeSelf && !this.IsHoldingRope)
+            this.ropeCanvas.SetActive(false);
+
         if (this.lastTileHighlighted != null)
             this.lastTileHighlighted.ResetHighlighting();
 
@@ -192,6 +252,13 @@ public class NetworkRopeInteraction : NetworkBehaviour
             playerMovement.DisableMovement();
             IsHoldingRope = true;
 
+            UpdateControllerScheme();
+            this.ropeCanvas.SetActive(true);
+            this.image.color = new Color(this.image.color.r, 
+                this.image.color.g,
+                this.image.color.b,
+                0.5f); 
+
             CmdSetTileState(RopeTile.TileInfo, TileState.Rope, RopeTile.TileInfo.Progress);
             StartCoroutine(ThrowRope(this.rope, RopeTile));
         }
@@ -238,5 +305,21 @@ public class NetworkRopeInteraction : NetworkBehaviour
         this.animator.SetTrigger("PutLadder");
         playerAudio.PlayRopeAudio();
         CmdUseRope(true);
+    }
+
+    private void UpdateRopeHint()
+    {
+        if (!this.ropeCanvas.activeSelf)
+            return;
+
+        this.ropeCanvas.transform.LookAt(this.mainCameraTransform);
+
+        if (RopeTile != null)
+        {
+            this.ropeCanvas.transform.position = new Vector3(
+                RopeTile.transform.position.x,
+                this.ropeCanvas.transform.position.y,
+                RopeTile.transform.position.z);
+        }
     }
 }

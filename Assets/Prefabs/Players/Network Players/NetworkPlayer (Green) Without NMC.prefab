@@ -329,6 +329,7 @@ GameObject:
   - component: {fileID: 4300743178991044985}
   - component: {fileID: 3299034652658791576}
   - component: {fileID: 634862895347364595}
+  - component: {fileID: -3446811819885955710}
   m_Layer: 0
   m_Name: NetworkPlayer (Green) Without NMC
   m_TagString: Player
@@ -709,6 +710,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e33aed202b094024c857788e1797b97c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
 --- !u!114 &3299034652658791576
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -743,6 +746,20 @@ MonoBehaviour:
   speedTowardsRope: 6
   maxDistanceToRopeTile: 2
   afterRopePause: 0.5
+--- !u!114 &-3446811819885955710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6327377196063707621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7b54f745b5ddc04c9410e2ef0c4a96c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
 --- !u!1 &6327377197209976905
 GameObject:
   m_ObjectHideFlags: 0
