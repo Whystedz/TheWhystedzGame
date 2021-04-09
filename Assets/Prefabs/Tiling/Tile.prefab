@@ -49,7 +49,6 @@ MonoBehaviour:
   obstacleCheckRadius: 1
   timeToBreak: 0.3
   timeToRespawn: 30
-  timeOfBreakingAnimation: 1
   normalMaterial: {fileID: 2100000, guid: fec6f71f310647c4c8b7467ef16e9544, type: 2}
   unstableMaterial: {fileID: 2100000, guid: b56a22789220f774480e6e124aa8bd3c, type: 2}
   destroyedMaterial: {fileID: 2100000, guid: 4e0f81e0ccf4fe2458d0fbddadda44c4, type: 2}
@@ -57,7 +56,7 @@ MonoBehaviour:
   comboHighlightedMaterial: {fileID: 2100000, guid: 0457aface7c99d74abad6e60cf40646b, type: 2}
   ropeMaterial: {fileID: 2100000, guid: e5d5dcde4aa19ad4aa848bd64a4f488f, type: 2}
   unbreakableMaterial: {fileID: 2100000, guid: ae3b3b680b19d6f4ea7a9b92065d3037, type: 2}
-  isClickToDigEnabled: 1
+  breakParticleEffectPrefab: {fileID: 4412853562423577223, guid: b7ed3d184c2c2624fba92fcf2eeb9d1a, type: 3}
 --- !u!54 &1831084008614641503
 Rigidbody:
   m_ObjectHideFlags: 0

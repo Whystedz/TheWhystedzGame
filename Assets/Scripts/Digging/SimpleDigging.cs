@@ -7,6 +7,7 @@ public class SimpleDigging : MonoBehaviour
     [SerializeField] private bool isClientPlayer;
 
     [Header("Digging")]
+    [SerializeField] private LaserBeam laserBeam;
     [SerializeField] private float minDistanceToDiggableTile = 3.0f;
     [SerializeField] private float maxDistanceToDiggableTile = 6.0f;
     [SerializeField] private float afterDiggingPause = 0.5f;
@@ -115,6 +116,9 @@ public class SimpleDigging : MonoBehaviour
     public void Dig() 
     {
         this.playerAudio.PlayLaserAudio();
+
+        this.laserBeam.SetTarget(TileToDig.transform.position);
+        this.laserBeam.StartLaster();
 
         this.animationManager.PlayShootingAnimation();
 

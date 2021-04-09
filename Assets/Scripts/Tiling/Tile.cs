@@ -40,6 +40,7 @@ public class Tile : MonoBehaviour
     [SerializeField] private Material ropeMaterial;
     [SerializeField] private Material unbreakableMaterial;
 
+    [SerializeField] private GameObject breakParticleEffectPrefab;
     private MeshRenderer meshRenderer;
 
     internal TileState tileState;
@@ -83,6 +84,7 @@ public class Tile : MonoBehaviour
 
     private void Break()
     {
+        Instantiate(this.breakParticleEffectPrefab, transform.position, Quaternion.identity);
         this.tileState = TileState.Respawning;
         this.meshRenderer.material = destroyedMaterial;
         StartCoroutine(WaitUntilRespawn());
