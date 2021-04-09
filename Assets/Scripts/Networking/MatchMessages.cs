@@ -102,3 +102,9 @@ public enum ClientMatchOperation : byte
     UpdateHost,
     Started
 }
+
+public enum Dummy : byte
+{
+    IgnoreThis,
+    TryingToFix
+}
