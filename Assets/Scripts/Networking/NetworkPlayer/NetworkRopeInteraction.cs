@@ -6,6 +6,8 @@ using Mirror;
 
 public class NetworkRopeInteraction : NetworkBehaviour
 {
+    [SerializeField] private Animator animator;
+
     [SerializeField] private GameObject rope;
     [SyncVar(hook = nameof(OnRopeUsed))]
     public bool IsRopeInUse = false;
@@ -207,7 +209,8 @@ public class NetworkRopeInteraction : NetworkBehaviour
         CmdSetRopeState(RopeState.Normal);
         while (RopeState != RopeState.Normal)
             yield return null;
-
+        
+        this.animator.SetTrigger("RemoveLadder");
         CmdUseRope(false);
         this.playerMovement.EnableMovement();
         IsHoldingRope = false;
@@ -231,7 +234,8 @@ public class NetworkRopeInteraction : NetworkBehaviour
         rope.transform.position = new Vector3(tile.transform.position.x, rope.transform.position.y, tile.transform.position.z);
 
         rope.transform.LookAt(rope.transform.position - Camera.main.transform.forward);
-        
+
+        this.animator.SetTrigger("PutLadder");
         playerAudio.PlayRopeAudio();
         CmdUseRope(true);
     }

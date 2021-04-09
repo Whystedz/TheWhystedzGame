@@ -45,6 +45,13 @@ public class NetworkComboPlayer : NetworkBehaviour
 
     [SerializeField] private NetworkComboParticleGenerator networkComboParticleGenerator;
     private List<NetworkComboParticleIndicator> comboParticleIndicators;
+
+    public override void OnStartAuthority()
+    {
+        IsClientPlayer = true;
+        comboManager.localPlayer = this;
+        CmdRegisterToComboManager();
+    }
     
     private void Start()
     {
@@ -59,13 +66,6 @@ public class NetworkComboPlayer : NetworkBehaviour
         comboParticleIndicators = new List<NetworkComboParticleIndicator>();
 
         this.cooldownProgress = this.cooldownMax;
-
-        if (base.hasAuthority)
-        {
-            IsClientPlayer = true;
-            comboManager.localPlayer = this;
-            CmdRegisterToComboManager();
-        }
 
         if (this.IsClientPlayer)
         {

@@ -1,9 +1,11 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using Mirror;
 
 public class NetworkUnderground : NetworkBehaviour
 {
+    [SerializeField] private Animator animator;
     [SerializeField] private int timeToDie = 15;
     [SerializeField] private Transform respawnPoint;
     private float timer;
@@ -52,16 +54,23 @@ public class NetworkUnderground : NetworkBehaviour
             {
                 this.timer += Time.deltaTime;
                 if (this.timer >= this.timeToDie)
-                    Die();
+                    StartCoroutine(Die());
             } 
             else
                 this.timer = 0;
         }
     }
 
-    void Die()
+    private IEnumerator Die()
     {
         var initialPosition = this.transform.position;
+
+        this.characterController.enabled = false;
+        this.playerMovement.DisableMovement();
+        this.animator.SetTrigger("Dies");
+        yield return new WaitForSecondsRealtime(3f);
+        this.playerMovement.EnableMovement();
+        this.characterController.enabled = true;
 
         this.loseCrystals.LoseCrystal();
 

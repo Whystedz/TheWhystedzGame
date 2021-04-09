@@ -460,6 +460,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  animator: {fileID: 6565565367646327151}
   timeToDie: 30
   respawnPoint: {fileID: 0}
   undergroundOffset: 2
@@ -734,6 +735,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  animator: {fileID: 6565565367646327151}
   rope: {fileID: 2108375269}
   IsRopeInUse: 0
   RopeState: 0
@@ -835,6 +837,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -795591646974540309, guid: 84ac3b2d9f0aecc44b504f037b769411, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -6418158452006121331, guid: b66959f21f383394794f538a0f4beb39, type: 3}
     - target: {fileID: -795591646974540309, guid: 84ac3b2d9f0aecc44b504f037b769411, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 

@@ -1067,7 +1067,7 @@ MonoBehaviour:
   offlineScene: Assets/Scenes/Offline.unity
   onlineScene: Assets/Scenes/TheMainSceneOnline.unity
   transport: {fileID: 2034865898}
-  networkAddress: localhost
+  networkAddress: 34.95.63.42
   maxConnections: 12
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
@@ -1096,9 +1096,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   port: 7777
   NoDelay: 1
-  serverMaxMessageSize: 500000
+  serverMaxMessageSize: 400000
   serverMaxReceivesPerTick: 10000
-  clientMaxMessageSize: 500000
+  clientMaxMessageSize: 400000
   clientMaxReceivesPerTick: 1000
 --- !u!4 &2034865899
 Transform:
