@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Underground : MonoBehaviour
 {
@@ -16,6 +17,14 @@ public class Underground : MonoBehaviour
 
     [SerializeField] private float undergroundOffset;
 
+    [SerializeField] private GameObject undergroundCanvas;
+    private Image undergroundBackground;
+    private Image undergroundImage;
+    [SerializeField] private Color fullColor;
+    [SerializeField] private Color halfColor;
+    [SerializeField] private Color urgentColor;
+    private Transform mainCameraTransform;
+
     private void Awake()
     {
         this.playerMovement = this.GetComponent<PlayerMovement>();
@@ -24,10 +33,16 @@ public class Underground : MonoBehaviour
         this.surface = GameObject.FindGameObjectWithTag("Surface");
         this.characterController = this.GetComponent<CharacterController>();
         this.diggingAndRopeInteractions = GetComponent<DiggingAndRopeInteractions>();
+        this.mainCameraTransform = Camera.main.transform;
+        this.undergroundCanvas.SetActive(false);
+        this.undergroundBackground = this.undergroundCanvas.transform.GetChild(0).GetComponent<Image>();
+        this.undergroundImage = this.undergroundBackground.transform.GetChild(0).GetComponent<Image>();
     }
 
     void Update()
     {
+        UpdateUndergroundBar();
+
         if (this.playerMovement.IsMovementDisabled)
             return;
 
@@ -39,7 +54,6 @@ public class Underground : MonoBehaviour
 
         } else
             this.timer = 0;
-
     }
 
     void Die()
@@ -62,5 +76,28 @@ public class Underground : MonoBehaviour
 
         this.playerMovement.RefreshTileCurrentlyOn();
     }
+
+    private void UpdateUndergroundBar()
+    {
+        float fillAmount = this.timer / (float)this.timeToDie;
+        if (this.playerMovement.IsInUnderground && !this.undergroundCanvas.activeSelf)
+            this.undergroundCanvas.SetActive(true);
+        else if (!this.playerMovement.IsInUnderground && this.undergroundCanvas.activeSelf)
+            this.undergroundCanvas.SetActive(false);
+
+        if (this.undergroundCanvas.activeSelf)
+        {
+            this.undergroundImage.fillAmount = fillAmount;
+            this.undergroundCanvas.transform.LookAt(this.mainCameraTransform);
+        }
+
+        if (fillAmount < 0.5f)
+            this.undergroundBackground.color = this.fullColor;
+        else if (fillAmount < 0.75)
+            this.undergroundBackground.color = this.halfColor;
+        else
+            this.undergroundBackground.color = this.urgentColor;
+    }
+
 
 }
