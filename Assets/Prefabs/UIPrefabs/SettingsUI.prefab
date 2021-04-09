@@ -677,7 +677,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4474756564479371937, guid: c4cead46dbbb7df478d4f92180a67564, type: 3}
       propertyPath: m_text
-      value: 'Ambient:'
+      value: 'Ambient Audio:'
       objectReference: {fileID: 0}
     - target: {fileID: 4947228275549499295, guid: c4cead46dbbb7df478d4f92180a67564, type: 3}
       propertyPath: m_Name
@@ -689,11 +689,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7720538474695740645, guid: c4cead46dbbb7df478d4f92180a67564, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 115.7475
+      value: 194.5319
       objectReference: {fileID: 0}
     - target: {fileID: 7720538474695740645, guid: c4cead46dbbb7df478d4f92180a67564, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -120.07374
+      value: -159.46593
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4cead46dbbb7df478d4f92180a67564, type: 3}
@@ -803,7 +803,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4474756564479371937, guid: c4cead46dbbb7df478d4f92180a67564, type: 3}
       propertyPath: m_text
-      value: 'Player:'
+      value: 'Sound Effects:'
       objectReference: {fileID: 0}
     - target: {fileID: 4947228275549499295, guid: c4cead46dbbb7df478d4f92180a67564, type: 3}
       propertyPath: m_Name
@@ -812,6 +812,14 @@ PrefabInstance:
     - target: {fileID: 6665227625248721697, guid: c4cead46dbbb7df478d4f92180a67564, type: 3}
       propertyPath: exposedParameter
       value: playerVolume
+      objectReference: {fileID: 0}
+    - target: {fileID: 7720538474695740645, guid: c4cead46dbbb7df478d4f92180a67564, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 187.8749
+      objectReference: {fileID: 0}
+    - target: {fileID: 7720538474695740645, guid: c4cead46dbbb7df478d4f92180a67564, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -156.13747
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4cead46dbbb7df478d4f92180a67564, type: 3}
@@ -922,6 +930,14 @@ PrefabInstance:
     - target: {fileID: 4947228275549499295, guid: c4cead46dbbb7df478d4f92180a67564, type: 3}
       propertyPath: m_Name
       value: MusicSlider
+      objectReference: {fileID: 0}
+    - target: {fileID: 7720538474695740645, guid: c4cead46dbbb7df478d4f92180a67564, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 88.8894
+      objectReference: {fileID: 0}
+    - target: {fileID: 7720538474695740645, guid: c4cead46dbbb7df478d4f92180a67564, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -106.644684
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4cead46dbbb7df478d4f92180a67564, type: 3}
