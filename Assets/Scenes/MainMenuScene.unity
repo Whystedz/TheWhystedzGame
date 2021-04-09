@@ -542,7 +542,7 @@ MonoBehaviour:
   offlineScene: Assets/Scenes/MainMenuScene.unity
   onlineScene: Assets/Scenes/TheMainSceneOnline.unity
   transport: {fileID: 2034865898}
-  networkAddress: localhost
+  networkAddress: 34.95.63.42
   maxConnections: 8
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
@@ -552,11 +552,11 @@ MonoBehaviour:
   playerSpawnMethod: 1
   spawnPrefabs:
   - {fileID: 6327377196063707621, guid: d1358eb6e8673814fb60c21af00a00de, type: 3}
-  - {fileID: 6327377196063707621, guid: ab27d005b9ccdd94d886001926df1f0e, type: 3}
+  - {fileID: 6327377196063707621, guid: a9957e88c81af1a4db38c66d8710d735, type: 3}
   - {fileID: 7863378476046910972, guid: 2c779e48395786f4486a47292e6e4c6e, type: 3}
   playerPrefabs:
   - {fileID: 6327377196063707621, guid: d1358eb6e8673814fb60c21af00a00de, type: 3}
-  - {fileID: 6327377196063707621, guid: ab27d005b9ccdd94d886001926df1f0e, type: 3}
+  - {fileID: 6327377196063707621, guid: a9957e88c81af1a4db38c66d8710d735, type: 3}
 --- !u!114 &2034865898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -596,6 +596,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 613054824}
     m_Modifications:
+    - target: {fileID: 953486308886299918, guid: 137bf1b1f740b2e42a78a17009aa6ef6, type: 3}
+      propertyPath: SceneName
+      value: TheMainSceneOnline
+      objectReference: {fileID: 0}
     - target: {fileID: 1741080365962545108, guid: 137bf1b1f740b2e42a78a17009aa6ef6, type: 3}
       propertyPath: m_Name
       value: MainMenuUI
