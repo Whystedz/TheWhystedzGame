@@ -42,7 +42,9 @@ public class Rope : MonoBehaviour
 
     void Update()
     {
-        if (this.inputManager.GetInitiateCombo() && ropeState != RopeState.InUse && this.isAnotherPlayerInZone) // Make sure rope works!!
+        if ((this.inputManager.GetLadder() || this.inputManager.GetDigging()) // TODO allow both until we decide
+            && ropeState != RopeState.InUse 
+            && this.isAnotherPlayerInZone)
             StartCoroutine(ClimbRope());
     }
 

@@ -16,6 +16,7 @@ public class SimpleDigging : MonoBehaviour
     private PlayerMovement playerMovement;
     private PlayerAudio playerAudio;
     private RopeInteractions ropeInteractions;
+    private AnimationManager animationManager;
 
     private Tile lastTileHighlighted;
 
@@ -27,6 +28,7 @@ public class SimpleDigging : MonoBehaviour
         this.playerMovement = this.GetComponent<PlayerMovement>();
         this.playerAudio = this.GetComponent<PlayerAudio>();
         this.ropeInteractions = this.GetComponent<RopeInteractions>();
+        this.animationManager = this.GetComponentInChildren<AnimationManager>();
     }
 
     void Start()
@@ -113,6 +115,8 @@ public class SimpleDigging : MonoBehaviour
     public void Dig() 
     {
         this.playerAudio.PlayLaserAudio();
+
+        this.animationManager.PlayShootingAnimation();
 
         playerMovement.DisableMovementFor(this.afterDiggingPause);
 

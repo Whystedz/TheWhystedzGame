@@ -28,6 +28,7 @@ public class ComboPlayer : MonoBehaviour
 
     private ComboManager comboManager;
     private PlayerMovement playerMovement;
+    private AnimationManager animationManager;
 
     [SerializeField] private Transform comboParticleGenerator;
 
@@ -51,6 +52,8 @@ public class ComboPlayer : MonoBehaviour
         this.playerMovement = FindObjectOfType<PlayerMovement>();
         this.Combos = new HashSet<Combo>();
         this.ComboHints = new HashSet<ComboHint>();
+
+        this.animationManager = GetComponentInChildren<AnimationManager>();
 
         this.cooldownProgress = this.cooldownMax;
 
@@ -297,6 +300,8 @@ public class ComboPlayer : MonoBehaviour
 
         foreach (var combo in comboPlayer.Combos)
             TriggerCombo(combo, alreadyTriggeredPlayers);
+
+        comboPlayer.GetComponentInChildren<AnimationManager>().PlayShootingAnimation();
     }
 
     private void TriggerCombo(Combo combo, HashSet<ComboPlayer> alreadyTriggeredPlayers)

@@ -65,19 +65,14 @@ public class RopeInteractions : MonoBehaviour
         DetermineRopeTile();
 
         if (RopeTile != null 
-            && !inputManager.GetInitiateCombo())// TODO Rope input
+            && !inputManager.GetLadder())
         {
             PreviewRope();
             return;
         }
 
-        if (inputManager.GetInitiateCombo())
+        if (inputManager.GetLadder())
             DetermineRopeAction();
-
-        //if (this.inputManager.GetInitiateCombo() && ropeState != RopeState.InUse && this.inZone) //TOD rope input
-        //{
-        //    StartCoroutine(ClimbRope());
-        //}
     }
 
     private void PreviewRope()
