@@ -409,6 +409,7 @@ GameObject:
   - component: {fileID: 1492355354404956750}
   - component: {fileID: 3352054291688187532}
   - component: {fileID: 7598103367169743933}
+  - component: {fileID: 5463812316629379692}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -782,6 +783,18 @@ MonoBehaviour:
   maxDistanceToRopeTile: 2
   afterRopePause: 0.5
   isClientPlayer: 0
+--- !u!114 &5463812316629379692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6327377196063707621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09a0fec6e7cb58848a3bffe3bbe4677b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6327377197209976905
 GameObject:
   m_ObjectHideFlags: 0
