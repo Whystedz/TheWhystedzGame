@@ -21,6 +21,7 @@ public class EndScreenUI : MonoBehaviour
     public void EndGame()
     {
         ShowEndScreen();
+        AudioManager.PlayWinMusic();
 
         if (this.redTeam.Score == this.blueTeam.Score)
         {

@@ -929,6 +929,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: cb9ac99e06603114c8da6a7309521b04, type: 3}
   - {fileID: 8300000, guid: 2788be87509c0ba4383cbec361d34ecf, type: 3}
   ropeClip: {fileID: 8300000, guid: aa757c9ff3dbbd4499910c6920d12d7c, type: 3}
+  fallingClip: {fileID: 8300000, guid: e45158694c3cbc84aa20282034a37a5e, type: 3}
+  landClip: {fileID: 8300000, guid: de4ab48cd427a2243b389b6cd491c8aa, type: 3}
   playerGroup: {fileID: -5069830022980289509, guid: f110ec1ec75bf3046803ad950951e43d, type: 2}
   audioSource: {fileID: 3352054291688187532}
 --- !u!114 &4710921769880512116

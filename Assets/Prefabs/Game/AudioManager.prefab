@@ -47,10 +47,11 @@ MonoBehaviour:
   initialCutoff: 22000
   muffledCutoff: 780
   ambientClip: {fileID: 8300000, guid: 791ab8ca2f2048a49831474c124ad957, type: 3}
-  mainMusicClip: {fileID: 8300000, guid: 484bf224ae16fdf4a8ab7b39224fd445, type: 3}
+  mainMusicClip: {fileID: 8300000, guid: dcfce6f342b0c3e42b2b2d8381ac59f6, type: 3}
   tenseMusicClip: {fileID: 8300000, guid: fde4931148f572046be4b6902e7c65dd, type: 3}
-  lobbyClip: {fileID: 8300000, guid: f2a38b5df91177449af014fc9c2f1f6a, type: 3}
+  lobbyClip: {fileID: 8300000, guid: 71e38f18e23b68f4b925831704866f02, type: 3}
   tutorialClip: {fileID: 8300000, guid: 703753b5242dc1547acb033518302ce7, type: 3}
+  winClip: {fileID: 8300000, guid: 4452c731055e5a749b8c0209206dd4c7, type: 3}
   mainMixer: {fileID: 24100000, guid: f110ec1ec75bf3046803ad950951e43d, type: 2}
   ambientGroup: {fileID: -6499099983707012783, guid: f110ec1ec75bf3046803ad950951e43d, type: 2}
   musicGroup: {fileID: 5803983679649853027, guid: f110ec1ec75bf3046803ad950951e43d, type: 2}

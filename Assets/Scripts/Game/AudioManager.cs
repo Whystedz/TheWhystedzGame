@@ -19,6 +19,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip tenseMusicClip;
     [SerializeField] private AudioClip lobbyClip;
     [SerializeField] private AudioClip tutorialClip;
+    [SerializeField] private AudioClip winClip;
     
     [Header("Audio Mixer")]
     [SerializeField] private AudioMixer mainMixer;
@@ -68,11 +69,20 @@ public class AudioManager : MonoBehaviour
 
     public static void PlayMainMusic() => PlayMusic(current.mainMusicClip);
     
-    public static void PlayTenseMusic() => PlayMusic(current.tenseMusicClip);
+    public static void PlayTenseMusic(float pitch)
+    {
+        current.musicSource.pitch = pitch;
+    }
 
     public static void PlayLobbyMusic() => PlayMusic(current.lobbyClip);
     
     public static void PlayTutorialMusic() => PlayMusic(current.tutorialClip);
+
+    public static void PlayWinMusic()
+    {
+        PlayMusic(current.winClip);
+        current.musicSource.loop = false;
+    }
 
     private static void PlayMusic(AudioClip musicClip)
     {

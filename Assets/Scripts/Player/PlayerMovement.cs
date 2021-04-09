@@ -41,6 +41,8 @@ public class PlayerMovement : MonoBehaviour
     private Tile tileCurrentlyOn;
     private bool tileCurrentlyOnUpdatedThisFrame;
 
+    private PlayerAudio playerAudio;
+
     void Awake()
     {        
         this.characterController = GetComponent<CharacterController>();
@@ -60,6 +62,8 @@ public class PlayerMovement : MonoBehaviour
             Debug.LogWarning("Please add a Blackout Image (a prefab) to the GUI canvas!");
 
         IsInUnderground = false;
+        
+        this.playerAudio = this.GetComponent<PlayerAudio>();
     }
 
     private void Start()
@@ -123,6 +127,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void StartFalling()
     {
+        this.playerAudio.PlayFallingAudio();
         StartCoroutine(Fall());
     }
 
@@ -182,9 +187,11 @@ public class PlayerMovement : MonoBehaviour
         var initialPosition = this.transform.position;
 
         yield return StartCoroutine(FadeOut(this.timeToFadeOut));
-
+        
         var offset = initialPosition.y - this.surface.transform.position.y;
         var fallenPosition = FindAFallingPosition(initialPosition, offset);
+        
+        this.playerAudio.PlayLandAudio();
         
         this.characterController.enabled = false;
         this.transform.position = fallenPosition;
