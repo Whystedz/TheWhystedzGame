@@ -105,6 +105,5 @@ public enum ClientMatchOperation : byte
 
 public enum Dummy : byte
 {
-    IgnoreThis,
-    TryingToFix
+    IgnoreThis
 }

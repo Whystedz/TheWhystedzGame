@@ -26,7 +26,6 @@ public class NetworkComboPlayer : NetworkBehaviour
     public HashSet<ComboInfo> Combos = new HashSet<ComboInfo>();
     public HashSet<ComboHintInfo> ComboHintInfos = new HashSet<ComboHintInfo>();
 
-    private NetworkComboManager comboManager;
     private NetworkPlayerMovement playerMovement;
 
     [SerializeField] private Transform comboParticleGenerator;
@@ -45,18 +44,11 @@ public class NetworkComboPlayer : NetworkBehaviour
 
     [SerializeField] private NetworkComboParticleGenerator networkComboParticleGenerator;
     private List<NetworkComboParticleIndicator> comboParticleIndicators;
-
-    public override void OnStartAuthority()
-    {
-        IsClientPlayer = true;
-        comboManager.localPlayer = this;
-        CmdRegisterToComboManager();
-    }
     
     private void Start()
     {
         networkDigging = this.GetComponent<NetworkDigging>();
-        this.comboManager = FindObjectOfType<NetworkComboManager>();
+        NetworkComboManager.Instance = FindObjectOfType<NetworkComboManager>();
         this.playerMovement = this.GetComponent<NetworkPlayerMovement>();
 
         nInstances += 1;
@@ -66,6 +58,13 @@ public class NetworkComboPlayer : NetworkBehaviour
         comboParticleIndicators = new List<NetworkComboParticleIndicator>();
 
         this.cooldownProgress = this.cooldownMax;
+
+        if (base.hasAuthority)
+        {
+            IsClientPlayer = true;
+            NetworkComboManager.Instance.localPlayer = this;
+            CmdRegisterToComboManager();
+        }
 
         if (this.IsClientPlayer)
         {
@@ -93,7 +92,7 @@ public class NetworkComboPlayer : NetworkBehaviour
     [Command]
     public void CmdRegisterToComboManager()
     {
-        this.comboManager.RegisterPlayer();
+        NetworkComboManager.Instance.RegisterPlayer();
     }
 
     void Update()
@@ -237,7 +236,7 @@ public class NetworkComboPlayer : NetworkBehaviour
 
     private void HighlightCombosForPlayer(NetworkComboPlayer player, HashSet<NetworkComboPlayer> alreadyHighlightedPlayers)
     {
-        if (this.comboManager.ShowExtendedTeamCombos)
+        if (NetworkComboManager.Instance.ShowExtendedTeamCombos)
         {
             if (alreadyHighlightedPlayers.Contains(player))
                 return;
@@ -255,7 +254,7 @@ public class NetworkComboPlayer : NetworkBehaviour
             return;
 
         foreach (var player in combo.Players)
-            if (player != this && this.comboManager.ShowExtendedTeamCombos)
+            if (player != this && NetworkComboManager.Instance.ShowExtendedTeamCombos)
                 HighlightCombosForPlayer(player, alreadyHighlightedPlayers);
 
         foreach (var tile in combo.Tiles)
@@ -279,7 +278,7 @@ public class NetworkComboPlayer : NetworkBehaviour
             return;
 
         teammatesE = teammatesE
-            .Where(teammate => IsWithinHintingDistance(player, teammate, this.comboManager.TriangleDistance, this.comboManager.HighlightTolerance));
+            .Where(teammate => IsWithinHintingDistance(player, teammate, NetworkComboManager.Instance.TriangleDistance, NetworkComboManager.Instance.HighlightTolerance));
         if (teammatesE.Count() < 1)
             return;
 
@@ -289,7 +288,7 @@ public class NetworkComboPlayer : NetworkBehaviour
 
     private void CheckLineCombo(NetworkComboPlayer a, NetworkComboPlayer b)
     {
-        if (IsWithinTriggeringDistance(a, b, this.comboManager.LineDistance))
+        if (IsWithinTriggeringDistance(a, b, NetworkComboManager.Instance.LineDistance))
         {
             HandleTriggerableLineCombo(a, b);
             return;
@@ -307,7 +306,7 @@ public class NetworkComboPlayer : NetworkBehaviour
 
     internal void TriggerCombosForPlayer(NetworkComboPlayer comboPlayer, HashSet<NetworkComboPlayer> alreadyTriggeredPlayers)
     {
-        if (this.comboManager.TriggerExtendedTeamCombos)
+        if (NetworkComboManager.Instance.TriggerExtendedTeamCombos)
         {
             if (alreadyTriggeredPlayers.Contains(comboPlayer))
                 return;
@@ -332,7 +331,7 @@ public class NetworkComboPlayer : NetworkBehaviour
         {
             player.StartCooldown();
 
-            if (player != this && this.comboManager.TriggerExtendedTeamCombos)
+            if (player != this && NetworkComboManager.Instance.TriggerExtendedTeamCombos)
                 TriggerCombosForPlayer(player, alreadyTriggeredPlayers);
         }
 
@@ -381,7 +380,7 @@ public class NetworkComboPlayer : NetworkBehaviour
                     b.transform.position)
                 && tile.IsDiggable())
             .OrderBy(tile => Vector3.Distance(combo.Center, tile.transform.position))
-            .Take(this.comboManager.MaxTilesInLineCombo)
+            .Take(NetworkComboManager.Instance.MaxTilesInLineCombo)
             .ToList();
 
         combo.Tiles = tilesGameObjects.Select(tile => tile.TileInfo).ToList();
@@ -409,8 +408,8 @@ public class NetworkComboPlayer : NetworkBehaviour
             .Where(teammate => IsWithinHintingDistance(
                 player,
                 teammate,
-                this.comboManager.TriangleDistance,
-                this.comboManager.HighlightTolerance));
+                NetworkComboManager.Instance.TriangleDistance,
+                NetworkComboManager.Instance.HighlightTolerance));
         if (teammatesE.Count() < 2)
             return;
 
@@ -429,9 +428,9 @@ public class NetworkComboPlayer : NetworkBehaviour
 
     private void CheckTriangleCombo(NetworkComboPlayer a, NetworkComboPlayer b, NetworkComboPlayer c)
     {
-        if (IsWithinTriggeringDistance(a, b, this.comboManager.TriangleDistance)
-            && IsWithinTriggeringDistance(a, c, this.comboManager.TriangleDistance)
-            && IsWithinTriggeringDistance(b, c, this.comboManager.TriangleDistance))
+        if (IsWithinTriggeringDistance(a, b, NetworkComboManager.Instance.TriangleDistance)
+            && IsWithinTriggeringDistance(a, c, NetworkComboManager.Instance.TriangleDistance)
+            && IsWithinTriggeringDistance(b, c, NetworkComboManager.Instance.TriangleDistance))
         {
             HandleTriggerableTriangleCombo(a, b, c);
             return;
@@ -504,7 +503,7 @@ public class NetworkComboPlayer : NetworkBehaviour
                     c.transform.position)
                 && tile.IsDiggable())
             .OrderBy(tile => Vector3.Distance(combo.Center, tile.transform.position))
-            .Take(this.comboManager.MaxTilesInTriangleCombo);
+            .Take(NetworkComboManager.Instance.MaxTilesInTriangleCombo);
 
         combo.Tiles = tilesGameObjects.Select(tile => tile.TileInfo).ToList();
 
@@ -546,7 +545,7 @@ public class NetworkComboPlayer : NetworkBehaviour
     }
 
     public void DigTile(TileInfo targetTile) => this.networkDigging.Dig(targetTile);
-    public float MaxHighlightingDistance() => this.comboManager.TriangleDistance + this.comboManager.HighlightTolerance;
+    public float MaxHighlightingDistance() => NetworkComboManager.Instance.TriangleDistance + NetworkComboManager.Instance.HighlightTolerance;
     public float GetCooldownMax() => this.cooldownMax;
     public float GetCooldownProgress() => this.cooldownProgress;
     private NetworkTile TileCurrentlyOn() => this.playerMovement.TileCurrentlyOn();
@@ -585,10 +584,10 @@ public class NetworkComboPlayer : NetworkBehaviour
         var AB = B - A;
         var directionAH1 = (Quaternion.AngleAxis(-90, Vector3.up) * AB).normalized;
 
-        var H1 = A + this.comboManager.LineThickness / 2 * directionAH1;
-        var H2 = A - this.comboManager.LineThickness / 2 * directionAH1;
-        var H3 = B + this.comboManager.LineThickness / 2 * directionAH1;
-        var H4 = B - this.comboManager.LineThickness / 2 * directionAH1;
+        var H1 = A + NetworkComboManager.Instance.LineThickness / 2 * directionAH1;
+        var H2 = A - NetworkComboManager.Instance.LineThickness / 2 * directionAH1;
+        var H3 = B + NetworkComboManager.Instance.LineThickness / 2 * directionAH1;
+        var H4 = B - NetworkComboManager.Instance.LineThickness / 2 * directionAH1;
 
         Debug.DrawLine(A, H1);
         Debug.DrawLine(A, H2);

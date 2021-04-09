@@ -76,7 +76,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
         this.virtualCamera.SetActive(true);
     }
 
-    private void Start() => RefreshTileCurrentlyOn();
+    //private void Start() => RefreshTileCurrentlyOn();
 
     void Update()
     {

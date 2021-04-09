@@ -6,6 +6,8 @@ using Mirror;
 
 public class NetworkComboManager : NetworkBehaviour
 {
+    public static NetworkComboManager Instance;
+
     [Header("General")]
     [Range(0, 64)] public float HighlightTolerance;
     public bool ShowExtendedTeamCombos = true;
@@ -22,6 +24,8 @@ public class NetworkComboManager : NetworkBehaviour
     [Range(0, 64)] public int MaxTilesInTriangleCombo = 64;
 
     internal NetworkComboPlayer localPlayer;
+
+    void Start() => Instance = this;
 
     public void RegisterPlayer()
     {
