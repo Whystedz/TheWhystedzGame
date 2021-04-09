@@ -1,6 +1,8 @@
 using UnityEngine;
+using UnityEngine.UI;
+using Mirror;
 
-public class NetworkUnderground : MonoBehaviour
+public class NetworkUnderground : NetworkBehaviour
 {
     [SerializeField] private int timeToDie = 15;
     [SerializeField] private Transform respawnPoint;
@@ -14,6 +16,13 @@ public class NetworkUnderground : MonoBehaviour
 
     private CharacterController characterController;
 
+    [SerializeField] private GameObject undergroundCanvas;
+    private Image undergroundBackground;
+    private Image undergroundImage;
+    [SerializeField] private Color fullColor;
+    [SerializeField] private Color halfColor;
+    [SerializeField] private Color urgentColor;
+
     void Start()
     {
         this.timer = 0;
@@ -24,22 +33,30 @@ public class NetworkUnderground : MonoBehaviour
         this.surface = GameObject.FindGameObjectWithTag("Surface");
         this.characterController = this.GetComponent<CharacterController>();
         this.underground = GameObject.FindGameObjectWithTag("Underground");
+
+        this.undergroundCanvas.SetActive(false);
+        this.undergroundBackground = this.undergroundCanvas.transform.GetChild(0).GetComponent<Image>();
+        this.undergroundImage = this.undergroundBackground.transform.GetChild(0).GetComponent<Image>();
     }
 
     void Update()
     {
-        if (this.playerMovement.IsMovementDisabled)
-            return;
-
-        if (this.transform.position.y <= this.underground.transform.position.y + undergroundOffset)
+        if (base.hasAuthority)
         {
-            this.timer += Time.deltaTime;
-            if (this.timer >= this.timeToDie)
-                Die();
-        } 
-        else
-            this.timer = 0;
+            UpdateUndergroundBar();
 
+            if (this.playerMovement.IsMovementDisabled)
+                return;
+
+            if (this.transform.position.y <= this.underground.transform.position.y + undergroundOffset)
+            {
+                this.timer += Time.deltaTime;
+                if (this.timer >= this.timeToDie)
+                    Die();
+            } 
+            else
+                this.timer = 0;
+        }
     }
 
     void Die()
@@ -61,5 +78,27 @@ public class NetworkUnderground : MonoBehaviour
         this.playerMovement.IsInUnderground = false;
 
         this.playerMovement.RefreshTileCurrentlyOn();
+    }
+
+    private void UpdateUndergroundBar()
+    {
+        float fillAmount = this.timer / (float)this.timeToDie;
+        if (this.playerMovement.IsInUnderground && !this.undergroundCanvas.activeSelf)
+            this.undergroundCanvas.SetActive(true);
+        else if (!this.playerMovement.IsInUnderground && this.undergroundCanvas.activeSelf)
+            this.undergroundCanvas.SetActive(false);
+
+        if (this.undergroundCanvas.activeSelf)
+        {
+            this.undergroundImage.fillAmount = fillAmount;
+            this.undergroundCanvas.transform.LookAt(Camera.main.transform);
+        }
+
+        if (fillAmount < 0.5f)
+            this.undergroundBackground.color = this.fullColor;
+        else if (fillAmount < 0.75)
+            this.undergroundBackground.color = this.halfColor;
+        else
+            this.undergroundBackground.color = this.urgentColor;
     }
 }
