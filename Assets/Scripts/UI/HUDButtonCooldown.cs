@@ -21,10 +21,9 @@ public class HUDButtonCooldown : MonoBehaviour
         this.HUDMainButtons = HUDMainButtonGameObject.GetComponent<HUDMainButtons>();
 
         this.imageNormal = GetComponent<Image>();
-        this.imageNormal.color = this.HUDMainButtons.CanUseButtonColor;
-
         this.imageDarkened = transform.parent.GetComponent<Image>();
-        this.imageDarkened.color = this.HUDMainButtons.CanNotUseButtonColor;
+
+        SetNormalColors();
 
         this.imageNormal.sprite = this.imageDarkened.sprite;
 
@@ -33,8 +32,25 @@ public class HUDButtonCooldown : MonoBehaviour
 
     void Update()
     {
-        this.buttonText.color = (MaxAmount != 0f && CurrentAmount / MaxAmount < 1f) ? this.imageDarkened.color : this.imageNormal.color;
-
+        if (MaxAmount != 0f && CurrentAmount / MaxAmount < 1f)
+            SetCoolDownColors();
+        else
+            SetNormalColors();
+            
         this.imageNormal.fillAmount = CurrentAmount / MaxAmount;
     } 
+
+    private void SetNormalColors()
+    {
+        this.buttonText.color = this.HUDMainButtons.CanUseTextColor;
+        this.imageNormal.color = this.HUDMainButtons.CanUseButtonColor;
+        this.imageDarkened.color = this.HUDMainButtons.CanNotUseButtonColor;
+    }
+
+    private void SetCoolDownColors()
+    {
+        this.buttonText.color = this.HUDMainButtons.CanNotUseTextColor;
+        this.imageNormal.color = this.HUDMainButtons.CanNotUseButtonColor;
+        this.imageDarkened.color = this.HUDMainButtons.CanUseButtonColor;
+    }
 }
