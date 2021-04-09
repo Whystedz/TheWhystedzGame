@@ -148,7 +148,7 @@ Material:
     - _SrcBlend: 1
     - _Surface: 0
     - _TextureBlendingMode: 0
-    - _TextureImpact: 1
+    - _TextureImpact: 0.6
     - _UnityShadowMode: 1
     - _UnityShadowPower: 0.5
     - _UnityShadowSharpness: 1
@@ -156,7 +156,7 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.72400004, g: 0.4672242, b: 0.22129811, a: 1}
+    - _BaseColor: {r: 0.73333335, g: 0.4745098, b: 0.23529412, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _ColorDim: {r: 0.3018868, g: 0.15359154, b: 0, a: 1}
     - _ColorDimCurve: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
