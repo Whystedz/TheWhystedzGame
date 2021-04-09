@@ -70,5 +70,5 @@ MonoBehaviour:
   xOffset: 2
   zOffset: 1.73
   verticalOffset: 0.01
-  timeToBreak: 0.25
-  timeToRespawn: 10
+  timeToBreak: 0.3
+  timeToRespawn: 30

@@ -5,6 +5,8 @@ using Mirror;
 
 public class NetworkComboPlayer : NetworkBehaviour
 {
+    [SerializeField] private Animator animator;
+
     [Range(0, 100f)]
     [SerializeField] private float cooldownMax;
     
@@ -122,16 +124,16 @@ public class NetworkComboPlayer : NetworkBehaviour
                     comboParticleIndicator.UpdateParticles(Combos, ComboHintInfos);
             
             if (this.canTriggerCombos
-                && NetworkInputManager.Instance.GetDigging()
+                && NetworkInputManager.Instance.GetInitiateCombo()
                 && Combos.Count() > 0
                 && !this.IsOnCooldown)
-                QueuePlayerForTriggerCombos(this);
+                    QueuePlayerForTriggerCombos(this);
         }
 
         nInstancesThatHaveUpdated += 1;
 
-        if (nInstancesThatHaveUpdated == nInstances)
-            AfterAllComboPlayersHaveUpdated();
+            if (nInstancesThatHaveUpdated == nInstances)
+                AfterAllComboPlayersHaveUpdated();
     }
 
     private static void BeforeAllComboPlayersHaveUpdated()
@@ -315,6 +317,8 @@ public class NetworkComboPlayer : NetworkBehaviour
 
         foreach (var combo in comboPlayer.Combos)
             TriggerCombo(combo, alreadyTriggeredPlayers);
+
+        this.animator.SetTrigger("Shoot");
     }
 
     private void TriggerCombo(ComboInfo combo, HashSet<NetworkComboPlayer> alreadyTriggeredPlayers)

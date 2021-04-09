@@ -69,10 +69,10 @@ MonoBehaviour:
   maxDistanceToRopeTile: 3
   afterRopePause: 0.5
   highlightedLadder: {fileID: 5262643398048106678}
-  upperLadder: {fileID: 0}
-  lowerLadder: {fileID: 0}
+  upperLadder: {fileID: 6561240911794246098}
+  lowerLadder: {fileID: 7530297735328976718}
   networkDigging: {fileID: 1242045881163087873}
-  networkRopeInteraction: {fileID: 0}
+  networkRopeInteraction: {fileID: -983529712627211037}
 --- !u!1 &184774017852020719
 GameObject:
   m_ObjectHideFlags: 0
@@ -474,6 +474,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  animator: {fileID: 7159375747530250558}
   cooldownMax: 5
   displayCombos: 1
   displayComboHintInfos: 1
@@ -726,7 +727,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  rope: {fileID: 125947723050293931}
+  rope: {fileID: 2108375269}
   IsRopeInUse: 0
   RopeState: 0
   heightToClimb: 8
@@ -734,7 +735,6 @@ MonoBehaviour:
   speedTowardsRope: 6
   maxDistanceToRopeTile: 2
   afterRopePause: 0.5
-  isClientPlayer: 0
 --- !u!1 &6327377197209976905
 GameObject:
   m_ObjectHideFlags: 0
@@ -1047,14 +1047,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}
---- !u!1 &5262643398048106678 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}
-  m_PrefabInstance: {fileID: 5028765517951497703}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4774795154622386700 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}
+  m_PrefabInstance: {fileID: 5028765517951497703}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5262643398048106678 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}
   m_PrefabInstance: {fileID: 5028765517951497703}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6327377196500167811
@@ -1114,6 +1114,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}
+--- !u!1 &6561240911794246098 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}
+  m_PrefabInstance: {fileID: 6327377196500167811}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5784281583677721448 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}

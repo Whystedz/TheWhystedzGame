@@ -40,12 +40,11 @@ public class NetworkTile : MonoBehaviour
     }
 
     public void DigTile() => StartCoroutine(WaitUntilBroken());
+    public void StartRespawning() => StartCoroutine(WaitUntilRespawn());
+    public void PauseState() => StopAllCoroutines();
 
     private IEnumerator WaitUntilBroken()
     {
-        //this.meshRenderer.material = unstableMaterial;
-
-        TileInfo.Progress = TileInfo.TimeToBreak; 
         while (TileInfo.Progress > 0)
         {
             TileInfo.Progress -= Time.deltaTime;
@@ -59,13 +58,10 @@ public class NetworkTile : MonoBehaviour
     {
         this.tileManager.SetTileState(TileInfo, TileState.Respawning, TileInfo.TimeToRespawn);
         this.meshRenderer.material = destroyedMaterial;
-        StartCoroutine(WaitUntilRespawn());
     }
 
-     private IEnumerator WaitUntilRespawn()
+    private IEnumerator WaitUntilRespawn()
     {
-        TileInfo.Progress = TileInfo.TimeToRespawn;
-
         while (TileInfo.Progress > 0)
         {
             TileInfo.Progress -= Time.deltaTime;

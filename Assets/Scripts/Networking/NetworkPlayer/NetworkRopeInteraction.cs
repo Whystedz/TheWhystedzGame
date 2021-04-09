@@ -6,7 +6,7 @@ using Mirror;
 
 public class NetworkRopeInteraction : NetworkBehaviour
 {
-    [SerializeField] private NetworkRope rope;
+    [SerializeField] private GameObject rope;
     [SyncVar(hook = nameof(OnRopeUsed))]
     public bool IsRopeInUse = false;
     [SyncVar]
@@ -34,11 +34,9 @@ public class NetworkRopeInteraction : NetworkBehaviour
 
     public bool IsHoldingRope { get; private set; }
 
-    [SerializeField] private bool isClientPlayer;
+    private void OnRopeUsed(bool oldValue, bool newValue) => this.rope.SetActive(newValue);
 
-    private void OnRopeUsed(bool oldValue, bool newValue) => this.rope.gameObject.SetActive(newValue);
-
-    void Awake()
+    void Start()
     {
         this.tileLayerMask = LayerMask.GetMask("Tile");
         this.playerAudio = this.GetComponent<PlayerAudio>();
@@ -46,41 +44,44 @@ public class NetworkRopeInteraction : NetworkBehaviour
         this.tileManager = TileManager.GetInstance();
 
         this.team = GetComponent<Teammate>();
-
-        if (base.hasAuthority)
-            isClientPlayer = true;
     }
 
     void Update()
     {
-        if (!isClientPlayer)
-            return;
+        if (base.hasAuthority)
+        {   
+            if (RopeState == RopeState.Saved)
+            {
+                CmdResetTile(RopeTile.TileInfo);
+                StartCoroutine(RemoveRope());
+            }
 
-        ResetRopePreviewHighlighting();
+            ResetRopePreviewHighlighting();
 
-        var tileCurrentlyOn = this.playerMovement.TileCurrentlyOn();
+            var tileCurrentlyOn = this.playerMovement.TileCurrentlyOn();
+            
+            if (this.playerMovement.IsFalling())
+            {
+                CmdUseRope(false);
 
-        if (playerMovement.IsFalling())
-        {
-            this.rope.gameObject.SetActive(false);
+                if (tileCurrentlyOn != null)
+                    CmdSetTileState(tileCurrentlyOn.TileInfo, TileState.Respawning, tileCurrentlyOn.TileInfo.Progress);
 
-            if (tileCurrentlyOn != null)
-                tileCurrentlyOn.TileInfo.TileState = TileState.Respawning;
+                return;
+            }
 
-            return;
+            DetermineRopeTile();
+
+            if (RopeTile != null 
+                && !NetworkInputManager.Instance.GetLadder())
+            {
+                PreviewRope();
+                return;
+            }
+
+            if (RopeTile != null && NetworkInputManager.Instance.GetLadder())
+                DetermineRopeAction();
         }
-
-        DetermineRopeTile();
-
-        if (RopeTile != null 
-            && !NetworkInputManager.Instance.GetLadder())
-        {
-            PreviewRope();
-            return;
-        }
-
-        if (NetworkInputManager.Instance.GetLadder())
-            DetermineRopeAction();
     }
 
     [Command]
@@ -99,6 +100,12 @@ public class NetworkRopeInteraction : NetworkBehaviour
     public void CmdSetTileState(TileInfo targetTile, TileState newState, float newProgress)
     {
         this.tileManager.SetTileState(targetTile, newState, newProgress);
+    }
+
+    [Command]
+    public void CmdResetTile(TileInfo targetTile)
+    {
+        this.tileManager.ResetTile(targetTile);
     }
 
     private void PreviewRope()
@@ -170,7 +177,7 @@ public class NetworkRopeInteraction : NetworkBehaviour
             return;
 
         if (RopeState == RopeState.Normal 
-            && this.rope.gameObject.activeSelf 
+            && this.rope.activeSelf 
             && RopeTile.TileInfo.TileState == TileState.Rope)
         {
             HaulUpRope();
@@ -178,11 +185,11 @@ public class NetworkRopeInteraction : NetworkBehaviour
         }
 
         if (RopeState == RopeState.Normal &&
-                 !this.rope.gameObject.activeSelf 
+                 !this.rope.activeSelf 
                  && RopeTile.TileInfo.TileState == TileState.Respawning)
         {
             playerMovement.DisableMovement();
-            this.IsHoldingRope = true;
+            IsHoldingRope = true;
 
             CmdSetTileState(RopeTile.TileInfo, TileState.Rope, RopeTile.TileInfo.Progress);
             StartCoroutine(ThrowRope(this.rope, RopeTile));
@@ -194,43 +201,39 @@ public class NetworkRopeInteraction : NetworkBehaviour
         playerAudio.PlayRopeAudio();
         CmdSetTileState(RopeTile.TileInfo, TileState.Respawning, RopeTile.TileInfo.Progress);
         StartCoroutine(RemoveRope());
-
-        this.playerMovement.EnableMovement();
-        this.IsHoldingRope = false;
     }
 
     public IEnumerator RemoveRope()
     {
-        this.rope.SetRopeState(RopeState.Normal);
+        CmdSetRopeState(RopeState.Normal);
         while (RopeState != RopeState.Normal)
             yield return null;
 
         CmdUseRope(false);
+        this.playerMovement.EnableMovement();
+        IsHoldingRope = false;
     }
 
-    public IEnumerator ThrowRope(NetworkRope rope, NetworkTile tile)
+    public IEnumerator ThrowRope(GameObject rope, NetworkTile tile)
     {
-        playerAudio.PlayRopeAudio();
         tile.ResetHighlighting();
 
-        var ropeObject = rope.gameObject;
+        var ropeScript = rope.GetComponent<NetworkRope>();
         var tileSurfacePosition = new Vector3(tile.transform.position.x, this.transform.position.y, tile.transform.position.z);
         this.transform.LookAt(tileSurfacePosition);
 
         while (Vector3.Distance(this.transform.position, tileSurfacePosition) > distanceFromTileToHoldRope)
         {
-            playerMovement.MoveTowards(ropeObject.transform.forward, speedTowardsRope);
+            playerMovement.MoveTowards(rope.transform.forward, speedTowardsRope);
             yield return null;
         } // TODO maybe no playerMovement, 
         playerMovement.MoveTowards(Vector3.zero, 0);
 
-        ropeObject.transform.position = new Vector3(tile.transform.position.x, ropeObject.transform.position.y, tile.transform.position.z);
+        rope.transform.position = new Vector3(tile.transform.position.x, rope.transform.position.y, tile.transform.position.z);
+
+        rope.transform.LookAt(rope.transform.position - Camera.main.transform.forward);
+        
+        playerAudio.PlayRopeAudio();
         CmdUseRope(true);
-
-        rope.GetUpperLadder().transform.forward = Vector3.back;
-        rope.GetLowerLadder().transform.forward = Vector3.back;
-        rope.GetHighlightedLadder().transform.forward = Vector3.back;
-
-        yield return null;
     }
 }

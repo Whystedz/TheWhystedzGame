@@ -168,7 +168,6 @@ public class NetworkPlayerMovement : NetworkBehaviour
         return closestCollider;
     }
 
-
     public void StartClimbing(GameObject rope, float height)
     {
         StartCoroutine(ClimbRope(rope, height));
@@ -256,8 +255,8 @@ public class NetworkPlayerMovement : NetworkBehaviour
         this.virtualCamera.SetActive(false);
         this.virtualCamera.SetActive(true);
 
-        this.loseCrystals.LoseCrystal();
         yield return StartCoroutine(FadeIn(this.timeToFadeIn));
+        this.loseCrystals.LoseCrystal();
     }
 
     internal void DisableMovementFor(float seconds)

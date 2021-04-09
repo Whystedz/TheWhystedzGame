@@ -122,8 +122,10 @@ public class TileManager : NetworkBehaviour
 
         var biomeRegion = colliders[0].GetComponent<BiomeRegion>();
 
+        if (isServer)
+            return this.basicTilePrefab;
+
         return biomeRegion.GetRandomBiomeThemedTile();
-        //return this.basicTilePrefab;
     }
 
     public void DigTile(TileInfo targetTile)
@@ -182,8 +184,18 @@ public class TileManager : NetworkBehaviour
             case SyncList<TileInfo>.Operation.OP_SET:
                 var tile = this.transform.GetChild(index).GetComponent<NetworkTile>();
                 tile.TileInfo = newTile;
-                if(newTile.TileState == TileState.Unstable)
-                    tile.DigTile();
+                switch (newTile.TileState)
+                {
+                    case TileState.Unstable:
+                        tile.DigTile();
+                        break;
+                    case TileState.Respawning:
+                        tile.StartRespawning();
+                        break;
+                    case TileState.Rope:
+                        tile.PauseState();
+                        break;
+                }
                 break;
         }
     }

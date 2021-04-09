@@ -40,7 +40,6 @@ public class NetworkDigging : NetworkBehaviour
         {
             ResetDiggingPreviewHighlighting();
             
-
             if (this.playerMovement.IsInUnderground
                 || this.playerMovement.IsFalling()
                 || this.ropeInteractions.IsHoldingRope)
@@ -56,8 +55,8 @@ public class NetworkDigging : NetworkBehaviour
 
             if (NetworkInputManager.Instance.GetDigging())
             {
-                this.animator.SetTrigger("Shoot");
                 CmdDigTile(TileToDig.TileInfo);
+                this.animator.SetTrigger("Shoot");
             }
         }
     }
@@ -118,7 +117,6 @@ public class NetworkDigging : NetworkBehaviour
     [Command]
     public void CmdDigTile(TileInfo targetTile)
     {
-        if (targetTile.TileState == TileState.Normal)
-            this.tileManager.DigTile(targetTile);
+        this.tileManager.DigTile(targetTile);
     }
 }
