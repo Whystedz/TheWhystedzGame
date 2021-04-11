@@ -17,8 +17,6 @@ public class Underground : MonoBehaviour
     private CharacterController characterController;
     private DiggingAndRopeInteractions diggingAndRopeInteractions;
 
-    [SerializeField] private float undergroundOffset;
-
     [SerializeField] private GameObject undergroundCanvas;
     private Image undergroundBackground;
     private Image undergroundImage;
@@ -49,7 +47,7 @@ public class Underground : MonoBehaviour
         if (this.playerMovement.IsMovementDisabled)
             return;
 
-        if (this.transform.position.y <= this.underground.transform.position.y + undergroundOffset)
+        if (this.playerMovement.IsInUnderground && !this.playerMovement.IsClimbing)
         {
             this.timer += Time.deltaTime;
             if (this.timer >= this.timeToDie)
