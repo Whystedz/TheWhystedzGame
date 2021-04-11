@@ -11,10 +11,13 @@ public class NetworkDigging : NetworkBehaviour
     [SerializeField] private Animator animator;
     private PlayerAudio playerAudio;
 
+    
+
     [Header("Digging")]
     [SerializeField] private float minDistanceToDiggableTile = 1.0f;
     [SerializeField] private float maxDistanceToDiggableTile = 1.0f;
     [SerializeField] private float afterDiggingPause = 0.5f;
+    [SerializeField] private LaserBeam laserBeam;
 
     private int tileLayerMask;
     private NetworkPlayerMovement playerMovement;
@@ -118,6 +121,8 @@ public class NetworkDigging : NetworkBehaviour
         CmdDigTile(targetTile);
         this.playerAudio.PlayLaserAudio();
         this.animator.SetTrigger("Shoot");
+        this.laserBeam.SetTarget(TileToDig.transform.position);
+        this.laserBeam.StartLaster();
         playerMovement.DisableMovementFor(this.afterDiggingPause);
     }
 

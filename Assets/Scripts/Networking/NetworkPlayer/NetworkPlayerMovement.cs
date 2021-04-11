@@ -76,8 +76,6 @@ public class NetworkPlayerMovement : NetworkBehaviour
         this.virtualCamera.SetActive(true);
     }
 
-    //private void Start() => RefreshTileCurrentlyOn();
-
     void Update()
     {
         if (base.hasAuthority)
@@ -137,7 +135,11 @@ public class NetworkPlayerMovement : NetworkBehaviour
             StartFalling();
     }
 
-    private void StartFalling() => StartCoroutine(Fall());
+    private void StartFalling()
+    {
+        this.playerAudio.PlayFallingAudio();
+        StartCoroutine(Fall());
+    }
 
     private void UpdateUndergroundSoundFX()
     {
@@ -244,6 +246,8 @@ public class NetworkPlayerMovement : NetworkBehaviour
 
         var offset = initialPosition.y - this.surface.transform.position.y;
         var fallenPosition = FindAFallingPosition(initialPosition, offset);
+
+        this.playerAudio.PlayLandAudio();
         
         this.characterController.enabled = false;
         this.transform.position = fallenPosition;

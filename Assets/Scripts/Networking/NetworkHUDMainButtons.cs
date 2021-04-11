@@ -48,6 +48,8 @@ public class NetworkHUDMainButtons : MonoBehaviour
     [SerializeField] private Sprite xboxCombo;
     [SerializeField] private Sprite xboxComboBackground;
 
+    public ControllerSchemeInUse ControllerSchemeInUse { get; private set; }
+
     public void SetPlayer(GameObject player)
     {
         this.player = player;
@@ -75,6 +77,8 @@ public class NetworkHUDMainButtons : MonoBehaviour
 
     public void DisplayPlayStationControls()
     {
+        ControllerSchemeInUse = ControllerSchemeInUse.PlayStation;
+
         digImage.gameObject.SetActive(true);
         digImageCooldown.gameObject.SetActive(true);
 
@@ -95,6 +99,8 @@ public class NetworkHUDMainButtons : MonoBehaviour
 
     public void DisplayXBOXControls()
     {
+        ControllerSchemeInUse = ControllerSchemeInUse.XBox;
+
         digImage.gameObject.SetActive(true);
         digImageCooldown.gameObject.SetActive(true);
 
@@ -115,6 +121,8 @@ public class NetworkHUDMainButtons : MonoBehaviour
 
     public void DisplayKeyboardControls()
     {
+        ControllerSchemeInUse = ControllerSchemeInUse.PC;
+        
         digImage.gameObject.SetActive(false);
         digImageCooldown.gameObject.SetActive(false);
 

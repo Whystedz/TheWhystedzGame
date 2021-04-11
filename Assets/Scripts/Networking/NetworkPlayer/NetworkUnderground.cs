@@ -68,8 +68,11 @@ public class NetworkUnderground : NetworkBehaviour
         this.characterController.enabled = false;
         this.playerMovement.DisableMovement();
         this.animator.SetTrigger("Dies");
-        yield return new WaitForSecondsRealtime(3f);
-        this.playerMovement.EnableMovement();
+
+        yield return new WaitForSeconds(1.5f);
+        yield return StartCoroutine(this.playerMovement.FadeOut(2f));
+        yield return new WaitForSeconds(0.5f);
+
         this.characterController.enabled = true;
 
         this.loseCrystals.LoseCrystal();
@@ -85,6 +88,9 @@ public class NetworkUnderground : NetworkBehaviour
         this.characterController.enabled = true;
 
         this.playerMovement.IsInUnderground = false;
+        StartCoroutine(this.playerMovement.FadeIn(1f));
+        yield return new WaitForSeconds(0.1f);
+        this.playerMovement.EnableMovement();
 
         this.playerMovement.RefreshTileCurrentlyOn();
     }

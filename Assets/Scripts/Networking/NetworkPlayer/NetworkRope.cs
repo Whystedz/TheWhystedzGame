@@ -4,7 +4,6 @@ using UnityEngine;
 public class NetworkRope : MonoBehaviour
 {
     [Header("Rope Parameters")]
-    [SerializeField] private Rope rope;
     [SerializeField] private float heightToClimb = 8f;
     [SerializeField] private bool enableDebugMode = true;
     [SerializeField] private float maxDistanceToRope = 1.8f;

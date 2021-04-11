@@ -19,6 +19,8 @@ public class NetworkTile : MonoBehaviour
     [SerializeField] private Material ropeMaterial;
     [SerializeField] private Material unbreakableMaterial;
 
+    [SerializeField] private GameObject breakParticleEffectPrefab;
+
     internal MeshRenderer meshRenderer;
     internal TileHighlightState tileHighlightState;
 
@@ -26,7 +28,11 @@ public class NetworkTile : MonoBehaviour
     private static GameObject surface;
     private static GameObject underground;
 
-    private void Start()
+    private bool isDisplayingRopePreview;
+    [SerializeField] private GameObject ropePrefab;
+    private GameObject rope;
+
+    protected virtual void Start()
     {
         this.meshRenderer = GetComponentInChildren<MeshRenderer>();
         this.meshRenderer.material = this.normalMaterial;
@@ -56,6 +62,7 @@ public class NetworkTile : MonoBehaviour
 
     private void Break()
     {
+        Instantiate(this.breakParticleEffectPrefab, transform.position, Quaternion.identity);
         this.tileManager.SetTileState(TileInfo, TileState.Respawning, TileInfo.TimeToRespawn);
         this.meshRenderer.material = destroyedMaterial;
     }
@@ -125,7 +132,13 @@ public class NetworkTile : MonoBehaviour
     }
 
     private void ChangeMaterialAccordingToCurrentState()
-    {       
+    {    
+        if (this.isDisplayingRopePreview && this.tileHighlightState != TileHighlightState.RopeHighlight)
+        {
+            ropePrefab.SetActive(false);
+            this.isDisplayingRopePreview = false;
+        }
+
         switch (this.tileHighlightState)
         {
             case TileHighlightState.NoHighlight:
@@ -143,7 +156,14 @@ public class NetworkTile : MonoBehaviour
         }
     }
 
-    private void ChangeMaterialForRopePreviewHighlight() => this.meshRenderer.material = ropeMaterial;
+    private void ChangeMaterialForRopePreviewHighlight()
+    {
+        if (this.isDisplayingRopePreview)
+            return;
+
+        ropePrefab.SetActive(true);
+        this.isDisplayingRopePreview = true;
+    }
 
     private void ChangeMaterialForComboHighlight() => this.meshRenderer.material = comboHighlightedMaterial;
 
