@@ -216,7 +216,7 @@ public class RopeInteractions : MonoBehaviour
                  && RopeTile.tileState == TileState.Respawning)
         {
             playerMovement.DisableMovement();
-
+            
             RopeTile.tileState = TileState.Rope;
 
             this.IsHoldingRope = true;
@@ -239,14 +239,11 @@ public class RopeInteractions : MonoBehaviour
         playerAudio.PlayRopeAudio();
         this.animationManager.TriggerRemoveLadder();
 
-
         rope.ropeState = RopeState.Normal;
 
         RopeTile.tileState = TileState.Respawning;
 
         this.rope.gameObject.SetActive(false);
-
-        this.playerMovement.EnableMovement();
 
         this.IsHoldingRope = false;
     }

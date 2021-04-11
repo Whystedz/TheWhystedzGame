@@ -59,5 +59,23 @@ public class AnimationManager : MonoBehaviour
     public void TriggerPutLadder() => this.animator.SetTrigger("PutLadder");
     public void TriggerRemoveLadder() => this.animator.SetTrigger("RemoveLadder");
     public void TriggerDeath() => this.animator.SetTrigger("Dies");
-    
+
+    public void DisableMovement() => this.playerMovement.DisableMovement();
+
+    public void EnableMovement() => this.playerMovement.EnableMovement();
+
+    public void EnableInput() => this.inputManager.EnableInput();
+    public void DisableInput() => this.inputManager.DisableInput();
+
+    public void EnableInputAndMovement()
+    {
+        EnableInput();
+        EnableMovement();
+    }
+    public void DisableInputAndMovement()
+    {
+        DisableInput();
+        DisableMovement();
+    }
+
 }

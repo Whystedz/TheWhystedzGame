@@ -76,7 +76,7 @@ public class Rope : MonoBehaviour
         }
     }
 
-    public void CleanUpAfterSave()
+    public void CleanUpAfterSave() // TODO this is now unused??
     {
         ropeState = RopeState.Normal;
         this.gameObject.SetActive(false);

@@ -73,4 +73,7 @@ public class InputManager : MonoBehaviour
         else
             Instance = this;
     }
+
+    public void EnableInput() => this.playerInput.Enable();
+    public void DisableInput() => this.playerInput.Disable();
 }
