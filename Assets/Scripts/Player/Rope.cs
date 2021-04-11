@@ -59,12 +59,23 @@ public class Rope : MonoBehaviour
 
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Player")
+            && this.team.Team == other.transform.GetComponent<Teammate>().Team
+            && this.ropeState != RopeState.InUse)
+            other.GetComponent<PlayerMovement>().CanClimb = true;
+        else
+            other.GetComponent<PlayerMovement>().CanClimb = false;            
+    }
+
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player") && this.team.Team == other.transform.GetComponent<Teammate>().Team)
         {
             this.highlightedLadder.SetActive(false);
             this.isAnotherPlayerInZone = false;
+            other.GetComponent<PlayerMovement>().CanClimb = false;
         }
     }
 

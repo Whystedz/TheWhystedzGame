@@ -36,7 +36,7 @@ public class InputManager : MonoBehaviour
         var keyboard = Keyboard.current;
         var gamepad = Gamepad.current;
 
-        if(gamepad == null || keyboard.lastUpdateTime > gamepad.lastUpdateTime)
+        if(gamepad == null)
         {
             IsUsingKeyboard = true;
             this.HUDMainButtons.DisplayKeyboardControls();
@@ -47,19 +47,16 @@ public class InputManager : MonoBehaviour
 
             switch (device)
             {
-                case "SwitchProControllerHID:/SwitchProControllerHID": // no UI support for switch/generic game pad
-                case "Gamepad:/Gamepad":
-                case "XInputControllerWindows:/XInputControllerWindows":
-                    IsUsingKeyboard = false;
-                    this.HUDMainButtons.DisplayXBOXControls();
-                    break;
                 case "DualShock4GamepadHID:/DualShock4GamepadHID":
                     IsUsingKeyboard = false;
                     this.HUDMainButtons.DisplayPlayStationControls();
                     break;
+                case "SwitchProControllerHID:/SwitchProControllerHID": // no UI support for switch/generic game pad
+                case "Gamepad:/Gamepad":
+                case "XInputControllerWindows:/XInputControllerWindows":
                 default:
-                    IsUsingKeyboard = true;
-                    this.HUDMainButtons.DisplayKeyboardControls();
+                    IsUsingKeyboard = false;
+                    this.HUDMainButtons.DisplayXBOXControls();
                     break;
             }
         }
