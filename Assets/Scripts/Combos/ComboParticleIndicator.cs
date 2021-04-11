@@ -6,12 +6,15 @@ public class ComboParticleIndicator : MonoBehaviour
 {
     private ComboPlayer targetPlayer;
     private ComboPlayer originPlayer;
+    private PlayerMovement playerMovement;
 
+    [SerializeField] private float emissionRateHint;
     [SerializeField] private float particleHintSizeFrom;
     [SerializeField] private float particleHintSizeTo;
     [SerializeField] private Gradient colorGradientHint1;
     [SerializeField] private Gradient colorGradientHint2;
 
+    [SerializeField] private float emissionRateCombo;
     [SerializeField] private float particleComboSizeFrom;
     [SerializeField] private float particleComboSizeTo;
     [SerializeField] private Gradient colorGradientLineCombo1;
@@ -34,6 +37,7 @@ public class ComboParticleIndicator : MonoBehaviour
     {
         this.originPlayer = initializingPlayer;
         this.targetPlayer = targetPlayer;
+        this.playerMovement = this.originPlayer.GetComponent<PlayerMovement>();
     }
 
     public void UpdateParticles(IEnumerable<Combo> combos, IEnumerable<ComboHint> comboHints)
@@ -43,28 +47,31 @@ public class ComboParticleIndicator : MonoBehaviour
         var particleSystemMain = this.hintParticleSystem.main;
         particleSystemMain.startSpeed = Vector3.Distance(this.originPlayer.transform.position, this.targetPlayer.transform.position);
 
-        foreach (var comboHint in comboHints)
+        if (!this.playerMovement.IsInUnderground)
         {
-            if (comboHint.OriginPlayer == this.originPlayer
-                && comboHint.TargetPlayer == this.targetPlayer)
+            foreach (var comboHint in comboHints)
             {
-                particleSystemMain = IndicateHint(particleSystemMain);
-                break;
+                if (comboHint.OriginPlayer == this.originPlayer
+                    && comboHint.TargetPlayer == this.targetPlayer)
+                {
+                    particleSystemMain = IndicateHint(particleSystemMain);
+                    break;
+                }
             }
-        }
 
-        foreach (var combo in combos)
-        {
-            if (combo.Players.Contains(this.targetPlayer))
+            foreach (var combo in combos)
             {
-                IndicateTriggerableCombo(particleSystemMain, combo);
-                break;
+                if (combo.Players.Contains(this.targetPlayer))
+                {
+                    IndicateTriggerableCombo(particleSystemMain, combo);
+                    break;
+                }
             }
+
+            UpdateTransform();
         }
 
         UpdatePlayback();
-
-        UpdateTransform();
     }
 
     private void IndicateTriggerableCombo(ParticleSystem.MainModule particleSystemMain, Combo combo)
@@ -75,14 +82,21 @@ public class ComboParticleIndicator : MonoBehaviour
         else
             particleSystemMain.startColor = new ParticleSystem.MinMaxGradient(this.colorGradientTriangleCombo1, this.colorGradientTriangleCombo2);
 
-        particleSystemMain.startSize = new ParticleSystem.MinMaxCurve(this.particleComboSizeFrom, this.particleComboSizeTo);
+        //particleSystemMain.startSize = new ParticleSystem.MinMaxCurve(this.particleComboSizeFrom, this.particleComboSizeTo);
+        
+        var particleEmission = hintParticleSystem.emission;
+        particleEmission.rateOverTime = emissionRateCombo;
     }
 
     private ParticleSystem.MainModule IndicateHint(ParticleSystem.MainModule particleSystemMain)
     {
         this.showParticles = true;
         particleSystemMain.startColor = new ParticleSystem.MinMaxGradient(this.colorGradientHint1, this.colorGradientHint2);
-        particleSystemMain.startSize = new ParticleSystem.MinMaxCurve(this.particleHintSizeFrom, this.particleHintSizeTo);
+        //particleSystemMain.startSize = new ParticleSystem.MinMaxCurve(this.particleHintSizeFrom, this.particleHintSizeTo);
+
+        var particleEmission = hintParticleSystem.emission;
+        particleEmission.rateOverTime = emissionRateHint;
+
         return particleSystemMain;
     }
 
