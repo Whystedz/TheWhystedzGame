@@ -42,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
     private bool tileCurrentlyOnUpdatedThisFrame;
 
     private PlayerAudio playerAudio;
-
+    private float startingYPosition;
     void Awake()
     {        
         this.characterController = GetComponent<CharacterController>();
@@ -70,6 +70,7 @@ public class PlayerMovement : MonoBehaviour
     {
         this.inputManager = InputManager.GetInstance();
         RefreshTileCurrentlyOn();
+        this.startingYPosition = this.transform.position.y;
     }
 
     void Update()
@@ -187,8 +188,8 @@ public class PlayerMovement : MonoBehaviour
         var initialPosition = this.transform.position;
 
         yield return StartCoroutine(FadeOut(this.timeToFadeOut));
-        
-        var offset = initialPosition.y - this.surface.transform.position.y;
+
+        var offset = this.startingYPosition - this.surface.transform.position.y;
         var fallenPosition = FindAFallingPosition(initialPosition, offset);
         
         this.playerAudio.PlayLandAudio();
@@ -196,12 +197,10 @@ public class PlayerMovement : MonoBehaviour
         this.characterController.enabled = false;
         this.transform.position = fallenPosition;
         this.characterController.enabled = true;
-
-        this.isFalling = false;
-        IsInUnderground = true;
-
         this.virtualCamera.SetActive(false);
         this.virtualCamera.SetActive(true);
+        IsInUnderground = true;
+        this.isFalling = false;
 
         this.loseCrystals.LoseCrystal();
         yield return StartCoroutine(FadeIn(this.timeToFadeIn));
