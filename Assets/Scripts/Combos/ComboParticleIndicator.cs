@@ -8,6 +8,7 @@ public class ComboParticleIndicator : MonoBehaviour
     private ComboPlayer originPlayer;
     private PlayerMovement playerMovement;
 
+    [SerializeField] private float speedMultiplier;
     [SerializeField] private float emissionRateHint;
     //[SerializeField] private float particleHintSizeFrom;
     //[SerializeField] private float particleHintSizeTo;
@@ -45,7 +46,7 @@ public class ComboParticleIndicator : MonoBehaviour
         this.showParticles = false; // Assume false until we find one
 
         var particleSystemMain = this.hintParticleSystem.main;
-        particleSystemMain.startSpeed = Vector3.Distance(this.originPlayer.transform.position, this.targetPlayer.transform.position);
+        particleSystemMain.startSpeed = Vector3.Distance(this.originPlayer.transform.position, this.targetPlayer.transform.position) * speedMultiplier;
 
         if (!this.playerMovement.IsInUnderground)
         {
