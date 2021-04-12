@@ -49,11 +49,9 @@ public struct MatchPlayerData
 [Serializable]
 public struct TileInfo
 {
-    public float TimeToRespawn;
-    public float TimeToBreak;
     public float Progress;
-    public int XIndex;
-    public int ZIndex;
+    public byte XIndex;
+    public byte ZIndex;
     public TileState TileState;
 }
 
@@ -105,6 +103,5 @@ public enum ClientMatchOperation : byte
 
 public enum Dummy : byte
 {
-    IgnoreThis,
-    EndMe
+    IgnoreThis
 }

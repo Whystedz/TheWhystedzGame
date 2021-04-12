@@ -513,6 +513,7 @@ GameObject:
   - component: {fileID: 2034865899}
   - component: {fileID: 2034865898}
   - component: {fileID: 2034865897}
+  - component: {fileID: 2034865900}
   m_Layer: 0
   m_Name: NetworkManager (Temp)
   m_TagString: Untagged
@@ -542,7 +543,7 @@ MonoBehaviour:
   offlineScene: Assets/Scenes/MainMenuScene.unity
   onlineScene: Assets/Scenes/TheMainSceneOnline.unity
   transport: {fileID: 2034865898}
-  networkAddress: 34.95.63.42
+  networkAddress: localhost
   maxConnections: 8
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
@@ -552,11 +553,11 @@ MonoBehaviour:
   playerSpawnMethod: 1
   spawnPrefabs:
   - {fileID: 6327377196063707621, guid: d1358eb6e8673814fb60c21af00a00de, type: 3}
-  - {fileID: 6327377196063707621, guid: a9957e88c81af1a4db38c66d8710d735, type: 3}
+  - {fileID: 6327377196063707621, guid: d1358eb6e8673814fb60c21af00a00de, type: 3}
   - {fileID: 7863378476046910972, guid: 2c779e48395786f4486a47292e6e4c6e, type: 3}
   playerPrefabs:
   - {fileID: 6327377196063707621, guid: d1358eb6e8673814fb60c21af00a00de, type: 3}
-  - {fileID: 6327377196063707621, guid: a9957e88c81af1a4db38c66d8710d735, type: 3}
+  - {fileID: 6327377196063707621, guid: d1358eb6e8673814fb60c21af00a00de, type: 3}
 --- !u!114 &2034865898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -571,9 +572,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   port: 7777
   NoDelay: 1
-  serverMaxMessageSize: 400000
+  serverMaxMessageSize: 131072
   serverMaxReceivesPerTick: 10000
-  clientMaxMessageSize: 400000
+  clientMaxMessageSize: 131072
   clientMaxReceivesPerTick: 1000
 --- !u!4 &2034865899
 Transform:
@@ -589,6 +590,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2034865900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2034865896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6442dc8070ceb41f094e44de0bf87274, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showGUI: 1
+  offsetX: 0
+  offsetY: 0
 --- !u!1001 &1741080366948378228
 PrefabInstance:
   m_ObjectHideFlags: 0

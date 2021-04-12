@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class NetworkRope : MonoBehaviour
@@ -17,8 +16,8 @@ public class NetworkRope : MonoBehaviour
     [SerializeField] private GameObject upperLadder;
     [SerializeField] private GameObject lowerLadder;
 
-    private bool isAnotherPlayerInZone;
-    private NetworkPlayerMovement playerMovement;
+    private int nPlayersInZone;
+    private NetworkPlayerMovement otherPlayerMovement;
     private Teammate team;
 
     [SerializeField] private NetworkDigging networkDigging;
@@ -28,36 +27,67 @@ public class NetworkRope : MonoBehaviour
     {
         this.highlightedLadder.SetActive(false);
         this.team = this.transform.parent.GetComponent<Teammate>();
+        this.nPlayersInZone = 0;
     }
 
     void Update()
     {
-        if (NetworkInputManager.Instance.GetLadder() || NetworkInputManager.Instance.GetDigging() // TODO allow both until we decide
-            && networkRopeInteraction.RopeState != RopeState.InUse 
-            && this.isAnotherPlayerInZone)
+        if (GetAnyButtonInput()
+            && networkRopeInteraction.RopeState != RopeState.InUse
+            && this.nPlayersInZone > 0)
         {
-            this.playerMovement.StartClimbing(this.gameObject, heightToClimb);
+            this.otherPlayerMovement.StartClimbing(this.gameObject, heightToClimb);
             SetRopeState(RopeState.InUse);
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private bool GetAnyButtonInput()
     {
-        if (other.CompareTag("Player") && this.team.Team == other.transform.GetComponent<Teammate>().Team)
+        return NetworkInputManager.Instance.GetLadder()
+            || NetworkInputManager.Instance.GetDigging()
+            || NetworkInputManager.Instance.GetInitiateCombo();
+    }
+
+    public void EnterLadderZone(Collider other)
+    {
+        if (IsATeammate(other))
         {
             this.highlightedLadder.SetActive(true);
-            this.isAnotherPlayerInZone = true;
-            this.playerMovement = other.GetComponent<NetworkPlayerMovement>();
+            this.nPlayersInZone += 1;
+            this.otherPlayerMovement = other.GetComponent<NetworkPlayerMovement>();
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    public void ExitLadderZone(Collider other)
     {
-        if (other.CompareTag("Player") && this.team.Team == other.transform.GetComponent<Teammate>().Team)
+        if (IsATeammate(other))
         {
             this.highlightedLadder.SetActive(false);
-            this.isAnotherPlayerInZone = false;
+
+            this.nPlayersInZone -= 1;
+            if (this.nPlayersInZone < 0)
+            {
+                Debug.LogError("Number of players in zone are negative, apparently!", gameObject);
+                this.nPlayersInZone = 0;
+            }
+
+            this.otherPlayerMovement.CanClimb = false;
         }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Player")
+            && this.team.Team == other.transform.GetComponent<Teammate>().Team
+            && networkRopeInteraction.RopeState != RopeState.InUse)
+            this.otherPlayerMovement.CanClimb = true;
+        else
+            this.otherPlayerMovement.CanClimb = false;            
+    }
+
+    private bool IsATeammate(Collider other)
+    {
+        return other.CompareTag("Player") && this.team.Team == other.transform.GetComponent<Teammate>().Team;
     }
 
     public void SetRopeState(RopeState newState)

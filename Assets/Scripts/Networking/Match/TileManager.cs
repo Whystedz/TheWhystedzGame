@@ -1,7 +1,5 @@
 using System.Linq;
 using UnityEngine;
-using System.Collections;
-using System.Threading;
 using Mirror;
 
 public class TileManager : NetworkBehaviour
@@ -18,8 +16,8 @@ public class TileManager : NetworkBehaviour
     [SerializeField] private float zOffset = 2f;
     [SerializeField] private float verticalOffset = 0.1f;
 
-    [SerializeField] private float timeToBreak = 3f;
-    [SerializeField] private float timeToRespawn = 5f;
+    [SerializeField] internal float timeToBreak = 3f;
+    [SerializeField] internal float timeToRespawn = 5f;
 
     private PlayerMovement playerMovement;
 
@@ -42,14 +40,12 @@ public class TileManager : NetworkBehaviour
 
     private void GenerateTiledMap()
     {
-        for (int xIndex = 0; xIndex < mapWidth; ++xIndex)
+        for (byte xIndex = 0; xIndex < mapWidth; ++xIndex)
         {
-            for (int zIndex = 0; zIndex < mapLength; ++zIndex)
+            for (byte zIndex = 0; zIndex < mapLength; ++zIndex)
             {
                 TileInfo tile = new TileInfo
                 {
-                    TimeToRespawn = this.timeToRespawn,
-                    TimeToBreak = this.timeToBreak,
                     Progress = 0f,
                     XIndex = xIndex,
                     ZIndex = zIndex,
@@ -94,10 +90,10 @@ public class TileManager : NetworkBehaviour
             Random.Range(-this.verticalOffset, this.verticalOffset) * Vector3.up;
     }
 
-    private Vector3 DetermineSpawnPosition(int xIndex, int zIndex)
+    private Vector3 DetermineSpawnPosition(byte xIndex, byte zIndex)
     {
         // index it
-        var position = new Vector3(xIndex * this.xOffset, 0, zIndex * this.zOffset);
+        var position = new Vector3((int)xIndex * this.xOffset, 0, (int)zIndex * this.zOffset);
 
         // center it
         position += new Vector3(-mapWidth / 2 * this.xOffset, 0, -mapLength / 2 * this.zOffset);
@@ -120,10 +116,14 @@ public class TileManager : NetworkBehaviour
         if (colliders.Length == 0)
             return this.basicTilePrefab;
 
-        var biomeRegion = colliders[0].GetComponent<BiomeRegion>();
+        var biomeRegion = colliders
+            .Where(collider => collider.GetComponent<BiomeRegion>() != null)
+            .Select(collider => collider.GetComponent<BiomeRegion>())
+            .OrderBy(biome => Vector3.Distance(transform.position, biome.transform.position))
+            .First();
 
-        if (isServer)
-            return this.basicTilePrefab;
+        //if (isServer)
+            //return this.basicTilePrefab;
 
         return biomeRegion.GetRandomBiomeThemedTile();
     }
@@ -179,10 +179,11 @@ public class TileManager : NetworkBehaviour
 
     void OnTileUpdated(SyncList<TileInfo>.Operation op, int index, TileInfo oldTile, TileInfo newTile)
     {
+        var tile = this.transform.GetChild(index).GetComponent<NetworkTile>();
         switch (op)
         {
             case SyncList<TileInfo>.Operation.OP_SET:
-                var tile = this.transform.GetChild(index).GetComponent<NetworkTile>();
+                
                 tile.TileInfo = newTile;
                 switch (newTile.TileState)
                 {
@@ -198,5 +199,6 @@ public class TileManager : NetworkBehaviour
                 }
                 break;
         }
+        tile.ChangeMaterialAccordingToCurrentState();
     }
 }

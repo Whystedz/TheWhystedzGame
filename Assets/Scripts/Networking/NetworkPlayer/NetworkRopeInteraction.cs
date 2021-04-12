@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,7 +8,7 @@ public class NetworkRopeInteraction : NetworkBehaviour
 {
     [SerializeField] private Animator animator;
 
-    [SerializeField] private GameObject rope;
+    [SerializeField] private NetworkRope rope;
     [SyncVar(hook = nameof(OnRopeUsed))]
     public bool IsRopeInUse = false;
     [SyncVar]
@@ -38,7 +37,7 @@ public class NetworkRopeInteraction : NetworkBehaviour
 
     public bool IsHoldingRope { get; private set; }
 
-    private void OnRopeUsed(bool oldValue, bool newValue) => this.rope.SetActive(newValue);
+    private void OnRopeUsed(bool oldValue, bool newValue) => this.rope.gameObject.SetActive(newValue);
 
     [SerializeField] private GameObject ropeCanvas;
     private Image Keyimage;
@@ -238,7 +237,7 @@ public class NetworkRopeInteraction : NetworkBehaviour
             return;
 
         if (RopeState == RopeState.Normal 
-            && this.rope.activeSelf 
+            && IsRopeInUse
             && RopeTile.TileInfo.TileState == TileState.Rope)
         {
             HaulUpRope();
@@ -246,10 +245,10 @@ public class NetworkRopeInteraction : NetworkBehaviour
         }
 
         if (RopeState == RopeState.Normal &&
-                 !this.rope.activeSelf 
+                 !IsRopeInUse
                  && RopeTile.TileInfo.TileState == TileState.Respawning)
         {
-            playerMovement.DisableMovement();
+            this.playerMovement.DisableMovement();
             IsHoldingRope = true;
 
             UpdateControllerScheme();
@@ -279,28 +278,29 @@ public class NetworkRopeInteraction : NetworkBehaviour
         
         this.animator.SetTrigger("RemoveLadder");
         CmdUseRope(false);
-        this.playerMovement.EnableMovement();
         IsHoldingRope = false;
     }
 
-    public IEnumerator ThrowRope(GameObject rope, NetworkTile tile)
+    public IEnumerator ThrowRope(NetworkRope rope, NetworkTile tile)
     {
         tile.ResetHighlighting();
 
-        var ropeScript = rope.GetComponent<NetworkRope>();
+        var ropeObject = rope.gameObject;
         var tileSurfacePosition = new Vector3(tile.transform.position.x, this.transform.position.y, tile.transform.position.z);
         this.transform.LookAt(tileSurfacePosition);
 
         while (Vector3.Distance(this.transform.position, tileSurfacePosition) > distanceFromTileToHoldRope)
         {
-            playerMovement.MoveTowards(rope.transform.forward, speedTowardsRope);
+            this.playerMovement.MoveTowards(ropeObject.transform.forward, speedTowardsRope);
             yield return null;
         } // TODO maybe no playerMovement, 
-        playerMovement.MoveTowards(Vector3.zero, 0);
+        this.playerMovement.MoveTowards(Vector3.zero, 0);
 
-        rope.transform.position = new Vector3(tile.transform.position.x, rope.transform.position.y, tile.transform.position.z);
+        ropeObject.transform.position = new Vector3(tile.transform.position.x, ropeObject.transform.position.y, tile.transform.position.z);
 
-        rope.transform.LookAt(rope.transform.position - Camera.main.transform.forward);
+        rope.GetUpperLadder().transform.forward = Vector3.back;
+        rope.GetLowerLadder().transform.forward = Vector3.back;
+        rope.GetHighlightedLadder().transform.forward = Vector3.back;
 
         this.animator.SetTrigger("PutLadder");
         playerAudio.PlayRopeAudio();

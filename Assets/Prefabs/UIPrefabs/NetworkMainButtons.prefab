@@ -56,16 +56,21 @@ MonoBehaviour:
   comboImage: {fileID: 8942216081892512154}
   comboImageCooldown: {fileID: 5625680838907486729}
   comboBackground: {fileID: 141673818329009813}
+  digImage_keyboard: {fileID: 5480954639046595985}
+  digImageCooldown_keyboard: {fileID: 6584984479356282525}
+  comboImage_keyboard: {fileID: 6416885870834169961}
+  comboImageCooldown_keyboard: {fileID: 19586565377505780}
+  comboTMP_Text: {fileID: 5743217121371766762}
   digTMP_Text: {fileID: 3432437279514279260}
   textDig: DIG
   textClimb: CLIMB
   CanUseButtonColor: {r: 1, g: 1, b: 1, a: 1}
   CanNotUseButtonColor: {r: 0.14117648, g: 0.14117648, b: 0.14117648, a: 1}
   CanUseTextColor: {r: 0, g: 0, b: 0, a: 1}
-  CanNotUseTextColor: {r: 0.14117648, g: 0.14117648, b: 0.14117648, a: 1}
-  keyboardDig: {fileID: 4488931131391351792}
+  CanNotUseTextColor: {r: 0.7529412, g: 0.7529412, b: 0.7529412, a: 1}
+  keyboardDig: {fileID: 21300000, guid: dc817a4285a4f7a469e5665230defec3, type: 3}
   keyboardDigBackground: {fileID: 21300000, guid: 8ff49ab52d00c7f45a98a9c4ec7b3063, type: 3}
-  keyboardCombo: {fileID: 5625466269757274933}
+  keyboardCombo: {fileID: 21300000, guid: be898a1ec320c1341a284a3bb7caf9d5, type: 3}
   keyboardComboBackground: {fileID: 21300000, guid: 8b6032a60a4954b419bb2908625396c6, type: 3}
   psDig: {fileID: 21300000, guid: fce7a7e2c91d34c4a992cd174db207d6, type: 3}
   psDigBackground: {fileID: 21300000, guid: 9dfea5be4e933144a99d9862e359c3a5, type: 3}
@@ -598,7 +603,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5029378692459218784
 RectTransform:
   m_ObjectHideFlags: 0
@@ -825,7 +830,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1032538958557405187
 RectTransform:
   m_ObjectHideFlags: 0
