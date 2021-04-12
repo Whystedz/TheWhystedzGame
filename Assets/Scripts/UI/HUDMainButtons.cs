@@ -18,7 +18,9 @@ public class HUDMainButtons : MonoBehaviour
     private GameObject player;
     private PlayerMovement playerMovement;
     private ComboPlayer comboPlayer;
+    private SimpleDigging simpleDigging;
 
+    [Header("Controller Images")]
     [SerializeField] private Image digImage;
     [SerializeField] private Image digImageCooldown;
     [SerializeField] private Image digBackground;
@@ -26,10 +28,17 @@ public class HUDMainButtons : MonoBehaviour
     [SerializeField] private Image comboImageCooldown;
     [SerializeField] private Image comboBackground;
 
+    [Header("Keyboard Images")]
+    [SerializeField] private Image digImage_keyboard;
+    [SerializeField] private Image digImageCooldown_keyboard;
+    [SerializeField] private Image comboImage_keyboard;
+    [SerializeField] private Image comboImageCooldown_keyboard;
+
     private HUDButtonCooldown digButtonCooldown;
     private HUDButtonCooldown comboButtonCooldown;
 
 
+    [SerializeField] private TMP_Text comboTMP_Text;
     [SerializeField] private TMP_Text digTMP_Text;
     [SerializeField] private string textDig;
     [SerializeField] private string textClimb;
@@ -41,9 +50,9 @@ public class HUDMainButtons : MonoBehaviour
     public Color CanNotUseTextColor;
 
     [Header("Keyboard Images")]
-    [SerializeField] private GameObject keyboardDig;
+    [SerializeField] private Sprite keyboardDig;
     [SerializeField] private Sprite keyboardDigBackground;
-    [SerializeField] private GameObject keyboardCombo;
+    [SerializeField] private Sprite keyboardCombo;
     [SerializeField] private Sprite keyboardComboBackground;
 
     [Header("PS Images")]
@@ -65,6 +74,7 @@ public class HUDMainButtons : MonoBehaviour
         this.inputManager = InputManager.GetInstance();
         this.playerMovement = this.player.GetComponent<PlayerMovement>();
         this.comboPlayer = this.player.GetComponent<ComboPlayer>();
+        this.simpleDigging = this.player.GetComponent<SimpleDigging>();
     }
 
     public void SetPlayer(GameObject player) => this.player = player;
@@ -72,30 +82,88 @@ public class HUDMainButtons : MonoBehaviour
     private void Update()
     {
         this.comboButtonCooldown = this.inputManager.IsUsingKeyboard ? 
-            this.keyboardCombo.GetComponentInChildren<HUDButtonCooldown>() : 
+            this.comboImage_keyboard.GetComponentInChildren<HUDButtonCooldown>() : 
             this.comboImage.GetComponentInChildren<HUDButtonCooldown>();
 
         this.comboButtonCooldown.MaxAmount = this.comboPlayer.GetCooldownMax();
         this.comboButtonCooldown.CurrentAmount = this.comboPlayer.GetCooldownProgress();
         
+        // Setting dig button visibility and text
         if (this.playerMovement.IsInUnderground)
             this.digTMP_Text.text = this.textClimb;
         else
             this.digTMP_Text.text = this.textDig;
+
+        if((this.playerMovement.IsInUnderground 
+            && this.playerMovement.CanClimb)
+            || (!this.playerMovement.IsInUnderground 
+            && this.simpleDigging.TileToDig != null 
+            && this.simpleDigging.TileToDig.tileState == TileState.Normal))
+            CanUseDigButton();
+        else
+            CannotUseDigButton();
+
+        // Setting combo button visibility
+        if(!this.playerMovement.IsInUnderground && this.comboPlayer.Combos.Count > 0)
+            CanUseComboButton();
+        else
+            CannotUseComboButton();
+        
+    }
+
+    private void CanUseComboButton()
+    {
+        this.comboTMP_Text.color = this.CanUseTextColor;
+
+        this.comboImage_keyboard.color = this.CanNotUseButtonColor;
+        this.comboImage.color = this.CanNotUseButtonColor;
+
+        this.comboImageCooldown_keyboard.color = this.CanUseButtonColor;
+        this.comboImageCooldown.color = this.CanUseButtonColor;
+    }
+
+    private void CannotUseComboButton()
+    {
+        this.comboTMP_Text.color = this.CanNotUseTextColor;
+
+        this.comboImage_keyboard.color = this.CanUseButtonColor;
+        this.comboImage.color = this.CanUseButtonColor;
+
+        this.comboImageCooldown_keyboard.color = this.CanNotUseButtonColor;
+        this.comboImageCooldown.color = this.CanNotUseButtonColor;
+    }
+
+    private void CanUseDigButton()
+    {
+        this.digTMP_Text.color = this.CanUseTextColor;
+
+        this.digImage_keyboard.color = this.CanNotUseButtonColor;
+        this.digImage.color = this.CanNotUseButtonColor;
+
+        this.digImageCooldown_keyboard.color = this.CanUseButtonColor;
+        this.digImageCooldown.color = this.CanUseButtonColor;
+    }
+
+    private void CannotUseDigButton()
+    {
+        this.digTMP_Text.color = this.CanNotUseTextColor;
+
+        this.digImage_keyboard.color = this.CanUseButtonColor;
+        this.digImage.color = this.CanUseButtonColor;
+
+        this.digImageCooldown_keyboard.color = this.CanNotUseButtonColor;
+        this.digImageCooldown.color = this.CanNotUseButtonColor;
     }
 
     public void DisplayPlayStationControls()
     {
-        ControllerSchemeInUse = ControllerSchemeInUse.PlayStation;
+        this.ControllerSchemeInUse = ControllerSchemeInUse.PlayStation;
 
-        digImage.gameObject.SetActive(true);
-        digImageCooldown.gameObject.SetActive(true);
+        this.digImage.gameObject.transform.localScale = new Vector3(1, 1, 1);
+        this.comboImage.gameObject.transform.localScale = new Vector3(1, 1, 1);
 
-        comboImage.gameObject.SetActive(true);
-        comboImageCooldown.gameObject.SetActive(true);
-
-        keyboardDig.SetActive(false);
-        keyboardCombo.SetActive(false);
+        this.digImage_keyboard.gameObject.transform.localScale = new Vector3(0, 0, 0);
+        this.comboImage_keyboard.gameObject.transform.localScale = new Vector3(0, 0, 0);
 
         this.digImage.sprite = psDig;
         this.digImageCooldown.sprite = psDig;
@@ -108,16 +176,13 @@ public class HUDMainButtons : MonoBehaviour
 
     public void DisplayXBOXControls()
     {
-        ControllerSchemeInUse = ControllerSchemeInUse.XBox;
+        this.ControllerSchemeInUse = ControllerSchemeInUse.XBox;
 
-        digImage.gameObject.SetActive(true);
-        digImageCooldown.gameObject.SetActive(true);
+        this.digImage.gameObject.transform.localScale = new Vector3(1, 1, 1);
+        this.comboImage.gameObject.transform.localScale = new Vector3(1, 1, 1);
 
-        comboImage.gameObject.SetActive(true);
-        comboImageCooldown.gameObject.SetActive(true);
-
-        keyboardDig.SetActive(false);
-        keyboardCombo.SetActive(false);
+        this.digImage_keyboard.gameObject.transform.localScale = new Vector3(0, 0, 0);
+        this.comboImage_keyboard.gameObject.transform.localScale = new Vector3(0, 0, 0);
 
         this.digImage.sprite = xboxDig;
         this.digImageCooldown.sprite = xboxDig;
@@ -130,16 +195,13 @@ public class HUDMainButtons : MonoBehaviour
 
     public void DisplayKeyboardControls()
     {
-        ControllerSchemeInUse = ControllerSchemeInUse.PC;
+        this.ControllerSchemeInUse = ControllerSchemeInUse.PC;
 
-        digImage.gameObject.SetActive(false);
-        digImageCooldown.gameObject.SetActive(false);
+        this.digImage.gameObject.transform.localScale = new Vector3(0, 0, 0);
+        this.comboImage.gameObject.transform.localScale = new Vector3(0, 0, 0);
 
-        comboImage.gameObject.SetActive(false);
-        comboImageCooldown.gameObject.SetActive(false);
-
-        keyboardDig.SetActive(true);
-        keyboardCombo.SetActive(true);
+        this.digImage_keyboard.gameObject.transform.localScale = new Vector3(1, 1, 1);
+        this.comboImage_keyboard.gameObject.transform.localScale = new Vector3(1, 1, 1);
 
         this.digBackground.sprite = keyboardDigBackground;
         this.comboBackground.sprite = keyboardComboBackground;

@@ -7,6 +7,7 @@ using TMPro;
 public class HUDButtonCooldown : MonoBehaviour
 {
     private HUDMainButtons HUDMainButtons;
+
     [SerializeField] private TMP_Text buttonText;
 
     private Image imageDarkened;
@@ -31,8 +32,8 @@ public class HUDButtonCooldown : MonoBehaviour
     }
 
     void Update()
-    {
-        if (MaxAmount != 0f && CurrentAmount / MaxAmount < 1f)
+    { 
+        if ((MaxAmount != 0f && CurrentAmount / MaxAmount < 1f))
             SetCoolDownColors();
         else
             SetNormalColors();

@@ -44,7 +44,7 @@ public class ComboParticleIndicator : MonoBehaviour
     public void UpdateParticles(IEnumerable<Combo> combos, IEnumerable<ComboHint> comboHints)
     {
         this.showParticles = false; // Assume false until we find one
-
+        
         var particleSystemMain = this.hintParticleSystem.main;
         particleSystemMain.startSpeed = Vector3.Distance(this.originPlayer.transform.position, this.targetPlayer.transform.position) * speedMultiplier;
 
@@ -71,7 +71,7 @@ public class ComboParticleIndicator : MonoBehaviour
 
             UpdateTransform();
         }
-
+        
         UpdatePlayback();
     }
 

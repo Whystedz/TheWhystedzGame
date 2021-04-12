@@ -26,6 +26,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float timeToFadeIn = 0.25f;
     [SerializeField] private float timeToFadeOut = 2f;
 
+    public bool CanClimb;
     public bool IsClimbing { get; private set; }
     public bool IsInUnderground { get; set; }
     [SerializeField] private float undergroundCheckThreshold = 2f;

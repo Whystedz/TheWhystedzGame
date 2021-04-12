@@ -3009,6 +3009,18 @@ PrefabInstance:
       propertyPath: CanUseButtonColor.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5894974629691114884, guid: 6c48835edd5a2a642a9f9e59df5443e4, type: 3}
+      propertyPath: CanNotUseTextColor.b
+      value: 0.75686276
+      objectReference: {fileID: 0}
+    - target: {fileID: 5894974629691114884, guid: 6c48835edd5a2a642a9f9e59df5443e4, type: 3}
+      propertyPath: CanNotUseTextColor.g
+      value: 0.75686276
+      objectReference: {fileID: 0}
+    - target: {fileID: 5894974629691114884, guid: 6c48835edd5a2a642a9f9e59df5443e4, type: 3}
+      propertyPath: CanNotUseTextColor.r
+      value: 0.75686276
+      objectReference: {fileID: 0}
     - target: {fileID: 8610730592412671602, guid: 6c48835edd5a2a642a9f9e59df5443e4, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
@@ -36898,7 +36910,7 @@ PrefabInstance:
       objectReference: {fileID: 915252480}
     - target: {fileID: 5181379460342976264, guid: 4fe12c3d5b6e84e4090aac17bdff8606, type: 3}
       propertyPath: onlyEnableMainPlayer
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5181379460342976265, guid: 4fe12c3d5b6e84e4090aac17bdff8606, type: 3}
       propertyPath: m_RootOrder
