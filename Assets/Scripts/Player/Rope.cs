@@ -25,7 +25,7 @@ public class Rope : MonoBehaviour
     [SerializeField] private GameObject lowerLadder;
 
     private InputManager inputManager;
-    private bool isAnotherPlayerInZone;
+    private int nPlayersInZone;
 
     private PlayerMovement otherPlayerMovement;
     private Teammate team;
@@ -36,15 +36,16 @@ public class Rope : MonoBehaviour
         ropeState = RopeState.Normal;
         this.highlightedLadder.SetActive(false);
         this.team = this.transform.parent.GetComponent<Teammate>();
+        this.nPlayersInZone = 0;
     }
 
     void Start() => inputManager = InputManager.GetInstance();
 
     void Update()
     {
-        if ((this.inputManager.GetLadder() || this.inputManager.GetDigging()) // TODO allow both until we decide
+        if (GetAnyButtonInput()
             && ropeState != RopeState.InUse 
-            && this.isAnotherPlayerInZone)
+            && this.nPlayersInZone > 0)
             StartCoroutine(ClimbRope());
     }
 
@@ -60,18 +61,17 @@ public class Rope : MonoBehaviour
         if (other.CompareTag("Player") && this.team.Team == other.transform.GetComponent<Teammate>().Team)
         {
             this.highlightedLadder.SetActive(true);
-            this.isAnotherPlayerInZone = true;
+            this.nPlayersInZone++;
             this.otherPlayerMovement = other.GetComponent<PlayerMovement>();
         }
-
     }
 
     public void ExitLadderZone(Collider other)
     {
-        if (other.CompareTag("Player") && this.team.Team == other.transform.GetComponent<Teammate>().Team)
+        if (IsATeammate(other))
         {
             this.highlightedLadder.SetActive(false);
-            this.isAnotherPlayerInZone = false;
+            this.nPlayersInZone--;
             other.GetComponent<PlayerMovement>().CanClimb = false;
         }
     }
@@ -112,4 +112,9 @@ public class Rope : MonoBehaviour
     public GameObject GetLowerLadder() => this.lowerLadder;
     public GameObject GetHighlightedLadder() => this.highlightedLadder;
 
+
+    private bool IsATeammate(Collider other)
+    {
+        return other.CompareTag("Player") && this.team.Team == other.transform.GetComponent<Teammate>().Team;
+    }
 }

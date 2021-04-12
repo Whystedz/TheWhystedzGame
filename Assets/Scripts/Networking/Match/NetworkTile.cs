@@ -1,8 +1,6 @@
 using System.Collections;
-using System.Threading;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class NetworkTile : MonoBehaviour
 {
@@ -54,7 +52,7 @@ public class NetworkTile : MonoBehaviour
         while (TileInfo.Progress > 0)
         {
             TileInfo.Progress -= Time.deltaTime;
-            yield return new WaitForFixedUpdate();
+            yield return null;
         }
 
         Break();
@@ -62,8 +60,8 @@ public class NetworkTile : MonoBehaviour
 
     private void Break()
     {
+        this.tileManager.SetTileState(TileInfo, TileState.Respawning, this.tileManager.timeToRespawn);
         Instantiate(this.breakParticleEffectPrefab, transform.position, Quaternion.identity);
-        this.tileManager.SetTileState(TileInfo, TileState.Respawning, TileInfo.TimeToRespawn);
         this.meshRenderer.material = destroyedMaterial;
     }
 
@@ -72,7 +70,7 @@ public class NetworkTile : MonoBehaviour
         while (TileInfo.Progress > 0)
         {
             TileInfo.Progress -= Time.deltaTime;
-            yield return new WaitForFixedUpdate();
+            yield return null;
         }
 
         Respawn();

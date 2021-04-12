@@ -824,6 +824,8 @@ MonoBehaviour:
   ropeClip: {fileID: 8300000, guid: aa757c9ff3dbbd4499910c6920d12d7c, type: 3}
   fallingClip: {fileID: 8300000, guid: e45158694c3cbc84aa20282034a37a5e, type: 3}
   landClip: {fileID: 8300000, guid: de4ab48cd427a2243b389b6cd491c8aa, type: 3}
+  dieClip: {fileID: 0}
+  climbClip: {fileID: 0}
   playerGroup: {fileID: -5069830022980289509, guid: f110ec1ec75bf3046803ad950951e43d, type: 2}
   audioSource: {fileID: 6774835018087594508}
 --- !u!114 &2701644943808477435
@@ -894,7 +896,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   animator: {fileID: 3050111420767142080}
-  rope: {fileID: 2108375269}
+  rope: {fileID: 125947723050293931}
   IsRopeInUse: 0
   RopeState: 0
   heightToClimb: 8
@@ -1628,6 +1630,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NetworkComboParticleGenerator
       objectReference: {fileID: 0}
+    - target: {fileID: 9181281249246860844, guid: 7b149388456aa0e4ca5e9cd7a3c90698, type: 3}
+      propertyPath: particleConnectionPrefab
+      value: 
+      objectReference: {fileID: 3177227359520601572, guid: 0f734babcfbb65e47adf0472c51999fb, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b149388456aa0e4ca5e9cd7a3c90698, type: 3}
 --- !u!4 &9063657686292944045 stripped

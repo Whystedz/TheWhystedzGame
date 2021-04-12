@@ -32,7 +32,7 @@ public class NetworkHUDButtonCooldown : MonoBehaviour
 
     void Update()
     {
-        if (MaxAmount != 0f && CurrentAmount / MaxAmount < 1f)
+        if ((MaxAmount != 0f && CurrentAmount / MaxAmount < 1f))
             SetCoolDownColors();
         else
             SetNormalColors();

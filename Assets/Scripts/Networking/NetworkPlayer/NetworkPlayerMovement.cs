@@ -26,6 +26,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
     [SerializeField] private float timeToFadeIn = 0.25f;
     [SerializeField] private float timeToFadeOut = 2f;
 
+    public bool CanClimb { get; set; }
     public bool IsClimbing { get; private set; }
     public bool IsInUnderground { get; set; }
     [SerializeField] private float undergroundCheckThreshold = 2f;
@@ -199,13 +200,14 @@ public class NetworkPlayerMovement : NetworkBehaviour
         IsClimbing = false;
         IsMovementDisabled = false;
         IsInUnderground = false;
+        this.animator.SetTrigger("Reset");
     }
 
 
     public IEnumerator TransitionToTop(float height, Vector3 surfacePosition)
     {
         this.animator.SetBool("isClimbing", true);
-        StartCoroutine(FadeOut(2f));
+        yield return StartCoroutine(FadeOut(2f));
         while (this.transform.position.y < underground.transform.position.y + height)
         {
             this.characterController.Move(Vector3.up * Time.deltaTime * this.movementSpeed);
@@ -213,9 +215,8 @@ public class NetworkPlayerMovement : NetworkBehaviour
         }
         yield return new WaitForSeconds(0.2f);
         this.transform.position = surfacePosition + Vector3.up * this.heightOffset;
-        this.animator.SetBool("isClimbing", false);
         yield return StartCoroutine(FadeIn(2f));
-        this.animator.SetTrigger("Reset");
+        this.animator.SetBool("isClimbing", false);
     }
 
     public IEnumerator FadeIn(float timeToFadeOut)

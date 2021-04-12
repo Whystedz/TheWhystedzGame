@@ -35,7 +35,7 @@ public class NetworkInputManager : MonoBehaviour
         var keyboard = Keyboard.current;
         var gamepad = Gamepad.current;
 
-        if(gamepad == null || keyboard.lastUpdateTime > gamepad.lastUpdateTime)
+        if(gamepad == null)
         {
             IsUsingKeyboard = true;
             this.HUDMainButtons.DisplayKeyboardControls();
@@ -46,19 +46,16 @@ public class NetworkInputManager : MonoBehaviour
 
             switch (device)
             {
-                case "SwitchProControllerHID:/SwitchProControllerHID": // no UI support for switch/generic game pad
-                case "Gamepad:/Gamepad":
-                case "XInputControllerWindows:/XInputControllerWindows":
-                    IsUsingKeyboard = false;
-                    this.HUDMainButtons.DisplayXBOXControls();
-                    break;
                 case "DualShock4GamepadHID:/DualShock4GamepadHID":
                     IsUsingKeyboard = false;
                     this.HUDMainButtons.DisplayPlayStationControls();
                     break;
+                case "SwitchProControllerHID:/SwitchProControllerHID": // no UI support for switch/generic game pad
+                case "Gamepad:/Gamepad":
+                case "XInputControllerWindows:/XInputControllerWindows":
                 default:
-                    IsUsingKeyboard = true;
-                    this.HUDMainButtons.DisplayKeyboardControls();
+                    IsUsingKeyboard = false;
+                    this.HUDMainButtons.DisplayXBOXControls();
                     break;
             }
         }
@@ -67,6 +64,8 @@ public class NetworkInputManager : MonoBehaviour
     private void OnEnable() => this.playerInput.Enable();
     private void OnDisable() => this.playerInput.Disable();
     private void OnDestroy() => this.playerInput = null;
+    public void EnableInput() => this.playerInput.Enable();
+    public void DisableInput() => this.playerInput.Disable();
 
     private void MaintainSingleInstance()
     {
