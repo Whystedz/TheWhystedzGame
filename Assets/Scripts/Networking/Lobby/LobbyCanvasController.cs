@@ -134,6 +134,8 @@ public class LobbyCanvasController : MonoBehaviour
     public void OnMatchEnded()
     {
         if (!NetworkClient.active) return;
+        
+        roomGUI.ResetGUI();
         ShowRoomView();
     }
 

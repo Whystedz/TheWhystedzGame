@@ -16,6 +16,7 @@ public class RoomGUI : MonoBehaviour
 
     public void SetRoomCode(string code) => matchIDText.text = code;
     public void SetHost(bool isHost) => this.isHost = isHost;
+    public void ResetGUI() => startGameButton.SetActive(false);
 
     public void RefreshRoomPlayers(PlayerInfo[] playerInfos)
     {

@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class EndScreenUI : MonoBehaviour
 {
@@ -37,6 +38,7 @@ public class EndScreenUI : MonoBehaviour
 
     public void EndGame()
     {
+        Time.timeScale = 0f;
         ShowEndScreen();
         AudioManager.PlayWinMusic();
 
@@ -110,5 +112,10 @@ public class EndScreenUI : MonoBehaviour
     public void ShowEndScreen() => this.endScreen.SetActive(true);
     
     // TODO: Return to lobby as well.
-    public void CloseEndScreen() => this.endScreen.SetActive(false);
+    public void CloseEndScreen()
+    {
+        Time.timeScale = 1f;
+        MatchController.Instance.RequestExitGame();
+        SceneManager.UnloadSceneAsync(LobbyNetworkManager.Instance.MainScene);
+    }
 }

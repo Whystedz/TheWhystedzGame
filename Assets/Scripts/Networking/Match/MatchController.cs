@@ -9,10 +9,6 @@ public class MatchController : NetworkBehaviour
     internal readonly SyncDictionary<NetworkIdentity, MatchPlayerData> matchPlayerData = new SyncDictionary<NetworkIdentity, MatchPlayerData>();
     public List<NetworkIdentity> playerIdentities;
 
-    private LobbyNetworkManager networkManager;
-
-    private LobbyCanvasController canvasController;
-
     private TileManager tileManager;
     private NetworkComboManager comboManager;
 
@@ -27,8 +23,6 @@ public class MatchController : NetworkBehaviour
     
     public override void OnStartServer()
     {
-        this.canvasController = FindObjectOfType<LobbyCanvasController>();
-        this.networkManager = GameObject.FindWithTag("NetworkManager").GetComponent<LobbyNetworkManager>();
         this.tileManager = GetComponent<TileManager>();
         this.comboManager = GetComponent<NetworkComboManager>();
         this.crystalManager = GetComponent<NetworkCrystalManager>();
@@ -101,10 +95,26 @@ public class MatchController : NetworkBehaviour
     /// <returns></returns>
     public IEnumerator ServerEndMatch(NetworkConnection connection, bool disconnected)
     {
-        networkManager.OnPlayerDisconnected -= OnPlayerDisconnected;
+        LobbyNetworkManager.Instance.OnPlayerDisconnected -= OnPlayerDisconnected;
     
         RpcExitGame();
-    
+
+        if (NumOfPlayers < MatchMaker.MaxPlayers)
+        {
+            string matchId = LobbyCanvasController.Instance.localHostedMatchId == string.Empty ?
+                                 LobbyCanvasController.Instance.localJoinedMatchId :
+                                 LobbyCanvasController.Instance.localHostedMatchId;
+
+            LobbyNetworkManager.openMatches.Add(matchId, new MatchInfo
+            {
+                MatchId = matchId,
+                Players = (byte) NumOfPlayers,
+                MaxPlayers = MatchMaker.MaxPlayers,
+                InProgress = false,
+                IsPublic = true // for now, set to public
+            });
+        }
+            
         // Skip a frame so the message goes out ahead of object destruction
         yield return null;
     
@@ -115,10 +125,7 @@ public class MatchController : NetworkBehaviour
         {
             // send everyone to lobby 
             foreach (var player in this.playerIdentities)
-            {
                 NetworkServer.RemovePlayerForConnection(player.connectionToClient, true);
-                LobbyNetworkManager.waitingConnections.Add(player.connectionToClient);
-            }
         }
         else
         {
@@ -129,7 +136,6 @@ public class MatchController : NetworkBehaviour
             {
                 if (player == disconnectedPlayer) continue;
                 NetworkServer.RemovePlayerForConnection(player.connectionToClient, true);
-                LobbyNetworkManager.waitingConnections.Add(player.connectionToClient);
             }
         }
     
@@ -145,6 +151,6 @@ public class MatchController : NetworkBehaviour
     [ClientRpc]
     public void RpcExitGame()
     {
-        canvasController.OnMatchEnded();
+        LobbyCanvasController.Instance.OnMatchEnded();
     }
 }

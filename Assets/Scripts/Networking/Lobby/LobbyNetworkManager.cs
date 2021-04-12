@@ -10,6 +10,7 @@ using VivoxUnity;
 
 public class LobbyNetworkManager : NetworkManager
 {
+    public static LobbyNetworkManager Instance;
     // ****** Server only data ********
     // from player connection to matchId
     internal static readonly Dictionary<NetworkConnection, string> playerMatches = new Dictionary<NetworkConnection, string>();
@@ -52,6 +53,8 @@ public class LobbyNetworkManager : NetworkManager
         base.Awake();
         this.vivoxManager = VivoxManager.Instance;
         InitializeData();
+
+        Instance = this;
 
         // the following two lines are used for testing on Yuguo's Macbook
         // Mirror GUI is not available in macOS build. Have to start server/client by code.
@@ -382,16 +385,13 @@ public class LobbyNetworkManager : NetworkManager
             {
                 playerConn.Send(new ClientMatchMessage {ClientMatchOperation = ClientMatchOperation.Started, MatchId = matchId});
 
-
                 // Reset ready state for after the match. 
                 var playerInfo = playerInfos[connection];
                 playerInfo.IsReady = false;
                 playerInfos[connection] = playerInfo;
             }
 
-            playerMatches.Remove(connection);
             openMatches.Remove(matchId);
-            matchConnections.Remove(matchId);
             SendMatchList();
 
             OnPlayerDisconnected += matchController.OnPlayerDisconnected;

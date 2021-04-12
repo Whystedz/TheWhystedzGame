@@ -28775,7 +28775,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 900107196680301766, guid: a83ee83d0a68b6a4689d117cd57f4497, type: 3}
       propertyPath: gameTime
-      value: 500
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 900107196680301766, guid: a83ee83d0a68b6a4689d117cd57f4497, type: 3}
       propertyPath: endScreen
