@@ -37,6 +37,7 @@ public class GameTimer : MonoBehaviour
                 DisplayTimer(this.gameTime);
                 this.gameEnded = true;
                 this.endScreen.EndGame();
+                AudioManager.StopSpeedupMusic();
             }
         }
     }
@@ -44,7 +45,7 @@ public class GameTimer : MonoBehaviour
     private IEnumerator DoHalfTimeEvent(float time)
     {
         yield return new WaitForSeconds(time);
-        AudioManager.PlayTenseMusic(1.1f);
+        AudioManager.PlaySpeedupMusic();
     }
 
     private void DisplayTimer(float time)

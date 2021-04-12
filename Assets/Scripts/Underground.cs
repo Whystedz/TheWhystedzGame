@@ -8,6 +8,7 @@ public class Underground : MonoBehaviour
     [SerializeField] private Transform respawnPoint;
     private float timer;
     private PlayerMovement playerMovement;
+    private PlayerAudio playerAudio;
     private LoseCrystals loseCrystals;
     private AnimationManager animationManager;
 
@@ -28,6 +29,7 @@ public class Underground : MonoBehaviour
     private void Awake()
     {
         this.playerMovement = this.GetComponent<PlayerMovement>();
+        this.playerAudio = this.GetComponent<PlayerAudio>();
         this.loseCrystals = this.GetComponent<LoseCrystals>();
         this.animationManager = this.GetComponentInChildren<AnimationManager>();
         this.underground = GameObject.FindGameObjectWithTag("Underground");
@@ -61,6 +63,7 @@ public class Underground : MonoBehaviour
         var initialPosition = this.transform.position;
 
         this.loseCrystals.LoseCrystal();
+        this.playerAudio.PlayDieAudio();
 
         this.characterController.enabled = false;
         this.playerMovement.DisableMovement();
