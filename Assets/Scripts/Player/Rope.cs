@@ -48,7 +48,14 @@ public class Rope : MonoBehaviour
             StartCoroutine(ClimbRope());
     }
 
-    private void OnTriggerEnter(Collider other)
+    private bool GetAnyButtonInput()
+    {
+        return this.inputManager.GetLadder()
+            || this.inputManager.GetDigging()
+            || this.inputManager.GetInitiateCombo();
+    }
+
+    public void EnterLadderZone(Collider other)
     {
         if (other.CompareTag("Player") && this.team.Team == other.transform.GetComponent<Teammate>().Team)
         {
@@ -59,17 +66,7 @@ public class Rope : MonoBehaviour
 
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.CompareTag("Player")
-            && this.team.Team == other.transform.GetComponent<Teammate>().Team
-            && this.ropeState != RopeState.InUse)
-            other.GetComponent<PlayerMovement>().CanClimb = true;
-        else
-            other.GetComponent<PlayerMovement>().CanClimb = false;            
-    }
-
-    private void OnTriggerExit(Collider other)
+    public void ExitLadderZone(Collider other)
     {
         if (other.CompareTag("Player") && this.team.Team == other.transform.GetComponent<Teammate>().Team)
         {

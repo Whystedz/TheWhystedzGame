@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2108375270}
-  - component: {fileID: 2108375271}
   - component: {fileID: 2108375272}
   m_Layer: 0
   m_Name: Ladder
@@ -35,19 +34,6 @@ Transform:
   m_Father: {fileID: 6327377196063707623}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &2108375271
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2108375269}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.83, y: 2, z: 6.04}
-  m_Center: {x: 0, y: -70.5, z: 0}
 --- !u!114 &2108375272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -757,6 +743,7 @@ MonoBehaviour:
   fallingSpeed: 50
   timeToFadeIn: 0.25
   timeToFadeOut: 3
+  CanClimb: 0
   undergroundCheckThreshold: 2
   heightOffset: 1
   spawningCollisionRadiusToCheck: 1.2
@@ -877,7 +864,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeToDie: 90
   respawnPoint: {fileID: 0}
-  undergroundOffset: 2
   undergroundCanvas: {fileID: 2500255384583912188}
   fullColor: {r: 0.38412246, g: 0.9811321, b: 0.44347435, a: 1}
   halfColor: {r: 0.9339623, g: 0.8788409, b: 0.3480331, a: 1}
@@ -1129,6 +1115,32 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.2271488, y: 14.101655, z: 0.2017466}
   m_Center: {x: 0, y: 7.0509505, z: 0.022286914}
+--- !u!65 &8903534026700668390
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7530297735328976718}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4, y: 2, z: 7}
+  m_Center: {x: 0, y: 0.09, z: 0.022286914}
+--- !u!114 &5391651515034297789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7530297735328976718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f455948dd7e0c1d429b774b21b750f48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rope: {fileID: 2108375272}
 --- !u!1 &7801819934840977517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1366,9 +1378,9 @@ PrefabInstance:
       objectReference: {fileID: 3447762630940622872}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 24cf46d8ef93c0e45b44b5a3f9fb75e4, type: 3}
---- !u!4 &3150517029497352350 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7684793070017229609, guid: 24cf46d8ef93c0e45b44b5a3f9fb75e4, type: 3}
+--- !u!120 &3150517029497352344 stripped
+LineRenderer:
+  m_CorrespondingSourceObject: {fileID: 7684793070017229615, guid: 24cf46d8ef93c0e45b44b5a3f9fb75e4, type: 3}
   m_PrefabInstance: {fileID: 4691972490711303095}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &3150517029497352345 stripped
@@ -1382,9 +1394,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0374c390ed6022d4e95b49e981af8413, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!120 &3150517029497352344 stripped
-LineRenderer:
-  m_CorrespondingSourceObject: {fileID: 7684793070017229615, guid: 24cf46d8ef93c0e45b44b5a3f9fb75e4, type: 3}
+--- !u!4 &3150517029497352350 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7684793070017229609, guid: 24cf46d8ef93c0e45b44b5a3f9fb75e4, type: 3}
   m_PrefabInstance: {fileID: 4691972490711303095}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4710237907124483644
@@ -1624,16 +1636,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: RopeLadderUp
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}
---- !u!1 &6561240911794246098 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}
-  m_PrefabInstance: {fileID: 6327377196500167811}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5784281583677721448 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}
+  m_PrefabInstance: {fileID: 6327377196500167811}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6561240911794246098 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}
   m_PrefabInstance: {fileID: 6327377196500167811}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7224218234700657183
@@ -1699,16 +1715,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: RopeLadderDown
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}
---- !u!1 &7530297735328976718 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}
-  m_PrefabInstance: {fileID: 7224218234700657183}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7190891017380697588 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}
+  m_PrefabInstance: {fileID: 7224218234700657183}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7530297735328976718 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 65b2f93f88fd76c4fbc386e5a08ba4c5, type: 3}
   m_PrefabInstance: {fileID: 7224218234700657183}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8947011188044845008
