@@ -569,6 +569,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 613054824}
     m_Modifications:
+    - target: {fileID: 491965092638632923, guid: 137bf1b1f740b2e42a78a17009aa6ef6, type: 3}
+      propertyPath: m_VideoClip
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 491965092638632923, guid: 137bf1b1f740b2e42a78a17009aa6ef6, type: 3}
+      propertyPath: m_AudioOutputMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1027816875894786985, guid: 137bf1b1f740b2e42a78a17009aa6ef6, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 28.800049
+      objectReference: {fileID: 0}
     - target: {fileID: 1741080365962545108, guid: 137bf1b1f740b2e42a78a17009aa6ef6, type: 3}
       propertyPath: m_Name
       value: MainMenuUI
@@ -657,5 +669,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 912707074039640445, guid: 137bf1b1f740b2e42a78a17009aa6ef6, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 137bf1b1f740b2e42a78a17009aa6ef6, type: 3}
