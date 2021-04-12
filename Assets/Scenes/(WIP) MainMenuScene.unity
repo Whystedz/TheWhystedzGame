@@ -616,7 +616,7 @@ MonoBehaviour:
   onlineScene: Assets/Scenes/(WIP) Lobby.unity
   transport: {fileID: 1308830979}
   networkAddress: localhost
-  maxConnections: 12
+  maxConnections: 100
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
   authenticator: {fileID: 0}

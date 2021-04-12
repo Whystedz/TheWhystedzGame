@@ -242,7 +242,7 @@ public class NetworkTile : MonoBehaviour
         if (TileInfo.TileState == TileState.Unbreakable)
             return;
 
-        TileInfo.TileState = TileState.Unbreakable;
+        this.tileManager.SetTileState(TileInfo, TileState.Unbreakable, 0f);
         this.meshRenderer.material = this.unbreakableMaterial;
     }
 

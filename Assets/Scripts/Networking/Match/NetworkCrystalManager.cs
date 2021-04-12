@@ -55,7 +55,6 @@ public class NetworkCrystalManager : NetworkBehaviour
 
     private void SpawnCrystal(int attempts = 0)
     {
-        Debug.Log("A crystal start to spawn");
         var randomPositionOnSurface = RandomPointInRectangle(this.surface.UpperLeftCorner,
             this.surface.UpperRightCorner,
             this.surface.LowerLeftCorner,

@@ -22,6 +22,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2347215542402302661, guid: a9957e88c81af1a4db38c66d8710d735, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2701644943808477435, guid: a9957e88c81af1a4db38c66d8710d735, type: 3}
       propertyPath: playerScoreUIPrefab
       value: 
@@ -77,6 +81,18 @@ PrefabInstance:
     - target: {fileID: 6327377196063707623, guid: a9957e88c81af1a4db38c66d8710d735, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6711196309490094973, guid: a9957e88c81af1a4db38c66d8710d735, type: 3}
+      propertyPath: dieClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 457a086dd4f68f546867518ffc6120ae, type: 3}
+    - target: {fileID: 6711196309490094973, guid: a9957e88c81af1a4db38c66d8710d735, type: 3}
+      propertyPath: climbClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 7678c62b301851e4f97a407f0e5e2634, type: 3}
+    - target: {fileID: 7323093382678290502, guid: a9957e88c81af1a4db38c66d8710d735, type: 3}
+      propertyPath: timeToDie
+      value: 60
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9957e88c81af1a4db38c66d8710d735, type: 3}

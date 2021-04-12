@@ -90,8 +90,8 @@ MonoBehaviour:
   xOffset: 2
   zOffset: 1.73
   verticalOffset: 0.01
-  timeToBreak: 0.25
-  timeToRespawn: 10
+  timeToBreak: 0.3
+  timeToRespawn: 30
 --- !u!114 &6129329931103307680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,7 +133,7 @@ MonoBehaviour:
   maxCrystalsGame: 500
   surfaceBoundsOffset: 5
   undergroundBoundsOffset: 5
-  crystalVerticalOffsetHeight: 2.25
+  crystalVerticalOffsetHeight: 1.5
   spawningCollisionPaddingRadius: 1
   radiusOfSpawnCircle: 0.5
   radiusOfForce: 10
