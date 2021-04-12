@@ -544,7 +544,7 @@ public class NetworkComboPlayer : NetworkBehaviour
         return distance >= lowerBound && distance <= upperBound;
     }
 
-    public void DigTile(TileInfo targetTile) => this.networkDigging.Dig(targetTile);
+    public void DigTile(TileInfo targetTile) => this.networkDigging.DigCombo(targetTile);
     public float MaxHighlightingDistance() => NetworkComboManager.Instance.TriangleDistance + NetworkComboManager.Instance.HighlightTolerance;
     public float GetCooldownMax() => this.cooldownMax;
     public float GetCooldownProgress() => this.cooldownProgress;

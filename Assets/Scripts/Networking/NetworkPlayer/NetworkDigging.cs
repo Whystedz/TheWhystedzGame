@@ -126,6 +126,14 @@ public class NetworkDigging : NetworkBehaviour
         playerMovement.DisableMovementFor(this.afterDiggingPause);
     }
 
+    public void DigCombo(TileInfo targetTile)
+    {
+        CmdDigTile(targetTile);
+        this.playerAudio.PlayLaserAudio();
+        this.animator.SetTrigger("Shoot");
+        playerMovement.DisableMovementFor(this.afterDiggingPause);
+    }
+
     [Command(ignoreAuthority = true)]
     public void CmdDigTile(TileInfo targetTile)
     {
