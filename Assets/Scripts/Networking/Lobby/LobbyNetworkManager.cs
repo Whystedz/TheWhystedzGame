@@ -45,6 +45,8 @@ public class LobbyNetworkManager : NetworkManager
 
     private VivoxManager vivoxManager;
 
+    private Queue<MatchLoadInfo> loadQueue = new Queue<MatchLoadInfo>();
+
     // private HashSet<NetworkConnection> waitSceneLoadPlayers = new HashSet<NetworkConnection>()
     public override void Awake()
     {
@@ -219,7 +221,7 @@ public class LobbyNetworkManager : NetworkManager
             }
             case ServerMatchOperation.SceneLoaded:
             {
-                OnServerSceneLoaded(connection, message.MatchId);
+                HandlePlayerLoading(connection, message.MatchId);
                 break;
             }
             case ServerMatchOperation.Join:
@@ -393,7 +395,7 @@ public class LobbyNetworkManager : NetworkManager
             matchConnections.Remove(matchId);
             SendMatchList();
 
-            // OnPlayerDisconnected += matchController.OnPlayerDisconnected;
+            OnPlayerDisconnected += matchController.OnPlayerDisconnected;
         }
     }
 
@@ -634,6 +636,39 @@ public class LobbyNetworkManager : NetworkManager
         // Wait until the asynchronous scene fully loads
         while (!asyncLoad.isDone)
             yield return null;
+    }
+
+    private void HandlePlayerLoading(NetworkConnection connection, string matchId)
+    {
+        if (!NetworkServer.active) return;
+
+        try
+        {
+            OnServerSceneLoaded(connection, matchId);
+            return;
+        }
+        catch (Exception e)
+        {
+            Debug.Log("Error spawning player object");
+        }
+
+        MatchLoadInfo playerInfo = new MatchLoadInfo {
+            Connection = connection,
+            MatchId = matchId,
+        };
+
+        loadQueue.Enqueue(playerInfo);
+    }
+
+    private void Update()
+    {
+        if (!NetworkServer.active) return;
+
+        if (loadQueue.Count > 0)
+        {
+            MatchLoadInfo playerInfo = loadQueue.Dequeue();
+            HandlePlayerLoading(playerInfo.Connection, playerInfo.MatchId);
+        }
     }
 
     #endregion

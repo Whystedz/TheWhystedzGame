@@ -105,5 +105,10 @@ public enum ClientMatchOperation : byte
 public enum Dummy : byte
 {
     IgnoreThis,
-    Stop
+}
+
+public struct MatchLoadInfo
+{
+    public NetworkConnection Connection;
+    public string MatchId;
 }
