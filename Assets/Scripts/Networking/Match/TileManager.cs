@@ -179,10 +179,11 @@ public class TileManager : NetworkBehaviour
 
     void OnTileUpdated(SyncList<TileInfo>.Operation op, int index, TileInfo oldTile, TileInfo newTile)
     {
+        var tile = this.transform.GetChild(index).GetComponent<NetworkTile>();
         switch (op)
         {
             case SyncList<TileInfo>.Operation.OP_SET:
-                var tile = this.transform.GetChild(index).GetComponent<NetworkTile>();
+                
                 tile.TileInfo = newTile;
                 switch (newTile.TileState)
                 {
@@ -198,5 +199,6 @@ public class TileManager : NetworkBehaviour
                 }
                 break;
         }
+        tile.ChangeMaterialAccordingToCurrentState();
     }
 }

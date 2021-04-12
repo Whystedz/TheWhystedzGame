@@ -129,7 +129,7 @@ public class NetworkTile : MonoBehaviour
         ChangeMaterialAccordingToCurrentState();
     }
 
-    private void ChangeMaterialAccordingToCurrentState()
+    public void ChangeMaterialAccordingToCurrentState()
     {    
         if (this.isDisplayingRopePreview && this.tileHighlightState != TileHighlightState.RopeHighlight)
         {
