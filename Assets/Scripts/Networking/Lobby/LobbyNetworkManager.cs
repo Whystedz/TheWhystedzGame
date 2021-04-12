@@ -410,16 +410,10 @@ public class LobbyNetworkManager : NetworkManager
             // setup player
             player.GetComponent<NetworkMatchChecker>().matchId = matchId.ToGuid();
             player.GetComponent<Teammate>().Team = playerInfos[connection].Team;
-            
+
             NetworkServer.AddPlayerForConnection(connection, player);
 
             matchController.playerIdentities.Add(connection.identity);
-            matchController.matchPlayerData.Add(connection.identity, new MatchPlayerData
-            {
-                currentScore = 0,
-                playerName = playerInfos[connection].DisplayName,
-                team = playerInfos[connection].Team
-            });
         }
         
         yield return null;

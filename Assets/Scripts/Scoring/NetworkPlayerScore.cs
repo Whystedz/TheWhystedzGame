@@ -20,12 +20,11 @@ public class NetworkPlayerScore : NetworkBehaviour
 
     private GameObject teamUIGameObject = null;
 
-    private PlayerAudio playerAudio;
+    [SerializeField] PlayerAudio playerAudio;
 
     public override void OnStartAuthority()
     {
         this.team = GetComponent<Teammate>().Team;
-        this.playerAudio = GetComponent<PlayerAudio>();
         this.teamScore = FindObjectOfType<TeamScoreManager>();
     }
 

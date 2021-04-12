@@ -6,7 +6,6 @@ using UnityEngine;
 public class MatchController : NetworkBehaviour
 {
     public static MatchController Instance;
-    internal readonly SyncDictionary<NetworkIdentity, MatchPlayerData> matchPlayerData = new SyncDictionary<NetworkIdentity, MatchPlayerData>();
     public List<NetworkIdentity> playerIdentities;
 
     private TileManager tileManager;
@@ -16,6 +15,8 @@ public class MatchController : NetworkBehaviour
 
     private NetworkGameTimer networkGameTimer;
     private TeamScoreManager teamScoreManager;
+
+    public static int NumOfLoadedClients = 0;
 
     public int NumOfPlayers { get; set; }
 
@@ -47,7 +48,7 @@ public class MatchController : NetworkBehaviour
 
     private IEnumerator CheckPlayerAllIn()
     {
-        while (this.matchPlayerData.Count < NumOfPlayers)
+        while (NumOfLoadedClients < NumOfPlayers)
         {
             yield return null;
         }
@@ -61,19 +62,8 @@ public class MatchController : NetworkBehaviour
         this.networkGameTimer.gameObject.SetActive(true);
     }
 
-    public override void OnStartClient()
-    {
-        matchPlayerData.Callback += OnMatchPlayerDataUpdate;
-    }
+    public override void OnStartLocalPlayer() => NumOfLoadedClients++;
 
-    // called on matchPlayerData updated
-    public void OnMatchPlayerDataUpdate(SyncDictionary<NetworkIdentity, MatchPlayerData>.Operation op, NetworkIdentity key, MatchPlayerData newMatchPlayerData)
-    {
-        if (op == SyncIDictionary<NetworkIdentity, MatchPlayerData>.Operation.OP_ADD)
-        {
-
-        }
-    }
 
     // TODO: bind this with an exit button
     [Client]

@@ -106,13 +106,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  HighlightTolerance: 0
+  HighlightTolerance: 5
   ShowExtendedTeamCombos: 1
   TriggerExtendedTeamCombos: 1
-  LineDistance: 5
-  LineThickness: 1
+  LineDistance: 10
+  LineThickness: 2
   MaxTilesInLineCombo: 20
-  TriangleDistance: 10
+  TriangleDistance: 15
   MaxTilesInTriangleCombo: 64
 --- !u!114 &6129329931103307687
 MonoBehaviour:
