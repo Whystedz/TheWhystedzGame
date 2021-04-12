@@ -19,7 +19,7 @@ public class NetworkBaneOffFloatyBoi : NetworkBehaviour
     private float timeSinceLastRefresh;
     private readonly float timeToRefresh = 0.1f;
 
-    private void Start()
+    public override void OnStartLocalPlayer()
     {
         this.characterController = GetComponent<CharacterController>();
         this.playerMovement = GetComponent<NetworkPlayerMovement>();

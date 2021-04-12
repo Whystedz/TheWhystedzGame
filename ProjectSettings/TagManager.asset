@@ -18,6 +18,7 @@ TagManager:
   - Tile
   - EndScreen
   - MatchController
+  - SpawnPoint
   layers:
   - Default
   - TransparentFX

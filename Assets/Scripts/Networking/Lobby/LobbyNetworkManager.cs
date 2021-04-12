@@ -157,9 +157,7 @@ public class LobbyNetworkManager : NetworkManager
     {
         if (!NetworkServer.active) return;
 
-        if (mode == NetworkManagerMode.ServerOnly)
-            LoadObsctacleScene();
-
+        LoadObsctacleScene();
         InitializeData();
         //this.canvasController.InitializeData();
 
@@ -403,18 +401,18 @@ public class LobbyNetworkManager : NetworkManager
         if (!NetworkServer.active) 
             yield break;
 
-        // this.waitSceneLoadPlayers.Add(connection);
-        // if (this.waitSceneLoadPlayers.Count == matchConnections[matchId])
-        // spawn player; 
-        int prefabIndex = playerInfos[connection].Team == Team.RedTeam ? 0 : 1;
-        var player = Instantiate(playerPrefabs[prefabIndex]);
-        // setup player
-        player.GetComponent<NetworkMatchChecker>().matchId = matchId.ToGuid();
-        player.GetComponent<Teammate>().Team = playerInfos[connection].Team;
-        NetworkServer.AddPlayerForConnection(connection, player);
         // add player to matchController
         if (matchControllers.TryGetValue(matchId, out var matchController))
         {
+            var spawnPos = matchController.GetSpawnPoint();
+            int prefabIndex = playerInfos[connection].Team == Team.RedTeam ? 0 : 1;
+            var player = Instantiate(playerPrefabs[prefabIndex], spawnPos.position, Quaternion.identity);
+            // setup player
+            player.GetComponent<NetworkMatchChecker>().matchId = matchId.ToGuid();
+            player.GetComponent<Teammate>().Team = playerInfos[connection].Team;
+            
+            NetworkServer.AddPlayerForConnection(connection, player);
+
             matchController.playerIdentities.Add(connection.identity);
             matchController.matchPlayerData.Add(connection.identity, new MatchPlayerData
             {

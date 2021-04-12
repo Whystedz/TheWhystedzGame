@@ -22,6 +22,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 220148668681088870, guid: d1358eb6e8673814fb60c21af00a00de, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.6817741
+      objectReference: {fileID: 0}
     - target: {fileID: 2347215542402302661, guid: d1358eb6e8673814fb60c21af00a00de, type: 3}
       propertyPath: m_PresetInfoIsWorld
       value: 1
@@ -104,7 +108,7 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: 7678c62b301851e4f97a407f0e5e2634, type: 3}
     - target: {fileID: 7323093382678290502, guid: d1358eb6e8673814fb60c21af00a00de, type: 3}
       propertyPath: timeToDie
-      value: 60
+      value: 45
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d1358eb6e8673814fb60c21af00a00de, type: 3}

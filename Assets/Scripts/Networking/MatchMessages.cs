@@ -104,8 +104,7 @@ public enum ClientMatchOperation : byte
 
 public enum Dummy : byte
 {
-    IgnoreThis,
-    Again
+    IgnoreThis
 }
 
 public struct MatchLoadInfo

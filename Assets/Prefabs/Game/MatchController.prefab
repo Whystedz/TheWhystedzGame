@@ -156,6 +156,15 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   playerIdentities: []
+  spawnPointPrefabs:
+  - {fileID: 4137094904729039276, guid: daae0251d83ad784e87305c414338347, type: 3}
+  - {fileID: 1893768577228959572, guid: fd052f79fd50d194b95f8b139479ecdd, type: 3}
+  - {fileID: 6463690036883311544, guid: c248238ecf96a634cbef32925db85696, type: 3}
+  - {fileID: 8649613465231104247, guid: 2bd63cc82267c7b4f837f7a8d542737b, type: 3}
+  - {fileID: 1613059446955656067, guid: cc8240fde6766284ca990529245f801f, type: 3}
+  - {fileID: 8937256398867313502, guid: 01d767535d19364408c87abd94af7470, type: 3}
+  - {fileID: 145621719709987772, guid: 2779d4ff8d3e8b64daf90d2bcaa355a6, type: 3}
+  - {fileID: 6296499470506553992, guid: 634453b152eb26a43ae9518d02026d4e, type: 3}
 --- !u!114 &-289238407225537992
 MonoBehaviour:
   m_ObjectHideFlags: 0

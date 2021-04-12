@@ -19,7 +19,19 @@ public class MatchController : NetworkBehaviour
 
     public int NumOfPlayers { get; set; }
 
-    private void Start() => Instance = this;
+    public static int currentIndex = 0;
+    [SerializeField] private GameObject[] spawnPointPrefabs;
+    internal List<Transform> spawnPoints = new List<Transform>();
+
+    private void Start()
+    {
+        Instance = this;
+        for (int i = 0; i < NumOfPlayers; i++)
+        {
+           var spawnPoint = Instantiate(spawnPointPrefabs[i]);
+           this.spawnPoints.Add(spawnPoint.transform);
+        }
+    }
     
     public override void OnStartServer()
     {
@@ -27,6 +39,7 @@ public class MatchController : NetworkBehaviour
         this.comboManager = GetComponent<NetworkComboManager>();
         this.crystalManager = GetComponent<NetworkCrystalManager>();
         this.teamScoreManager = GetComponent<TeamScoreManager>();
+
         StartCoroutine(CheckPlayerAllIn());
     }
         
@@ -152,5 +165,13 @@ public class MatchController : NetworkBehaviour
     public void RpcExitGame()
     {
         LobbyCanvasController.Instance.OnMatchEnded();
+    }
+
+    public Transform GetSpawnPoint()
+    {
+        var spawnPoint = spawnPoints[currentIndex];
+        currentIndex++;
+
+        return spawnPoint;
     }
 }

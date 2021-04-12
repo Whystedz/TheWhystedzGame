@@ -7,7 +7,7 @@ public class NetworkUnderground : NetworkBehaviour
 {
     [SerializeField] private Animator animator;
     [SerializeField] private int timeToDie = 15;
-    [SerializeField] private Transform respawnPoint;
+    internal Vector3 respawnPoint;
     private float timer;
     private NetworkPlayerMovement playerMovement;
     private NetworkLoseCrystals loseCrystals;
@@ -31,7 +31,8 @@ public class NetworkUnderground : NetworkBehaviour
         this.playerMovement = this.GetComponent<NetworkPlayerMovement>();
         this.loseCrystals = this.GetComponent<NetworkLoseCrystals>();
 
-        this.respawnPoint = this.transform;
+        respawnPoint = this.transform.position;
+
         this.surface = GameObject.FindGameObjectWithTag("Surface");
         this.characterController = this.GetComponent<CharacterController>();
         this.underground = GameObject.FindGameObjectWithTag("Underground");
@@ -78,17 +79,13 @@ public class NetworkUnderground : NetworkBehaviour
         this.loseCrystals.LoseCrystal(this.transform.position);
 
         var offset = initialPosition.y - this.underground.transform.position.y;
-        var revivedPosition = new Vector3(
-            respawnPoint.position.x,
-            this.surface.transform.position.y + offset,
-            respawnPoint.position.z);
 
         this.characterController.enabled = false;
-        this.transform.position = revivedPosition;
+        this.transform.position = respawnPoint;
         this.characterController.enabled = true;
 
         this.playerMovement.IsInUnderground = false;
-        StartCoroutine(this.playerMovement.FadeIn(1f));
+        yield return StartCoroutine(this.playerMovement.FadeIn(1f));
         yield return new WaitForSeconds(0.1f);
         this.playerMovement.EnableMovement();
 
