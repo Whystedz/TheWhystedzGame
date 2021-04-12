@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ public class NetworkComboManager : NetworkBehaviour
 
     internal NetworkComboPlayer localPlayer;
 
-    void Start() => Instance = this;
+    private void Awake() => Instance = this;
 
     public void RegisterPlayer()
     {

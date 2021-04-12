@@ -143,6 +143,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5170011985830459310}
+  - component: {fileID: 3730534089804018567}
   m_Layer: 5
   m_Name: Right Team Score
   m_TagString: Untagged
@@ -172,6 +173,19 @@ RectTransform:
   m_AnchoredPosition: {x: 125, y: 0}
   m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 1}
+--- !u!114 &3730534089804018567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5170011985830459309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e42d2b07556545fba55b2380bbc0330, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scoreText: {fileID: 5170011985689850216}
 --- !u!1 &5170011986187407716
 GameObject:
   m_ObjectHideFlags: 0

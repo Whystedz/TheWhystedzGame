@@ -20,16 +20,10 @@ public class LobbyCanvasController : MonoBehaviour
     [SerializeField] public GameObject roomView;
     [SerializeField] public RoomGUI roomGUI;
 
-    void Start() => Instance = this;
+    private void Awake() => Instance = this;
 
     #region UI Functions
 
-    // Called from several places to ensure a clean reset
-    //  - MatchNetworkManager.Awake
-    //  - OnStartServer
-    //  - OnStartClient
-    //  - OnClientDisconnect
-    //  - ResetCanvas
     internal void InitializeData()
     {
         this.localHostedMatchId = string.Empty;
@@ -156,6 +150,7 @@ public class LobbyCanvasController : MonoBehaviour
     {
         this.lobbyView.GetComponent<LobbyGUI>().EnableSearchCanvas(false);
         this.lobbyView.SetActive(true);
+        Debug.Log("Lobbyview set active");
         this.roomView.SetActive(false);
     }
 

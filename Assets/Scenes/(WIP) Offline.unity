@@ -223,7 +223,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 290835631}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &290835633
 Camera:
   m_ObjectHideFlags: 0
@@ -345,6 +345,63 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1054000447
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4467526456707022866, guid: 1cf5c4013752543e3b30b66cf814e762, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467526456707022866, guid: 1cf5c4013752543e3b30b66cf814e762, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1280
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467526456707022866, guid: 1cf5c4013752543e3b30b66cf814e762, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 720
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467526456707022866, guid: 1cf5c4013752543e3b30b66cf814e762, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467526456707022866, guid: 1cf5c4013752543e3b30b66cf814e762, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467526456707022866, guid: 1cf5c4013752543e3b30b66cf814e762, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467526456707022866, guid: 1cf5c4013752543e3b30b66cf814e762, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467526456707022866, guid: 1cf5c4013752543e3b30b66cf814e762, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467526456707022866, guid: 1cf5c4013752543e3b30b66cf814e762, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467526456707022866, guid: 1cf5c4013752543e3b30b66cf814e762, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467526456707022866, guid: 1cf5c4013752543e3b30b66cf814e762, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467526456707022867, guid: 1cf5c4013752543e3b30b66cf814e762, type: 3}
+      propertyPath: m_Name
+      value: VivoxManager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1cf5c4013752543e3b30b66cf814e762, type: 3}
 --- !u!1 &2034865896
 GameObject:
   m_ObjectHideFlags: 0
@@ -358,7 +415,7 @@ GameObject:
   - component: {fileID: 2034865897}
   - component: {fileID: 2034865900}
   m_Layer: 0
-  m_Name: NetworkManager (Temp)
+  m_Name: NetworkManager
   m_TagString: NetworkManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -387,7 +444,7 @@ MonoBehaviour:
   onlineScene: Assets/Scenes/(WIP) Lobby.unity
   transport: {fileID: 2034865898}
   networkAddress: localhost
-  maxConnections: 4
+  maxConnections: 12
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
   authenticator: {fileID: 0}
@@ -395,15 +452,18 @@ MonoBehaviour:
   autoCreatePlayer: 0
   playerSpawnMethod: 1
   spawnPrefabs:
-  - {fileID: 7863378476046910972, guid: 2c779e48395786f4486a47292e6e4c6e, type: 3}
-  - {fileID: 6327377196063707621, guid: 089b5bd4919889945b1369e9eeb5d0cd, type: 3}
-  - {fileID: 6327377196063707621, guid: e17aec5637d3d824b9621c3df33d7e7b, type: 3}
+  - {fileID: 7863378476046910972, guid: 22e5d0fff571f9a42b838f2cf7a25312, type: 3}
+  - {fileID: 6096993304693631242, guid: 3186fd027344c3b4a93929627ab890d9, type: 3}
+  - {fileID: 1212115614643687658, guid: 7d4731376bdf2c5449f3a4121a872641, type: 3}
   - {fileID: 6129329931103307681, guid: 60a5a9863f7ff5c40ad0bef4a1057568, type: 3}
+  - {fileID: 3362095944824195329, guid: 4a3538023bcd541b18ecf5ae7a08eab5, type: 3}
+  - {fileID: 4003945900811091616, guid: 57f6a49d34d924fe59d9fa47b3293e4b, type: 3}
   canvasController: {fileID: 0}
   MainScene: Assets/Scenes/(WIP) TheMainSceneOnline.unity
+  ObstaclesScene: Assets/Scenes/Obstacles.unity
   playerPrefabs:
-  - {fileID: 6327377196063707621, guid: e17aec5637d3d824b9621c3df33d7e7b, type: 3}
-  - {fileID: 6327377196063707621, guid: 089b5bd4919889945b1369e9eeb5d0cd, type: 3}
+  - {fileID: 1212115614643687658, guid: 7d4731376bdf2c5449f3a4121a872641, type: 3}
+  - {fileID: 6096993304693631242, guid: 3186fd027344c3b4a93929627ab890d9, type: 3}
   matchControllerPrefab: {fileID: 6129329931103307681, guid: 60a5a9863f7ff5c40ad0bef4a1057568, type: 3}
 --- !u!114 &2034865898
 MonoBehaviour:
@@ -419,9 +479,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   port: 7777
   NoDelay: 1
-  serverMaxMessageSize: 350000
+  serverMaxMessageSize: 131072
   serverMaxReceivesPerTick: 10000
-  clientMaxMessageSize: 350000
+  clientMaxMessageSize: 131072
   clientMaxReceivesPerTick: 1000
 --- !u!4 &2034865899
 Transform:

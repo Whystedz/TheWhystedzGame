@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using UnityEngine;
 using Mirror;
@@ -54,6 +55,7 @@ public class NetworkCrystalManager : NetworkBehaviour
 
     private void SpawnCrystal(int attempts = 0)
     {
+        Debug.Log("A crystal start to spawn");
         var randomPositionOnSurface = RandomPointInRectangle(this.surface.UpperLeftCorner,
             this.surface.UpperRightCorner,
             this.surface.LowerLeftCorner,
@@ -79,8 +81,8 @@ public class NetworkCrystalManager : NetworkBehaviour
             return;
         }
 
-
         var crystal = Instantiate(this.crystalPrefab, this.transform);
+        crystal.GetComponent<NetworkMatchChecker>().matchId = gameObject.GetComponent<NetworkMatchChecker>().matchId;
 
         crystal.transform.position = chosenPosition;
 
@@ -116,9 +118,9 @@ public class NetworkCrystalManager : NetworkBehaviour
         var upperBoundZ = upperLeft.z;
 
         return new Vector3(
-            Random.Range(lowerBoundX, upperBoundX),
+            UnityEngine.Random.Range(lowerBoundX, upperBoundX),
             0,
-            Random.Range(lowerBoundZ, upperBoundZ)
+            UnityEngine.Random.Range(lowerBoundZ, upperBoundZ)
         );
     }
 
@@ -147,29 +149,34 @@ public class NetworkCrystalManager : NetworkBehaviour
 
     public float GetHeightOffset() => crystalVerticalOffsetHeight;
 
+    public void DropCrystals(Vector3 playerPos, int amount, Guid matchId)
+    {
+        DropPlayerCrystals(playerPos, amount, matchId);
+    }
+
     [ServerCallback]
-    public void DropCrystals(Transform player, int amount)
+    private void DropPlayerCrystals(Vector3 playerPos, int amount, Guid matchId)
     {
         for (int i = 0; i < amount; i++)
         {
             var randomizedPos = UnityEngine.Random.insideUnitCircle * radiusOfSpawnCircle;
-            var spawnPos = player.transform.position + new Vector3(randomizedPos.x, crystalVerticalOffsetHeight, randomizedPos.y);
+            var spawnPos = playerPos + new Vector3(randomizedPos.x, crystalVerticalOffsetHeight, randomizedPos.y);
             var crystal = Instantiate(this.crystalPrefab, spawnPos, Quaternion.identity);
-            crystal.transform.parent = this.transform;
-            crystal.GetComponent<NetworkCrystal>().Explode();
+            crystal.GetComponent<NetworkMatchChecker>().matchId = matchId;
             crystal.GetComponent<CapsuleCollider>().isTrigger = false;
+            crystal.GetComponent<NetworkCrystal>().Explode();
 
             NetworkServer.Spawn(crystal);
 
             OnDroppedCrystal(crystal.GetComponent<NetworkCrystal>());
         }
 
-        ExplodeCrystals(player);
+        ExplodeCrystals(playerPos);
     }
 
-    private void ExplodeCrystals(Transform player)
+    private void ExplodeCrystals(Vector3 playerPos)
     {
-        Vector3 explosionPos = player.transform.position + Vector3.up * crystalVerticalOffsetHeight;
+        Vector3 explosionPos = playerPos + Vector3.up * crystalVerticalOffsetHeight;
         Collider[] colliders = Physics.OverlapSphere(explosionPos, radiusOfForce);
         foreach (Collider hit in colliders)
         {

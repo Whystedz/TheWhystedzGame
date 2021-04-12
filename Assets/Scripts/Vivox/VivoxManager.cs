@@ -185,6 +185,7 @@ namespace Vivox
             }
         }
 
+        public void LeaveChannel() => LeaveChannel(this.loginSession.GetChannelSession(this.channelId));
         public void LeaveChannel(IChannelSession channelSession) => channelSession.Disconnect();
 
         #endregion
@@ -296,7 +297,6 @@ namespace Vivox
                 }
                 case "AudioEnergy":
                 {
-                    Debug.Log($"[Vivox] AudioEnergy: {username} {valueEventArg.Value.AudioEnergy}.");
                     OnAudioEnergyUpdatedEvent?.Invoke(username, channelId, valueEventArg.Value.AudioEnergy);
                     break;
                 }

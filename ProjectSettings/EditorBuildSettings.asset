@@ -6,9 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/MainMenuScene.unity
-    guid: 55323c82268fdf24fa3fb054f2b30e3b
+    path: Assets/Scenes/(WIP) Offline.unity
+    guid: e24232f56ddf16f4f9c9b00643d63d72
   - enabled: 1
-    path: Assets/Scenes/TheMainSceneOnline.unity
+    path: Assets/Scenes/(WIP) Lobby.unity
+    guid: 22ea93fd47b65cd4385ced8715a7aead
+  - enabled: 1
+    path: Assets/Scenes/(WIP) TheMainSceneOnline.unity
+    guid: f3a124f8b1e8134428d139d6cd75841b
+  - enabled: 1
+    path: Assets/Scenes/Obstacles.unity
     guid: 05a7e6c5397e52a41af475b76e19a69c
   m_configObjects: {}

@@ -6,26 +6,28 @@ using UnityEngine.UI;
 
 public class TeamScore : MonoBehaviour
 {
-    [SerializeField] private List<TeamScoreUI> teamScoreUIs;
+    private TeamScoreUI teamScoreUI;
     [SerializeField] private Team team;
-    public Team Team { get => this.team; }
 
-    [SerializeField] private int goalScore;
+    public Team Team
+    {
+        get => this.team;
+        set => this.team = value;
+    }
+
     private int score;
 
-    private EndScreenUI endScreen;
+    private void Awake()
+    {
+        teamScoreUI = FindObjectsOfType<TeamScoreUI>()
+            .Single(ui => ui.Team == this.team);
+    }
 
-    private void Awake() => this.endScreen = GameObject.FindWithTag("EndScreen").GetComponent<EndScreenUI>();
-    
     public void Add(int amountToAdd)
     {
         this.score += amountToAdd;
 
-        foreach (var teamScoreUI in teamScoreUIs)
-            teamScoreUI.UpdateScore(this.score);
-        
-        if (this.score >= this.goalScore)
-            this.endScreen.EndGame();
+        this.teamScoreUI.UpdateScore(this.score);
     }
 
     public void Substract(int amountToSubstract)
@@ -35,7 +37,6 @@ public class TeamScore : MonoBehaviour
         if (this.score < 0)
             this.score = 0;
 
-        foreach (var teamScoreUI in teamScoreUIs)
-            teamScoreUI.UpdateScore(this.score);
+        this.teamScoreUI.UpdateScore(this.score);
     }
 }

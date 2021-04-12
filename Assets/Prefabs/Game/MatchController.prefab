@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6129329931103307680}
   - component: {fileID: 6129329931103307687}
   - component: {fileID: 6129329931103307690}
+  - component: {fileID: -289238407225537992}
   m_Layer: 0
   m_Name: MatchController
   m_TagString: Untagged
@@ -91,7 +92,6 @@ MonoBehaviour:
   verticalOffset: 0.01
   timeToBreak: 0.25
   timeToRespawn: 10
-  timeOfBreakingAnimation: 1
 --- !u!114 &6129329931103307680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,13 +106,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  highlightTolerance: 5
-  triggerExtendedTeamCombos: 1
-  lineDistance: 10
-  lineThickness: 2
-  maxTilesInLineCombo: 20
-  triangleDistance: 15
-  maxTilesInTriangleCombo: 64
+  HighlightTolerance: 0
+  ShowExtendedTeamCombos: 1
+  TriggerExtendedTeamCombos: 1
+  LineDistance: 5
+  LineThickness: 1
+  MaxTilesInLineCombo: 20
+  TriangleDistance: 10
+  MaxTilesInTriangleCombo: 64
 --- !u!114 &6129329931103307687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,7 +126,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d63edc9f9ece4b64ea796310589d93ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crystalPrefab: {fileID: 7863378476046910972, guid: 2c779e48395786f4486a47292e6e4c6e, type: 3}
+  syncMode: 0
+  syncInterval: 0.1
+  crystalPrefab: {fileID: 7863378476046910972, guid: 22e5d0fff571f9a42b838f2cf7a25312, type: 3}
   maxCrystalsSurface: 100
   maxCrystalsGame: 500
   surfaceBoundsOffset: 5
@@ -135,7 +138,8 @@ MonoBehaviour:
   radiusOfSpawnCircle: 0.5
   radiusOfForce: 10
   power: 30
-  surface: {fileID: 1786932440784084075, guid: a32faa6f1d668164ea4a8ba35b89c09e, type: 3}
+  surfacePlane: {fileID: 4692303708131121389, guid: a32faa6f1d668164ea4a8ba35b89c09e, type: 3}
+  undergroundPlane: {fileID: 6474438845002051393, guid: 0582bd01cfabf3747bca36a295b0b2d4, type: 3}
   Underground: {fileID: 4490923608680112070, guid: 0582bd01cfabf3747bca36a295b0b2d4, type: 3}
 --- !u!114 &6129329931103307690
 MonoBehaviour:
@@ -152,3 +156,21 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   playerIdentities: []
+--- !u!114 &-289238407225537992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6129329931103307681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cfd71e86edb6409f9b6622b71f7c824, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  redTeamScorePrefab: {fileID: 1150255417994918974, guid: c75b4356cc38f8b44b57075c583871be, type: 3}
+  blueTeamScorePrefab: {fileID: 5170011985830459309, guid: 7f46032496b4c9c4c846b68a5d1fbfd9, type: 3}
+  redTeamScore: 0
+  blueTeamScore: 0

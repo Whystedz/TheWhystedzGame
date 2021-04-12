@@ -7,7 +7,6 @@ using UnityEngine;
 public class PlayerScoreUI : MonoBehaviour
 {
     [SerializeField] private Team team;
-
     public Team Team
     {
         get => this.team;

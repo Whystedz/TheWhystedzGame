@@ -14,6 +14,7 @@ public struct ClientMatchMessage : NetworkMessage
 {
     public ClientMatchOperation ClientMatchOperation;
     public string MatchId;
+    public PlayerInfo ThisPlayerInfo;
     public MatchInfo[] MatchInfos;
     public PlayerInfo[] PlayerInfos;
 }
@@ -103,5 +104,6 @@ public enum ClientMatchOperation : byte
 
 public enum Dummy : byte
 {
-    IgnoreThis
+    IgnoreThis,
+    Stop
 }
