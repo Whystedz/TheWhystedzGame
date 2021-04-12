@@ -47,7 +47,6 @@ public class LobbyNetworkManager : NetworkManager
 
     private Queue<MatchLoadInfo> loadQueue = new Queue<MatchLoadInfo>();
 
-    // private HashSet<NetworkConnection> waitSceneLoadPlayers = new HashSet<NetworkConnection>()
     public override void Awake()
     {
         base.Awake();
@@ -399,9 +398,10 @@ public class LobbyNetworkManager : NetworkManager
         }
     }
 
-    public void OnServerSceneLoaded(NetworkConnection connection, string matchId)
+    public IEnumerator OnServerSceneLoaded(NetworkConnection connection, string matchId)
     {
-        if (!NetworkServer.active) return;
+        if (!NetworkServer.active) 
+            yield break;
 
         // this.waitSceneLoadPlayers.Add(connection);
         // if (this.waitSceneLoadPlayers.Count == matchConnections[matchId])
@@ -423,6 +423,8 @@ public class LobbyNetworkManager : NetworkManager
                 team = playerInfos[connection].Team
             });
         }
+        
+        yield return null;
     }
 
     public void OnServerJoinMatch(NetworkConnection connection, string matchId, string playerName)
@@ -644,12 +646,12 @@ public class LobbyNetworkManager : NetworkManager
 
         try
         {
-            OnServerSceneLoaded(connection, matchId);
+            StartCoroutine(OnServerSceneLoaded(connection, matchId));
             return;
         }
         catch (Exception e)
         {
-            Debug.Log("Error spawning player object");
+            Debug.Log(e);
         }
 
         MatchLoadInfo playerInfo = new MatchLoadInfo {

@@ -6,53 +6,34 @@ using UnityEngine;
 public class NetworkGameTimer : MonoBehaviour
 {
     [SerializeField] private double gameTime;
-    private double startTime;
-
-    private double timeLeft;
     private bool gameEnded;
 
-    // sync timer after some frames
-    private const int timerSyncIntervalFrameNumber = 100;
-
-    private int framePassed = 0;
     [SerializeField] private TextMeshProUGUI timerText;
+
+    [SerializeField] private EndScreenUI endScreen;
 
     private void Start()
     {
         this.gameEnded = false;
-        this.timeLeft = this.gameTime; // this line is to give time for matchController to load
         StartCoroutine(DoHalfTimeEvent((float) gameTime / 2));
-    }
-
-    public void StartTimerFrom(double start)
-    {
-        this.startTime = start;
-        this.timeLeft = this.gameTime + this.startTime - NetworkTime.time;
     }
 
     void Update()
     {
-        this.framePassed++;
         if (!this.gameEnded)
         {
-            if (this.timeLeft > 0)
+            if (this.gameTime > 0)
             {
-                if (this.framePassed > timerSyncIntervalFrameNumber)
-                {
-                    this.timeLeft = this.gameTime + this.startTime - NetworkTime.time;
-                }
-                else
-                {
-                    this.timeLeft -= Time.deltaTime;
-                }
-                DisplayTimer((float) this.timeLeft);
+                this.gameTime -= Time.deltaTime;
+                DisplayTimer((float) this.gameTime);
             }
             else
             {
                 Debug.Log("Time ran out. Game ended!");
-                this.timeLeft = 0;
+                this.gameTime = 0;
                 DisplayTimer((float) this.gameTime);
                 this.gameEnded = true;
+                this.endScreen.EndGame();
                 AudioManager.StopSpeedupMusic();
             }
         }

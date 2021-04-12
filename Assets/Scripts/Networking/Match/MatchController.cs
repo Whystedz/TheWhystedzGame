@@ -1,14 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Mirror;
 using UnityEngine;
-using UnityEngine.Networking.Types;
 
 public class MatchController : NetworkBehaviour
 {
+    public static MatchController Instance;
     internal readonly SyncDictionary<NetworkIdentity, MatchPlayerData> matchPlayerData = new SyncDictionary<NetworkIdentity, MatchPlayerData>();
-
     public List<NetworkIdentity> playerIdentities;
 
     private LobbyNetworkManager networkManager;
@@ -24,6 +22,8 @@ public class MatchController : NetworkBehaviour
     private TeamScoreManager teamScoreManager;
 
     public int NumOfPlayers { get; set; }
+
+    private void Start() => Instance = this;
     
     public override void OnStartServer()
     {
@@ -51,7 +51,7 @@ public class MatchController : NetworkBehaviour
     [ClientRpc]
     public void RpcStartTimer()
     {
-        this.networkGameTimer.StartTimerFrom(NetworkTime.time);
+        this.networkGameTimer.gameObject.SetActive(true);
     }
 
     public override void OnStartClient()
@@ -70,7 +70,7 @@ public class MatchController : NetworkBehaviour
 
     // TODO: bind this with an exit button
     [Client]
-    public void ReqestExitGame()
+    public void RequestExitGame()
     {
         CmdRequestExitGame();
     }

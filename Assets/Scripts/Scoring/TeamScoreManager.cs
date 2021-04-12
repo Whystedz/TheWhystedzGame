@@ -4,6 +4,7 @@ using TMPro;
 
 public class TeamScoreManager : NetworkBehaviour
 {
+    public static TeamScoreManager Instance;
     [SerializeField] private GameObject redTeamScorePrefab;
     [SerializeField] private GameObject blueTeamScorePrefab;
 
@@ -24,6 +25,7 @@ public class TeamScoreManager : NetworkBehaviour
 
     private void Start()
     {
+        Instance = this;
         if (isServer) return;
 
         GameObject HUDGameObject = GameObject.Find("Game HUD");
