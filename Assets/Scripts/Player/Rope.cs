@@ -27,7 +27,7 @@ public class Rope : MonoBehaviour
     private InputManager inputManager;
     private bool isAnotherPlayerInZone;
 
-    private PlayerMovement playerMovement;
+    private PlayerMovement otherPlayerMovement;
     private Teammate team;
     internal RopeState ropeState;
 
@@ -61,7 +61,7 @@ public class Rope : MonoBehaviour
         {
             this.highlightedLadder.SetActive(true);
             this.isAnotherPlayerInZone = true;
-            this.playerMovement = other.GetComponent<PlayerMovement>();
+            this.otherPlayerMovement = other.GetComponent<PlayerMovement>();
         }
 
     }
@@ -81,27 +81,30 @@ public class Rope : MonoBehaviour
         ropeState = RopeState.Normal;
         this.gameObject.SetActive(false);
 
-        this.playerMovement.EnableMovement();
+        this.otherPlayerMovement.EnableMovement();
     }
 
     public IEnumerator ClimbRope()
     {
         ropeState = RopeState.InUse;
 
-        this.playerMovement.DisableMovement();
+        this.otherPlayerMovement.DisableMovement();
 
-        var directionToRope = (this.transform.position - this.playerMovement.transform.position).normalized;
+        this.otherPlayerMovement.GetComponent<PlayerAudio>().PlayClimbAudio();
+        this.GetComponentInParent<PlayerAudio>().PlayClimbAudio();
+
+        var directionToRope = (this.transform.position - this.otherPlayerMovement.transform.position).normalized;
         directionToRope = new Vector3(directionToRope.x, 0,directionToRope.z);
-        var ropePositionWithoutY = new Vector3(this.transform.position.x, this.playerMovement.transform.position.y, this.transform.position.z);
-        this.playerMovement.transform.LookAt(ropePositionWithoutY);
+        var ropePositionWithoutY = new Vector3(this.transform.position.x, this.otherPlayerMovement.transform.position.y, this.transform.position.z);
+        this.otherPlayerMovement.transform.LookAt(ropePositionWithoutY);
 
-        while (Vector3.Distance(this.playerMovement.transform.position, ropePositionWithoutY) > 1.0f)
+        while (Vector3.Distance(this.otherPlayerMovement.transform.position, ropePositionWithoutY) > 1.0f)
         {
-            this.playerMovement.MoveTowards(directionToRope, 120f);
+            this.otherPlayerMovement.MoveTowards(directionToRope, 120f);
             yield return null;
         }
-        this.playerMovement.transform.LookAt(ropePositionWithoutY);
-        yield return StartCoroutine(this.playerMovement.ClimbRope(heightToClimb, this.transform.position));
+        this.otherPlayerMovement.transform.LookAt(ropePositionWithoutY);
+        yield return StartCoroutine(this.otherPlayerMovement.ClimbRope(heightToClimb, this.transform.position));
         ropeState = RopeState.Saved;
     }
 

@@ -135,10 +135,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void UpdateUndergroundSoundFX()
     {
-        if(IsInUnderground)
+        if (IsInUnderground)
+        {
             AudioManager.PlayUndergroundFX();
+            AudioManager.PlayAmbientAudio();
+        }
         else
+        {
             AudioManager.StopUndergroundFX();
+            AudioManager.StopAmbientAudio();
+        }
     }
 
     public bool IsFalling() => this.isFalling;

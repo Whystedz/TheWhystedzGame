@@ -8,17 +8,18 @@ public class AudioManager : MonoBehaviour
 {
     private static AudioManager current;
 
+    public bool DebugPlayOnStart = false;
+    
     [Header("Audio FX")]
     [SerializeField] private float fadeDuration = 1f;
     [SerializeField] private float initialCutoff = 22000f;
     [SerializeField] private float muffledCutoff = 780f;
+    [SerializeField] private float tenseMusicSpeed = 1.1f;
     
     [Header("Audio Clips")]
     [SerializeField] private AudioClip ambientClip;
     [SerializeField] private AudioClip mainMusicClip;
-    [SerializeField] private AudioClip tenseMusicClip;
     [SerializeField] private AudioClip lobbyClip;
-    [SerializeField] private AudioClip tutorialClip;
     [SerializeField] private AudioClip winClip;
     
     [Header("Audio Mixer")]
@@ -48,35 +49,36 @@ public class AudioManager : MonoBehaviour
         this.ambientSource.outputAudioMixerGroup = ambientGroup;
         this.musicSource.outputAudioMixerGroup = musicGroup;
 
+        // Set initial values.
         this.mainMixer.GetFloat("musicCutoff", out initialCutoff);
+        this.musicSource.pitch = 1f;
         
-        StartGameAudio();
-    }
-
-    private static void StartGameAudio()
-    {
-        PlayAmbientAudio();
-        PlayMainMusic();
+        this.ambientSource.clip = this.ambientClip;
+        this.ambientSource.loop = true;
+        this.ambientSource.Play();
+        StopAmbientAudio();
+        
+        if (this.DebugPlayOnStart)
+            PlayMainMusic();
     }
 
     public static void PlayAmbientAudio()
     {
-        current.ambientSource.clip = current.ambientClip;
-        current.ambientSource.loop = true;
-        current.ambientSource.Play();
         FadeAudio(current.ambientSource, current.fadeDuration, 1f);
+    }
+    
+    public static void StopAmbientAudio()
+    {
+        FadeAudio(current.ambientSource, current.fadeDuration, 0f);
     }
 
     public static void PlayMainMusic() => PlayMusic(current.mainMusicClip);
     
-    public static void PlayTenseMusic(float pitch)
-    {
-        current.musicSource.pitch = pitch;
-    }
+    public static void PlaySpeedupMusic() => current.musicSource.pitch = current.tenseMusicSpeed;
+    
+    public static void StopSpeedupMusic() => current.musicSource.pitch = 1f;
 
     public static void PlayLobbyMusic() => PlayMusic(current.lobbyClip);
-    
-    public static void PlayTutorialMusic() => PlayMusic(current.tutorialClip);
 
     public static void PlayWinMusic()
     {
