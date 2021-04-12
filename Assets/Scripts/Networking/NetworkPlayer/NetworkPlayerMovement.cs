@@ -261,7 +261,8 @@ public class NetworkPlayerMovement : NetworkBehaviour
         this.virtualCamera.SetActive(true);
 
         yield return StartCoroutine(FadeIn(this.timeToFadeIn));
-        this.loseCrystals.LoseCrystal();
+
+        this.loseCrystals.LoseCrystal(this.transform.position);
     }
 
     internal void DisableMovementFor(float seconds)

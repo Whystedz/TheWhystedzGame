@@ -75,7 +75,7 @@ public class NetworkUnderground : NetworkBehaviour
 
         this.characterController.enabled = true;
 
-        this.loseCrystals.LoseCrystal();
+        this.loseCrystals.LoseCrystal(this.transform.position);
 
         var offset = initialPosition.y - this.underground.transform.position.y;
         var revivedPosition = new Vector3(

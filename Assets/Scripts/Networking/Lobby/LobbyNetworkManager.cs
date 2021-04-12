@@ -5,6 +5,8 @@ using System.Linq;
 using UnityEngine;
 using Mirror;
 using UnityEngine.SceneManagement;
+using Vivox;
+using VivoxUnity;
 
 public class LobbyNetworkManager : NetworkManager
 {
@@ -34,16 +36,30 @@ public class LobbyNetworkManager : NetworkManager
 
     [Header("Scenes")]
     [Scene] public string MainScene;
+    [Scene] public string ObstaclesScene;
 
     [Header("Prefabs")]
     [SerializeField] private List<GameObject> playerPrefabs;
+
     [SerializeField] private GameObject matchControllerPrefab;
 
+    private VivoxManager vivoxManager;
+
+    private Queue<MatchLoadInfo> loadQueue = new Queue<MatchLoadInfo>();
+
+    // private HashSet<NetworkConnection> waitSceneLoadPlayers = new HashSet<NetworkConnection>()
     public override void Awake()
     {
         base.Awake();
+        this.vivoxManager = VivoxManager.Instance;
         InitializeData();
+
+        // the following two lines are used for testing on Yuguo's Macbook
+        // Mirror GUI is not available in macOS build. Have to start server/client by code.
+        //StartServer();
+        // StartClient();
     }
+
 
     public void InitializeData()
     {
@@ -94,7 +110,7 @@ public class LobbyNetworkManager : NetworkManager
 
         var playerInfo = playerInfos[connection];
         // update matchInfo and send to clients, if the player was in a match
-        if (playerInfo.MatchId != string.Empty)
+        if (!string.IsNullOrEmpty(playerInfo.MatchId))
         {
             if (openMatches.TryGetValue(playerInfo.MatchId, out var matchInfo))
             {
@@ -140,7 +156,7 @@ public class LobbyNetworkManager : NetworkManager
         if (!NetworkServer.active) return;
 
         if (mode == NetworkManagerMode.ServerOnly)
-            //this.lobbyCanvas.SetActive(true);
+            LoadObsctacleScene();
 
         InitializeData();
         //this.canvasController.InitializeData();
@@ -158,7 +174,7 @@ public class LobbyNetworkManager : NetworkManager
 
     public override void OnStopServer()
     {
-        this.canvasController.ResetCanvas();
+        //this.canvasController.ResetCanvas();
         //this.lobbyCanvas.SetActive(false);
     }
 
@@ -205,7 +221,7 @@ public class LobbyNetworkManager : NetworkManager
             }
             case ServerMatchOperation.SceneLoaded:
             {
-                OnServerSceneLoaded(connection, message.MatchId);
+                HandlePlayerLoading(connection, message.MatchId);
                 break;
             }
             case ServerMatchOperation.Join:
@@ -264,7 +280,13 @@ public class LobbyNetworkManager : NetworkManager
         // get playerInfos of everyone in this match 
         PlayerInfo[] infos = matchConnections[newMatchId].Select(playerConnection => playerInfos[playerConnection]).ToArray();
 
-        connection.Send(new ClientMatchMessage {ClientMatchOperation = ClientMatchOperation.Created, MatchId = newMatchId, PlayerInfos = infos});
+        connection.Send(new ClientMatchMessage
+        {
+            ClientMatchOperation = ClientMatchOperation.Created, 
+            MatchId = newMatchId, 
+            PlayerInfos = infos,
+            ThisPlayerInfo = playerInfo
+        });
 
         SendMatchList();
     }
@@ -303,8 +325,13 @@ public class LobbyNetworkManager : NetworkManager
         PlayerInfo[] infos = matchConnections[newMatchId].Select(playerConnection => playerInfos[playerConnection]).ToArray();
 
         // send match and player data back to client
-        connection.Send(new ClientMatchMessage {ClientMatchOperation = ClientMatchOperation.Created, MatchId = newMatchId, PlayerInfos = infos});
-
+        connection.Send(new ClientMatchMessage
+        {
+            ClientMatchOperation = ClientMatchOperation.Created, 
+            MatchId = newMatchId, 
+            PlayerInfos = infos,
+            ThisPlayerInfo = playerInfo
+        });
         SendMatchList();
     }
 
@@ -342,17 +369,20 @@ public class LobbyNetworkManager : NetworkManager
         string matchId;
         if (playerMatches.TryGetValue(connection, out matchId))
         {
-            GameObject matchControllerObject = Instantiate(matchControllerPrefab);
+            var matchControllerObject = Instantiate(matchControllerPrefab);
             matchControllerObject.GetComponent<NetworkMatchChecker>().matchId = matchId.ToGuid();
             NetworkServer.Spawn(matchControllerObject);
-            MatchController matchController = matchControllerObject.GetComponent<MatchController>();
+            var matchController = matchControllerObject.GetComponent<MatchController>();
+            matchController.NumOfPlayers = matchConnections[matchId].Count;
             matchControllers.Add(matchId, matchController);
 
+            // counters to assign players a sequence; used to put player score UI in the correct position
+
+            // add players into match controller
             foreach (NetworkConnection playerConn in matchConnections[matchId])
             {
-                playerConn.Send(new ClientMatchMessage { ClientMatchOperation = ClientMatchOperation.Started, MatchId = matchId });
+                playerConn.Send(new ClientMatchMessage {ClientMatchOperation = ClientMatchOperation.Started, MatchId = matchId});
 
-                matchController.playerIdentities.Add(connection.identity);
 
                 // Reset ready state for after the match. 
                 var playerInfo = playerInfos[connection];
@@ -373,10 +403,26 @@ public class LobbyNetworkManager : NetworkManager
     {
         if (!NetworkServer.active) return;
 
+        // this.waitSceneLoadPlayers.Add(connection);
+        // if (this.waitSceneLoadPlayers.Count == matchConnections[matchId])
+        // spawn player; 
         int prefabIndex = playerInfos[connection].Team == Team.RedTeam ? 0 : 1;
         var player = Instantiate(playerPrefabs[prefabIndex]);
+        // setup player
         player.GetComponent<NetworkMatchChecker>().matchId = matchId.ToGuid();
+        player.GetComponent<Teammate>().Team = playerInfos[connection].Team;
         NetworkServer.AddPlayerForConnection(connection, player);
+        // add player to matchController
+        if (matchControllers.TryGetValue(matchId, out var matchController))
+        {
+            matchController.playerIdentities.Add(connection.identity);
+            matchController.matchPlayerData.Add(connection.identity, new MatchPlayerData
+            {
+                currentScore = 0,
+                playerName = playerInfos[connection].DisplayName,
+                team = playerInfos[connection].Team
+            });
+        }
     }
 
     public void OnServerJoinMatch(NetworkConnection connection, string matchId, string playerName)
@@ -408,7 +454,13 @@ public class LobbyNetworkManager : NetworkManager
 
         // get info of every player and send back 
         PlayerInfo[] infos = matchConnections[matchId].Select(playerConnection => playerInfos[playerConnection]).ToArray();
-        connection.Send(new ClientMatchMessage {ClientMatchOperation = ClientMatchOperation.Joined, MatchId = matchId, PlayerInfos = infos});
+        connection.Send(new ClientMatchMessage
+        {
+            ClientMatchOperation = ClientMatchOperation.Joined, 
+            MatchId = matchId, 
+            PlayerInfos = infos,
+            ThisPlayerInfo = playerInfo
+        });
 
         // send new playerInfo to everyone in the match
         foreach (NetworkConnection playerConnection in matchConnections[matchId])
@@ -519,21 +571,25 @@ public class LobbyNetworkManager : NetworkManager
             case ClientMatchOperation.Created:
             {
                 this.canvasController.EnterRoom(message.MatchId, message.PlayerInfos, true);
+                ConnectVoice(message.ThisPlayerInfo.DisplayName, message.MatchId, message.ThisPlayerInfo.Team);
                 break;
             }
             case ClientMatchOperation.Cancelled:
             {
                 this.canvasController.ShowLobbyView();
+                DisconnectVoice();
                 break;
             }
             case ClientMatchOperation.Joined:
             {
                 this.canvasController.EnterRoom(message.MatchId, message.PlayerInfos, false);
+                ConnectVoice(message.ThisPlayerInfo.DisplayName, message.MatchId, message.ThisPlayerInfo.Team);
                 break;
             }
             case ClientMatchOperation.Departed:
             {
                 this.canvasController.ShowLobbyView();
+                DisconnectVoice();
                 break;
             }
             case ClientMatchOperation.UpdateRoom:
@@ -569,8 +625,50 @@ public class LobbyNetworkManager : NetworkManager
         // Wait until the asynchronous scene fully loads
         while (!asyncLoad.isDone)
             yield return null;
-        
-        NetworkClient.connection.Send(new ServerMatchMessage { ServerMatchOperation = ServerMatchOperation.SceneLoaded, MatchId = matchId });
+
+        NetworkClient.connection.Send(new ServerMatchMessage {ServerMatchOperation = ServerMatchOperation.SceneLoaded, MatchId = matchId});
+    }
+
+    IEnumerator LoadObsctacleScene()
+    {
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(this.ObstaclesScene, LoadSceneMode.Additive);
+
+        // Wait until the asynchronous scene fully loads
+        while (!asyncLoad.isDone)
+            yield return null;
+    }
+
+    private void HandlePlayerLoading(NetworkConnection connection, string matchId)
+    {
+        if (!NetworkServer.active) return;
+
+        try
+        {
+            OnServerSceneLoaded(connection, matchId);
+            return;
+        }
+        catch (Exception e)
+        {
+            Debug.Log("Error spawning player object");
+        }
+
+        MatchLoadInfo playerInfo = new MatchLoadInfo {
+            Connection = connection,
+            MatchId = matchId,
+        };
+
+        loadQueue.Enqueue(playerInfo);
+    }
+
+    private void Update()
+    {
+        if (!NetworkServer.active) return;
+
+        if (loadQueue.Count > 0)
+        {
+            MatchLoadInfo playerInfo = loadQueue.Dequeue();
+            HandlePlayerLoading(playerInfo.Connection, playerInfo.MatchId);
+        }
     }
 
     #endregion
@@ -605,5 +703,29 @@ public class LobbyNetworkManager : NetworkManager
         newHostInfo.IsHost = true;
         playerInfos[connection] = newHostInfo;
         connection.Send(new ClientMatchMessage {ClientMatchOperation = ClientMatchOperation.UpdateHost});
+    }
+
+    private void ConnectVoice(string name, string matchId, Team team)
+    {
+        this.vivoxManager.Username = name;
+        this.vivoxManager.ChannelName = matchId + team;
+        StartCoroutine(LoginJoinVoice());
+    }
+
+    private IEnumerator LoginJoinVoice()
+    {
+        this.vivoxManager.LogIn();
+        while (this.vivoxManager.LoginState != LoginState.LoggedIn)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        this.vivoxManager.JoinChannel(true, false, ChannelType.NonPositional);
+    }
+
+    private void DisconnectVoice()
+    {
+        this.vivoxManager.LeaveChannel();
+        this.vivoxManager.LogOut();
     }
 }

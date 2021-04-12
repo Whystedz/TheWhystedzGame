@@ -48,7 +48,7 @@ public class NetworkComboPlayer : NetworkBehaviour
     private void Start()
     {
         networkDigging = this.GetComponent<NetworkDigging>();
-        NetworkComboManager.Instance = FindObjectOfType<NetworkComboManager>();
+        // NetworkComboManager.Instance = FindObjectOfType<NetworkComboManager>();
         this.playerMovement = this.GetComponent<NetworkPlayerMovement>();
 
         nInstances += 1;

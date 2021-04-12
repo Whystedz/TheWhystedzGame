@@ -69,7 +69,7 @@ public class TileManager : NetworkBehaviour
     {
         var position = DetermineSpawnPosition(tile.XIndex, tile.ZIndex);
         var tileToSpawn = TileToSpawn(position);
-        var generatedTile = Instantiate(tileToSpawn, this.transform);
+        var generatedTile = Instantiate(tileToSpawn, transform);
         generatedTile.GetComponent<NetworkTile>().TileInfo = tile;
 
         generatedTile.transform.localScale = new Vector3(

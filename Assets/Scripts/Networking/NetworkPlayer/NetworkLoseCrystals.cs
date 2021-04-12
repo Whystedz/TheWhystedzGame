@@ -8,21 +8,21 @@ public class NetworkLoseCrystals : NetworkBehaviour
     private NetworkPlayerScore playerScore;
     private NetworkCrystalManager crystalManager;
 
-    void Awake()
+    void Start()
     {
         this.playerScore = GetComponent<NetworkPlayerScore>();
         this.crystalManager = FindObjectOfType<NetworkCrystalManager>();
     }
 
-    public void LoseCrystal()
+    public void LoseCrystal(Vector3 position)
     {
-        CmdSpawnCrystalsBasedOnScore();
-        this.playerScore.Substract(this.playerScore.CurrentScore);
+        CmdSpawnCrystalsBasedOnScore(position);
+        this.playerScore.Subtract(this.playerScore.currentScore);
     }
 
     [Command]
-    private void CmdSpawnCrystalsBasedOnScore()
+    private void CmdSpawnCrystalsBasedOnScore(Vector3 position)
     {
-        this.crystalManager.DropCrystals(this.transform, this.playerScore.CurrentScore);
+        this.crystalManager.DropCrystals(position, this.playerScore.currentScore, this.GetComponent<NetworkMatchChecker>().matchId);
     }
 }

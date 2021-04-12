@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Mirror;
 using UnityEngine;
 using UnityEngine.Networking.Types;
@@ -8,62 +9,62 @@ public class MatchController : NetworkBehaviour
 {
     internal readonly SyncDictionary<NetworkIdentity, MatchPlayerData> matchPlayerData = new SyncDictionary<NetworkIdentity, MatchPlayerData>();
 
-    private LobbyNetworkManager networkManager;
-    private LobbyCanvasController canvasController;
-    // public NetworkIdentity tileManagerIdentity; Not needed, will put everything in the match controller prefab
     public List<NetworkIdentity> playerIdentities;
+
+    private LobbyNetworkManager networkManager;
+
+    private LobbyCanvasController canvasController;
+
     private TileManager tileManager;
     private NetworkComboManager comboManager;
+
     private NetworkCrystalManager crystalManager;
 
-    void Awake()
+    private NetworkGameTimer networkGameTimer;
+    private TeamScoreManager teamScoreManager;
+
+    public int NumOfPlayers { get; set; }
+    
+    public override void OnStartServer()
     {
         this.canvasController = FindObjectOfType<LobbyCanvasController>();
         this.networkManager = GameObject.FindWithTag("NetworkManager").GetComponent<LobbyNetworkManager>();
         this.tileManager = GetComponent<TileManager>();
         this.comboManager = GetComponent<NetworkComboManager>();
         this.crystalManager = GetComponent<NetworkCrystalManager>();
-        //DontDestroyOnLoad(this);
+        this.teamScoreManager = GetComponent<TeamScoreManager>();
+        StartCoroutine(CheckPlayerAllIn());
     }
+        
+    public override void OnStartAuthority() => this.networkGameTimer = FindObjectOfType<NetworkGameTimer>();
 
-    public override void OnStartServer()
+    private IEnumerator CheckPlayerAllIn()
     {
-        StartCoroutine(AddPlayersToMatchController());
-    }
-
-    // For the SyncDictionary to properly fire the update callback, we must
-    // wait a frame before adding the players to the already spawned MatchController
-    private IEnumerator AddPlayersToMatchController()
-    {
-        yield return null;
-    /*
-        foreach (var playerIdentity in this.playerIdentities)
+        while (this.matchPlayerData.Count < NumOfPlayers)
         {
-            this.matchPlayerData.Add(playerIdentity, new MatchPlayerData
-                {
-                    playerName = LobbyNetworkManager.playerInfos[playerIdentity.connectionToClient].DisplayName,
-                    currentScore = 0,
-                    team = LobbyNetworkManager.playerInfos[playerIdentity.connectionToClient].Team
-                }
-            );
+            yield return null;
         }
-    */
+
+        RpcStartTimer();
+    }
+
+    [ClientRpc]
+    public void RpcStartTimer()
+    {
+        this.networkGameTimer.StartTimerFrom(NetworkTime.time);
     }
 
     public override void OnStartClient()
     {
-        matchPlayerData.Callback += UpdateScoreUI;
-        // TODO: initialize Score UI 
+        matchPlayerData.Callback += OnMatchPlayerDataUpdate;
     }
 
-    // TODO: update score UI in the main scene
-    public void UpdateScoreUI(SyncDictionary<NetworkIdentity, MatchPlayerData>.Operation op, NetworkIdentity key, MatchPlayerData newMatchPlayerData)
+    // called on matchPlayerData updated
+    public void OnMatchPlayerDataUpdate(SyncDictionary<NetworkIdentity, MatchPlayerData>.Operation op, NetworkIdentity key, MatchPlayerData newMatchPlayerData)
     {
-        if (key.gameObject.GetComponent<NetworkIdentity>().isLocalPlayer)
+        if (op == SyncIDictionary<NetworkIdentity, MatchPlayerData>.Operation.OP_ADD)
         {
-        }
-        else
-        {
+
         }
     }
 
@@ -73,13 +74,13 @@ public class MatchController : NetworkBehaviour
     {
         CmdRequestExitGame();
     }
-
+    
     [Command(ignoreAuthority = true)]
     public void CmdRequestExitGame(NetworkConnectionToClient sender = null)
     {
         StartCoroutine(ServerEndMatch(sender, false));
     }
-
+    
     // registered to OnPlayerDisconnected on networkManager
     public void OnPlayerDisconnected(NetworkConnection connection)
     {
@@ -91,7 +92,7 @@ public class MatchController : NetworkBehaviour
             StartCoroutine(ServerEndMatch(connection, true));
         }
     }
-
+    
     /// <summary>
     /// End a match; called on server
     /// </summary>
@@ -101,15 +102,15 @@ public class MatchController : NetworkBehaviour
     public IEnumerator ServerEndMatch(NetworkConnection connection, bool disconnected)
     {
         networkManager.OnPlayerDisconnected -= OnPlayerDisconnected;
-
+    
         RpcExitGame();
-
+    
         // Skip a frame so the message goes out ahead of object destruction
         yield return null;
-
+    
         // Mirror will clean up the disconnecting client so we only need to clean up the other remaining client.
         // If both players are just returning to the Lobby, we need to remove both connection Players
-
+    
         if (!disconnected)
         {
             // send everyone to lobby 
@@ -123,7 +124,7 @@ public class MatchController : NetworkBehaviour
         {
             // send everyone to lobby, except the one disconnected
             var disconnectedPlayer = this.playerIdentities.Find(x => x.connectionToClient == connection);
-
+    
             foreach (var player in this.playerIdentities)
             {
                 if (player == disconnectedPlayer) continue;
@@ -131,16 +132,16 @@ public class MatchController : NetworkBehaviour
                 LobbyNetworkManager.waitingConnections.Add(player.connectionToClient);
             }
         }
-
+    
         // Skip a frame to allow the Removal(s) to complete
         yield return null;
-
+    
         // Send latest match list
         LobbyNetworkManager.SendMatchList();
-
+    
         NetworkServer.Destroy(gameObject);
     }
-
+    
     [ClientRpc]
     public void RpcExitGame()
     {
