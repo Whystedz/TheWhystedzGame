@@ -12,14 +12,28 @@ public class NetworkGameTimer : MonoBehaviour
 
     [SerializeField] private EndScreenUI endScreen;
 
+    [SerializeField] private float timePausedOnStart = 5f;
+    private float pauseProgress;
+
     private void Start()
     {
         this.gameEnded = false;
         StartCoroutine(DoHalfTimeEvent((float) gameTime / 2));
+
+        this.pauseProgress = this.timePausedOnStart;
     }
 
     void Update()
     {
+        if (this.pauseProgress > 0)
+        {
+            DisplayTimer("Get Ready!");
+
+            this.pauseProgress -= Time.deltaTime;
+
+            return;
+        }
+
         if (!this.gameEnded)
         {
             if (this.gameTime > 0)
@@ -51,5 +65,11 @@ public class NetworkGameTimer : MonoBehaviour
         float seconds = Mathf.FloorToInt(time % 60);
 
         this.timerText.text = $"{minutes:00}:{seconds:00}";
+    }
+
+    private void DisplayTimer(string message)
+    {
+        this.timerText.text = message;
+        this.timerText.autoSizeTextContainer = true;
     }
 }

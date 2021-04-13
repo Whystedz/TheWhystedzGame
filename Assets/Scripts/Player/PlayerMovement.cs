@@ -44,6 +44,9 @@ public class PlayerMovement : MonoBehaviour
 
     private PlayerAudio playerAudio;
     private float startingYPosition;
+
+    [SerializeField] private float timePausedOnStart = 5f; 
+
     void Awake()
     {        
         this.characterController = GetComponent<CharacterController>();
@@ -72,6 +75,8 @@ public class PlayerMovement : MonoBehaviour
         this.inputManager = InputManager.GetInstance();
         RefreshTileCurrentlyOn();
         this.startingYPosition = this.transform.position.y;
+
+        DisableMovementFor(this.timePausedOnStart);
     }
 
     void Update()
@@ -223,12 +228,16 @@ public class PlayerMovement : MonoBehaviour
     {
         this.disabledMovementCooldown = -1; // set to infinite
         IsMovementDisabled = false;
+
+        this.characterController.enabled = true;
     }
 
     internal void DisableMovement()
     {
         this.disabledMovementCooldown = -1; // set to infinite
         IsMovementDisabled = true;
+
+        this.characterController.enabled = false;
     }
 
     public void RefreshTileCurrentlyOn()
