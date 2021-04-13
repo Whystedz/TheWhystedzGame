@@ -16,6 +16,7 @@ public class NetworkCrystal : NetworkCollectable
         rb = this.GetComponent<Rigidbody>();
     }
 
+    [ServerCallback]
     private IEnumerator ExplosionUpdate()
     {
         var distanceFromUndergroundPlane = Mathf.Abs(this.transform.position.y - NetworkCrystalManager.Instance.Underground.transform.position.y);
@@ -39,6 +40,7 @@ public class NetworkCrystal : NetworkCollectable
         }
     }
 
+    [ServerCallback]
     private void FinishExplosion()
     {
         NetworkCrystalManager.Instance.OnDroppedCrystal(this);
@@ -46,7 +48,7 @@ public class NetworkCrystal : NetworkCollectable
         
         rb.useGravity = false;
         rb.isKinematic = true;
-        this.GetComponent<CapsuleCollider>().isTrigger = true;
+        SetTriggerable(true);
     }
 
     public override void Collect()

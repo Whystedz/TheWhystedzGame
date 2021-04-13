@@ -36,8 +36,11 @@ public class NetworkCrystalManager : NetworkBehaviour
 
     public override void OnStartServer()
     {
-        Instantiate(surfacePlane);
-        Instantiate(undergroundPlane);
+        if (isServer)
+        {
+            Instantiate(surfacePlane);
+            Instantiate(undergroundPlane);
+        }
     }
 
     void Start()
@@ -85,6 +88,7 @@ public class NetworkCrystalManager : NetworkBehaviour
 
         var crystal = Instantiate(this.crystalPrefab, this.transform);
         crystal.GetComponent<NetworkMatchChecker>().matchId = gameObject.GetComponent<NetworkMatchChecker>().matchId;
+        crystal.GetComponent<NetworkCrystal>().SetTriggerable(true);
 
         crystal.transform.position = chosenPosition;
 
@@ -165,7 +169,6 @@ public class NetworkCrystalManager : NetworkBehaviour
             var spawnPos = playerPos + new Vector3(randomizedPos.x, crystalVerticalOffsetHeight, randomizedPos.y);
             var crystal = Instantiate(this.crystalPrefab, spawnPos, Quaternion.identity);
             crystal.GetComponent<NetworkMatchChecker>().matchId = matchId;
-            crystal.GetComponent<CapsuleCollider>().isTrigger = false;
             crystal.GetComponent<NetworkCrystal>().Explode();
 
             NetworkServer.Spawn(crystal);

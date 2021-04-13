@@ -155,7 +155,6 @@ public class LobbyNetworkManager : NetworkManager
     {
         if (!NetworkServer.active) return;
 
-        LoadObsctacleScene();
         InitializeData();
         //this.canvasController.InitializeData();
 
@@ -367,15 +366,17 @@ public class LobbyNetworkManager : NetworkManager
         string matchId;
         if (playerMatches.TryGetValue(connection, out matchId))
         {
+            // Instantiate obstacles
+            //if (mode == NetworkManagerMode.ServerOnly)
+            //    LoadObsctacleScene(matchId);
+
             var matchControllerObject = Instantiate(matchControllerPrefab);
             matchControllerObject.GetComponent<NetworkMatchChecker>().matchId = matchId.ToGuid();
             NetworkServer.Spawn(matchControllerObject);
             var matchController = matchControllerObject.GetComponent<MatchController>();
             matchController.NumOfPlayers = matchConnections[matchId].Count;
             matchControllers.Add(matchId, matchController);
-
-            // counters to assign players a sequence; used to put player score UI in the correct position
-
+            
             // add players into match controller
             foreach (NetworkConnection playerConn in matchConnections[matchId])
             {
@@ -619,13 +620,17 @@ public class LobbyNetworkManager : NetworkManager
         NetworkClient.connection.Send(new ServerMatchMessage {ServerMatchOperation = ServerMatchOperation.SceneLoaded, MatchId = matchId});
     }
 
-    IEnumerator LoadObsctacleScene()
+    IEnumerator LoadObsctacleScene(string matchId)
     {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(this.ObstaclesScene, LoadSceneMode.Additive);
 
         // Wait until the asynchronous scene fully loads
         while (!asyncLoad.isDone)
             yield return null;
+
+        var obstacleScript = FindObjectOfType<NetworkServerObstacles>();
+        if(obstacleScript)
+            obstacleScript.SetMatchId(matchId.ToGuid());
     }
 
     #endregion
