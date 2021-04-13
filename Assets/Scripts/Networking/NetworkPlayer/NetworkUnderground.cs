@@ -64,11 +64,11 @@ public class NetworkUnderground : NetworkBehaviour
 
     private IEnumerator Die()
     {
+        this.animator.SetTrigger("Dies");
         var initialPosition = this.transform.position;
 
         this.characterController.enabled = false;
         this.playerMovement.DisableMovement();
-        this.animator.SetTrigger("Dies");
 
         yield return new WaitForSeconds(1.5f);
         yield return StartCoroutine(this.playerMovement.FadeOut(2f));

@@ -26,6 +26,8 @@ public class NetworkPlayerScore : NetworkBehaviour
 
     private void Start()
     {
+        if (isServer) return;
+        
         // get Team UI as a parent to instantiate the playerScoreUI
         GameObject teamUIGameObject = null;
         if (GetComponent<Teammate>().Team == Team.RedTeam)

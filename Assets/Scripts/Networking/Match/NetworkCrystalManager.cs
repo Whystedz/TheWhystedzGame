@@ -38,17 +38,9 @@ public class NetworkCrystalManager : NetworkBehaviour
     {
         if (isServer)
         {
-            Instantiate(surfacePlane);
-            Instantiate(undergroundPlane);
+            this.surface = Instantiate(surfacePlane).GetComponent<PlaneBounds>();
+            Underground = Instantiate(undergroundPlane).GetComponent<PlaneBounds>();
         }
-    }
-
-    void Start()
-    {
-        this.surface = GameObject.FindGameObjectWithTag("Surface")
-            .GetComponent<PlaneBounds>();
-        Underground = GameObject.FindGameObjectWithTag("Underground")
-            .GetComponent<PlaneBounds>();
     }
 
     [ServerCallback]
@@ -166,14 +158,12 @@ public class NetworkCrystalManager : NetworkBehaviour
         for (int i = 0; i < amount; i++)
         {
             var randomizedPos = UnityEngine.Random.insideUnitCircle * radiusOfSpawnCircle;
-            var spawnPos = playerPos + new Vector3(randomizedPos.x, crystalVerticalOffsetHeight, randomizedPos.y);
+            var spawnPos = playerPos + new Vector3(randomizedPos.x, crystalVerticalOffsetHeight * 1.4f, randomizedPos.y);
             var crystal = Instantiate(this.crystalPrefab, spawnPos, Quaternion.identity);
             crystal.GetComponent<NetworkMatchChecker>().matchId = matchId;
             crystal.GetComponent<NetworkCrystal>().Explode();
 
             NetworkServer.Spawn(crystal);
-
-            OnDroppedCrystal(crystal.GetComponent<NetworkCrystal>());
         }
 
         ExplodeCrystals(playerPos);
@@ -181,7 +171,7 @@ public class NetworkCrystalManager : NetworkBehaviour
 
     private void ExplodeCrystals(Vector3 playerPos)
     {
-        Vector3 explosionPos = playerPos + Vector3.up * crystalVerticalOffsetHeight;
+        Vector3 explosionPos = playerPos + Vector3.up * crystalVerticalOffsetHeight * 1.4f;
         Collider[] colliders = Physics.OverlapSphere(explosionPos, radiusOfForce);
         foreach (Collider hit in colliders)
         {

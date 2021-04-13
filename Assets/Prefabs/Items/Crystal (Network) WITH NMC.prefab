@@ -135,6 +135,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  isTriggerable: 0
   pointsWorth: 1
   extraForceIfLandedWrong: 3
 --- !u!114 &-6741064393302269731

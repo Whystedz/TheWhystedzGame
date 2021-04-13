@@ -114,6 +114,9 @@ public class NetworkPlayerMovement : NetworkBehaviour
 
         if (!this.isFalling)
             RegularMovement();
+        
+        this.animator.SetBool("isFalling", this.IsFalling());
+        this.animator.SetBool("isClimbing", this.IsClimbing);
     }
 
     private void RegularMovement()
@@ -211,7 +214,6 @@ public class NetworkPlayerMovement : NetworkBehaviour
 
     public IEnumerator TransitionToTop(float height, Vector3 surfacePosition)
     {
-        this.animator.SetBool("isClimbing", true);
         yield return StartCoroutine(FadeOut(2f));
         while (this.transform.position.y < underground.transform.position.y + height)
         {
@@ -221,7 +223,6 @@ public class NetworkPlayerMovement : NetworkBehaviour
         yield return new WaitForSeconds(0.2f);
         this.transform.position = surfacePosition + Vector3.up * this.heightOffset;
         yield return StartCoroutine(FadeIn(2f));
-        this.animator.SetBool("isClimbing", false);
     }
 
     public IEnumerator FadeIn(float timeToFadeOut)
@@ -266,6 +267,8 @@ public class NetworkPlayerMovement : NetworkBehaviour
         this.virtualCamera.SetActive(true);
 
         yield return StartCoroutine(FadeIn(this.timeToFadeIn));
+
+        yield return null;
 
         this.loseCrystals.LoseCrystal(this.transform.position);
     }

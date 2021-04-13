@@ -38,6 +38,8 @@ public class NetworkCrystal : NetworkCollectable
                 NetworkCrystalManager.Instance.Underground.transform.position.y + NetworkCrystalManager.Instance.GetHeightOffset(),
                 this.transform.position.z);
         }
+
+        FinishExplosion();
     }
 
     [ServerCallback]
