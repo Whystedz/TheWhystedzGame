@@ -181,5 +181,6 @@ MonoBehaviour:
   syncInterval: 0.1
   redTeamScorePrefab: {fileID: 1150255417994918974, guid: c75b4356cc38f8b44b57075c583871be, type: 3}
   blueTeamScorePrefab: {fileID: 5170011985830459309, guid: 7f46032496b4c9c4c846b68a5d1fbfd9, type: 3}
+  ScoreNeededToWin: 200
   redTeamScore: 0
   blueTeamScore: 0

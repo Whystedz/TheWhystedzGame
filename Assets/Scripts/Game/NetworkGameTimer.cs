@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class NetworkGameTimer : MonoBehaviour
 {
+    public static NetworkGameTimer Instance;
     [SerializeField] private double gameTime;
     private bool gameEnded;
 
@@ -17,6 +18,7 @@ public class NetworkGameTimer : MonoBehaviour
 
     private void Start()
     {
+        Instance = this;
         this.gameEnded = false;
         StartCoroutine(DoHalfTimeEvent((float) gameTime / 2));
 
@@ -47,7 +49,7 @@ public class NetworkGameTimer : MonoBehaviour
                 this.gameTime = 0;
                 DisplayTimer((float) this.gameTime);
                 this.gameEnded = true;
-                this.endScreen.EndGame();
+                EndGame();
                 AudioManager.StopSpeedupMusic();
             }
         }
@@ -71,5 +73,11 @@ public class NetworkGameTimer : MonoBehaviour
     {
         this.timerText.text = message;
         this.timerText.autoSizeTextContainer = true;
+    }
+
+    public void EndGame()
+    {
+        if (endScreen != null)
+            this.endScreen.EndGame();
     }
 }
