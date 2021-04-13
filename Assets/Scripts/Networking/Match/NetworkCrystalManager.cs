@@ -5,6 +5,7 @@ using Mirror;
 
 public class NetworkCrystalManager : NetworkBehaviour
 {
+    public static NetworkCrystalManager Instance;
     [SerializeField] private GameObject crystalPrefab;
 
     [SerializeField] private int maxCrystalsSurface = 200;
@@ -30,6 +31,8 @@ public class NetworkCrystalManager : NetworkBehaviour
     private int totalCrystalsInstantiated;
     private int currentCrystalsSurface;
     private int currentCrystalsUnderground;
+
+    void Awake() => Instance = this;
 
     public override void OnStartServer()
     {

@@ -78,6 +78,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
         this.virtualCamera.GetComponent<CinemachineVirtualCamera>().Follow = this.transform;
         this.virtualCamera.GetComponent<CinemachineVirtualCamera>().LookAt = this.transform;
 
+        this.virtualCamera.SetActive(false);
         this.virtualCamera.SetActive(true);
     }
 

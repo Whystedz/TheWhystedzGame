@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Mirror;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MatchController : NetworkBehaviour
 {
@@ -154,6 +155,7 @@ public class MatchController : NetworkBehaviour
     [ClientRpc]
     public void RpcExitGame()
     {
+        SceneManager.UnloadSceneAsync(LobbyNetworkManager.Instance.MainScene);
         LobbyCanvasController.Instance.OnMatchEnded();
     }
 

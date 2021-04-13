@@ -46,8 +46,6 @@ public class LobbyNetworkManager : NetworkManager
 
     private VivoxManager vivoxManager;
 
-    private Queue<MatchLoadInfo> loadQueue = new Queue<MatchLoadInfo>();
-
     public override void Awake()
     {
         base.Awake();
@@ -221,7 +219,7 @@ public class LobbyNetworkManager : NetworkManager
             }
             case ServerMatchOperation.SceneLoaded:
             {
-                HandlePlayerLoading(connection, message.MatchId);
+                OnServerSceneLoaded(connection, message.MatchId);
                 break;
             }
             case ServerMatchOperation.Join:
@@ -396,10 +394,10 @@ public class LobbyNetworkManager : NetworkManager
         }
     }
 
-    public IEnumerator OnServerSceneLoaded(NetworkConnection connection, string matchId)
+    public void OnServerSceneLoaded(NetworkConnection connection, string matchId)
     {
-        if (!NetworkServer.active) 
-            yield break;
+        if (!NetworkServer.active)
+            return;
 
         // add player to matchController
         if (matchControllers.TryGetValue(matchId, out var matchController))
@@ -415,8 +413,6 @@ public class LobbyNetworkManager : NetworkManager
 
             matchController.playerIdentities.Add(connection.identity);
         }
-        
-        yield return null;
     }
 
     public void OnServerJoinMatch(NetworkConnection connection, string matchId, string playerName)
@@ -630,39 +626,6 @@ public class LobbyNetworkManager : NetworkManager
         // Wait until the asynchronous scene fully loads
         while (!asyncLoad.isDone)
             yield return null;
-    }
-
-    private void HandlePlayerLoading(NetworkConnection connection, string matchId)
-    {
-        if (!NetworkServer.active) return;
-
-        try
-        {
-            StartCoroutine(OnServerSceneLoaded(connection, matchId));
-            return;
-        }
-        catch (Exception e)
-        {
-            Debug.Log(e);
-        }
-
-        MatchLoadInfo playerInfo = new MatchLoadInfo {
-            Connection = connection,
-            MatchId = matchId,
-        };
-
-        loadQueue.Enqueue(playerInfo);
-    }
-
-    private void Update()
-    {
-        if (!NetworkServer.active) return;
-
-        if (loadQueue.Count > 0)
-        {
-            MatchLoadInfo playerInfo = loadQueue.Dequeue();
-            HandlePlayerLoading(playerInfo.Connection, playerInfo.MatchId);
-        }
     }
 
     #endregion

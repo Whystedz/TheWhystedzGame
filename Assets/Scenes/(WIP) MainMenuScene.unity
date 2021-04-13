@@ -906,6 +906,7 @@ GameObject:
   - component: {fileID: 1308830980}
   - component: {fileID: 1308830979}
   - component: {fileID: 1308830978}
+  - component: {fileID: 1308830977}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: NetworkManager
@@ -913,6 +914,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1308830977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1308830976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6442dc8070ceb41f094e44de0bf87274, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showGUI: 1
+  offsetX: 0
+  offsetY: 0
 --- !u!114 &1308830978
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -929,13 +945,13 @@ MonoBehaviour:
   runInBackground: 1
   autoStartServerBuild: 1
   showDebugMessages: 0
-  serverTickRate: 60
-  serverBatching: 0
+  serverTickRate: 30
+  serverBatching: 1
   serverBatchInterval: 0
   offlineScene: Assets/Scenes/(WIP) MainMenuScene.unity
   onlineScene: Assets/Scenes/(WIP) Lobby.unity
   transport: {fileID: 1308830979}
-  networkAddress: 34.95.63.42
+  networkAddress: localhost
   maxConnections: 100
   disconnectInactiveConnections: 1
   disconnectInactiveTimeout: 60
@@ -1120,6 +1136,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7162297817879888629, guid: 7d4b5b0c4f477ad41aa0a05048dc7265, type: 3}
+      propertyPath: m_AudioOutputMode
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d4b5b0c4f477ad41aa0a05048dc7265, type: 3}
 --- !u!224 &2024939952 stripped
@@ -1134,6 +1154,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 613054824}
     m_Modifications:
+    - target: {fileID: 491965092638632923, guid: 137bf1b1f740b2e42a78a17009aa6ef6, type: 3}
+      propertyPath: m_AudioOutputMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 953486308886299918, guid: 137bf1b1f740b2e42a78a17009aa6ef6, type: 3}
       propertyPath: SceneName
       value: TheMainSceneOnline

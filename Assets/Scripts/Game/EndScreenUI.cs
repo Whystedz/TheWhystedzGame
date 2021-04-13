@@ -2,7 +2,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
-using UnityEngine.SceneManagement;
 
 public class EndScreenUI : MonoBehaviour
 {
@@ -116,6 +115,5 @@ public class EndScreenUI : MonoBehaviour
     {
         Time.timeScale = 1f;
         MatchController.Instance.RequestExitGame();
-        SceneManager.UnloadSceneAsync(LobbyNetworkManager.Instance.MainScene);
     }
 }

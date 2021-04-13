@@ -64,4 +64,6 @@ public class LobbyGUI : MonoBehaviour
     }
 
     public void EnableSearchCanvas(bool isEnabled) => this.searchCanvas.enabled = isEnabled;
+
+    public void ExitLobby() => LobbyNetworkManager.Instance.StopClient();
 }

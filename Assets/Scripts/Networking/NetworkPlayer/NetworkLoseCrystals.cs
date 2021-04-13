@@ -6,13 +6,8 @@ using Mirror;
 public class NetworkLoseCrystals : NetworkBehaviour
 {
     private NetworkPlayerScore playerScore;
-    private NetworkCrystalManager crystalManager;
 
-    void Start()
-    {
-        this.playerScore = GetComponent<NetworkPlayerScore>();
-        this.crystalManager = FindObjectOfType<NetworkCrystalManager>();
-    }
+    void Start() => this.playerScore = GetComponent<NetworkPlayerScore>();
 
     public void LoseCrystal(Vector3 position)
     {
@@ -23,6 +18,6 @@ public class NetworkLoseCrystals : NetworkBehaviour
     [Command]
     private void CmdSpawnCrystalsBasedOnScore(Vector3 position)
     {
-        this.crystalManager.DropCrystals(position, this.playerScore.currentScore, this.GetComponent<NetworkMatchChecker>().matchId);
+        NetworkCrystalManager.Instance.DropCrystals(position, this.playerScore.currentScore, this.GetComponent<NetworkMatchChecker>().matchId);
     }
 }

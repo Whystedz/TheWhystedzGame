@@ -444,6 +444,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 163857087, guid: 4035942ee11f593438ffac7ff43d0fb1, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 163857092, guid: 4035942ee11f593438ffac7ff43d0fb1, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1798397426, guid: 4035942ee11f593438ffac7ff43d0fb1, type: 3}
@@ -601,6 +605,10 @@ PrefabInstance:
     - target: {fileID: 1492283809039894842, guid: 4035942ee11f593438ffac7ff43d0fb1, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0.0000038146973
+      objectReference: {fileID: 0}
+    - target: {fileID: 1492283809057342593, guid: 4035942ee11f593438ffac7ff43d0fb1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1492283809159417362, guid: 4035942ee11f593438ffac7ff43d0fb1, type: 3}
       propertyPath: m_fontSize
@@ -825,6 +833,10 @@ PrefabInstance:
     - target: {fileID: 1492283809975146500, guid: 4035942ee11f593438ffac7ff43d0fb1, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7203539297260611161, guid: 4035942ee11f593438ffac7ff43d0fb1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: ExitLobby
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4035942ee11f593438ffac7ff43d0fb1, type: 3}

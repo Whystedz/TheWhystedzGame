@@ -5,25 +5,23 @@ using Mirror;
 
 public class NetworkCrystal : NetworkCollectable
 {
-    private NetworkCrystalManager crystalManager;
     public bool IsExploding { get; set; }
     [SerializeField] private float extraForceIfLandedWrong = 3f;
     private Rigidbody rb;
 
     void Awake()
     {
-        this.crystalManager = FindObjectOfType<NetworkCrystalManager>();
         rb = this.GetComponent<Rigidbody>();
     }
 
     private IEnumerator ExplosionUpdate()
     {
-        var distanceFromUndergroundPlane = Mathf.Abs(this.transform.position.y - crystalManager.Underground.transform.position.y);
+        var distanceFromUndergroundPlane = Mathf.Abs(this.transform.position.y - NetworkCrystalManager.Instance.Underground.transform.position.y);
 
-        while (distanceFromUndergroundPlane > this.crystalManager.GetHeightOffset())
+        while (distanceFromUndergroundPlane > NetworkCrystalManager.Instance.GetHeightOffset())
         {
             yield return new WaitForFixedUpdate();
-            distanceFromUndergroundPlane = Mathf.Abs(this.transform.position.y - crystalManager.Underground.transform.position.y);
+            distanceFromUndergroundPlane = Mathf.Abs(this.transform.position.y - NetworkCrystalManager.Instance.Underground.transform.position.y);
         }
 
         FinishExplosion();
@@ -31,7 +29,7 @@ public class NetworkCrystal : NetworkCollectable
 
     private void FinishExplosion()
     {
-        this.crystalManager.OnDroppedCrystal(this);
+        NetworkCrystalManager.Instance.OnDroppedCrystal(this);
         this.IsExploding = false;
         
         rb.useGravity = false;
@@ -41,8 +39,9 @@ public class NetworkCrystal : NetworkCollectable
 
     public override void Collect()
     {
-        this.crystalManager.OnCollectedCrystal(this);
-        base.Collect();
+        NetworkCrystalManager.Instance.OnCollectedCrystal(this);
+        NetworkServer.UnSpawn(this.gameObject);
+        Destroy(this.gameObject);
     }
 
     private void OnCollisionStay(Collision collision)
