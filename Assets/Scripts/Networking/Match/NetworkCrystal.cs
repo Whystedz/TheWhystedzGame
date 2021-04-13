@@ -8,6 +8,8 @@ public class NetworkCrystal : NetworkCollectable
     public bool IsExploding { get; set; }
     [SerializeField] private float extraForceIfLandedWrong = 3f;
     private Rigidbody rb;
+    private float maxTimeToExplode = 3f;
+    private float explosionProgress;
 
     void Awake()
     {
@@ -17,14 +19,24 @@ public class NetworkCrystal : NetworkCollectable
     private IEnumerator ExplosionUpdate()
     {
         var distanceFromUndergroundPlane = Mathf.Abs(this.transform.position.y - NetworkCrystalManager.Instance.Underground.transform.position.y);
+        
+        this.explosionProgress = this.maxTimeToExplode;
 
-        while (distanceFromUndergroundPlane > NetworkCrystalManager.Instance.GetHeightOffset())
+        while (distanceFromUndergroundPlane > NetworkCrystalManager.Instance.GetHeightOffset()
+            && this.explosionProgress > 0)
         {
             yield return new WaitForFixedUpdate();
             distanceFromUndergroundPlane = Mathf.Abs(this.transform.position.y - NetworkCrystalManager.Instance.Underground.transform.position.y);
+            this.explosionProgress -= Time.deltaTime;
         }
 
-        FinishExplosion();
+        if (this.explosionProgress <= 0)
+        {
+            this.transform.position = new Vector3(
+                this.transform.position.x,
+                NetworkCrystalManager.Instance.Underground.transform.position.y + NetworkCrystalManager.Instance.GetHeightOffset(),
+                this.transform.position.z);
+        }
     }
 
     private void FinishExplosion()
