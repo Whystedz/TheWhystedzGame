@@ -46,6 +46,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
     private PlayerAudio playerAudio;
 
     [SerializeField] private float timePausedOnStart = 5f;
+    private bool enableAfterCooldown;
 
     public override void OnStartAuthority()
     {
@@ -68,7 +69,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
 
         this.playerAudio = GetComponent<PlayerAudio>();
 
-        DisableMovementFor(this.timePausedOnStart);
+        DisableMovementFor(this.timePausedOnStart, true);
     }
 
     public void SetCamera()
@@ -273,26 +274,32 @@ public class NetworkPlayerMovement : NetworkBehaviour
         this.loseCrystals.LoseCrystal(this.transform.position);
     }
 
-    internal void DisableMovementFor(float seconds)
+    public void DisableMovementFor(float seconds, bool inlcudeCharacterController = false)
     {
-        DisableMovement();
+        DisableMovement(inlcudeCharacterController);
+
         this.disabledMovementCooldown = seconds;
+        this.enableAfterCooldown = true;
     }
 
-    internal void EnableMovement()
+    internal void EnableMovement(bool inlcudeCharacterController = false)
     {
         this.disabledMovementCooldown = -1; // set to infinite
         IsMovementDisabled = false;
 
-        this.characterController.enabled = true;
+        if (inlcudeCharacterController || this.enableAfterCooldown)
+            this.characterController.enabled = true;
+
+        this.enableAfterCooldown = false;
     }
 
-    internal void DisableMovement()
+    internal void DisableMovement(bool inlcudeCharacterController = false)
     {
         this.disabledMovementCooldown = -1; // set to infinite
         IsMovementDisabled = true;
 
-        this.characterController.enabled = false;
+        if (inlcudeCharacterController)
+            this.characterController.enabled = false;
     }
 
     [Command(ignoreAuthority = true)]

@@ -170,7 +170,7 @@ public class NetworkComboPlayer : NetworkBehaviour
 
             TriggerCombosForPlayer(player);
 
-            playerPlayerMovement.DisableMovementFor(this.afterComboPause);
+            playerPlayerMovement.DisableMovementFor(this.afterComboPause, true);
         }
     }
 

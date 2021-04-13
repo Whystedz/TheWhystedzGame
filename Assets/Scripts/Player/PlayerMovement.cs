@@ -45,7 +45,8 @@ public class PlayerMovement : MonoBehaviour
     private PlayerAudio playerAudio;
     private float startingYPosition;
 
-    [SerializeField] private float timePausedOnStart = 5f; 
+    [SerializeField] private float timePausedOnStart = 5f;
+    private bool enableAfterCooldown;
 
     void Awake()
     {        
@@ -76,7 +77,7 @@ public class PlayerMovement : MonoBehaviour
         RefreshTileCurrentlyOn();
         this.startingYPosition = this.transform.position.y;
 
-        DisableMovementFor(this.timePausedOnStart);
+        DisableMovementFor(this.timePausedOnStart, true);
     }
 
     void Update()
@@ -218,26 +219,32 @@ public class PlayerMovement : MonoBehaviour
         yield return StartCoroutine(FadeIn(this.timeToFadeIn));
     }
 
-    public void DisableMovementFor(float seconds)
+    public void DisableMovementFor(float seconds, bool inlcudeCharacterController = false)
     {
-        DisableMovement();
+        DisableMovement(inlcudeCharacterController);
+
         this.disabledMovementCooldown = seconds;
+        this.enableAfterCooldown = true;
     }
 
-    internal void EnableMovement()
+    internal void EnableMovement(bool inlcudeCharacterController = false)
     {
         this.disabledMovementCooldown = -1; // set to infinite
         IsMovementDisabled = false;
 
-        this.characterController.enabled = true;
+        if (inlcudeCharacterController || this.enableAfterCooldown)
+            this.characterController.enabled = true;
+
+        this.enableAfterCooldown = false;
     }
 
-    internal void DisableMovement()
+    internal void DisableMovement(bool inlcudeCharacterController = false)
     {
         this.disabledMovementCooldown = -1; // set to infinite
         IsMovementDisabled = true;
 
-        this.characterController.enabled = false;
+        if (inlcudeCharacterController)
+            this.characterController.enabled = false;
     }
 
     public void RefreshTileCurrentlyOn()

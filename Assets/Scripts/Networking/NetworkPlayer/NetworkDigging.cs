@@ -123,7 +123,7 @@ public class NetworkDigging : NetworkBehaviour
         this.animator.SetTrigger("Shoot");
         this.laserBeam.SetTarget(TileToDig.transform.position);
         this.laserBeam.StartLaster();
-        playerMovement.DisableMovementFor(this.afterDiggingPause);
+        playerMovement.DisableMovementFor(this.afterDiggingPause, true);
     }
 
     public void DigCombo(TileInfo targetTile)
@@ -131,7 +131,7 @@ public class NetworkDigging : NetworkBehaviour
         CmdDigTile(targetTile);
         this.playerAudio.PlayLaserAudio();
         this.animator.SetTrigger("Shoot");
-        playerMovement.DisableMovementFor(this.afterDiggingPause);
+        playerMovement.DisableMovementFor(this.afterDiggingPause, true);
     }
 
     [Command(ignoreAuthority = true)]
