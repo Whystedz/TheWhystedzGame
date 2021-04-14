@@ -121,17 +121,12 @@ public class NetworkDigging : NetworkBehaviour
         CmdDigTile(targetTile);
         this.playerAudio.PlayLaserAudio();
         this.animator.SetTrigger("Shoot");
-        this.laserBeam.SetTarget(TileToDig.transform.position);
-        this.laserBeam.StartLaster();
-        playerMovement.DisableMovementFor(this.afterDiggingPause);
-    }
-
-    public void DigCombo(TileInfo targetTile)
-    {
-        CmdDigTile(targetTile);
-        this.playerAudio.PlayLaserAudio();
-        this.animator.SetTrigger("Shoot");
-        playerMovement.DisableMovementFor(this.afterDiggingPause);
+        if (base.hasAuthority)
+        {
+            this.laserBeam.SetTarget(TileToDig.transform.position);
+            this.laserBeam.StartLaster();
+            playerMovement.DisableMovementFor(this.afterDiggingPause, true);
+        }
     }
 
     [Command(ignoreAuthority = true)]

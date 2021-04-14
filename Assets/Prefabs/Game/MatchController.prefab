@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: -289238407225537992}
   m_Layer: 0
   m_Name: MatchController
-  m_TagString: Untagged
+  m_TagString: MatchController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -90,8 +90,8 @@ MonoBehaviour:
   xOffset: 2
   zOffset: 1.73
   verticalOffset: 0.01
-  timeToBreak: 0.25
-  timeToRespawn: 10
+  timeToBreak: 0.3
+  timeToRespawn: 30
 --- !u!114 &6129329931103307680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,13 +106,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  HighlightTolerance: 0
+  HighlightTolerance: 5
   ShowExtendedTeamCombos: 1
   TriggerExtendedTeamCombos: 1
-  LineDistance: 5
-  LineThickness: 1
+  LineDistance: 10
+  LineThickness: 2
   MaxTilesInLineCombo: 20
-  TriangleDistance: 10
+  TriangleDistance: 15
   MaxTilesInTriangleCombo: 64
 --- !u!114 &6129329931103307687
 MonoBehaviour:
@@ -133,7 +133,7 @@ MonoBehaviour:
   maxCrystalsGame: 500
   surfaceBoundsOffset: 5
   undergroundBoundsOffset: 5
-  crystalVerticalOffsetHeight: 2.25
+  crystalVerticalOffsetHeight: 2
   spawningCollisionPaddingRadius: 1
   radiusOfSpawnCircle: 0.5
   radiusOfForce: 10
@@ -156,6 +156,15 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   playerIdentities: []
+  spawnPointPrefabs:
+  - {fileID: 4137094904729039276, guid: daae0251d83ad784e87305c414338347, type: 3}
+  - {fileID: 1893768577228959572, guid: fd052f79fd50d194b95f8b139479ecdd, type: 3}
+  - {fileID: 6463690036883311544, guid: c248238ecf96a634cbef32925db85696, type: 3}
+  - {fileID: 8649613465231104247, guid: 2bd63cc82267c7b4f837f7a8d542737b, type: 3}
+  - {fileID: 1613059446955656067, guid: cc8240fde6766284ca990529245f801f, type: 3}
+  - {fileID: 8937256398867313502, guid: 01d767535d19364408c87abd94af7470, type: 3}
+  - {fileID: 145621719709987772, guid: 2779d4ff8d3e8b64daf90d2bcaa355a6, type: 3}
+  - {fileID: 6296499470506553992, guid: 634453b152eb26a43ae9518d02026d4e, type: 3}
 --- !u!114 &-289238407225537992
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,5 +181,6 @@ MonoBehaviour:
   syncInterval: 0.1
   redTeamScorePrefab: {fileID: 1150255417994918974, guid: c75b4356cc38f8b44b57075c583871be, type: 3}
   blueTeamScorePrefab: {fileID: 5170011985830459309, guid: 7f46032496b4c9c4c846b68a5d1fbfd9, type: 3}
+  ScoreNeededToWin: 200
   redTeamScore: 0
   blueTeamScore: 0

@@ -401,6 +401,7 @@ MonoBehaviour:
   - {fileID: 32900000, guid: 54dc99be5f3c4f14a9d190ea0474bfa1, type: 3}
   - {fileID: 32900000, guid: e9c89a3353eaf504d867466b311e0931, type: 3}
   - {fileID: 32900000, guid: 3551b533b9de09f4ab4f1154286ce086, type: 3}
+  volume: 1
 --- !u!1 &6147759779467667275
 GameObject:
   m_ObjectHideFlags: 0

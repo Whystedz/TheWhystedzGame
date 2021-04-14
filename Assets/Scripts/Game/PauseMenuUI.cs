@@ -1,24 +1,16 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PauseMenuUI : MonoBehaviour
 {
-    private InputManager inputManager;
     private bool isPaused;
 
     [SerializeField] private GameObject pauseUI;
     
-    private void Start()
-    {
-        this.isPaused = false;
-        this.inputManager = InputManager.GetInstance();
-    }
+    private void Start() => this.isPaused = false;
 
     void Update()
     {
-        if (this.inputManager.GetMainMenu())
+        if (NetworkInputManager.Instance.GetMainMenu())
         {
             if(this.isPaused)
                 Resume();
@@ -38,4 +30,6 @@ public class PauseMenuUI : MonoBehaviour
         this.pauseUI.SetActive(false);
         this.isPaused = false;
     }
+
+    public void ExitGame() => Application.Quit();
 }

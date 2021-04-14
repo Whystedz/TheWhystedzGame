@@ -43,10 +43,17 @@ public class NetworkPlayerMovement : NetworkBehaviour
     private NetworkTile tileCurrentlyOn;
     private bool tileCurrentlyOnUpdatedThisFrame;
 
-    private PlayerAudio playerAudio;
+    [SerializeField] private PlayerAudio playerAudio;
+
+    [SerializeField] private float timePausedOnStart = 5f;
+    private bool enableAfterCooldown;
+
+    private float maxTimeToRope = 2f;
+    internal float moveTowardsRopeProgress;
 
     public override void OnStartAuthority()
     {
+        AudioManager.PlayMainMusic();
         this.characterController = GetComponent<CharacterController>();
 
         SetCamera();
@@ -64,7 +71,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
         else
             Debug.LogWarning("Please add a Blackout Image (a prefab) to the GUI canvas!");
 
-        this.playerAudio = GetComponent<PlayerAudio>();
+        DisableMovementFor(this.timePausedOnStart, true);
     }
 
     public void SetCamera()
@@ -74,6 +81,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
         this.virtualCamera.GetComponent<CinemachineVirtualCamera>().Follow = this.transform;
         this.virtualCamera.GetComponent<CinemachineVirtualCamera>().LookAt = this.transform;
 
+        this.virtualCamera.SetActive(false);
         this.virtualCamera.SetActive(true);
     }
 
@@ -109,6 +117,9 @@ public class NetworkPlayerMovement : NetworkBehaviour
 
         if (!this.isFalling)
             RegularMovement();
+        
+        this.animator.SetBool("isFalling", this.IsFalling());
+        this.animator.SetBool("isClimbing", this.IsClimbing);
     }
 
     private void RegularMovement()
@@ -185,11 +196,16 @@ public class NetworkPlayerMovement : NetworkBehaviour
         var ropePositionWithoutY = new Vector3(rope.transform.position.x, this.transform.position.y, rope.transform.position.z);
         this.transform.LookAt(ropePositionWithoutY);
 
-        while (Vector3.Distance(this.transform.position, ropePositionWithoutY) > 1.0f)
+        this.moveTowardsRopeProgress = this.maxTimeToRope;
+
+        while ((Vector3.Distance(this.transform.position, ropePositionWithoutY) > 1.0f)
+            && this.moveTowardsRopeProgress > 0)
         {
             MoveTowards(directionToRope, 120f);
+            this.moveTowardsRopeProgress -= Time.deltaTime;
             yield return null;
         }
+
         this.transform.LookAt(ropePositionWithoutY);
 
         yield return StartCoroutine(TransitionToTop(height, rope.transform.position));
@@ -206,7 +222,6 @@ public class NetworkPlayerMovement : NetworkBehaviour
 
     public IEnumerator TransitionToTop(float height, Vector3 surfacePosition)
     {
-        this.animator.SetBool("isClimbing", true);
         yield return StartCoroutine(FadeOut(2f));
         while (this.transform.position.y < underground.transform.position.y + height)
         {
@@ -216,7 +231,6 @@ public class NetworkPlayerMovement : NetworkBehaviour
         yield return new WaitForSeconds(0.2f);
         this.transform.position = surfacePosition + Vector3.up * this.heightOffset;
         yield return StartCoroutine(FadeIn(2f));
-        this.animator.SetBool("isClimbing", false);
     }
 
     public IEnumerator FadeIn(float timeToFadeOut)
@@ -262,32 +276,37 @@ public class NetworkPlayerMovement : NetworkBehaviour
 
         yield return StartCoroutine(FadeIn(this.timeToFadeIn));
 
+        yield return null;
+
         this.loseCrystals.LoseCrystal(this.transform.position);
     }
 
-    internal void DisableMovementFor(float seconds)
+    public void DisableMovementFor(float seconds, bool inlcudeCharacterController = false)
     {
-        DisableMovement();
+        DisableMovement(inlcudeCharacterController);
+
         this.disabledMovementCooldown = seconds;
+        this.enableAfterCooldown = true;
     }
 
-    internal void EnableMovement()
+    internal void EnableMovement(bool inlcudeCharacterController = false)
     {
         this.disabledMovementCooldown = -1; // set to infinite
         IsMovementDisabled = false;
+
+        if (inlcudeCharacterController || this.enableAfterCooldown)
+            this.characterController.enabled = true;
+
+        this.enableAfterCooldown = false;
     }
 
-    internal void DisableMovement()
+    internal void DisableMovement(bool inlcudeCharacterController = false)
     {
         this.disabledMovementCooldown = -1; // set to infinite
         IsMovementDisabled = true;
-    }
 
-    [Command(ignoreAuthority = true)]
-    public void CmdDisableMovement()
-    {
-        this.disabledMovementCooldown = -1; // set to infinite
-        IsMovementDisabled = true;
+        if (inlcudeCharacterController)
+            this.characterController.enabled = false;
     }
 
     public void RefreshTileCurrentlyOn()

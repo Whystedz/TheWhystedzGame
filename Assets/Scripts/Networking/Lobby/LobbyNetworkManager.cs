@@ -10,6 +10,7 @@ using VivoxUnity;
 
 public class LobbyNetworkManager : NetworkManager
 {
+    public static LobbyNetworkManager Instance;
     // ****** Server only data ********
     // from player connection to matchId
     internal static readonly Dictionary<NetworkConnection, string> playerMatches = new Dictionary<NetworkConnection, string>();
@@ -45,14 +46,13 @@ public class LobbyNetworkManager : NetworkManager
 
     private VivoxManager vivoxManager;
 
-    private Queue<MatchLoadInfo> loadQueue = new Queue<MatchLoadInfo>();
-
-    // private HashSet<NetworkConnection> waitSceneLoadPlayers = new HashSet<NetworkConnection>()
     public override void Awake()
     {
         base.Awake();
         this.vivoxManager = VivoxManager.Instance;
         InitializeData();
+
+        Instance = this;
 
         // the following two lines are used for testing on Yuguo's Macbook
         // Mirror GUI is not available in macOS build. Have to start server/client by code.
@@ -155,9 +155,6 @@ public class LobbyNetworkManager : NetworkManager
     {
         if (!NetworkServer.active) return;
 
-        if (mode == NetworkManagerMode.ServerOnly)
-            LoadObsctacleScene();
-
         InitializeData();
         //this.canvasController.InitializeData();
 
@@ -221,7 +218,7 @@ public class LobbyNetworkManager : NetworkManager
             }
             case ServerMatchOperation.SceneLoaded:
             {
-                HandlePlayerLoading(connection, message.MatchId);
+                OnServerSceneLoaded(connection, message.MatchId);
                 break;
             }
             case ServerMatchOperation.Join:
@@ -369,20 +366,21 @@ public class LobbyNetworkManager : NetworkManager
         string matchId;
         if (playerMatches.TryGetValue(connection, out matchId))
         {
+            // Instantiate obstacles
+            //if (mode == NetworkManagerMode.ServerOnly)
+            //    LoadObsctacleScene(matchId);
+
             var matchControllerObject = Instantiate(matchControllerPrefab);
             matchControllerObject.GetComponent<NetworkMatchChecker>().matchId = matchId.ToGuid();
             NetworkServer.Spawn(matchControllerObject);
             var matchController = matchControllerObject.GetComponent<MatchController>();
             matchController.NumOfPlayers = matchConnections[matchId].Count;
             matchControllers.Add(matchId, matchController);
-
-            // counters to assign players a sequence; used to put player score UI in the correct position
-
+            
             // add players into match controller
             foreach (NetworkConnection playerConn in matchConnections[matchId])
             {
                 playerConn.Send(new ClientMatchMessage {ClientMatchOperation = ClientMatchOperation.Started, MatchId = matchId});
-
 
                 // Reset ready state for after the match. 
                 var playerInfo = playerInfos[connection];
@@ -390,9 +388,7 @@ public class LobbyNetworkManager : NetworkManager
                 playerInfos[connection] = playerInfo;
             }
 
-            playerMatches.Remove(connection);
             openMatches.Remove(matchId);
-            matchConnections.Remove(matchId);
             SendMatchList();
 
             OnPlayerDisconnected += matchController.OnPlayerDisconnected;
@@ -401,27 +397,22 @@ public class LobbyNetworkManager : NetworkManager
 
     public void OnServerSceneLoaded(NetworkConnection connection, string matchId)
     {
-        if (!NetworkServer.active) return;
+        if (!NetworkServer.active)
+            return;
 
-        // this.waitSceneLoadPlayers.Add(connection);
-        // if (this.waitSceneLoadPlayers.Count == matchConnections[matchId])
-        // spawn player; 
-        int prefabIndex = playerInfos[connection].Team == Team.RedTeam ? 0 : 1;
-        var player = Instantiate(playerPrefabs[prefabIndex]);
-        // setup player
-        player.GetComponent<NetworkMatchChecker>().matchId = matchId.ToGuid();
-        player.GetComponent<Teammate>().Team = playerInfos[connection].Team;
-        NetworkServer.AddPlayerForConnection(connection, player);
         // add player to matchController
         if (matchControllers.TryGetValue(matchId, out var matchController))
         {
+            var spawnPos = matchController.GetSpawnPoint();
+            int prefabIndex = playerInfos[connection].Team == Team.RedTeam ? 0 : 1;
+            var player = Instantiate(playerPrefabs[prefabIndex], spawnPos.position, Quaternion.identity);
+            // setup player
+            player.GetComponent<NetworkMatchChecker>().matchId = matchId.ToGuid();
+            player.GetComponent<Teammate>().Team = playerInfos[connection].Team;
+
+            NetworkServer.AddPlayerForConnection(connection, player);
+
             matchController.playerIdentities.Add(connection.identity);
-            matchController.matchPlayerData.Add(connection.identity, new MatchPlayerData
-            {
-                currentScore = 0,
-                playerName = playerInfos[connection].DisplayName,
-                team = playerInfos[connection].Team
-            });
         }
     }
 
@@ -629,46 +620,17 @@ public class LobbyNetworkManager : NetworkManager
         NetworkClient.connection.Send(new ServerMatchMessage {ServerMatchOperation = ServerMatchOperation.SceneLoaded, MatchId = matchId});
     }
 
-    IEnumerator LoadObsctacleScene()
+    IEnumerator LoadObsctacleScene(string matchId)
     {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(this.ObstaclesScene, LoadSceneMode.Additive);
 
         // Wait until the asynchronous scene fully loads
         while (!asyncLoad.isDone)
             yield return null;
-    }
 
-    private void HandlePlayerLoading(NetworkConnection connection, string matchId)
-    {
-        if (!NetworkServer.active) return;
-
-        try
-        {
-            OnServerSceneLoaded(connection, matchId);
-            return;
-        }
-        catch (Exception e)
-        {
-            Debug.Log("Error spawning player object");
-        }
-
-        MatchLoadInfo playerInfo = new MatchLoadInfo {
-            Connection = connection,
-            MatchId = matchId,
-        };
-
-        loadQueue.Enqueue(playerInfo);
-    }
-
-    private void Update()
-    {
-        if (!NetworkServer.active) return;
-
-        if (loadQueue.Count > 0)
-        {
-            MatchLoadInfo playerInfo = loadQueue.Dequeue();
-            HandlePlayerLoading(playerInfo.Connection, playerInfo.MatchId);
-        }
+        var obstacleScript = FindObjectOfType<NetworkServerObstacles>();
+        if(obstacleScript)
+            obstacleScript.SetMatchId(matchId.ToGuid());
     }
 
     #endregion

@@ -20,17 +20,14 @@ public class NetworkPlayerScore : NetworkBehaviour
 
     private GameObject teamUIGameObject = null;
 
-    private PlayerAudio playerAudio;
+    [SerializeField] PlayerAudio playerAudio;
 
-    public override void OnStartAuthority()
-    {
-        this.team = GetComponent<Teammate>().Team;
-        this.playerAudio = GetComponent<PlayerAudio>();
-        this.teamScore = FindObjectOfType<TeamScoreManager>();
-    }
+    public override void OnStartAuthority() => this.team = GetComponent<Teammate>().Team;
 
     private void Start()
     {
+        if (isServer) return;
+        
         // get Team UI as a parent to instantiate the playerScoreUI
         GameObject teamUIGameObject = null;
         if (GetComponent<Teammate>().Team == Team.RedTeam)
@@ -84,9 +81,10 @@ public class NetworkPlayerScore : NetworkBehaviour
     {
         int total = this.currentScore + amountToAdd;
         CmdSetScore(total);
+
         localUICopy.UpdateScore(total);
 
-        this.teamScore.AddScore(this.team, amountToAdd);
+        TeamScoreManager.Instance.AddScore(this.team, amountToAdd);
     }
 
     public void Subtract(int amountToSubtract)
@@ -98,15 +96,17 @@ public class NetworkPlayerScore : NetworkBehaviour
             total = 0;
             
         CmdSetScore(total);
+
         localUICopy.UpdateScore(total);
 
-        this.teamScore.SubstractScore(this.team, amountToSubtract);
+        TeamScoreManager.Instance.SubstractScore(this.team, amountToSubtract);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Collectable"))
-            AddCollectableToScore(other.GetComponent<NetworkCollectable>());
+        if(base.hasAuthority)
+            if (other.CompareTag("Collectable"))
+                AddCollectableToScore(other.GetComponent<NetworkCollectable>());
     }
 
     private void AddCollectableToScore(NetworkCollectable collectable)
@@ -114,6 +114,6 @@ public class NetworkPlayerScore : NetworkBehaviour
         this.playerAudio.PlayCollectAudio();
         Add(collectable.PointsWorth);
 
-        collectable.Collect();
+        collectable.CmdCollect();
     }
 }

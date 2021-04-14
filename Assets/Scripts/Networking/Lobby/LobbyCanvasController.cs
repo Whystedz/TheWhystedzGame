@@ -20,7 +20,11 @@ public class LobbyCanvasController : MonoBehaviour
     [SerializeField] public GameObject roomView;
     [SerializeField] public RoomGUI roomGUI;
 
-    private void Awake() => Instance = this;
+    private void Awake()
+    {
+        Instance = this;
+        AudioManager.PlayLobbyMusic();
+    }
 
     #region UI Functions
 
@@ -134,6 +138,8 @@ public class LobbyCanvasController : MonoBehaviour
     public void OnMatchEnded()
     {
         if (!NetworkClient.active) return;
+        
+        roomGUI.ResetGUI();
         ShowRoomView();
     }
 

@@ -1,0 +1,107 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &4986169687674583457
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 307314017771864226, guid: 3186fd027344c3b4a93929627ab890d9, type: 3}
+      propertyPath: m_Name
+      value: Player_Model_Animated (Purple)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2751040565135343636, guid: 3186fd027344c3b4a93929627ab890d9, type: 3}
+      propertyPath: playerScoreUIPrefab
+      value: 
+      objectReference: {fileID: 4688870045109898263, guid: f0b9a0e55e837e2449e6481238de5f19, type: 3}
+    - target: {fileID: 3156143823621055789, guid: 3186fd027344c3b4a93929627ab890d9, type: 3}
+      propertyPath: m_AssetId
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3981556200994421623, guid: 3186fd027344c3b4a93929627ab890d9, type: 3}
+      propertyPath: team
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6096993304693631240, guid: 3186fd027344c3b4a93929627ab890d9, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6096993304693631240, guid: 3186fd027344c3b4a93929627ab890d9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6096993304693631240, guid: 3186fd027344c3b4a93929627ab890d9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.491
+      objectReference: {fileID: 0}
+    - target: {fileID: 6096993304693631240, guid: 3186fd027344c3b4a93929627ab890d9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6096993304693631240, guid: 3186fd027344c3b4a93929627ab890d9, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6096993304693631240, guid: 3186fd027344c3b4a93929627ab890d9, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6096993304693631240, guid: 3186fd027344c3b4a93929627ab890d9, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6096993304693631240, guid: 3186fd027344c3b4a93929627ab890d9, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6096993304693631240, guid: 3186fd027344c3b4a93929627ab890d9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6096993304693631240, guid: 3186fd027344c3b4a93929627ab890d9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6096993304693631240, guid: 3186fd027344c3b4a93929627ab890d9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6096993304693631242, guid: 3186fd027344c3b4a93929627ab890d9, type: 3}
+      propertyPath: m_Name
+      value: LOBBY NetworkPlayer (Purple)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8968874908634839064, guid: 3186fd027344c3b4a93929627ab890d9, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 05882dc9229929a4a87382d2765dfaff, type: 2}
+    - target: {fileID: 8968874908634839064, guid: 3186fd027344c3b4a93929627ab890d9, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 46305681d5802d949b9db6a52d5eed1b, type: 2}
+    - target: {fileID: 8968874908634839064, guid: 3186fd027344c3b4a93929627ab890d9, type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: a082aada0bac79e4d81fc06f667ff5e9, type: 2}
+    - target: {fileID: 8968874908634839064, guid: 3186fd027344c3b4a93929627ab890d9, type: 3}
+      propertyPath: m_Materials.Array.data[3]
+      value: 
+      objectReference: {fileID: 2100000, guid: b0e9f40eec1c7574b972685d87882f40, type: 2}
+    - target: {fileID: 8968874908634839064, guid: 3186fd027344c3b4a93929627ab890d9, type: 3}
+      propertyPath: m_Materials.Array.data[4]
+      value: 
+      objectReference: {fileID: 2100000, guid: f0db896b4a59aee48add0b0855d23a7e, type: 2}
+    - target: {fileID: 8968874908634839064, guid: 3186fd027344c3b4a93929627ab890d9, type: 3}
+      propertyPath: m_Materials.Array.data[5]
+      value: 
+      objectReference: {fileID: 2100000, guid: 914b13ac723728549a984a6552e96e6e, type: 2}
+    - target: {fileID: 8968874908634839064, guid: 3186fd027344c3b4a93929627ab890d9, type: 3}
+      propertyPath: m_Materials.Array.data[6]
+      value: 
+      objectReference: {fileID: 2100000, guid: 410230c7211102a4eaeadfbbbf5d5998, type: 2}
+    - target: {fileID: 8968874908634839064, guid: 3186fd027344c3b4a93929627ab890d9, type: 3}
+      propertyPath: m_Materials.Array.data[7]
+      value: 
+      objectReference: {fileID: 2100000, guid: b8d604441f2725446a7e5fe6dc06704f, type: 2}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3186fd027344c3b4a93929627ab890d9, type: 3}

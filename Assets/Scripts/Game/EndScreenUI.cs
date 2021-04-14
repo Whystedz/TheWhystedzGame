@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class EndScreenUI : MonoBehaviour
 {
@@ -20,7 +19,10 @@ public class EndScreenUI : MonoBehaviour
     [SerializeField] private string teamBlueName;
 
     [SerializeField] private GameObject teamRedScoresGUI;
+    [SerializeField] private PlayerScoreUI[] teamRedIndividualGUI; 
+
     [SerializeField] private GameObject teamBlueScoresGUI;
+    [SerializeField] private PlayerScoreUI[] teamBlueIndividualGUI; 
 
     [Header("LeafyBoy Images")] 
     [SerializeField] private Image leafyBoyLeftImg;
@@ -31,13 +33,15 @@ public class EndScreenUI : MonoBehaviour
     [SerializeField] private Sprite teamRedBG;
     [SerializeField] private Sprite teamBlueBG;
 
+    private NetworkPlayerScore[] winningPlayers;
 
     public void EndGame()
     {
+        Time.timeScale = 0f;
         ShowEndScreen();
         AudioManager.PlayWinMusic();
 
-        if (this.redTeam.Score == this.blueTeam.Score)
+        if (TeamScoreManager.Instance.redTeamScore == TeamScoreManager.Instance.blueTeamScore)
         {
             this.winningTeamTxt.text = $"TIE";
             this.leafyBoyLeftImg.sprite = this.teamRedLeafyBoysSprites[0];
@@ -46,13 +50,18 @@ public class EndScreenUI : MonoBehaviour
         }
         
         // Update UI.
-        bool teamRedWon = this.redTeam.Score > this.blueTeam.Score;
+        bool teamRedWon = TeamScoreManager.Instance.redTeamScore > TeamScoreManager.Instance.blueTeamScore;
         Team winningTeam = teamRedWon ? Team.RedTeam : Team.BlueTeam;
         string teamName = teamRedWon ? this.teamRedName : this.teamBlueName;
         
         string hexColor = ColorUtility.ToHtmlStringRGB
             (winningTeam == Team.RedTeam ? this.teamRedColor : this.teamBlueColor);
         this.winningTeamTxt.text = $"Team <color=#{hexColor}>{teamName}</color> won!!";
+
+        winningPlayers = FindObjectsOfType<Teammate>()
+            .Where(teammate => teammate.Team == winningTeam)
+            .Select(teammate => teammate.GetComponent<NetworkPlayerScore>())
+            .ToArray();
 
         ChangeLeafyBoyImage(winningTeam);
     }
@@ -70,6 +79,13 @@ public class EndScreenUI : MonoBehaviour
             this.blueTeam.gameObject.SetActive(false);
             this.teamRedScoresGUI.SetActive(true);
             this.teamBlueScoresGUI.SetActive(false);
+
+            redTeam.UpdateScore(TeamScoreManager.Instance.redTeamScore);
+            for (int i = 0; i < winningPlayers.Length; i++)
+            {
+                teamRedIndividualGUI[i].UpdateName(winningPlayers[i].displayName);
+                teamRedIndividualGUI[i].UpdateScore(winningPlayers[i].currentScore);
+            }
         }
         else
         {
@@ -82,11 +98,22 @@ public class EndScreenUI : MonoBehaviour
             this.blueTeam.gameObject.SetActive(true);
             this.teamRedScoresGUI.SetActive(false);
             this.teamBlueScoresGUI.SetActive(true);
+
+            blueTeam.UpdateScore(TeamScoreManager.Instance.redTeamScore);
+            for (int i = 0; i < winningPlayers.Length; i++)
+            {
+                teamBlueIndividualGUI[i].UpdateName(winningPlayers[i].displayName);
+                teamBlueIndividualGUI[i].UpdateScore(winningPlayers[i].currentScore);
+            }
         }
     }
     
     public void ShowEndScreen() => this.endScreen.SetActive(true);
     
     // TODO: Return to lobby as well.
-    public void CloseEndScreen() => this.endScreen.SetActive(false);
+    public void CloseEndScreen()
+    {
+        Time.timeScale = 1f;
+        MatchController.Instance.RequestExitGame();
+    }
 }

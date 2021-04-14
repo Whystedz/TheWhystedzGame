@@ -8,6 +8,8 @@ public class Crystal : Collectable
     public bool IsExploding { get; set; }
     [SerializeField] private float extraForceIfLandedWrong = 3f;
     private Rigidbody rb;
+    private float maxTimeToExplode = 3f;
+    private float explosionProgress;
 
     void Awake()
     {
@@ -19,10 +21,22 @@ public class Crystal : Collectable
     {
         var distanceFromUndergroundPlane = Mathf.Abs(this.transform.position.y - crystalManager.underground.transform.position.y);
 
-        while (distanceFromUndergroundPlane > this.crystalManager.GetHeightOffset())
+        this.explosionProgress = this.maxTimeToExplode;
+
+        while (distanceFromUndergroundPlane > this.crystalManager.GetHeightOffset()
+            && this.explosionProgress > 0)
         {
             yield return new WaitForFixedUpdate();
             distanceFromUndergroundPlane = Mathf.Abs(this.transform.position.y - crystalManager.underground.transform.position.y);
+            this.explosionProgress -= Time.deltaTime;
+        }
+
+        if (this.explosionProgress <= 0)
+        {
+            this.transform.position = new Vector3(
+                this.transform.position.x,
+                crystalManager.underground.transform.position.y + this.crystalManager.GetHeightOffset(),
+                this.transform.position.z);
         }
 
         FinishExplosion();

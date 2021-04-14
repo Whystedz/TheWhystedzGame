@@ -22,6 +22,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 220148668681088870, guid: d1358eb6e8673814fb60c21af00a00de, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.6817741
+      objectReference: {fileID: 0}
+    - target: {fileID: 537063209812637493, guid: d1358eb6e8673814fb60c21af00a00de, type: 3}
+      propertyPath: playerAudio
+      value: 
+      objectReference: {fileID: 6805350727329508242}
+    - target: {fileID: 2347215542402302661, guid: d1358eb6e8673814fb60c21af00a00de, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701644943808477435, guid: d1358eb6e8673814fb60c21af00a00de, type: 3}
+      propertyPath: playerAudio
+      value: 
+      objectReference: {fileID: 6805350727329508242}
     - target: {fileID: 2701644943808477435, guid: d1358eb6e8673814fb60c21af00a00de, type: 3}
       propertyPath: playerScoreUIPrefab
       value: 
@@ -29,6 +45,10 @@ PrefabInstance:
     - target: {fileID: 2927167167306915266, guid: d1358eb6e8673814fb60c21af00a00de, type: 3}
       propertyPath: m_AssetId
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5262643398048106678, guid: d1358eb6e8673814fb60c21af00a00de, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6327377196063707621, guid: d1358eb6e8673814fb60c21af00a00de, type: 3}
       propertyPath: m_Name
@@ -78,6 +98,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6561240911794246098, guid: d1358eb6e8673814fb60c21af00a00de, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6660963227033558360, guid: d1358eb6e8673814fb60c21af00a00de, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6711196309490094973, guid: d1358eb6e8673814fb60c21af00a00de, type: 3}
+      propertyPath: dieClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 457a086dd4f68f546867518ffc6120ae, type: 3}
+    - target: {fileID: 6711196309490094973, guid: d1358eb6e8673814fb60c21af00a00de, type: 3}
+      propertyPath: climbClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 7678c62b301851e4f97a407f0e5e2634, type: 3}
+    - target: {fileID: 6774835018087594508, guid: d1358eb6e8673814fb60c21af00a00de, type: 3}
+      propertyPath: m_Volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7323093382678290502, guid: d1358eb6e8673814fb60c21af00a00de, type: 3}
+      propertyPath: timeToDie
+      value: 45
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d1358eb6e8673814fb60c21af00a00de, type: 3}
 --- !u!1 &6096993304693631242 stripped
@@ -85,3 +129,14 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6327377196063707621, guid: d1358eb6e8673814fb60c21af00a00de, type: 3}
   m_PrefabInstance: {fileID: 239679319846828271}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6805350727329508242 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6711196309490094973, guid: d1358eb6e8673814fb60c21af00a00de, type: 3}
+  m_PrefabInstance: {fileID: 239679319846828271}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6096993304693631242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e74a930466934e04fbb4c8cad2f066f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

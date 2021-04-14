@@ -13,16 +13,29 @@ public class GameTimer : MonoBehaviour
 
     private EndScreenUI endScreen;
 
-    private void Awake() => this.endScreen = GameObject.FindWithTag("EndScreen").GetComponent<EndScreenUI>();
+    [SerializeField] private float timePausedOnStart = 5f;
+    private float pauseProgress;
+
+    //private void Awake() => this.endScreen = GameObject.FindWithTag("EndScreen").GetComponent<EndScreenUI>();
 
     private void Start()
     {
         this.gameEnded = false;
         StartCoroutine(DoHalfTimeEvent(gameTime / 2));
+        this.pauseProgress = this.timePausedOnStart;
     }
 
     void Update()
     {
+        if (this.pauseProgress > 0 )
+        {
+            DisplayTimer("Get Ready!");
+
+            this.pauseProgress -= Time.deltaTime;
+
+            return;
+        }
+
         if (!this.gameEnded)
         {
             if (this.gameTime > 0)
@@ -36,7 +49,7 @@ public class GameTimer : MonoBehaviour
                 this.gameTime = 0;
                 DisplayTimer(this.gameTime);
                 this.gameEnded = true;
-                this.endScreen.EndGame();
+                //this.endScreen.EndGame();
                 AudioManager.StopSpeedupMusic();
             }
         }
@@ -55,5 +68,11 @@ public class GameTimer : MonoBehaviour
         float milliseconds = (time % 1) * 1000;
 
         this.timerText.text = $"{minutes:00}:{seconds:00}:{milliseconds:00}";
+    }
+
+    private void DisplayTimer(string message)
+    {
+        this.timerText.text = message;
+        this.timerText.autoSizeTextContainer = true;
     }
 }

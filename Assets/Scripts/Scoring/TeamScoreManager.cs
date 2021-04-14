@@ -4,8 +4,11 @@ using TMPro;
 
 public class TeamScoreManager : NetworkBehaviour
 {
+    public static TeamScoreManager Instance;
     [SerializeField] private GameObject redTeamScorePrefab;
     [SerializeField] private GameObject blueTeamScorePrefab;
+
+    [SerializeField] private int ScoreNeededToWin = 200;
 
     private NetworkTeamScore redTeamScoreUI;
     private NetworkTeamScore blueTeamScoreUI;
@@ -16,14 +19,23 @@ public class TeamScoreManager : NetworkBehaviour
     [SyncVar(hook = nameof(OnBlueScoreChanged))]
     public int blueTeamScore = 0;
 
-    private void OnBlueScoreChanged(int oldScore, int newScore) =>
+    private void OnBlueScoreChanged(int oldScore, int newScore)
+    {
         this.blueTeamScoreUI.UpdateScore(newScore);
+        if (isClient)
+            CheckIfTeamWins(newScore);
+    }
 
-    private void OnRedScoreChanged(int oldScore, int newScore) => 
+    private void OnRedScoreChanged(int oldScore, int newScore)
+    {
         this.redTeamScoreUI.UpdateScore(newScore);
+        if (isClient)
+            CheckIfTeamWins(newScore);
+    }
 
     private void Start()
     {
+        Instance = this;
         if (isServer) return;
 
         GameObject HUDGameObject = GameObject.Find("Game HUD");
@@ -40,16 +52,17 @@ public class TeamScoreManager : NetworkBehaviour
 
     public void AddScore(Team team, int amount)
     {
+        int newScore = 0;
         if(team == Team.BlueTeam)
         {
-            int newScore = this.blueTeamScore + amount;
+            newScore = this.blueTeamScore + amount;
             CmdUpdateScore(team, newScore);
             blueTeamScoreUI.UpdateScore(newScore);
         }
 
         else if(team == Team.RedTeam)
         {
-            int newScore = this.redTeamScore + amount;
+            newScore = this.redTeamScore + amount;
             CmdUpdateScore(team, newScore);
             redTeamScoreUI.UpdateScore(newScore);
         }
@@ -88,5 +101,11 @@ public class TeamScoreManager : NetworkBehaviour
 
         else if(team == Team.RedTeam)
             this.redTeamScore = amount;
+    }
+
+    private void CheckIfTeamWins(int amount)
+    {
+        if (amount >= ScoreNeededToWin)
+            NetworkGameTimer.Instance.EndGame();
     }
 }

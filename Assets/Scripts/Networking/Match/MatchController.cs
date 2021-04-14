@@ -1,19 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Mirror;
 using UnityEngine;
-using UnityEngine.Networking.Types;
+using UnityEngine.SceneManagement;
 
 public class MatchController : NetworkBehaviour
 {
-    internal readonly SyncDictionary<NetworkIdentity, MatchPlayerData> matchPlayerData = new SyncDictionary<NetworkIdentity, MatchPlayerData>();
-
+    public static MatchController Instance;
     public List<NetworkIdentity> playerIdentities;
-
-    private LobbyNetworkManager networkManager;
-
-    private LobbyCanvasController canvasController;
 
     private TileManager tileManager;
     private NetworkComboManager comboManager;
@@ -23,16 +17,31 @@ public class MatchController : NetworkBehaviour
     private NetworkGameTimer networkGameTimer;
     private TeamScoreManager teamScoreManager;
 
+    public static int NumOfLoadedClients = 0;
+
     public int NumOfPlayers { get; set; }
+
+    public int currentIndex = 0;
+    [SerializeField] private GameObject[] spawnPointPrefabs;
+    internal List<Transform> spawnPoints = new List<Transform>();
+
+    private void Start()
+    {
+        Instance = this;
+        for (int i = 0; i < NumOfPlayers; i++)
+        {
+           var spawnPoint = Instantiate(spawnPointPrefabs[i]);
+           this.spawnPoints.Add(spawnPoint.transform);
+        }
+    }
     
     public override void OnStartServer()
     {
-        this.canvasController = FindObjectOfType<LobbyCanvasController>();
-        this.networkManager = GameObject.FindWithTag("NetworkManager").GetComponent<LobbyNetworkManager>();
         this.tileManager = GetComponent<TileManager>();
         this.comboManager = GetComponent<NetworkComboManager>();
         this.crystalManager = GetComponent<NetworkCrystalManager>();
         this.teamScoreManager = GetComponent<TeamScoreManager>();
+
         StartCoroutine(CheckPlayerAllIn());
     }
         
@@ -40,7 +49,7 @@ public class MatchController : NetworkBehaviour
 
     private IEnumerator CheckPlayerAllIn()
     {
-        while (this.matchPlayerData.Count < NumOfPlayers)
+        while (NumOfLoadedClients < NumOfPlayers)
         {
             yield return null;
         }
@@ -51,26 +60,15 @@ public class MatchController : NetworkBehaviour
     [ClientRpc]
     public void RpcStartTimer()
     {
-        this.networkGameTimer.StartTimerFrom(NetworkTime.time);
+        this.networkGameTimer.gameObject.SetActive(true);
     }
 
-    public override void OnStartClient()
-    {
-        matchPlayerData.Callback += OnMatchPlayerDataUpdate;
-    }
+    public override void OnStartLocalPlayer() => NumOfLoadedClients++;
 
-    // called on matchPlayerData updated
-    public void OnMatchPlayerDataUpdate(SyncDictionary<NetworkIdentity, MatchPlayerData>.Operation op, NetworkIdentity key, MatchPlayerData newMatchPlayerData)
-    {
-        if (op == SyncIDictionary<NetworkIdentity, MatchPlayerData>.Operation.OP_ADD)
-        {
-
-        }
-    }
 
     // TODO: bind this with an exit button
     [Client]
-    public void ReqestExitGame()
+    public void RequestExitGame()
     {
         CmdRequestExitGame();
     }
@@ -101,10 +99,26 @@ public class MatchController : NetworkBehaviour
     /// <returns></returns>
     public IEnumerator ServerEndMatch(NetworkConnection connection, bool disconnected)
     {
-        networkManager.OnPlayerDisconnected -= OnPlayerDisconnected;
+        LobbyNetworkManager.Instance.OnPlayerDisconnected -= OnPlayerDisconnected;
     
         RpcExitGame();
-    
+
+        if (NumOfPlayers < MatchMaker.MaxPlayers)
+        {
+            string matchId = LobbyCanvasController.Instance.localHostedMatchId == string.Empty ?
+                                 LobbyCanvasController.Instance.localJoinedMatchId :
+                                 LobbyCanvasController.Instance.localHostedMatchId;
+
+            LobbyNetworkManager.openMatches.Add(matchId, new MatchInfo
+            {
+                MatchId = matchId,
+                Players = (byte) NumOfPlayers,
+                MaxPlayers = MatchMaker.MaxPlayers,
+                InProgress = false,
+                IsPublic = true // for now, set to public
+            });
+        }
+            
         // Skip a frame so the message goes out ahead of object destruction
         yield return null;
     
@@ -115,10 +129,7 @@ public class MatchController : NetworkBehaviour
         {
             // send everyone to lobby 
             foreach (var player in this.playerIdentities)
-            {
                 NetworkServer.RemovePlayerForConnection(player.connectionToClient, true);
-                LobbyNetworkManager.waitingConnections.Add(player.connectionToClient);
-            }
         }
         else
         {
@@ -129,7 +140,6 @@ public class MatchController : NetworkBehaviour
             {
                 if (player == disconnectedPlayer) continue;
                 NetworkServer.RemovePlayerForConnection(player.connectionToClient, true);
-                LobbyNetworkManager.waitingConnections.Add(player.connectionToClient);
             }
         }
     
@@ -145,6 +155,15 @@ public class MatchController : NetworkBehaviour
     [ClientRpc]
     public void RpcExitGame()
     {
-        canvasController.OnMatchEnded();
+        SceneManager.UnloadSceneAsync(LobbyNetworkManager.Instance.MainScene);
+        LobbyCanvasController.Instance.OnMatchEnded();
+    }
+
+    public Transform GetSpawnPoint()
+    {
+        var spawnPoint = spawnPoints[currentIndex];
+        currentIndex++;
+
+        return spawnPoint;
     }
 }

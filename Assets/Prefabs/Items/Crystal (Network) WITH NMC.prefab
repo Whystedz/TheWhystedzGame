@@ -46,7 +46,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7863378476046910972}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.54
   m_Height: 5.13
@@ -135,8 +135,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  isTriggerable: 0
   pointsWorth: 1
-  extraForceIfLandedWrong: 3
+  extraForceIfLandedWrong: 2
 --- !u!114 &-6741064393302269731
 MonoBehaviour:
   m_ObjectHideFlags: 0
