@@ -20,7 +20,11 @@ public class LobbyCanvasController : MonoBehaviour
     [SerializeField] public GameObject roomView;
     [SerializeField] public RoomGUI roomGUI;
 
-    private void Awake() => Instance = this;
+    private void Awake()
+    {
+        Instance = this;
+        AudioManager.PlayLobbyMusic();
+    }
 
     #region UI Functions
 

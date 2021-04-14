@@ -43,13 +43,14 @@ public class NetworkPlayerMovement : NetworkBehaviour
     private NetworkTile tileCurrentlyOn;
     private bool tileCurrentlyOnUpdatedThisFrame;
 
-    private PlayerAudio playerAudio;
+    [SerializeField] private PlayerAudio playerAudio;
 
     [SerializeField] private float timePausedOnStart = 5f;
     private bool enableAfterCooldown;
 
     public override void OnStartAuthority()
     {
+        AudioManager.PlayMainMusic();
         this.characterController = GetComponent<CharacterController>();
 
         SetCamera();
@@ -66,8 +67,6 @@ public class NetworkPlayerMovement : NetworkBehaviour
             this.blackoutImage = blackoutImageGO.GetComponent<Image>();
         else
             Debug.LogWarning("Please add a Blackout Image (a prefab) to the GUI canvas!");
-
-        this.playerAudio = GetComponent<PlayerAudio>();
 
         DisableMovementFor(this.timePausedOnStart, true);
     }
@@ -300,15 +299,6 @@ public class NetworkPlayerMovement : NetworkBehaviour
 
         if (inlcudeCharacterController)
             this.characterController.enabled = false;
-    }
-
-    [Command(ignoreAuthority = true)]
-    public void CmdDisableMovement()
-    {
-        this.disabledMovementCooldown = -1; // set to infinite
-        IsMovementDisabled = true;
-
-        this.characterController.enabled = false;
     }
 
     public void RefreshTileCurrentlyOn()

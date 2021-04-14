@@ -952,7 +952,7 @@ MonoBehaviour:
   onlineScene: Assets/Scenes/(WIP) Lobby.unity
   transport: {fileID: 1308830979}
   networkAddress: localhost
-  maxConnections: 100
+  maxConnections: 56
   disconnectInactiveConnections: 1
   disconnectInactiveTimeout: 60
   authenticator: {fileID: 0}
@@ -1017,9 +1017,17 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 898067457016418372, guid: 7d4b5b0c4f477ad41aa0a05048dc7265, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 898067457016418372, guid: 7d4b5b0c4f477ad41aa0a05048dc7265, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 898067457016418372, guid: 7d4b5b0c4f477ad41aa0a05048dc7265, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 407777510}
     - target: {fileID: 898067457016418372, guid: 7d4b5b0c4f477ad41aa0a05048dc7265, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -1029,12 +1037,24 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 898067457016418372, guid: 7d4b5b0c4f477ad41aa0a05048dc7265, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 898067457016418372, guid: 7d4b5b0c4f477ad41aa0a05048dc7265, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: SetActive
       objectReference: {fileID: 0}
     - target: {fileID: 898067457016418372, guid: 7d4b5b0c4f477ad41aa0a05048dc7265, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 898067457016418372, guid: 7d4b5b0c4f477ad41aa0a05048dc7265, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
       value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 898067457016418372, guid: 7d4b5b0c4f477ad41aa0a05048dc7265, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 898067457016418372, guid: 7d4b5b0c4f477ad41aa0a05048dc7265, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument

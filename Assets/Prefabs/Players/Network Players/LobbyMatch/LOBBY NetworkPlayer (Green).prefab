@@ -26,6 +26,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.6817741
       objectReference: {fileID: 0}
+    - target: {fileID: 537063209812637493, guid: d1358eb6e8673814fb60c21af00a00de, type: 3}
+      propertyPath: playerAudio
+      value: 
+      objectReference: {fileID: 6805350727329508242}
     - target: {fileID: 2347215542402302661, guid: d1358eb6e8673814fb60c21af00a00de, type: 3}
       propertyPath: m_PresetInfoIsWorld
       value: 1
@@ -110,6 +114,10 @@ PrefabInstance:
       propertyPath: climbClip
       value: 
       objectReference: {fileID: 8300000, guid: 7678c62b301851e4f97a407f0e5e2634, type: 3}
+    - target: {fileID: 6774835018087594508, guid: d1358eb6e8673814fb60c21af00a00de, type: 3}
+      propertyPath: m_Volume
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7323093382678290502, guid: d1358eb6e8673814fb60c21af00a00de, type: 3}
       propertyPath: timeToDie
       value: 45

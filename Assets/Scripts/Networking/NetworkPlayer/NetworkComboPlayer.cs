@@ -18,7 +18,8 @@ public class NetworkComboPlayer : NetworkBehaviour
 
     private float cooldownProgress;
 
-    public bool IsOnCooldown { get; private set; }
+    [SyncVar (hook = nameof(OnCooldownStarted))]
+    public bool IsOnCooldown;
 
     private NetworkComboPlayer[] teammates;
     private NetworkComboPlayer[] teammatesAndSelf;
@@ -42,8 +43,22 @@ public class NetworkComboPlayer : NetworkBehaviour
     public bool IsClientPlayer = false;
     public bool isOnClientPlayerTeam;
 
+
+    public bool isInCooldown;
+
     [SerializeField] private NetworkComboParticleGenerator networkComboParticleGenerator;
     private List<NetworkComboParticleIndicator> comboParticleIndicators;
+
+    [Command(ignoreAuthority = true)]
+    public void CmdSetCooldown(bool value)
+    {
+        IsOnCooldown = value;
+    }
+
+    private void OnCooldownStarted(bool oldValue, bool newValue)
+    {
+        this.cooldownProgress = this.cooldownMax;
+    }
     
     private void Start()
     {
@@ -203,8 +218,7 @@ public class NetworkComboPlayer : NetworkBehaviour
 
     internal void StartCooldown()
     {
-        this.IsOnCooldown = true;
-        this.cooldownProgress = this.cooldownMax;
+        CmdSetCooldown(true);
     }
 
     private void CooldownUpdate()
@@ -216,8 +230,7 @@ public class NetworkComboPlayer : NetworkBehaviour
         
         if (this.cooldownProgress <= 0)
         {
-            this.IsOnCooldown = false;
-            this.cooldownProgress = this.cooldownMax;
+            CmdSetCooldown(false);
         }
     }
 
@@ -544,7 +557,7 @@ public class NetworkComboPlayer : NetworkBehaviour
         return distance >= lowerBound && distance <= upperBound;
     }
 
-    public void DigTile(TileInfo targetTile) => this.networkDigging.DigCombo(targetTile);
+    public void DigTile(TileInfo targetTile) => this.networkDigging.Dig(targetTile);
     public float MaxHighlightingDistance() => NetworkComboManager.Instance.TriangleDistance + NetworkComboManager.Instance.HighlightTolerance;
     public float GetCooldownMax() => this.cooldownMax;
     public float GetCooldownProgress() => this.cooldownProgress;

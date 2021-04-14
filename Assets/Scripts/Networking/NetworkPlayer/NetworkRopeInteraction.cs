@@ -258,6 +258,7 @@ public class NetworkRopeInteraction : NetworkBehaviour
                 this.image.color.b,
                 0.5f); 
 
+            this.animator.SetTrigger("PutLadder");
             CmdSetTileState(RopeTile.TileInfo, TileState.Rope, RopeTile.TileInfo.Progress);
             StartCoroutine(ThrowRope(this.rope, RopeTile));
         }
@@ -266,6 +267,7 @@ public class NetworkRopeInteraction : NetworkBehaviour
     private void HaulUpRope()
     {   
         playerAudio.PlayRopeAudio();
+        this.animator.SetTrigger("RemoveLadder");
         CmdSetTileState(RopeTile.TileInfo, TileState.Respawning, RopeTile.TileInfo.Progress);
         StartCoroutine(RemoveRope());
     }
@@ -302,7 +304,6 @@ public class NetworkRopeInteraction : NetworkBehaviour
         rope.GetLowerLadder().transform.forward = Vector3.back;
         rope.GetHighlightedLadder().transform.forward = Vector3.back;
 
-        this.animator.SetTrigger("PutLadder");
         playerAudio.PlayRopeAudio();
         CmdUseRope(true);
     }
