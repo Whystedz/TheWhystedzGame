@@ -13,6 +13,8 @@ public class VideoTutorialUI : VideoManager
 
     [Header("Video Player")]
     [SerializeField] private VideoClip[] videos;
+    [Range(0,1)]
+    [SerializeField] private float volume;
     private int currentVideoIndex;
     public int CurrentVideoIndex => this.currentVideoIndex;
 
@@ -26,6 +28,8 @@ public class VideoTutorialUI : VideoManager
 
     private void Start()
     {
+        this.videoPlayer.SetDirectAudioVolume(0, this.volume);
+        
         this.currentVideoIndex = 0;
         
         LoadVideo(this.videos[this.currentVideoIndex]);
