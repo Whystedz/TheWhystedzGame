@@ -945,13 +945,13 @@ MonoBehaviour:
   runInBackground: 1
   autoStartServerBuild: 1
   showDebugMessages: 0
-  serverTickRate: 30
+  serverTickRate: 45
   serverBatching: 1
   serverBatchInterval: 0
   offlineScene: Assets/Scenes/(WIP) MainMenuScene.unity
   onlineScene: Assets/Scenes/(WIP) Lobby.unity
   transport: {fileID: 1308830979}
-  networkAddress: localhost
+  networkAddress: 34.95.63.42
   maxConnections: 56
   disconnectInactiveConnections: 1
   disconnectInactiveTimeout: 60

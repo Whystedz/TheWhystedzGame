@@ -48,6 +48,9 @@ public class NetworkPlayerMovement : NetworkBehaviour
     [SerializeField] private float timePausedOnStart = 5f;
     private bool enableAfterCooldown;
 
+    private float maxTimeToRope = 2f;
+    internal float moveTowardsRopeProgress;
+
     public override void OnStartAuthority()
     {
         AudioManager.PlayMainMusic();
@@ -193,11 +196,16 @@ public class NetworkPlayerMovement : NetworkBehaviour
         var ropePositionWithoutY = new Vector3(rope.transform.position.x, this.transform.position.y, rope.transform.position.z);
         this.transform.LookAt(ropePositionWithoutY);
 
-        while (Vector3.Distance(this.transform.position, ropePositionWithoutY) > 1.0f)
+        this.moveTowardsRopeProgress = this.maxTimeToRope;
+
+        while ((Vector3.Distance(this.transform.position, ropePositionWithoutY) > 1.0f)
+            && this.moveTowardsRopeProgress > 0)
         {
             MoveTowards(directionToRope, 120f);
+            this.moveTowardsRopeProgress -= Time.deltaTime;
             yield return null;
         }
+
         this.transform.LookAt(ropePositionWithoutY);
 
         yield return StartCoroutine(TransitionToTop(height, rope.transform.position));

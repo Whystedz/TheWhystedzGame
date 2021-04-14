@@ -21,7 +21,7 @@ public class MatchController : NetworkBehaviour
 
     public int NumOfPlayers { get; set; }
 
-    public static int currentIndex = 0;
+    public int currentIndex = 0;
     [SerializeField] private GameObject[] spawnPointPrefabs;
     internal List<Transform> spawnPoints = new List<Transform>();
 
